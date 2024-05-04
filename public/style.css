@@ -1,0 +1,34 @@
+@font-face {
+    font-family: 'persian-font'; /* This is the name you will use to reference the custom font */
+    src: url('mod_font.ttf') format('truetype'); /* Specify the path to your font file */
+}
+
+body {
+    font-family: 'persian-font'; /* Change 'Arial' to the desired font family */
+}
+.font-sans{
+font-family: "persian-font",sans-serif;
+}
+.sidebar-menu{
+    margin: 0 ;
+    margin-top: -20px;
+    background-color: rgb(255, 255,255, 0.9);
+    padding: 20px;
+    box-shadow: 2px 2px 4px 0 rgb(0, 0,0, 0.1);
+    color: rgb(rgb(230, 12, 12), green, blue);
+    width: 110%;
+    height: 150vh;
+}
+
+/* .bg-white{
+
+    background-color: rgb(255, 255,255, 0.9);
+} */
+
+body{
+    background-image: url('/logo.png');
+    background-size: contain;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+}

@@ -1,0 +1,280 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.container{
+    margin: auto;
+}
+.container-2{
+    width: 90%;
+    margin-right: 50px;
+    margin-left: 20px;
+    height: 1015px;
+    background-color: rgb(244, 244, 244);
+}
+.title{
+    text-align: center;
+    font-size: 20px;
+    padding: 20px;
+}
+.title h1{
+margin-top: 20px;
+}
+.container-2 .img{
+    margin-left: 5px;
+    width: 400px;
+    height: 460px;
+    background-color: rgb(255, 255, 255);
+}
+.container-2 .img img{
+    width: 100%;
+    margin-top: 10px;
+}
+.container-t table,
+.container-t th,
+.container-t td {
+  border: 1px solid #ccc;
+  padding: 0.5rem;
+  border-collapse: collapse;
+}
+.info-one{
+  text-align: center;
+  font-size: 20px;
+}
+.container-t  table {
+    width: 63%;
+    border-collapse: collapse;
+    position: absolute;
+    top: 106px;
+    right: 134px;
+  }
+  th, td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: left;
+    
+  }
+  th {
+    background-color: #fff;
+  }
+  .left-column {
+    font-size: 16px;
+    text-align: center;
+    width: 70%;
+    background-color: rgb(255, 255, 255);
+  }
+  .container-t .right-column {
+    font-size: 16px;
+    text-align: center;
+    width: 30%;
+    background-color: rgb(230, 230, 230);
+  }
+  .container-t2 table,
+  .container-t2 th,
+  .container-t2 td {
+    border: 1px solid #ccc;
+    padding: 0.5rem;
+    border-collapse: collapse;
+  }
+  .info-two{
+    text-align: center;
+    font-size: 20px;
+  }
+  .container-t2  table {
+    width: 63%;
+    border-collapse: collapse;
+    position: absolute;
+    top: 392px;
+    right: 134px;
+  }
+  th, td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: left;
+  }
+  th {
+    background-color: #f2f2f2;
+  }
+  .container-t2 .left-column {
+    font-size: 16px;
+    text-align: center;
+    width: 70%;
+    background-color: rgb(255, 255, 255);
+  }
+  .right-column {
+    font-size: 16px;
+    text-align: center;
+    width: 30%;
+    background-color: rgb(255, 255, 255);
+  }
+  .container-t3 table,
+  .container-t3 th,
+  .container-t3 td {
+    border: 1px solid #ccc;
+    padding: 0.5rem;
+    border-collapse: collapse;
+  }
+  .info-three{
+    text-align: center;
+    font-size: 20px;
+  }
+  .container-t3  table {
+    width: 63%;
+    border-collapse: collapse;
+    position: absolute;
+    top: 572px;
+    right: 134px;
+  }
+  th, td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: left;
+  }
+  th {
+    background-color: #f2f2f2;
+  }
+  .container-t3 .left-column {
+    text-align: center;
+    width: 70%;
+    background-color: rgb(255, 255, 255);
+  }
+ .container-t3 .right-column {
+    text-align: center;
+    width: 30%;
+    background-color: rgb(230, 230, 230);
+  }
+    
+    /*here is the fourth column*/
+    .container-t4 table,
+    .container-t4 th,
+    .container-t4 td {
+      border: 1px solid #ccc;
+      padding: 0.5rem;
+      border-collapse: collapse;
+    }
+    .info-four{
+      text-align: center;
+      font-size: 20px;
+    }
+    .container-t4  table {
+      font-size: 16px;
+      width: 63%;
+      border-collapse: collapse;
+      position: absolute;
+      top: 752px;
+      right: 134px;
+    }
+    th, td {
+      border: 1px solid black;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    .container-t4 .left-column {
+      text-align: center;
+      width: 70%;
+      background-color: rgb(255, 255, 255);
+    }
+    .container-t4 .right-column {
+      text-align: center;
+      width: 30%;
+      background-color: rgb(230, 230, 230);
+    }
+/* this is table five */
+.container-t5 table,
+.container-t5 th,
+.container-t5 td {
+  border: 1px solid #ccc;
+  padding: 0.5rem;
+  border-collapse: collapse;
+}
+.info-five{
+  text-align: center;
+  font-size: 20px;
+}
+.container-t5  table {
+  width: 400px;
+  border-collapse: collapse;
+  position: absolute;
+  top: 572px;
+  left: 25px;
+}
+th, td {
+  border: 1px solid black;
+  padding: 8px;
+  text-align: left;
+}
+th {
+  background-color: #f2f2f2;
+}
+.container-t5 .left-column {
+  font-size: 16px;
+  text-align: center;
+  width: 70%;
+  background-color: rgb(255, 255, 255);
+}
+.container-t5 .right-column {
+  font-size: 16px;
+  text-align: center;
+  width: 30%;
+  background-color: rgb(230, 230, 230);
+}
+   /*here is the six column*/
+.container-t6 table,
+.container-t6 th,
+.container-t6 td {
+  border: 1px solid #ccc;
+  padding: 0.5rem;
+  border-collapse: collapse;
+}
+.info-six{
+  text-align: center;
+  font-size: 20px;
+}
+.container-t6  table {
+  width: 400px;
+  border-collapse: collapse;
+  position: absolute;
+  top: 752px;
+  left: 25px;
+}
+th, td {
+  border: 1px solid black;
+  padding: 8px;
+  text-align: left;
+}
+th {
+  background-color: #f2f2f2;
+}
+.container-t6 .left-column {
+  font-size: 16px;
+  text-align: center;
+  width: 70%;
+  background-color: rgb(255, 255, 255);
+}
+.right-column {
+  font-size: 16px;
+  text-align: center;
+  width: 30%;
+  background-color: rgb(230, 230, 230);
+}
+@media screen and (max-width: 768px) {
+  .container-2, .container-t, .container-t2, .container-t3, .container-t4, .container-t5, .container-t6 {
+    width: 100%;
+    position: relative;
+    top: 0;
+    right: 0;
+    left: 0;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .container-2 .img, .container-t table, .container-t2 table, .container-t3 table, .container-t4 table, .container-t5 table, .container-t6 table {
+    width: 100%;
+  }
+  .left-column, .right-column {
+    width: 100%;
+  }
+}

@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\PrintCardFrame;
 use Illuminate\Support\Str;
+use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
@@ -11,26 +12,54 @@ class CardDesign extends Component
 {
     use WithFileUploads;
     public PrintCardFrame $cardFrame;
+    #[Rule('required|string')]
     public $color;
+    #[Rule('required|string')]
     public $gov;
+    #[Rule('required|string')]
+
     public $ministry;
+    #[Rule('required|numeric')]
+
     public $ministry_size;
+    #[Rule('required|numeric')]
     public $gov_size;
     public $ministery;
+
+    #[Rule('required|numeric')]
     public $qr_x;
+    #[Rule('required|numeric')]
     public $qr_y;
+
+    #[Rule('required|numeric')]
+
     public $pro_x;
+    #[Rule('required|numeric')]
+
     public $pro_y;
     public $background;
     public $background_path;
+    #[Rule('required|numeric')]
     public $info_size;
-    public $ministry_logo_path;
+    #[Rule('required|image')]
+
     public $ministry_logo;
-    public $gov_logo_path;
+    public $ministry_logo_path;
+    #[Rule('required|image')]
+
     public $gov_logo;
+    public $gov_logo_path;
+
+    #[Rule('required|numeric')]
     public $ministry_x;
+
+    #[Rule('required|numeric')]
     public $ministry_y;
+
+    #[Rule('required|numeric')]
     public $gov_x;
+
+    #[Rule('required|numeric')]
     public $gov_y;
     // Back of the Card file
 
@@ -126,12 +155,12 @@ class CardDesign extends Component
             case "gov_size":
                 $this->cardFrame->gov_name_font_size = $this->gov_size;
                 break;
-                case "ministry_size":
-                    $this->cardFrame->ministry_name_font_size = $this->ministry_size;
-                    break;
-                    case "remark":
-                        // $this->cardFrame->remark = $this->remark;
-                        break;
+            case "ministry_size":
+                $this->cardFrame->ministry_name_font_size = $this->ministry_size;
+                break;
+            case "remark":
+                // $this->cardFrame->remark = $this->remark;
+                break;
             default:
         }
         $this->cardFrame->save();

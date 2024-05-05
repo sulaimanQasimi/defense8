@@ -1,6 +1,7 @@
 <?php
 namespace App\Nova\Card;
 
+use App\Nova\Actions\GunPrintCardAction;
 use App\Nova\Resource;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Text;
@@ -12,10 +13,10 @@ class GunCard extends Resource
 
     public static $model = \App\Models\Card\GunCard::class;
 
-    public static $title = 'id';
+    public static $title = 'gun_no';
 
     public static $search = [
-        'id',
+        'gun_no',
     ];
 
     public static function label()
@@ -91,6 +92,9 @@ class GunCard extends Resource
      */
     public function actions(NovaRequest $request)
     {
-        return [];
+        return [
+            (new GunPrintCardAction)->onlyOnDetail()->canRun(fn()=>auth()->user()->hasRole("Print Card"))
+
+        ];
     }
 }

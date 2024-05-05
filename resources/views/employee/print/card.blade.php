@@ -23,11 +23,13 @@
 </head>
 
 <body class="font-sans antialiased">
+    {{-- Print Context --}}
     <div class="flex justify-end" x-data="{
         back: false
     }" x-cloak>
-        <button class="print-none" x-on:click="back=true"  x-show="!back">Back</button>
-        <button class="print-none" x-on:click="back=false"  x-show="back">Front</button>
+        {{-- Back/ Front Print Button --}}
+        <button class="print-none" x-on:click="back=true" x-show="!back">Back</button>
+        <button class="print-none" x-on:click="back=false" x-show="back">Front</button>
         <div x-show="!back" class="bg-white  h-[2.13in] w-[3.34in] block  rounded-xl relative ">
             <div class=" border-t rounded-t-xl" style="background-color: {{ $card->color }}">
                 <div class="text-center" style="font-size: {{ $card->gov_name_font_size }}px">{{ $card->gov_name }}
@@ -42,7 +44,14 @@
 
             <div style="font-size: {{ $card->info_font_size }}px; background-image: url('/storage/{{ $card->background_logo }}')"
                 class="px-2 bg-contain bg-center bg-local bg-no-repeat ">
-                @include('employee.print.employee')
+                {{-- Diffrent Cards component --}}
+                @includeWhen(
+                    $card->type == \App\Support\Defense\Print\PrintTypeEnum::Employee,
+                    'employee.print.employee')
+
+                @includeWhen(
+                    $card->type == \App\Support\Defense\Print\PrintTypeEnum::Gun,
+                    'employee.print.gun')
             </div>
             <div class="h-3 border-b rounded-b-xl" style="background-color: {{ $card->color }}"></div>
             <div>
@@ -55,15 +64,14 @@
         </div>
 
         <div x-show="back" class="bg-white h-[2.13in] w-[3.34in] block  rounded-xl relative ">
-            <div class="h-20" style="background-color: {{$card->color}}"></div>
-            <div class="mx-3 my-2 text-sm font-medium" >{{$card->remark}}</div>
+            <div class="h-20" style="background-color: {{ $card->color }}"></div>
+            <div class="mx-3 my-2 text-sm font-medium">{{ $card->remark }}</div>
             <div class="h-3 border-b rounded-b-xl" style="background-color: color }"></div>
         </div>
 
     </div>
 
     <script type="text/javascript" src="{{ asset('qrcode/qrcode.js') }}"></script>
-
     <script type="text/javascript">
         var qrcode = new QRCode(document.getElementById("qrcode"), {
             width: 100,

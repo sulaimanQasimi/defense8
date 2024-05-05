@@ -43,25 +43,25 @@ class CardInfo extends Model
      * Armor Vehical Card
      */
 
-    public function armor_vehical_card(): HasMany
+    public function armor_vehical_card(): HasOne
     {
-        return $this->hasMany(ArmorVehicalCard::class);
+        return $this->hasOne(ArmorVehicalCard::class);
     }
     /**
      * Black Mirror Vehical Card
      */
 
-    public function black_mirror_vehical_card(): HasMany
+    public function black_mirror_vehical_card(): HasOne
     {
-        return $this->hasMany(BlackMirrorVehicalCard::class);
+        return $this->hasOne(BlackMirrorVehicalCard::class);
     }
 
     /**
      *  Employee Vehical Card
      */
-    public function employee_vehical_card(): HasMany
+    public function employee_vehical_card(): HasOne
     {
-        return $this->hasMany(EmployeeVehicalCard::class);
+        return $this->hasOne(EmployeeVehicalCard::class);
     }
     /**
      *  Gun Card

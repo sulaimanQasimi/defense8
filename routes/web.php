@@ -76,5 +76,6 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware('role:Design Card')->get('card-design/{printCardFrame:id}',CardDesign::class)->name('employee.design-card');
     // Card Frame Print Request Route
     Route::middleware('role:Print Card')->get('print-employee-card-for/{cardInfo:id}/card/{printCardFrame}', (new PrintCardController())->employee(...))->name('employee.print-card-for');
+    Route::middleware('role:Print Card')->get('print/gun/{cardInfo:id}/card/{printCardFrame}', (new PrintCardController())->gun(...))->name('gun.print-card-for');
 
 });

@@ -200,9 +200,9 @@ class CardInfo extends Resource
             Trix::make(__("Remark"), 'remark')->exceptOnForms(),
             HasOne::make(__("Main Card"), 'main_card', MainCard::class),
             HasOne::make(__("Gun Card"), 'gun_card', GunCard::class),
-            HasMany::make(__("Armor Vehical Card"), 'armor_vehical_card', ArmorVehicalCard::class),
-            HasMany::make(__("Black Mirror Vehical Card"), 'black_mirror_vehical_card', BlackMirrorVehicalCard::class),
-            HasMany::make(__("Employee Vehical Card"), 'employee_vehical_card', EmployeeVehicalCard::class),
+            HasOne::make(__("Armor Vehical Card"), 'armor_vehical_card', ArmorVehicalCard::class),
+            HasOne::make(__("Black Mirror Vehical Card"), 'black_mirror_vehical_card', BlackMirrorVehicalCard::class),
+            HasOne::make(__("Employee Vehical Card"), 'employee_vehical_card', EmployeeVehicalCard::class),
             HasMany::make(__("Attendance"), 'attendance', Attendance::class),
             // MorphToMany::make(__("Print Card"), 'PrintCardFrame', \App\Nova\PrintCardFrame::class),
 

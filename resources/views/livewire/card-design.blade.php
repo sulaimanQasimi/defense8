@@ -426,21 +426,9 @@
                         <img :src="'/storage/' + ministryLogo" class="h-12 absolute rounded-full"
                             :style="{ top: ministryY + 'px', left: ministryX + 'px' }" />
                     </div>
-                    <div :style="{
-                        'font-size': infoSize + 'px',
-                        // 'background-color': color,
-                        'background-image': 'url(\'/storage/' +
-                            background_path + '\')'
-                    }"
-                        class="px-2 bg-contain bg-center bg-local bg-no-repeat">
-                        <div class="block">@lang('Name'): <span>@lang('Sample')</span></div>
-                        <div class="block">@lang('Father Name'): <span>@lang('Sample')</span></div>
-                        <div class="block">@lang('Job'): <span>@lang('Sample')</span></div>
-                        <div class="block">@lang('Department'): <span>@lang('Sample')</span></div>
-                        <div class="block">@lang('Register No'): <span>Gx-xxxxx</span></div>
-                        <div class="block">@lang('Registered At'):<span>xxxx/xx/xx</span></div>
-                        <div class="block">@lang('Expire Date'):<span>xxxx/xx/xx</span></div>
-                    </div>
+                        @includeWhen($cardFrame->type ==\App\Support\Defense\Print\PrintTypeEnum::Employee,'livewire.cards.employee', ['status' => 'complete'])
+                        @includeWhen($cardFrame->type ==\App\Support\Defense\Print\PrintTypeEnum::Gun,'livewire.cards.gun', ['status' => 'complete'])
+
                     <div class="h-3 border-b rounded-b-xl" :style="{ 'background-color': color }"></div>
                     <div>
                         <img src="{{ asset('11.jpg') }}" class="h-16 absolute"

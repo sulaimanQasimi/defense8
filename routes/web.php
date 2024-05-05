@@ -78,5 +78,7 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware('role:Print Card')->get('print-employee-card-for/{cardInfo:id}/card/{printCardFrame}', (new PrintCardController())->employee(...))->name('employee.print-card-for');
     Route::middleware('role:Print Card')->get('print/gun/{cardInfo:id}/card/{printCardFrame}', (new PrintCardController())->gun(...))->name('gun.print-card-for');
     Route::middleware('role:Print Card')->get('print/employeeCar/{cardInfo:id}/card/{printCardFrame}', (new PrintCardController())->employee_car(...))->name('employee-car.print-card-for');
+    Route::middleware('role:Print Card')->get('print/ArmorCar/{cardInfo:id}/card/{printCardFrame}', (new PrintCardController())->armor_car(...))->name('armor-car.print-card-for');
+    Route::middleware('role:Print Card')->get('print/blackMirrorCar/{cardInfo:id}/card/{printCardFrame}', (new PrintCardController())->black_mirror_car(...))->name('black-mirror-car.print-card-for');
 
 });

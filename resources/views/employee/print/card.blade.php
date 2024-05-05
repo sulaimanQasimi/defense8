@@ -53,6 +53,14 @@
                     @includeWhen(
                         $card->type == \App\Support\Defense\Print\PrintTypeEnum::EmployeeCar,
                         'employee.print.employeeCar')
+
+                    @includeWhen(
+                        $card->type == \App\Support\Defense\Print\PrintTypeEnum::BlackMirrorCar,
+                        'employee.print.blackMirrorCar')
+
+                    @includeWhen(
+                        $card->type == \App\Support\Defense\Print\PrintTypeEnum::ArmorCar,
+                        'employee.print.ArmorCar')
                 </div>
             </div>
             <div class="h-3 border-b " style="background-color: {{ $card->color }}"></div>

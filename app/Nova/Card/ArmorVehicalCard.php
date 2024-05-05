@@ -2,6 +2,7 @@
 
 namespace App\Nova\Card;
 
+use App\Nova\Actions\ArmorCarPrintCardAction;
 use App\Nova\Card\Support\VehicalDriverField;
 use App\Nova\Resource;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -41,6 +42,8 @@ class ArmorVehicalCard extends Resource
 
     public function actions(NovaRequest $request)
     {
-        return [];
+        return [
+            (new ArmorCarPrintCardAction)->onlyOnDetail()->canRun(fn()=>auth()->user()->hasRole("Print Card"))
+        ];
     }
 }

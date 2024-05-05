@@ -1,6 +1,7 @@
 <?php
 namespace App\Nova\Card;
 
+use App\Nova\Actions\BlackMirrorCarPrintCardAction;
 use App\Nova\Card\Support\VehicalDriverField;
 use App\Nova\Resource;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -63,6 +64,9 @@ class BlackMirrorVehicalCard extends Resource
      */
     public function actions(NovaRequest $request)
     {
-        return [];
+        return [
+            (new BlackMirrorCarPrintCardAction)->onlyOnDetail()->canRun(fn()=>auth()->user()->hasRole("Print Card"))
+
+        ];
     }
 }

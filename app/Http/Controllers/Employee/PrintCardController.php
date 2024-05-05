@@ -40,5 +40,22 @@ class PrintCardController extends Controller
     }
 
 
+    public function black_mirror_car(Request $request, CardInfo $cardInfo, int $printCardFrame): View
+    {
+        $card = PrintCardFrame::findOrFail($printCardFrame);
+        if (!$card->type == PrintTypeEnum::BlackMirrorCar) {
+            return abort(404);
+        }
+        return view('employee.print.card', compact('cardInfo', 'card'));
+    }
 
+
+    public function armor_car(Request $request, CardInfo $cardInfo, int $printCardFrame): View
+    {
+        $card = PrintCardFrame::findOrFail($printCardFrame);
+        if (!$card->type == PrintTypeEnum::ArmorCar) {
+            return abort(404);
+        }
+        return view('employee.print.card', compact('cardInfo', 'card'));
+    }
 }

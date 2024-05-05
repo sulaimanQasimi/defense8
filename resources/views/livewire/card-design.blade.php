@@ -4,6 +4,7 @@
         @push('css')
             <script type="text/javascript" src="{{ asset('qrcode/jquery.min.js') }}"></script>
             <script type="text/javascript" src="{{ asset('qrcode/qrcode.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('ckeditor/ckeditor.js') }}"></script>
             <style>
                 @media print {
                     body {
@@ -265,8 +266,7 @@
                                     stroke-width="2"
                                     d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
                             </svg>
-                            <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click
-                                    to upload</span> or drag and drop</p>
+
                             <p class="text-xs text-gray-500 dark:text-gray-400">@lang('Background of Card')</p>
                         </div>
                         <input id="background-logo-file-upload" type="file" class="hidden"
@@ -287,8 +287,6 @@
                                     stroke-width="2"
                                     d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
                             </svg>
-                            <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click
-                                    to upload</span> or drag and drop</p>
                             <p class="text-xs text-gray-500 dark:text-gray-400">@lang('Government Logo')</p>
                         </div>
                         <input id="gov-logo-file-upload" type="file" class="hidden" wire:model.live="gov_logo" />
@@ -308,8 +306,6 @@
                                     stroke-width="2"
                                     d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
                             </svg>
-                            <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click
-                                    to upload</span> or drag and drop</p>
                             <p class="text-xs text-gray-500 dark:text-gray-400">@lang('Ministry Logo')</p>
                         </div>
                         <input id="ministry-logo-file-upload" type="file" class="hidden"
@@ -340,7 +336,7 @@
         ministry: $wire.entangle('ministry').live,
         ministrySize: $wire.entangle('ministry_size').live,
         ministryLogo: $wire.entangle('ministry_logo_path').live,
-
+        fontColor:$wire.entangle('font_color').live,
         ministryX: $wire.entangle('ministry_x').live,
         ministryY: $wire.entangle('ministry_y').live,
         govLogo: $wire.entangle('gov_logo_path').live,
@@ -391,6 +387,7 @@
                 </div>
 
                 <input type="color" x-model="color" />
+                <input type="color" x-model="fontColor" />
                 {{-- QR Code Dimentions --}}
                 <x-form.dimention-slider label="QR code Dimentions" xModel="qrX" yModel="qrY" xMax="270"
                     yMax="270" />
@@ -415,7 +412,7 @@
             </div>
 
             <div class="col-span-3 flex  justify-items-end">
-                <div class="bg-white h-[2.13in] w-[3.34in] block  rounded-xl relative ">
+                <div class="bg-white h-[2.13in] w-[3.5in] block  rounded-xl relative ">
                     <div class=" border-t rounded-t-xl" :style="{ 'background-color': color }">
                         <div class="text-center" :style="{ 'font-size': govSize + 'px' }" x-text="gov"></div>
                         <div class="text-center" :style="{ 'font-size': ministrySize + 'px' }" x-text="ministry">
@@ -426,9 +423,29 @@
                         <img :src="'/storage/' + ministryLogo" class="h-12 absolute rounded-full"
                             :style="{ top: ministryY + 'px', left: ministryX + 'px' }" />
                     </div>
-                        @includeWhen($cardFrame->type ==\App\Support\Defense\Print\PrintTypeEnum::Employee,'livewire.cards.employee', ['status' => 'complete'])
-                        @includeWhen($cardFrame->type ==\App\Support\Defense\Print\PrintTypeEnum::Gun,'livewire.cards.gun', ['status' => 'complete'])
+                    <div :style="{
+                        'font-size': infoSize + 'px',
+                        'color':fontColor,
+                        // 'background-color': color,
+                        'background-image': 'url(\'/storage/' +
+                            background_path + '\')'
+                    }"
+                        class="bg-cover bg-center bg-local bg-no-repeat">
+                        <div class="px-2">
+                            @includeWhen(
+                                $cardFrame->type == \App\Support\Defense\Print\PrintTypeEnum::Employee,
+                                'livewire.cards.employee',
+                                ['status' => 'complete']
+                            )
+                            @includeWhen(
+                                $cardFrame->type == \App\Support\Defense\Print\PrintTypeEnum::Gun,
+                                'livewire.cards.gun',
+                                ['status' => 'complete']
+                            )
 
+                        </div>
+
+                    </div>
                     <div class="h-3 border-b rounded-b-xl" :style="{ 'background-color': color }"></div>
                     <div>
                         <img src="{{ asset('11.jpg') }}" class="h-16 absolute"
@@ -440,10 +457,11 @@
             </div>
             {{-- Back of the Card --}}
             <div class="col-span-3 flex  justify-items-end">
-                <div class="bg-white h-[2.13in] w-[3.34in] block  rounded-xl relative ">
-                    <div class="h-20" :style="{ 'background-color': color }"></div>
-                    <div class="mx-3 my-2 text-sm font-medium" x-html="remark"></div>
-                    <div class="h-3 border-b rounded-b-xl" :style="{ 'background-color': color }"></div>
+                <div class="bg-white h-[2.13in] w-[3.5in] block  rounded-xl relative bg-cover bg-center bg-local bg-no-repeat "
+                    :style="{ 'background-image': 'url(\'/storage/' + background_path + '\')' }">
+                    <div class="h-h-[1.75rem]" :style="{ 'background-color': color }"></div>
+                    <div class="mx-3 my-2 text-sm font-medium" x-html="remark" :style="{'color':fontColor}"></div>
+
                 </div>
             </div>
         </div>
@@ -456,6 +474,7 @@
                         height: 100
                     });
                     qrcode.makeCode("123");
+                    // CKEDITOR.replace('remark');
                 </script>
             @endpush
         @endonce

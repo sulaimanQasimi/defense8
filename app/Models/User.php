@@ -1,7 +1,9 @@
 <?php
 
 namespace App\Models;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -22,7 +24,7 @@ class User extends Authenticatable
     use HasRoles;
     use HasPermissions;
     use SoftDeletes;
-//    use TwoFactorAuthenticatable;
+    //    use TwoFactorAuthenticatable;
 
     use LogsActivity;
     /**
@@ -75,13 +77,13 @@ class User extends Authenticatable
     {
         return $this->hasOne(Host::class);
     }
-    public function department(): HasOne
+    public function department(): BelongsTo
     {
-        return $this->hasOne(Department::class);
+        return $this->belongsTo(Department::class);
     }
-    public function gate ():HasOne
+    public function gate(): BelongsTo
     {
-        return $this->hasOne(Gate::class);
+        return $this->belongsTo(Gate::class);
     }
     public function isSuperAdmin()
     {

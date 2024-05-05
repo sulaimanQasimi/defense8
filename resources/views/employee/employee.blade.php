@@ -166,7 +166,7 @@
                     class="px-7 rounded-lg hover:scale-95 py-2 text-white bg-gradient-to-t from-red-600 to-red-500"
                     style="">@lang('Exited')</a>
             @endif
-            @if ($employee->current_gate_attendance?->state !="P" &&is_null( $employee->current_gate_attendance?->state))
+            @if ($employee->current_gate_attendance?->state !="P" && is_null( $employee->current_gate_attendance?->state))
                 <a href="{{ route('employee.check', ['cardInfo' => $employee->id, 'state' => 'upsent']) }}"
                     class="px-7 rounded-lg hover:scale-95 py-2 text-white bg-gradient-to-t from-red-600 to-red-500"
                     style="">@lang('Upsent')</a>

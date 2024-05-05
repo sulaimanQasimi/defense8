@@ -32,9 +32,9 @@ class Department extends Model
     /**
      * Admin of this department
      */
-    public function user(): BelongsTo
+    public function user(): HasMany
     {
-        return $this->belongsTo(User::class);
+        return $this->hasMany(User::class);
     }
     /**
      * Each Department Have Employees

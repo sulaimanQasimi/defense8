@@ -4,34 +4,20 @@ namespace App\Nova;
 
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules;
+use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\FormData;
 use Laravel\Nova\Fields\Gravatar;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\MorphToMany;
 use Laravel\Nova\Fields\Password;
+use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class User extends Resource
 {
-    /**
-     * The model the resource corresponds to.
-     *
-     * @var class-string<\App\Models\User>
-     */
     public static $model = \App\Models\User::class;
-
-    /**
-     * The single value that should be used to represent the resource when being displayed.
-     *
-     * @var string
-     */
     public static $title = 'name';
-
-    /**
-     * The columns that should be searched.
-     *
-     * @var array
-     */
     public static $search = [
         'id',
         'name',
@@ -47,22 +33,14 @@ class User extends Resource
     {
         return __('User');
     }
-
-    /**
-     * Get the fields displayed by the resource.
-     *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @return array
-     */
     public function fields(NovaRequest $request)
     {
         return [
-            ID::make()->sortable(),
-            Text::make(__("Name"),'name')
+            Text::make(__("Name"), 'name')
                 ->sortable()
                 ->rules('required', 'max:255'),
 
-            Text::make(__("Email"),'email')
+            Text::make(__("Email"), 'email')
                 ->copyable()
                 ->sortable()
                 ->rules('required', 'email', 'max:254')
@@ -73,8 +51,47 @@ class User extends Resource
                 ->copyable()
                 ->sortable()
                 ->rules('required'),
+            Select::make(trans("Type"), 'type')->options([
+                "Department" => trans("Department"),
+                "Gate" => trans("Gate"),
+                "None" => trans("No"),
+            ])->rules('required', 'in:Gate,Department,None')
+            ->filterable()
+            ->displayUsingLabels(),
 
-            Password::make(__("Password"),'password')
+            BelongsTo::make(trans("Department"), 'department', Department::class)
+                ->dependsOn(
+                    ['type'],
+                    function (BelongsTo $field, NovaRequest $request, FormData $formData) {
+                        if ($formData->type === 'Gate') {
+                            $field->hide()->nullable();
+                        }
+                        if ($formData->type === 'Department') {
+                            $field->show();
+                        }
+                    }
+                )
+                ->nullable()
+                ->hide()
+                ->searchable()
+                ->filterable(),
+            BelongsTo::make(trans("Gate"), 'gate', Gate::class)
+                ->dependsOn(
+                    ['type'],
+                    function (BelongsTo $field, NovaRequest $request, FormData $formData) {
+                        if ($formData->type === 'Department') {
+                            $field->hide()->nullable();
+                        }
+                        if ($formData->type === 'Gate') {
+                            $field->show();
+                        }
+                    }
+                )
+                ->hide()
+                ->nullable()
+                ->searchable()
+                ->filterable(),
+            Password::make(__("Password"), 'password')
                 ->onlyOnForms()
                 ->creationRules('required', Rules\Password::defaults())
                 ->updateRules('nullable', Rules\Password::defaults()),

@@ -3,11 +3,14 @@
 namespace App\Nova;
 
 use App\Nova\Card\CardInfo;
+use App\Support\Defense\DepartmentTypeEnum;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Laravel\Nova\Actions\Action;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\URL;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -36,21 +39,23 @@ class Department extends Resource
     public function fields(NovaRequest $request)
     {
         return [
-            BelongsTo::make(trans("User"), 'user', User::class)
-                ->showCreateRelationButton(),
             BelongsTo::make(trans("Department"), 'department', Department::class)
-                ->nullable(),
+                ->nullable()->filterable(),
             Text::make(trans("Name"), 'fa_name'),
             Text::make(trans("Pashto Name"), 'pa_name'),
             Text::make(trans("English Name"), 'en_name'),
-            HasMany::make(trans("Departments"), 'departments', Department::class)
-                // ->collapsable()
-                // ->collapsedByDefault()
-                ->nullable(),
-            HasMany::make(trans("Employee"), 'card_infos', CardInfo::class)
-                // ->collapsable()
-                // ->collapsedByDefault()
-                ->nullable(),
+            Select::make(trans("Type"), 'type')->options([
+                DepartmentTypeEnum::Independant => trans("Independant"),
+                DepartmentTypeEnum::Assistant => trans("Assistant"),
+                DepartmentTypeEnum::Directory => trans("Directory"),
+                DepartmentTypeEnum::HeaderShip => trans("HeaderShip"),
+                DepartmentTypeEnum::Commander => trans("Commander"),
+                DepartmentTypeEnum::Management => trans("Management"),
+                DepartmentTypeEnum::Directorate => trans("Directorate"),
+            ])->rules('required', 'in:Independant,Assistant,Directory,HeaderShip,Commander,Management,Directorate')->filterable()->displayUsingLabels(),
+            HasMany::make(trans("Users"), 'user', User::class),
+            HasMany::make(trans("Departments"), 'departments', Department::class),
+            HasMany::make(trans("Employee"), 'card_infos', CardInfo::class),
 
         ];
     }
@@ -102,7 +107,7 @@ class Department extends Resource
                 fn($department) => route('department.employee.attendance.check', ['department' => $department->id])
             )
                 ->sole()
-                ->canRun(fn($request, $department) => auth()->id() === $department->user_id)
+                ->canRun(fn($request, $department) => Gate::allows('admin', $department))
                 ->withoutConfirmation()
                 ->onlyOnDetail(),
             Action::openInNewTab(
@@ -110,7 +115,7 @@ class Department extends Resource
                 fn($department) => route('employee.attendance.current.month..department.single', ['department' => $department->id])
             )
                 ->sole()
-                ->canRun(fn($request, $department) => auth()->id() === $department->user_id)
+                ->canRun(fn($request, $department) => Gate::allows('admin', $department))
                 ->withoutConfirmation()
                 ->onlyOnDetail(),
             Action::openInNewTab(
@@ -118,7 +123,7 @@ class Department extends Resource
                 fn($department) => route('export.excel.attendance', ['department' => $department->id])
             )
                 ->sole()
-                ->canRun(fn($request, $department) => auth()->id() === $department->user_id)
+                ->canRun(fn($request, $department) => Gate::allows('admin', $department))
                 ->withoutConfirmation()
                 ->onlyOnDetail()
         ];

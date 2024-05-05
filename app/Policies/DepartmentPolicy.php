@@ -10,13 +10,13 @@ use Illuminate\Auth\Access\Response;
 class DepartmentPolicy
 {
 
-    public $perModel="Department";
+    public $resource="Department";
     /**
      * Determine whether the user can view any models.
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasPermissionTo(PermissionTranslation::viewAny($this->perModel));
+        return $user->hasPermissionTo(PermissionTranslation::viewAny($this->resource));
 
     }
 
@@ -26,7 +26,7 @@ class DepartmentPolicy
     public function view(User $user, department $department): bool
     {
 
-        return $user->hasPermissionTo(PermissionTranslation::view($this->perModel));
+        return $user->hasPermissionTo(PermissionTranslation::view($this->resource));
 
     }
 
@@ -35,7 +35,7 @@ class DepartmentPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasPermissionTo(PermissionTranslation::create($this->perModel));
+        return $user->hasPermissionTo(PermissionTranslation::create($this->resource));
 
 
     }
@@ -45,7 +45,7 @@ class DepartmentPolicy
      */
     public function update(User $user, department $department): bool
     {
-        return $user->hasPermissionTo(PermissionTranslation::update($this->perModel));
+        return $user->hasPermissionTo(PermissionTranslation::update($this->resource));
 
     }
 
@@ -54,7 +54,7 @@ class DepartmentPolicy
      */
     public function delete(User $user, department $department): bool
     {
-        return $user->hasPermissionTo(PermissionTranslation::delete($this->perModel));
+        return $user->hasPermissionTo(PermissionTranslation::delete($this->resource));
 
     }
 
@@ -64,7 +64,7 @@ class DepartmentPolicy
     public function restore(User $user, department $department): bool
     {
 
-        return $user->hasPermissionTo(PermissionTranslation::restore($this->perModel));
+        return $user->hasPermissionTo(PermissionTranslation::restore($this->resource));
 
     }
 
@@ -73,12 +73,12 @@ class DepartmentPolicy
      */
     public function forceDelete(User $user, department $department): bool
     {
-        return $user->hasPermissionTo(PermissionTranslation::destroy($this->perModel));
+        return $user->hasPermissionTo(PermissionTranslation::destroy($this->resource));
 
     }
     public function admin(User $user, department $department): bool
     {
-        return $user->id===$department->user_id;
+        return ($user->department)?$user->department->id===$department->id:false;
 
     }
 }

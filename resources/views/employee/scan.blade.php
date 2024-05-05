@@ -39,13 +39,8 @@
 
                 </div>
 
-                @if ($employee)
-                    @include('employee.employee')
-                @endif
-
-                @if ($guest)
-                    @include('employee.guest')
-                @endif
+                @includeWhen($employee, 'employee.employee')
+                @includeWhen($guest, 'employee.guest')
             </div>
         </div>
 

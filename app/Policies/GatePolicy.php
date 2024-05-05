@@ -9,13 +9,18 @@ use Illuminate\Auth\Access\Response;
 
 class GatePolicy
 {
+
+
+
+    public $resource="Department";
+
     /**
      * Determine whether the user can view any models.
      */
     public function viewAny(User $user): bool
     {
 
-        return $user->hasPermissionTo(PermissionTranslation::viewAny("Gate"));
+        return $user->hasPermissionTo(PermissionTranslation::viewAny($this->resource));
 
     }
 
@@ -26,7 +31,7 @@ class GatePolicy
     {
 
 
-        return $user->hasPermissionTo(PermissionTranslation::view("Gate"));
+        return $user->hasPermissionTo(PermissionTranslation::view($this->resource));
 
     }
 
@@ -36,7 +41,7 @@ class GatePolicy
     public function create(User $user): bool
     {
 
-        return $user->hasPermissionTo(PermissionTranslation::create("Gate"));
+        return $user->hasPermissionTo(PermissionTranslation::create($this->resource));
 
     }
 
@@ -46,7 +51,7 @@ class GatePolicy
     public function update(User $user, Gate $gate): bool
     {
 
-        return $user->hasPermissionTo(PermissionTranslation::update("Gate"));
+        return $user->hasPermissionTo(PermissionTranslation::update($this->resource));
     }
 
     /**
@@ -54,7 +59,7 @@ class GatePolicy
      */
     public function delete(User $user, Gate $gate): bool
     {
-        return $user->hasPermissionTo(PermissionTranslation::delete("Gate"));
+        return $user->hasPermissionTo(PermissionTranslation::delete($this->resource));
     }
 
     /**
@@ -63,7 +68,7 @@ class GatePolicy
     public function restore(User $user, Gate $gate): bool
     {
 
-        return $user->hasPermissionTo(PermissionTranslation::restore("Gate"));
+        return $user->hasPermissionTo(PermissionTranslation::restore($this->resource));
 
     }
 
@@ -72,7 +77,7 @@ class GatePolicy
      */
     public function forceDelete(User $user, Gate $gate): bool
     {
-        return $user->hasPermissionTo(PermissionTranslation::destroy("Gate"));
+        return $user->hasPermissionTo(PermissionTranslation::destroy($this->resource));
 
     }
 }

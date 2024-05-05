@@ -9,3 +9,6 @@ body {
 .font-sans{
 font-family: "persian-font",sans-serif;
 }
+* {
+    font-family: 'persian-font'; /* Change 'Arial' to the desired font family */
+}

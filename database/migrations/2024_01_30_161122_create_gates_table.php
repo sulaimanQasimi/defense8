@@ -13,17 +13,17 @@ return new class extends Migration
     {
         Schema::create('gates', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(\App\Models\User::class)->nullable();
+         //   $table->foreignIdFor(\App\Models\User::class)->nullable();
             $table->string('fa_name')->nullable();
             $table->string('pa_name')->nullable();
-            $table->string('en_name')->nullable();
+            $table->string('location')->nullable();
        //     $table->integer('level')->nullable();
             $table->timestamps();
             $table->softDeletes();
-            $table->foreign('user_id')->on('users')
-                ->references('id')
-                ->cascadeOnDelete()
-                ->cascadeOnUpdate();
+            // $table->foreign('user_id')->on('users')
+            //     ->references('id')
+            //     ->cascadeOnDelete()
+            //     ->cascadeOnUpdate();
         });
     }
 

@@ -54,11 +54,16 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             MenuSection::make(__('Card'), [
                 MenuItem::resource(Department::class),
                 MenuItem::resource(CardCardInfo::class),
-                MenuItem::externalLink(__("Employee Check Card"), route("employee.check.card"))->canSee(fn() => auth()->user()->gate)
+                MenuItem::externalLink(__("Employee Check Card"), route("employee.check.card"))
+                    ->canSee(fn() => auth()->user()->gate)
 
                 ,
-                MenuItem::externalLink(__("Employee Attendance Check Self Department"), route("department.employee.attendance.check", ['department' => auth()->user()?->department]))->canSee(fn() => auth()->user()->department),
-                MenuItem::externalLink(__("Employee Attendance Check Department"), route("employee.attendance.check"))->canSee(fn() => auth()->user()->hasRole('super-admin')),
+                MenuItem::externalLink(__("Employee Attendance Check Self Department"),
+                route("department.employee.attendance.check",
+                    ['department' => auth()->user()?->department]))
+                    ->canSee(fn() => auth()->user()->department),
+                MenuItem::externalLink(__("Employee Attendance Check Department"), route("employee.attendance.check"))
+                    ->canSee(fn() => auth()->user()->hasRole('super-admin')),
 
                 MenuItem::externalLink(__("Download CURRENT MONTH ATTENDANCE EMPLOYEE"), route("employee.attendance.current.month"))->canSee(fn() => auth()->user()->hasRole('super-admin'))->openInNewTab(),
 
@@ -78,7 +83,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 MenuItem::resource(Activitylog::class)->canSee(fn() => auth()->user()->hasRole('super-admin')),
                 MenuItem::resource(Website::class)->canSee(fn() => auth()->user()->hasRole('super-admin')),
             ])
-            ->icon('user')->collapsable()->collapsedByDefault(),
+                ->icon('user')->collapsable()->collapsedByDefault(),
 
 
         ]);

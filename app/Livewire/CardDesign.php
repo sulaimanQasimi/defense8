@@ -63,7 +63,10 @@ class CardDesign extends Component
     public $gov_y;
     // Back of the Card file
 
+    #[Rule('required|string')]
     public $remark;
+    #[Rule('required|string')]
+    public $font_color;
     public function mount(PrintCardFrame $printCardFrame): void
     {
         $this->cardFrame = $printCardFrame;
@@ -96,9 +99,11 @@ class CardDesign extends Component
         $this->color = $this->cardFrame->color;
         $this->info_size = $this->cardFrame->info_font_size;
         $this->remark = $this->cardFrame->remark;
+        $this->font_color = $this->cardFrame->font_color;
     }
     public function updated($name, $value): void
     {
+        $this->validateOnly($name);
         switch ($name) {
             case "background":
                 $this->background_path = Str::after($this->background->store(path: 'public/background'), 'public/');
@@ -159,8 +164,11 @@ class CardDesign extends Component
                 $this->cardFrame->ministry_name_font_size = $this->ministry_size;
                 break;
             case "remark":
-                // $this->cardFrame->remark = $this->remark;
+                $this->cardFrame->remark = $this->remark;
                 break;
+            case "font_color":
+                $this->cardFrame->font_color = $this->font_color;
+
             default:
         }
         $this->cardFrame->save();

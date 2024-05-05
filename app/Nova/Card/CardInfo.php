@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Nova\Card;
+
 use App\Nova\Actions\EditCardInfoOption;
 use App\Nova\Actions\EditCardInfoRemark;
 use App\Nova\Actions\ExportCardInfo;
@@ -120,8 +121,8 @@ class CardInfo extends Resource
                 BelongsTo::make(__("Department/Chancellor"), 'orginization', Department::class)
                     ->filterable()
                     ->sortable()
-                    // ->searchable()
-                    ,
+                // ->searchable()
+                ,
 
                 Text::make(__("Degree"), "degree")
                     ->nullable()
@@ -256,13 +257,13 @@ class CardInfo extends Resource
     {
         return [
             (new ExportCardInfo())
-            //->askForFilename()
-            ->askForWriterType()
+                //->askForFilename()
+                ->askForWriterType()
             ,
             (new EditCardInfoRemark())->canSee(fn() => auth()->user()->hasPermissionTo(EditAditionalCardInfoEnum::Remark)),
             (new EditCardInfoOption())->canSee(fn() => auth()->user()->hasPermissionTo(EditAditionalCardInfoEnum::Option)),
             // (new CurrentMonthAttendanceEmployeeAction)
-            Action::openInNewTab(__("Download CURRENT MONTH ATTENDANCE EMPLOYEE"), fn($employee) => route('employee.attendance.current.month.single',['cardInfo'=>$employee->id]))
+            Action::openInNewTab(__("Download CURRENT MONTH ATTENDANCE EMPLOYEE"), fn($employee) => route('employee.attendance.current.month.single', ['cardInfo' => $employee->id]))
                 ->sole()
                 // ->canRun(fn($request, $course) => auth()->id() === $course->section->department?->user_id)
                 ->withoutConfirmation()

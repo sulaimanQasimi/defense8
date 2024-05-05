@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('en_name')->nullable();
             $table->string('fa_name')->nullable();
             $table->foreignIdFor(Department::class)->nullable();
-            $table->foreignIdFor(User::class)->nullable();
+            // $table->foreignIdFor(User::class)->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

@@ -4,6 +4,7 @@ namespace App\Nova;
 
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Text;
@@ -41,16 +42,15 @@ class Gate extends Resource
                 ->required()
                 ->creationRules('required', 'string', 'unique:gates,pa_name')
                 ->creationRules('required', 'string', 'unique:gates,pa_name,{{resourceId}}'),
-            Text::make(__("English Name"), 'en_name')
+            Text::make(__("Location"), 'location')
                 ->required()
-                ->creationRules('required', 'string', 'unique:gates,en_name')
-                ->creationRules('required', 'string', 'unique:gates,en_name,{{resourceId}}'),
+                ->creationRules('required', 'string'),
             Number::make(__("Gate Level"), 'level')
                 ->required()
                 ->creationRules('required', 'numeric')
                 ->creationRules('required', 'numeric')
                 ->help(__("Use 1 For Main Gate")),
-            BelongsTo::make(__("User"), 'user', User::class)->showCreateRelationButton()
+            HasMany::make(__("Users"), 'user', User::class)
         ];
     }
     public function cards(NovaRequest $request)

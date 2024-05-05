@@ -336,7 +336,7 @@
         ministry: $wire.entangle('ministry').live,
         ministrySize: $wire.entangle('ministry_size').live,
         ministryLogo: $wire.entangle('ministry_logo_path').live,
-        fontColor:$wire.entangle('font_color').live,
+        fontColor: $wire.entangle('font_color').live,
         ministryX: $wire.entangle('ministry_x').live,
         ministryY: $wire.entangle('ministry_y').live,
         govLogo: $wire.entangle('gov_logo_path').live,
@@ -425,7 +425,7 @@
                     </div>
                     <div :style="{
                         'font-size': infoSize + 'px',
-                        'color':fontColor,
+                        'color': fontColor,
                         // 'background-color': color,
                         'background-image': 'url(\'/storage/' +
                             background_path + '\')'
@@ -442,6 +442,9 @@
                                 'livewire.cards.gun',
                                 ['status' => 'complete']
                             )
+                            @includeWhen(
+                                $cardFrame->type == \App\Support\Defense\Print\PrintTypeEnum::EmployeeCar,
+                                'livewire.cards.employeeCar')
 
                         </div>
 
@@ -460,7 +463,7 @@
                 <div class="bg-white h-[2.13in] w-[3.5in] block  rounded-xl relative bg-cover bg-center bg-local bg-no-repeat "
                     :style="{ 'background-image': 'url(\'/storage/' + background_path + '\')' }">
                     <div class="h-h-[1.75rem]" :style="{ 'background-color': color }"></div>
-                    <div class="mx-3 my-2 text-sm font-medium" x-html="remark" :style="{'color':fontColor}"></div>
+                    <div class="mx-3 my-2 text-sm font-medium" x-html="remark" :style="{ 'color': fontColor }"></div>
 
                 </div>
             </div>

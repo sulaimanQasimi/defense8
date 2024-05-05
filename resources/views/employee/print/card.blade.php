@@ -38,7 +38,7 @@
                     style="top: {{ $card->ministry_logo_y }}px; left: {{ $card->ministry_logo_x }}px" />
             </div>
 
-            <div style="font-size: {{ $card->info_font_size }}px; background-image: url('/storage/{{ $card->background_logo }}');color:{{$card->font_color}}"
+            <div style="font-size: {{ $card->info_font_size }}px; background-image: url('/storage/{{ $card->background_logo }}');color:{{ $card->font_color }}"
                 class="bg-cover bg-center bg-local bg-no-repeat ">
                 {{-- Diffrent Cards component --}}
                 <div class="px-2">
@@ -50,6 +50,9 @@
                     @includeWhen(
                         $card->type == \App\Support\Defense\Print\PrintTypeEnum::Gun,
                         'employee.print.gun')
+                    @includeWhen(
+                        $card->type == \App\Support\Defense\Print\PrintTypeEnum::EmployeeCar,
+                        'employee.print.employeeCar')
                 </div>
             </div>
             <div class="h-3 border-b " style="background-color: {{ $card->color }}"></div>
@@ -63,8 +66,8 @@
         </div>
 
         <div class=" h-[2.13in] w-[3.5in] max-h-[2.13in] max-w-[3.5in]  block rounded-xl relative bg-contain bg-center bg-local bg-no-repeat "
-            style="background-image: url('/storage/{{ $card->background_logo }}');color:{{$card->font_color}}">
-                <div class="h-[1.75rem]" style="background-color: {{ $card->color }}"></div>
+            style="background-image: url('/storage/{{ $card->background_logo }}');color:{{ $card->font_color }}">
+            <div class="h-[1.75rem]" style="background-color: {{ $card->color }}"></div>
             <div class="px-2 py-3">
                 <div class="text-sm font-medium">{!! $card->remark !!}</div>
             </div>

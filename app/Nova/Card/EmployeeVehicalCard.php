@@ -1,6 +1,7 @@
 <?php
 namespace App\Nova\Card;
 
+use App\Nova\Actions\EmployeeCarPrintCardAction;
 use App\Nova\Card\Support\VehicalDriverField;
 use App\Nova\Resource;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -42,6 +43,8 @@ class EmployeeVehicalCard extends Resource
 
     public function actions(NovaRequest $request)
     {
-        return [];
+        return [
+            (new EmployeeCarPrintCardAction)->onlyOnDetail()->canRun(fn()=>auth()->user()->hasRole("Print Card"))
+        ];
     }
 }

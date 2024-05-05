@@ -30,6 +30,14 @@ class PrintCardController extends Controller
         return view('employee.print.card', compact('cardInfo', 'card'));
     }
 
+    public function employee_car(Request $request, CardInfo $cardInfo, int $printCardFrame): View
+    {
+        $card = PrintCardFrame::findOrFail($printCardFrame);
+        if (!$card->type == PrintTypeEnum::EmployeeCar) {
+            return abort(404);
+        }
+        return view('employee.print.card', compact('cardInfo', 'card'));
+    }
 
 
 

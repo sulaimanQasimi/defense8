@@ -14,19 +14,21 @@ use Laravel\Nova\Fields\ActionFields;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-class EmployeePrintCardAction extends Action
+class EmployeeCarPrintCardAction extends Action
 {
     use InteractsWithQueue, Queueable;
 
     /**
      * Perform the action on the given models.
      *
+     * @param  \Laravel\Nova\Fields\ActionFields  $fields
+     * @param  \Illuminate\Support\Collection  $models
      * @return mixed
      */
     public function handle(ActionFields $fields, Collection $models)
     {
         foreach ($models as $model) {
-            return ActionResponse::openInNewTab(route('employee.print-card-for',['cardInfo'=>$model->card_info->id, "printCardFrame"=>$fields->frame]));
+            return ActionResponse::openInNewTab(route('employee-car.print-card-for',['cardInfo'=>$model->card_info->id, "printCardFrame"=>$fields->frame]));
         }
     }
 
@@ -40,11 +42,10 @@ class EmployeePrintCardAction extends Action
     {
         return [
             Select::make(trans("Card Type"), 'frame')->options(
-                PrintCardFrame::where('type', PrintTypeEnum::Employee)->pluck('name', 'id')
+                PrintCardFrame::where('type', PrintTypeEnum::EmployeeCar)->pluck('name', 'id')
             )->displayUsingLabels()->rules('required', 'exists:print_card_frames,id'),
         ];
     }
     public function name(){
         return trans("Print Card Frame");
-    }
-}
+    }}

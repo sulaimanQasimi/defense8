@@ -3,6 +3,7 @@
 namespace App\Nova\Actions;
 
 use App\Models\PrintCardFrame;
+use App\Support\Defense\Print\PrintTypeEnum;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
@@ -41,7 +42,7 @@ class GunPrintCardAction extends Action
     {
         return [
             Select::make(trans("Card Type"), 'frame')->options(
-                PrintCardFrame::where('type', 'gun')->pluck('name', 'id')
+                PrintCardFrame::where('type', PrintTypeEnum::Gun)->pluck('name', 'id')
             )->displayUsingLabels()->rules('required', 'exists:print_card_frames,id'),
         ];
     }

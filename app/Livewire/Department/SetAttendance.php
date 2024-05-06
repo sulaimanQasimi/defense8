@@ -14,7 +14,7 @@ class SetAttendance extends Component
     public function mount(Department $department): void
     {
         $this->authorize('admin', $department);
-   $this->department=$department;
+        $this->department=$department;
     }
     public function render()
     {

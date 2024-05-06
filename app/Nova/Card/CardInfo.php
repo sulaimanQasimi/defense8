@@ -43,6 +43,15 @@ class CardInfo extends Resource
 
     ];
 
+    public static function indexQuery(NovaRequest $request, $query)
+    {
+        if(auth()->user()->department){
+            return $query->where('department_id',auth()->user()->department->id);
+        }
+        return $query;
+    }
+
+
 
     public static function label()
     {
@@ -263,9 +272,10 @@ class CardInfo extends Resource
             (new EditCardInfoRemark())->canSee(fn() => auth()->user()->hasPermissionTo(EditAditionalCardInfoEnum::Remark)),
             (new EditCardInfoOption())->canSee(fn() => auth()->user()->hasPermissionTo(EditAditionalCardInfoEnum::Option)),
             // (new CurrentMonthAttendanceEmployeeAction)
-            Action::openInNewTab(__("Download CURRENT MONTH ATTENDANCE EMPLOYEE"), fn($employee) => route('employee.attendance.current.month.single', ['cardInfo' => $employee->id]))
+            Action::openInNewTab(__("Download CURRENT MONTH ATTENDANCE EMPLOYEE"),
+            fn($employee) => route('employee.attendance.current.month.single', ['cardInfo' => $employee->id]))
                 ->sole()
-                // ->canRun(fn($request, $course) => auth()->id() === $course->section->department?->user_id)
+                //  ->canRun(fn($request, $employee) => auth()->user()->department?->id === $employee->orginization?->id)
                 ->withoutConfirmation()
                 ->onlyOnDetail()
         ];

@@ -26,7 +26,7 @@ class CardInfoFactory extends Factory
             "grade"=>$this->faker->name(),
             "photo"=>$this->faker->name(),
             "acupation"=>$this->faker->name(),
-            "registare_no"=>$this->faker->name(),
+            "registare_no"=>$this->faker->unique()->numberBetween(),
             "national_id"=>$this->faker->name(),
             "phone"=>$this->faker->name(),
            "birthday"=>$this->faker->date(),

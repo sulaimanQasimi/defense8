@@ -44,13 +44,13 @@ class CurrentMonthEmployeeAttendance extends Controller
     public function single_employee(CardInfo $cardInfo)
     {
         $query = CardInfo::where('id', $cardInfo->id);
-        return (new Report(employee: fn() => $query, date: $this->date, start: $this->start, end: $this->end,year: $this->year, month: $this->month))
-        ->maker()
-        ->download();
+        return (new Report(employee: fn() => $query, date: $this->date, start: $this->start, end: $this->end, year: $this->year, month: $this->month))
+            ->maker()
+            ->download();
     }
     public function single_department(Department $department)
     {
         $query = CardInfo::where('department_id', $department->id);
-        return (new Report(employee: fn() => $query, date: $this->date, start: $this->start, end: $this->end,year: $this->year, month: $this->month))->maker()->download();
+        return (new Report(employee: fn() => $query, date: $this->date, start: $this->start, end: $this->end, year: $this->year, month: $this->month))->maker()->download();
     }
 }

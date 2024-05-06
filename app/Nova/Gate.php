@@ -17,7 +17,8 @@ class Gate extends Resource
     public static $search = [
         'fa_name',
         'pa_name',
-        'en_name',
+        'location',
+        'level'
     ];
 
 

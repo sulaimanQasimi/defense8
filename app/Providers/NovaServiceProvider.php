@@ -37,41 +37,49 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         Nova::mainMenu(fn(Request $request) => [
             MenuSection::dashboard(Main::class)->icon('chart-bar'),
             MenuSection::make(__('Guest'), [
-                MenuSection::resource(Host::class)->icon('academic-cap'),
-                MenuSection::resource(Gate::class)->icon('logout'),
-                MenuSection::resource(Guest::class)->icon('login'),
-                MenuItem::externalLink(__("Daily Guest Report"), route("guest.report.daily"))->canSee(fn() => auth()->user()->hasRole('super-admin'))->openInNewTab(),
+                MenuItem::resource(Host::class),
+                MenuItem::resource(Gate::class),
+                MenuItem::resource(Guest::class),
+                MenuSection::make(__('Guest Report'), [
+                    MenuItem::externalLink(__("Daily Guest Report"), route("guest.report.daily"))->canSee(fn() => auth()->user()->hasRole('super-admin'))->openInNewTab(),
 
-                MenuItem::externalLink(__("Weekly Guest Report"), route("guest.report.weekly"))->canSee(fn() => auth()->user()->hasRole('super-admin'))->openInNewTab(),
+                    MenuItem::externalLink(__("Weekly Guest Report"), route("guest.report.weekly"))->canSee(fn() => auth()->user()->hasRole('super-admin'))->openInNewTab(),
 
-                MenuItem::externalLink(__("Monthly Guest Report"), route("guest.report.monthly"))->canSee(fn() => auth()->user()->hasRole('super-admin'))->openInNewTab(),
+                    MenuItem::externalLink(__("Monthly Guest Report"), route("guest.report.monthly"))->canSee(fn() => auth()->user()->hasRole('super-admin'))->openInNewTab(),
 
-                MenuItem::externalLink(__("Yearly Guest Report"), route("guest.report.yearly"))->canSee(fn() => auth()->user()->hasRole('super-admin'))->openInNewTab(),
+                    MenuItem::externalLink(__("Yearly Guest Report"), route("guest.report.yearly"))->canSee(fn() => auth()->user()->hasRole('super-admin'))->openInNewTab(),
 
 
-            ])->collapsable()->collapsedByDefault()->icon('user'),
+                ])->collapsable()->collapsedByDefault()->icon('document'),
+
+            ])->collapsable()->collapsedByDefault()->icon('user-group'),
+
 
             MenuSection::make(__('Card'), [
                 MenuItem::resource(Department::class),
                 MenuItem::resource(CardCardInfo::class),
                 MenuItem::externalLink(__("Employee Check Card"), route("employee.check.card"))
-                    ->canSee(fn() => auth()->user()->gate)
-
-                ,
-                MenuItem::externalLink(__("Employee Attendance Check Self Department"),
-                route("department.employee.attendance.check",
-                    ['department' => auth()->user()?->department]))
+                    ->canSee(fn() => auth()->user()->gate),
+                MenuItem::externalLink(
+                    __("Employee Attendance Check Self Department"),
+                    route(
+                        "department.employee.attendance.check",
+                        ['department' => auth()->user()?->department]
+                    )
+                )
                     ->canSee(fn() => auth()->user()->department),
                 MenuItem::externalLink(__("Employee Attendance Check Department"), route("employee.attendance.check"))
                     ->canSee(fn() => auth()->user()->hasRole('super-admin')),
 
-                MenuItem::externalLink(__("Download CURRENT MONTH ATTENDANCE EMPLOYEE"), route("employee.attendance.current.month"))->canSee(fn() => auth()->user()->hasRole('super-admin'))->openInNewTab(),
+                // MenuItem::externalLink(__("Download CURRENT MONTH ATTENDANCE EMPLOYEE"), route("employee.attendance.current.month"))
+                //     ->canSee(fn() => auth()->user()->hasRole('super-admin'))->openInNewTab(),
 
-                MenuItem::externalLink(__("ATTENDANCE EMPLOYEE Report Generator"), route("employee.attendance.pdf.generator"))->canSee(fn() => auth()->user()->hasRole('super-admin'))->openInNewTab(),
+                MenuItem::externalLink(__("ATTENDANCE EMPLOYEE Report Generator"), route("employee.attendance.pdf.generator"))
+                    ->canSee(fn() => auth()->user()->hasRole('super-admin'))->openInNewTab(),
 
-                MenuItem::externalLink(__("See Other Website Data"), route("check.other-website-employee"))->canSee(fn() => auth()->user()->hasPermissionTo('see-other-website-data'))->openInNewTab(),
-                MenuItem::externalLink(__("Create Token"), url("user/api-tokens"))->canSee(fn() => auth()->user()->hasRole('api-token'))->openInNewTab(),
-            ])->collapsable()->collapsedByDefault(),
+
+            ])->collapsable()
+                ->collapsedByDefault(),
 
 
             MenuSection::make(__('Administration'), [
@@ -82,8 +90,13 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 MenuItem::resource(User::class),
                 MenuItem::resource(Activitylog::class)->canSee(fn() => auth()->user()->hasRole('super-admin')),
                 MenuItem::resource(Website::class)->canSee(fn() => auth()->user()->hasRole('super-admin')),
+                MenuItem::externalLink(__("See Other Website Data"), route("check.other-website-employee"))
+                    ->canSee(fn() => auth()->user()->hasPermissionTo('see-other-website-data'))
+                    ->openInNewTab(),
+                MenuItem::externalLink(__("Create Token"), url("user/api-tokens"))
+                    ->canSee(fn() => auth()->user()->hasRole('api-token'))->openInNewTab(),
             ])
-                ->icon('user')->collapsable()->collapsedByDefault(),
+                ->icon('cog')->collapsable()->collapsedByDefault(),
 
 
         ]);

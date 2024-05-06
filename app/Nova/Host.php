@@ -73,7 +73,7 @@ class Host extends Resource
                 ->rules('required', 'string')
                 ->placeholder(__("Enter Field", ['name' => __("Department Address")])),
 
-            BelongsTo::make(__("User"), 'user', User::class)->showCreateRelationButton(),
+            BelongsTo::make(__("User"), 'user', User::class)->showCreateRelationButton()->searchable(),
             HasMany::make(__('Guests'),'guests', Guest::class),
         ];
     }

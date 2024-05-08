@@ -9,10 +9,7 @@ use Illuminate\Auth\Access\Response;
 
 class GatePolicy
 {
-
-
-
-    public $resource="Department";
+    public $resource = "Department";
 
     /**
      * Determine whether the user can view any models.
@@ -80,4 +77,14 @@ class GatePolicy
         return $user->hasPermissionTo(PermissionTranslation::destroy($this->resource));
 
     }
+    public function gateChecker(User $user): bool
+    {
+        return $user->hasPermissionTo("Gate Checker");
+    }
+    public function gateCheckerOwnDepartment(User $user, Gate $gate): bool
+    {
+        return $user->hasPermissionTo("Gate Checker")  && $user?->department->id === $gate->department->id;
+    }
+
+
 }

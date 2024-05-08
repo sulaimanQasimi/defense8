@@ -33,28 +33,39 @@ class EmployeeScanCard extends Controller
         $employee = null;
 
         $websites = Website::all();
+        
         $website = $request->input("website");
+
         $code = $request->input("code");
+
         $message = null;
+
         if ($website) {
+            // Define Validate Rules
             $validator = Validator::make($request->all(), [
                 'code' => 'required|string|max:255',
                 'website' => 'required|exists:websites,id',
             ]);
 
+            // If Failed redireect Back
             if ($validator->fails()) {
                 return redirect()->back();
             }
 
+            // Validate the input request
             $data = $validator->Validated();
+            // Get Code From URL
             $code = $data['code'];
+            // Get Website
             $website = $data['website'];
+            // Find Website
             $app = Website::find($website);
+
             try {
 
                 $response = Http::withToken($app->token)->withUrlParameters([
                     'ip' => $app->ip,
-                    'code'=>$code,
+                    'code' => $code,
                 ])->get("{ip}/api/employee/check?code={code}");
                 if ($response->tooManyRequests()) {
                     $message = trans("Too many requests");
@@ -71,14 +82,10 @@ class EmployeeScanCard extends Controller
                 if ($response->ok()) {
                     $employee = collect(json_decode($response->body(), JSON_UNESCAPED_UNICODE)['data']);
                 }
-            }
-            catch(\Exception){
-                $message= trans("Server is Offline");
+            } catch (\Exception) {
+                $message = trans("Server is Offline");
             }
         }
-
-
-
         return view("employee.other-website", compact("websites", "employee", "message"));
     }
 

@@ -36,4 +36,8 @@ class Gate extends Model
     public function cardInfos() {
         return $this->belongsToMany(CardInfo::class, 'cardinfo_gates')->withPivot('entered_at', 'exit_at')->withTimestamps();
     }
+    public function department(): BelongsTo
+    {
+        return $this->belongsTo(Department::class);
+    }
 }

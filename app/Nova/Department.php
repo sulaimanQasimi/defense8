@@ -39,7 +39,7 @@ class Department extends Resource
     public function fields(NovaRequest $request)
     {
         return [
-            BelongsTo::make(trans("Department"), 'department', Department::class)
+            BelongsTo::make(trans("Header Department"), 'department', Department::class)
                 ->nullable()->filterable(),
             Text::make(trans("Name"), 'fa_name'),
             Text::make(trans("Pashto Name"), 'pa_name'),
@@ -54,7 +54,8 @@ class Department extends Resource
                 DepartmentTypeEnum::Directorate => trans("Directorate"),
             ])->rules('required', 'in:Independant,Assistant,Directory,HeaderShip,Commander,Management,Directorate')->filterable()->displayUsingLabels(),
             HasMany::make(trans("Users"), 'user', User::class),
-            HasMany::make(trans("Departments"), 'departments', Department::class),
+            HasMany::make(trans("Under Departments"), 'departments', Department::class),
+            HasMany::make(trans("Gates"), 'gates', \App\Nova\Gate::class),
             HasMany::make(trans("Employee"), 'card_infos', CardInfo::class),
 
         ];

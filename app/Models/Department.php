@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Models\Card\CardInfo;
-use App\Observers\DepartmentObserver;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -27,6 +26,11 @@ class Department extends Model
     public function departments(): HasMany
     {
         return $this->hasMany(Department::class);
+    }
+
+    public function gates(): HasMany
+    {
+        return $this->hasMany(Gate::class, 'department_id');
     }
 
     /**

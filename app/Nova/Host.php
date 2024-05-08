@@ -15,7 +15,12 @@ class Host extends Resource
     public static $title = 'name';
 
     public static $search = [
-        'name', 'head_name', 'phone', 'address', 'user.name', 'user.email'
+        'name',
+        'head_name',
+        'phone',
+        'address',
+        'user.name',
+        'user.email'
     ];
 
     public static function label()
@@ -43,11 +48,16 @@ class Host extends Resource
         return [
 
             // Department Name
-            Text::make(__("Department Name"), 'name')
-                ->required()
-                ->creationRules('required', 'string', 'unique:hosts,name')
-                ->creationRules('required', 'string', 'unique:hosts,name,{{resourceId}}')
-                ->placeholder(__("Enter Field", ['name' => __("Department Name")])),
+            // Text::make(__("Department Name"), 'name')
+            //     ->required()
+            //     ->creationRules('required', 'string', 'unique:hosts,name')
+            //     ->creationRules('required', 'string', 'unique:hosts,name,{{resourceId}}')
+            //     ->placeholder(__("Enter Field", ['name' => __("Department Name")])),
+
+            BelongsTo::make(__("Department/Chancellor"), 'department', Department::class)
+                ->filterable()
+                ->sortable()
+                ->searchable(),
 
             // Header Name
             Text::make(__("Header"), 'head_name')
@@ -74,7 +84,7 @@ class Host extends Resource
                 ->placeholder(__("Enter Field", ['name' => __("Department Address")])),
 
             BelongsTo::make(__("User"), 'user', User::class)->showCreateRelationButton()->searchable(),
-            HasMany::make(__('Guests'),'guests', Guest::class),
+            HasMany::make(__('Guests'), 'guests', Guest::class),
         ];
     }
 

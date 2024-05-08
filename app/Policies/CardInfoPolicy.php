@@ -74,4 +74,9 @@ class CardInfoPolicy
     {
         return false;
     }
+
+    public function gatePass(User $user, CardInfo $infoCard): bool
+    {
+        return ($user->gate && $infoCard->gate )?$user?->gate->id ==$infoCard?->gate->id : false;
+    }
 }

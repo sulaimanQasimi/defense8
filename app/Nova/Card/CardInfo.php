@@ -7,12 +7,17 @@ use App\Nova\Actions\EditCardInfoRemark;
 use App\Nova\Actions\ExportCardInfo;
 use App\Nova\Attendance;
 use App\Nova\Department;
+use App\Nova\District;
 use App\Nova\Gate;
 use App\Nova\GuestOption;
+use App\Nova\Province;
 use App\Nova\Resource;
+use App\Nova\Village;
 use App\Support\Defense\EditAditionalCardInfoEnum;
+use Illuminate\Database\Eloquent\Builder;
 use Laravel\Nova\Actions\Action;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\FormData;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\MorphToMany;
@@ -45,8 +50,8 @@ class CardInfo extends Resource
 
     public static function indexQuery(NovaRequest $request, $query)
     {
-        if(auth()->user()->department){
-            return $query->where('department_id',auth()->user()->department->id);
+        if (auth()->user()->department) {
+            return $query->where('department_id', auth()->user()->department->id);
         }
         return $query;
     }
@@ -126,12 +131,18 @@ class CardInfo extends Resource
             ]),
             Panel::make(__("Job"), [
 
-                BelongsTo::make(__("Gate"), 'gate', Gate::class),
                 BelongsTo::make(__("Department/Chancellor"), 'orginization', Department::class)
                     ->filterable()
-                    ->sortable()
-                // ->searchable()
-                ,
+                    ->sortable(),
+                BelongsTo::make(__("Gate"), 'gate', Gate::class)->dependsOn(
+                    ['orginization'],
+                    function (BelongsTo $field, NovaRequest $request, FormData $formData) {
+
+                        $field->relatableQueryUsing(function (NovaRequest $request, Builder $query) use ($formData) {
+                            $query->where('department_id', $formData->orginization);
+                        });
+                    }
+                ),
 
                 Text::make(__("Degree"), "degree")
                     ->nullable()
@@ -169,42 +180,63 @@ class CardInfo extends Resource
             ])->limit(0),
             Panel::make(__("Main Address"), [
 
-                Text::make(__("Village"), "m_village")
+                BelongsTo::make(__("Province"), "main_province", Province::class)
                     ->nullable()
-                    ->rules('nullable', 'string')
+                ,
 
-                    ->placeholder(__("Enter Field", ['name' => __("Village")])),
+                BelongsTo::make(__("District"), "main_district", District::class)
+                    ->dependsOn(
+                        ['main_province'],
+                        function (BelongsTo $field, NovaRequest $request, FormData $formData) {
+                            $field->relatableQueryUsing(function (NovaRequest $request, Builder $query) use ($formData) {
+                                $query->where('province_id', $formData->main_province);
+                            });
+                        }
+                    )
+                    ->nullable(),
 
-                Text::make(__("District"), "m_district")
-                    ->nullable()
-                    ->rules('nullable', 'string')
+                BelongsTo::make(__("Village"), "main_village", Village::class)
+                    ->dependsOn(
+                        ['main_district'],
+                        function (BelongsTo $field, NovaRequest $request, FormData $formData) {
+                            $field->relatableQueryUsing(function (NovaRequest $request, Builder $query) use ($formData) {
+                                $query->where('district_id', $formData->main_district);
+                            });
+                        }
+                    )
+                    ->nullable(),
 
-                    ->placeholder(__("Enter Field", ['name' => __("District")])),
-                Text::make(__("Province"), "m_province")
-                    ->nullable()
-                    ->rules('nullable', 'string')
 
-                    ->placeholder(__("Enter Field", ['name' => __("Province")])),
 
             ])->limit(0),
 
             Panel::make(__("Current Address"), [
+                BelongsTo::make(__("Province"), "current_province", Province::class)
 
-                Text::make(__("Village"), "c_village")
-                    ->nullable()
-                    ->rules('nullable', 'string')
+                    ->nullable(),
 
-                    ->placeholder(__("Enter Field", ['name' => __("Village")])),
-                Text::make(__("District"), "c_district")
-                    ->nullable()
-                    ->rules('nullable', 'string')
+                BelongsTo::make(__("District"), "current_district", District::class)
+                ->dependsOn(
+                    ['current_province'],
+                    function (BelongsTo $field, NovaRequest $request, FormData $formData) {
+                        $field->relatableQueryUsing(function (NovaRequest $request, Builder $query) use ($formData) {
+                            $query->where('province_id', $formData->current_province);
+                        });
+                    }
+                )
+                    ->nullable(),
 
-                    ->placeholder(__("Enter Field", ['name' => __("District")])),
-                Text::make(__("Province"), "c_province")
-                    ->nullable()
-                    ->rules('nullable', 'string')
+                BelongsTo::make(__("Village"), "current_village", Village::class)
+                ->dependsOn(
+                    ['current_district'],
+                    function (BelongsTo $field, NovaRequest $request, FormData $formData) {
+                        $field->relatableQueryUsing(function (NovaRequest $request, Builder $query) use ($formData) {
+                            $query->where('district_id', $formData->current_district);
+                        });
+                    }
+                )
+                    ->nullable(),
 
-                    ->placeholder(__("Enter Field", ['name' => __("Province")])),
             ]),
 
             Trix::make(__("Remark"), 'remark')->exceptOnForms(),
@@ -272,8 +304,10 @@ class CardInfo extends Resource
             (new EditCardInfoRemark())->canSee(fn() => auth()->user()->hasPermissionTo(EditAditionalCardInfoEnum::Remark)),
             (new EditCardInfoOption())->canSee(fn() => auth()->user()->hasPermissionTo(EditAditionalCardInfoEnum::Option)),
             // (new CurrentMonthAttendanceEmployeeAction)
-            Action::openInNewTab(__("Download CURRENT MONTH ATTENDANCE EMPLOYEE"),
-            fn($employee) => route('employee.attendance.current.month.single', ['cardInfo' => $employee->id]))
+            Action::openInNewTab(
+                __("Download CURRENT MONTH ATTENDANCE EMPLOYEE"),
+                fn($employee) => route('employee.attendance.current.month.single', ['cardInfo' => $employee->id])
+            )
                 ->sole()
                 //  ->canRun(fn($request, $employee) => auth()->user()->department?->id === $employee->orginization?->id)
                 ->withoutConfirmation()

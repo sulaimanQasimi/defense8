@@ -1,4 +1,11 @@
 {
+    "Provinces":"ولابات",
+    "Districts":"ولسوالی ها",
+    "Villages":"قریه جات",
+    "Code":"کود",
+    "Gate Checker":"کنترول دروازه ها",
+    "Header Department":"اداره مافوق",
+    "Under Departments":"ادارات مربوطه",
     "Independant": "مستقل",
     "Assistant": "معاونیت",
     "Directory": "معنیت",

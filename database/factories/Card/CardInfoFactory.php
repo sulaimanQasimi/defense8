@@ -3,10 +3,6 @@
 namespace Database\Factories\Card;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\CardInfo>
- */
 class CardInfoFactory extends Factory
 {
     /**
@@ -41,6 +37,7 @@ class CardInfoFactory extends Factory
             "c_village"=>$this->faker->name(),
             "c_district"=>$this->faker->name(),
             "c_province"=>$this->faker->name(),
+            'created_at'=>$this->faker->dateTimeBetween()
 
 
         ];

@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules;
 use Laravel\Nova\Fields\BelongsTo;
@@ -22,6 +23,8 @@ class User extends Resource
         'id',
         'name',
         'email',
+        'department.fa_name',
+        'gate.fa_name'
     ];
 
     public static function label()
@@ -46,51 +49,18 @@ class User extends Resource
                 ->rules('required', 'email', 'max:254')
                 ->creationRules('unique:users,email')
                 ->updateRules('unique:users,email,{{resourceId}}'),
+            BelongsTo::make(__("Department/Chancellor"), 'department', Department::class)
+                ->filterable()
+                ->sortable(),
 
-            Text::make(__("Location"), 'location')
-                ->copyable()
-                ->sortable()
-                ->rules('required'),
-            Select::make(trans("Type"), 'type')->options([
-                "Department" => trans("Department"),
-                "Gate" => trans("Gate"),
-                "None" => trans("No"),
-            ])->rules('required', 'in:Gate,Department,None')
-            ->filterable()
-            ->displayUsingLabels(),
-
-            BelongsTo::make(trans("Department"), 'department', Department::class)
-                ->dependsOn(
-                    ['type'],
-                    function (BelongsTo $field, NovaRequest $request, FormData $formData) {
-                        if ($formData->type === 'Gate') {
-                            $field->hide()->nullable();
-                        }
-                        if ($formData->type === 'Department') {
-                            $field->show();
-                        }
-                    }
-                )
-                ->nullable()
-                ->hide()
-                ->searchable()
-                ->filterable(),
-            BelongsTo::make(trans("Gate"), 'gate', Gate::class)
-                ->dependsOn(
-                    ['type'],
-                    function (BelongsTo $field, NovaRequest $request, FormData $formData) {
-                        if ($formData->type === 'Department') {
-                            $field->hide()->nullable();
-                        }
-                        if ($formData->type === 'Gate') {
-                            $field->show();
-                        }
-                    }
-                )
-                ->hide()
-                ->nullable()
-                ->searchable()
-                ->filterable(),
+            BelongsTo::make(__("Gate"), 'gate', Gate::class)->dependsOn(
+                ['department'],
+                function (BelongsTo $field, NovaRequest $request, FormData $formData) {
+                    $field->relatableQueryUsing(function (NovaRequest $request, Builder $query) use ($formData) {
+                        $query->where('department_id', $formData->department);
+                    });
+                }
+            ),
             Password::make(__("Password"), 'password')
                 ->onlyOnForms()
                 ->creationRules('required', Rules\Password::defaults())

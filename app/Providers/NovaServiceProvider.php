@@ -6,12 +6,15 @@ use App\Nova\Card\CardInfo as CardCardInfo;
 use App\Nova\CardInfo;
 use App\Nova\Dashboards\Main;
 use App\Nova\Department;
+use App\Nova\District;
 use App\Nova\Gate;
 use App\Nova\Guest;
 use App\Nova\GuestOption;
 use App\Nova\Host;
 use App\Nova\PrintCardFrame;
+use App\Nova\Province;
 use App\Nova\User;
+use App\Nova\Village;
 use App\Nova\Website;
 use Bolechen\NovaActivitylog\Resources\Activitylog;
 use Crayon\NovaLanguageEditor\NovaLanguageEditor;
@@ -59,7 +62,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 MenuItem::resource(Department::class),
                 MenuItem::resource(CardCardInfo::class),
                 MenuItem::externalLink(__("Employee Check Card"), route("employee.check.card"))
-                    ->canSee(fn() => auth()->user()->gate),
+                    ->canSee(fn() => \Illuminate\Support\Facades\Gate::allows('gateChecker', \App\Models\Gate::class)),
                 MenuItem::externalLink(
                     __("Employee Attendance Check Self Department"),
                     route(
@@ -78,10 +81,17 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     ->canSee(fn() => auth()->user()->hasRole('super-admin'))->openInNewTab(),
 
 
-            ])->collapsable()
+                MenuSection::make(__('Location'), [
+                    MenuItem::resource(Province::class),
+                    MenuItem::resource(District::class),
+                    MenuItem::resource(Village::class),
+                ])
+                    ->collapsable()
+                    ->collapsedByDefault(),
+
+            ])
+                ->collapsable()
                 ->collapsedByDefault(),
-
-
             MenuSection::make(__('Administration'), [
                 MenuItem::resource(PrintCardFrame::class),
                 MenuItem::resource(GuestOption::class),

@@ -9,6 +9,7 @@ use App\Http\Controllers\Guest\QRCodeGenerateController;
 use App\Http\Controllers\Report\DailyGuestsReport;
 use App\Livewire\AttendanceGenerator;
 use App\Livewire\CardDesign;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 
@@ -24,7 +25,7 @@ Route::prefix("guest")
 
 Route::middleware(['auth', "guestGatePassed"])
     ->controller(EmployeeScanCard::class)->group(function () {
-        Route::get('employee', 'scan')->name('employee.check.card');
+        Route::middleware(['can:gateChecker,\App\Models\Gate'])->get('employee', 'scan')->name('employee.check.card');
         Route::get('other', 'scan_other_website_employee')
             ->name('employee.check.other-website-employee');
     });
@@ -54,13 +55,16 @@ Route::middleware(['auth'])
         Route::middleware(['role:super-admin'])->get('employee/attendance/current/month/employee/{cardInfo:id}', [CurrentMonthEmployeeAttendance::class, 'single_employee'])->name("employee.attendance.current.month.single");
         Route::middleware(['role:super-admin'])->get('employee/attendance/current/month/department/{department:id}', [CurrentMonthEmployeeAttendance::class, 'single_department'])->name("employee.attendance.current.month..department.single");
         Route::middleware(['role:super-admin'])->get('attendance/pdf/generator', AttendanceGenerator::class)
-            ->name("employee.attendance.pdf.generator");
-        Route::prefix('export/')->name('export.excel.')
+
+        ->name("employee.attendance.pdf.generator");
+
+            Route::prefix('export/')->name('export.excel.')
             ->controller(ExcelEmployeeExportController::class)
             ->group(function () {
                 Route::get('attendance/{department:id}', 'attendance')->name('attendance');
             });
-        Route::prefix("employee/")
+
+            Route::prefix("employee/")
             ->controller(EmployeeInfoPDF::class)
             ->group(function () {
 
@@ -71,8 +75,10 @@ Route::middleware(['auth'])
             });
     });
 
+
 // Group for Desining and Printing Cards
 Route::middleware(['auth'])->group(function () {
+
     // Card Frame Design Request Route
     Route::middleware('role:Design Card')->get('card-design/{printCardFrame:id}', CardDesign::class)->name('employee.design-card');
 
@@ -92,4 +98,8 @@ Route::middleware(['auth'])->group(function () {
 
     // Black Mirror Car Card
     Route::middleware('role:Print Card')->get('print/blackMirrorCar/{cardInfo:id}/card/{printCardFrame}', (new PrintCardController())->black_mirror_car(...))->name('black-mirror-car.print-card-for');
+});
+
+Route::get('test',function () {
+dd();
 });

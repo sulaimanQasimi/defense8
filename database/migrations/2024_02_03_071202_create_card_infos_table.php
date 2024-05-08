@@ -29,6 +29,7 @@ return new class extends Migration
             $table->string("job_structure")->nullable();
             $table->string("previous_job")->nullable();
             $table->string("department")->nullable();
+
             $table->string("m_village")->nullable();
             $table->string("m_district")->nullable();
             $table->string("m_province")->nullable();

@@ -35,6 +35,10 @@ class Gate extends Resource
     public function fields(NovaRequest $request)
     {
         return [
+            BelongsTo::make(__("Department/Chancellor"), 'department', Department::class)
+                ->filterable()
+                ->sortable()
+                ->searchable(),
             Text::make(__("Persion Name"), 'fa_name')
                 ->required()
                 ->creationRules('required', 'string', 'unique:gates,fa_name')

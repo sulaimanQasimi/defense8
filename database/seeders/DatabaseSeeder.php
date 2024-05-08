@@ -28,78 +28,9 @@ class DatabaseSeeder extends Seeder
             'email' => 'admin@mod.af',
             'password' => Hash::make('123'),
         ]);
+        $this->call(Update6::class);
+        $this->call(Update7::class);
+        $this->call(Update10::class);
 
-        // $collection = collect([
-        //     'Main Card',
-        //     "Armor Vehical Card",
-        //     "Black Mirror Vehical Card",
-        //     "Employee Vehical Card",
-        //     "Card Info",
-        //     "Gun Card",
-        //     'User',
-        //     "Gate",
-        //     "Host",
-        //     "Guest",
-        //     "Guest Option"
-        //     // ... your own models/permission you want to crate
-        // ]);
-
-        // $collection->each(function ($item, $key) {
-        //     // create permissions for each collection item
-        //     Permission::create(['name' => PermissionTranslation::viewAny(__($item))]);
-        //     Permission::create(['name' => PermissionTranslation::view(__($item))]);
-        //     Permission::create(['name' => PermissionTranslation::create(__($item))]);
-        //     Permission::create(['name' => PermissionTranslation::delete(__($item))]);
-        //     Permission::create(['name' => PermissionTranslation::update(__($item))]);
-        //     Permission::create(['name' => PermissionTranslation::restore(__($item))]);
-        //     Permission::create(['name' => PermissionTranslation::destroy(__($item))]);
-        // });
-
-        // // Create a Super-Admin Role and assign all permissions to it
-        // $role = ModelsRole::create(['name' => 'super-admin']);
-        // $role->givePermissionTo(Permission::all());
-
-        // // Give User Super-Admin Role
-        // $user = \App\Models\User::whereEmail('admin@mod.af')->first(); // enter your email here
-        // $user->assignRole('super-admin');
-        // Administrator User
-
-        // Permission::create(['name' => GatePermissionEumn::Kalid]);
-        // Permission::create(['name' => GatePermissionEumn::Obaeda]);
-        // Permission::create(['name' => GatePermissionEumn::SideWalk]);
-        // Permission::create(['name' => GatePermissionEumn::Exit]);
-
-        if (env('APP_ENV') == 'local') {
-
-            $user1 = \App\Models\User::create([
-                'name' => 'Ali',
-                'email' => 'ali@mod.af',
-                'password' => Hash::make('123'),
-            ]);
-            Gate::query()->create([
-                'fa_name' => "قرول خالد",
-                'pa_name' => 'د خالد قرول',
-                'en_name' => GateEumn::Kalid,
-                'user_id' => $user1->id
-            ]);
-            \App\Models\User::create([
-                'name' => 'muhammad',
-                'email' => 'muhammad@mod.af',
-                'password' => Hash::make('123'),
-            ]);
-
-            \App\Models\User::create([
-                'name' => 'Kamran',
-                'email' => 'kamran@mod.af',
-                'password' => Hash::make('123'),
-            ]);
-
-            \App\Models\User::create([
-                'name' => 'Omar',
-                'email' => 'omar@mod.af',
-                'password' => Hash::make('123'),
-            ]);
-
-        }
     }
 }

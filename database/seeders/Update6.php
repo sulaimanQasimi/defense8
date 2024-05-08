@@ -55,8 +55,8 @@ class Update6 extends Seeder
         $role = ModelsRole::create(['name' => 'super-admin']);
         $role->givePermissionTo(Permission::all());
         // Create a Super-Admin Role and assign all permissions to it
-        $role = ModelsRole::where('name', 'super-admin')->first();
-        $role->givePermissionTo(Permission::all());
+        // $role = ModelsRole::where('name', 'super-admin')->first();
+        // $role->givePermissionTo(Permission::all());
 
         // Give User Super-Admin Role
         $user = \App\Models\User::whereEmail('admin@mod.af')->first(); // enter your email here

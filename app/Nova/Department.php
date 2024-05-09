@@ -4,7 +4,9 @@ namespace App\Nova;
 
 use App\Nova\Card\CardInfo;
 use App\Support\Defense\DepartmentTypeEnum;
+use Coroowicaksono\ChartJsIntegration\LineChart;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Nova\Actions\Action;
 use Laravel\Nova\Fields\BelongsTo;
@@ -41,9 +43,18 @@ class Department extends Resource
         return [
             BelongsTo::make(trans("Header Department"), 'department', Department::class)
                 ->nullable()->filterable(),
-            Text::make(trans("Name"), 'fa_name'),
-            Text::make(trans("Pashto Name"), 'pa_name'),
-            Text::make(trans("English Name"), 'en_name'),
+            Text::make(trans("Name"), 'fa_name')
+                ->required()
+                ->creationRules('required', 'unique:departments,fa_name')
+                ->updateRules('required', 'unique:departments,fa_name,{{resourceId}}'),
+            Text::make(trans("Pashto Name"), 'pa_name')
+                ->required()
+                ->creationRules('required', 'unique:departments,pa_name')
+                ->updateRules('required', 'unique:departments,pa_name,{{resourceId}}'),
+            Text::make(trans("English Name"), 'en_name')
+                ->required()
+                ->creationRules('required', 'unique:departments,en_name')
+                ->updateRules('required', 'unique:departments,en_name,{{resourceId}}'),
             Select::make(trans("Type"), 'type')->options([
                 DepartmentTypeEnum::Independant => trans("Independant"),
                 DepartmentTypeEnum::Assistant => trans("Assistant"),
@@ -69,7 +80,31 @@ class Department extends Resource
      */
     public function cards(NovaRequest $request)
     {
-        return [];
+        //
+        $info = DB::table('card_infos')
+            ->join("departments", 'departments.id', 'card_infos.department_id')
+            ->select(DB::raw('count(card_infos.id) as num,departments.fa_name as name'))
+            ->groupByRaw("departments.fa_name")
+            ->orderBy('name')
+            ->pluck('num', 'name');
+        return [
+            (new LineChart)
+                ->title("")
+
+                ->series(
+                    array(
+                        [
+                            'barPercentage' => 0.5,
+                            'label' => trans("Employees"),
+                            'borderColor' => "#f7a35c",
+                            'data' => $info
+                        ]
+                    )
+                )
+                ->options([
+                    'xaxis' => collect($info)->keys()
+                ]),
+        ];
     }
 
     /**

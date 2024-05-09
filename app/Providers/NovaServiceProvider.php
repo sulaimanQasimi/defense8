@@ -85,7 +85,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     MenuItem::resource(Province::class),
                     MenuItem::resource(District::class),
                     MenuItem::resource(Village::class),
-                ])
+                ])->icon('map-pin')
                     ->collapsable()
                     ->collapsedByDefault(),
 

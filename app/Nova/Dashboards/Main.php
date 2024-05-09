@@ -28,11 +28,15 @@ class Main extends Dashboard
      */
     public function cards()
     {
+
+        //
         $info = DB::table('card_infos')->select(
             DB::raw('count(id) as num,year(created_at) as year')
         )->groupByRaw("year(created_at)")
             ->orderBy('year')
             ->pluck('num', 'year');
+
+
             //
         $host = DB::table('hosts')->select(
             DB::raw('count(id) as num,year(created_at) as year')
@@ -67,7 +71,7 @@ class Main extends Dashboard
                 )
             )->options([
                         'xaxis' => collect($info)->keys()
-            ]),
+                    ]),
             (new StackedChart)->series(
                 array(
                     [
@@ -86,7 +90,7 @@ class Main extends Dashboard
                 )
             )->options([
                         'xaxis' => collect($info)->keys()
-            ]),
+                    ]),
 
             (new ScatterChart)->series(
                 array(
@@ -106,7 +110,7 @@ class Main extends Dashboard
                 )
             )->options([
                         'xaxis' => collect($info)->keys()
-            ]),
+                    ]),
 
         ];
     }

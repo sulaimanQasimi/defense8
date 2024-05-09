@@ -14,7 +14,9 @@ use App\Nova\Province;
 use App\Nova\Resource;
 use App\Nova\Village;
 use App\Support\Defense\EditAditionalCardInfoEnum;
+use Coroowicaksono\ChartJsIntegration\LineChart;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 use Laravel\Nova\Actions\Action;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\FormData;
@@ -216,25 +218,25 @@ class CardInfo extends Resource
                     ->nullable(),
 
                 BelongsTo::make(__("District"), "current_district", District::class)
-                ->dependsOn(
-                    ['current_province'],
-                    function (BelongsTo $field, NovaRequest $request, FormData $formData) {
-                        $field->relatableQueryUsing(function (NovaRequest $request, Builder $query) use ($formData) {
-                            $query->where('province_id', $formData->current_province);
-                        });
-                    }
-                )
+                    ->dependsOn(
+                        ['current_province'],
+                        function (BelongsTo $field, NovaRequest $request, FormData $formData) {
+                            $field->relatableQueryUsing(function (NovaRequest $request, Builder $query) use ($formData) {
+                                $query->where('province_id', $formData->current_province);
+                            });
+                        }
+                    )
                     ->nullable(),
 
                 BelongsTo::make(__("Village"), "current_village", Village::class)
-                ->dependsOn(
-                    ['current_district'],
-                    function (BelongsTo $field, NovaRequest $request, FormData $formData) {
-                        $field->relatableQueryUsing(function (NovaRequest $request, Builder $query) use ($formData) {
-                            $query->where('district_id', $formData->current_district);
-                        });
-                    }
-                )
+                    ->dependsOn(
+                        ['current_district'],
+                        function (BelongsTo $field, NovaRequest $request, FormData $formData) {
+                            $field->relatableQueryUsing(function (NovaRequest $request, Builder $query) use ($formData) {
+                                $query->where('district_id', $formData->current_district);
+                            });
+                        }
+                    )
                     ->nullable(),
 
             ]),
@@ -261,8 +263,29 @@ class CardInfo extends Resource
      */
     public function cards(NovaRequest $request)
     {
+        //
+        $info = DB::table('card_infos')
+            ->select(DB::raw('count(id) as num,year(created_at) as year'))
+            ->groupByRaw("year(created_at)")
+            ->orderBy('year')
+            ->pluck('num', 'year');
         return [
+            (new LineChart)
+                ->title("")
 
+                ->series(
+                    array(
+                        [
+                            'barPercentage' => 0.5,
+                            'label' => trans("Employees"),
+                            'borderColor' => "#f7a35c",
+                            'data' => $info
+                        ]
+                    )
+                )
+                ->options([
+                    'xaxis' => collect($info)->keys()
+                ]),
         ];
     }
 

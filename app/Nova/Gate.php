@@ -47,9 +47,9 @@ class Gate extends Resource
                 ->required()
                 ->creationRules('required', 'string', 'unique:gates,pa_name')
                 ->creationRules('required', 'string', 'unique:gates,pa_name,{{resourceId}}'),
-            Text::make(__("Location"), 'location')
-                ->required()
-                ->creationRules('required', 'string'),
+            // Text::make(__("Location"), 'location')
+            //     ->required()
+            //     ->creationRules('required', 'string'),
             Number::make(__("Gate Level"), 'level')
                 ->required()
                 ->creationRules('required', 'numeric')

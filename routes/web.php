@@ -9,6 +9,7 @@ use App\Http\Controllers\Guest\QRCodeGenerateController;
 use App\Http\Controllers\Report\DailyGuestsReport;
 use App\Livewire\AttendanceGenerator;
 use App\Livewire\CardDesign;
+use App\Livewire\Setting\LanguageAutomization;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
@@ -56,15 +57,15 @@ Route::middleware(['auth'])
         Route::middleware(['role:super-admin'])->get('employee/attendance/current/month/department/{department:id}', [CurrentMonthEmployeeAttendance::class, 'single_department'])->name("employee.attendance.current.month..department.single");
         Route::middleware(['role:super-admin'])->get('attendance/pdf/generator', AttendanceGenerator::class)
 
-        ->name("employee.attendance.pdf.generator");
+            ->name("employee.attendance.pdf.generator");
 
-            Route::prefix('export/')->name('export.excel.')
+        Route::prefix('export/')->name('export.excel.')
             ->controller(ExcelEmployeeExportController::class)
             ->group(function () {
                 Route::get('attendance/{department:id}', 'attendance')->name('attendance');
             });
 
-            Route::prefix("employee/")
+        Route::prefix("employee/")
             ->controller(EmployeeInfoPDF::class)
             ->group(function () {
 
@@ -100,6 +101,10 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware('role:Print Card')->get('print/blackMirrorCar/{cardInfo:id}/card/{printCardFrame}', (new PrintCardController())->black_mirror_car(...))->name('black-mirror-car.print-card-for');
 });
 
-Route::get('test',function () {
-dd();
+Route::get('test', function () {
+    dd();
+});
+Route::middleware(['auth', 'role:super-admin'])->prefix('')->group(function () {
+Route::get('language',LanguageAutomization::class)->name('language');
+
 });

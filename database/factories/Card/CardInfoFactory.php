@@ -30,13 +30,13 @@ class CardInfoFactory extends Factory
             "job_structure"=>$this->faker->name(),
             "previous_job"=>$this->faker->name(),
             "department"=>$this->faker->name(),
-            "m_village"=>$this->faker->name(),
-            "m_district"=>$this->faker->name(),
-            "m_province"=>$this->faker->name(),
+            // "m_village"=>$this->faker->name(),
+            // "m_district"=>$this->faker->name(),
+            // "m_province"=>$this->faker->name(),
 
-            "c_village"=>$this->faker->name(),
-            "c_district"=>$this->faker->name(),
-            "c_province"=>$this->faker->name(),
+            // "c_village"=>$this->faker->name(),
+            // "c_district"=>$this->faker->name(),
+            // "c_province"=>$this->faker->name(),
             'created_at'=>$this->faker->dateTimeBetween()
 
 

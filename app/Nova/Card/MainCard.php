@@ -33,7 +33,7 @@ class MainCard extends Resource
     {
         return [
             BelongsTo::make(__('info'),'card_info',CardInfo::class),
-            Text::make(__("Card Type"),"card_type"),
+            // Text::make(__("Card Type"),"card_type"),
       //      Text::make(__("Card NO"),"card_no"),
             PersianDate::make(__("Preform Date"),"card_perform"),
             PersianDate::make(__("Expire Date"),"card_expired_date"),

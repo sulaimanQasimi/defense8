@@ -13,10 +13,10 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 class PrintCardFrame extends Resource
 {
     public static $model = \App\Models\PrintCardFrame::class;
-    public static $title = 'id';
+    public static $title = 'name';
 
     public static $search = [
-        'id',
+        'name',
     ];
 
     public static function label()

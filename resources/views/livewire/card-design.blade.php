@@ -397,7 +397,7 @@
                     yMax="160" />
                 {{-- Ministry Logo Dimentions --}}
                 <x-form.dimention-slider label="Ministry Logo Dimentions" xModel="ministryX" yModel="ministryY"
-                    xMax="270" yMax="160" />
+                    xMax="300" yMax="160" />
                 {{-- Ministry Logo Dimentions --}}
                 <x-form.dimention-slider label="Government Logo Dimentions" xModel="govX" yModel="govY"
                     xMax="260" yMax="160" />
@@ -412,7 +412,7 @@
             </div>
 
             <div class="col-span-3 flex  justify-items-end">
-                <div class="bg-white h-[2.13in] w-[3.5in] block  rounded-xl relative ">
+                <div class="bg-white max-h-[2.2in] h-[2.2in] w-[3.44in] block  rounded-xl relative ">
                     <div class=" border-t rounded-t-xl" :style="{ 'background-color': color }">
                         <div class="text-center" :style="{ 'font-size': govSize + 'px' }" x-text="gov"></div>
                         <div class="text-center" :style="{ 'font-size': ministrySize + 'px' }" x-text="ministry">
@@ -449,7 +449,7 @@
                         </div>
 
                     </div>
-                    <div class="h-3 border-b rounded-b-xl" :style="{ 'background-color': color }"></div>
+                    <div class="h-4 border-b rounded-b-xl" :style="{ 'background-color': color }"></div>
                     <div>
                         <img src="{{ asset('11.jpg') }}" class="h-16 absolute"
                             :style="{ top: proY + 'px', left: proX + 'px' }" />
@@ -460,7 +460,7 @@
             </div>
             {{-- Back of the Card --}}
             <div class="col-span-3 flex  justify-items-end">
-                <div class="bg-white h-[2.13in] w-[3.5in] block  rounded-xl relative bg-cover bg-center bg-local bg-no-repeat "
+                <div class="bg-white h-[2.2in] w-[3.44in] block  rounded-xl relative bg-cover bg-center bg-local bg-no-repeat "
                     :style="{ 'background-image': 'url(\'/storage/' + background_path + '\')' }">
                     <div class="h-h-[1.75rem]" :style="{ 'background-color': color }"></div>
                     <div class="mx-3 my-2 text-sm font-medium" x-html="remark" :style="{ 'color': fontColor }"></div>

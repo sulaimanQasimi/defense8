@@ -37,7 +37,7 @@ class Main extends Dashboard
             ->pluck('num', 'year');
 
 
-            //
+        //
         $host = DB::table('hosts')->select(
             DB::raw('count(id) as num,year(created_at) as year')
         )->groupByRaw("year(created_at)")
@@ -53,62 +53,68 @@ class Main extends Dashboard
             TodayEnterGuestMetric::make()->icon('login'),
             TodayExitGuestMetric::make()->icon('logout'),
             TodayPresentEmployee::make(),
-            (new LineChart)->series(
-                array(
-                    [
-                        'barPercentage' => 0.5,
-                        'label' => trans("Card Info"),
-                        'borderColor' => "#f7a35c",
-                        'data' => $info
-                    ],
-                    [
-                        'barPercentage' => 0.5,
-                        'label' => trans("Hosts"),
-                        'borderColor' => "#1e31e4",
-                        'data' => $host
-                    ]
+            (new LineChart)
+                ->title("")
+                ->series(
+                    array(
+                        [
+                            'barPercentage' => 0.5,
+                            'label' => trans("Card Info"),
+                            'borderColor' => "#f7a35c",
+                            'data' => $info
+                        ],
+                        [
+                            'barPercentage' => 0.5,
+                            'label' => trans("Hosts"),
+                            'borderColor' => "#1e31e4",
+                            'data' => $host
+                        ]
 
-                )
-            )->options([
+                    )
+                )->options([
                         'xaxis' => collect($info)->keys()
                     ]),
-            (new StackedChart)->series(
-                array(
-                    [
-                        'barPercentage' => 0.5,
-                        'label' => trans("Card Info"),
-                        'backgroundColor' => "#f7a35c",
-                        'data' => $info
-                    ],
-                    [
-                        'barPercentage' => 0.5,
-                        'label' => trans("Hosts"),
-                        'backgroundColor' => "#1e31e4",
-                        'data' => $host
-                    ]
+            (new StackedChart)
+                ->title("")
+                ->series(
+                    array(
+                        [
+                            'barPercentage' => 0.5,
+                            'label' => trans("Card Info"),
+                            'backgroundColor' => "#f7a35c",
+                            'data' => $info
+                        ],
+                        [
+                            'barPercentage' => 0.5,
+                            'label' => trans("Hosts"),
+                            'backgroundColor' => "#1e31e4",
+                            'data' => $host
+                        ]
 
-                )
-            )->options([
+                    )
+                )->options([
                         'xaxis' => collect($info)->keys()
                     ]),
 
-            (new ScatterChart)->series(
-                array(
-                    [
-                        'barPercentage' => 0.5,
-                        'label' => trans("Card Info"),
-                        'backgroundColor' => "#f7a35c",
-                        'data' => $info
-                    ],
-                    [
-                        'barPercentage' => 0.5,
-                        'label' => trans("Hosts"),
-                        'backgroundColor' => "#1e31e4",
-                        'data' => $host
-                    ]
+            (new ScatterChart)
+                ->title("")
+                ->series(
+                    array(
+                        [
+                            'barPercentage' => 0.5,
+                            'label' => trans("Card Info"),
+                            'backgroundColor' => "#f7a35c",
+                            'data' => $info
+                        ],
+                        [
+                            'barPercentage' => 0.5,
+                            'label' => trans("Hosts"),
+                            'backgroundColor' => "#1e31e4",
+                            'data' => $host
+                        ]
 
-                )
-            )->options([
+                    )
+                )->options([
                         'xaxis' => collect($info)->keys()
                     ]),
 

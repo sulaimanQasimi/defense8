@@ -12,6 +12,7 @@ use App\Livewire\CardDesign;
 use App\Livewire\Setting\LanguageAutomization;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
+use Spatie\BackupTool\Jobs\CreateBackupJob;
 
 
 // Guests Routes
@@ -100,11 +101,12 @@ Route::middleware(['auth'])->group(function () {
     // Black Mirror Car Card
     Route::middleware('role:Print Card')->get('print/blackMirrorCar/{cardInfo:id}/card/{printCardFrame}', (new PrintCardController())->black_mirror_car(...))->name('black-mirror-car.print-card-for');
 });
-
-Route::get('test', function () {
-    dd();
+Route::middleware(['auth', 'role:super-admin'])->prefix('app/setting/')->name('app.setting.')->group(function () {
+    Route::get('language', LanguageAutomization::class)->name('language');
 });
-Route::middleware(['auth', 'role:super-admin'])->prefix('')->group(function () {
-Route::get('language',LanguageAutomization::class)->name('language');
 
+Route::get('test',function ()  {
+
+    $option = '';
+    dispatch(new CreateBackupJob);
 });

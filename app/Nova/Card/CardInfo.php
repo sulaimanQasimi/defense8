@@ -5,6 +5,7 @@ namespace App\Nova\Card;
 use App\Nova\Actions\EditCardInfoOption;
 use App\Nova\Actions\EditCardInfoRemark;
 use App\Nova\Actions\ExportCardInfo;
+use App\Nova\Actions\PrintAllTypeCardEmployeeAction;
 use App\Nova\Attendance;
 use App\Nova\Department;
 use App\Nova\District;
@@ -334,7 +335,9 @@ class CardInfo extends Resource
                 ->sole()
                 //  ->canRun(fn($request, $employee) => auth()->user()->department?->id === $employee->orginization?->id)
                 ->withoutConfirmation()
-                ->onlyOnDetail()
+                ->onlyOnDetail(),
+            (new PrintAllTypeCardEmployeeAction)->onlyOnDetail()->canRun(fn()=>auth()->user()->hasRole("Print Card"))
+
         ];
     }
 }

@@ -52,7 +52,6 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
                     MenuItem::externalLink(__("Yearly Guest Report"), route("guest.report.yearly"))->canSee(fn() => auth()->user()->hasRole('super-admin'))->openInNewTab(),
 
-
                 ])->collapsable()->collapsedByDefault()->icon('document'),
 
             ])->collapsable()->collapsedByDefault()->icon('user-group'),
@@ -100,13 +99,18 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 MenuItem::resource(User::class),
                 MenuItem::resource(Activitylog::class)->canSee(fn() => auth()->user()->hasRole('super-admin')),
                 MenuItem::resource(Website::class)->canSee(fn() => auth()->user()->hasRole('super-admin')),
+                MenuItem::externalLink(__("Change Application Language"), route("app.setting.language"))
+                    ->canSee(fn() => auth()->user()->hasRole('super-admin')),
                 MenuItem::externalLink(__("See Other Website Data"), route("check.other-website-employee"))
                     ->canSee(fn() => auth()->user()->hasPermissionTo('see-other-website-data'))
                     ->openInNewTab(),
                 MenuItem::externalLink(__("Create Token"), url("user/api-tokens"))
                     ->canSee(fn() => auth()->user()->hasRole('api-token'))->openInNewTab(),
+                MenuItem::make(__('Backups'))
+                    ->path('/backups'),
             ])
                 ->icon('cog')->collapsable()->collapsedByDefault(),
+
 
 
         ]);
@@ -143,6 +147,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
             new \Sereny\NovaPermissions\NovaPermissions(),
             new \Bolechen\NovaActivitylog\NovaActivitylog(),
+            (new BackupTool)->canSee(fn() => auth()->user()->hasRole('super-admin')),
+
             // new \GeneaLabs\NovaPassportManager\NovaPassportManager,
         ];
     }

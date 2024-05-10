@@ -90,7 +90,6 @@ class Department extends Resource
         return [
             (new LineChart)
                 ->title("")
-
                 ->series(
                     array(
                         [

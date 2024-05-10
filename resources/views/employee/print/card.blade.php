@@ -26,7 +26,7 @@
     {{-- Print Context --}}
     <div>
 
-        <div class="bg-white  h-[2.13in] w-[3.42in] block relative ">
+        <div class="bg-white  h-[2.2in] w-[3.44in] block relative ">
             <div class=" border-t " style="background-color: {{ $card->color }}">
                 <div class="text-center" style="font-size: {{ $card->gov_name_font_size }}px">{{ $card->gov_name }}
                 </div>
@@ -63,7 +63,7 @@
                         'employee.print.ArmorCar')
                 </div>
             </div>
-            <div class="h-3 border-b " style="background-color: {{ $card->color }}"></div>
+            <div class="h-4 border-b " style="background-color: {{ $card->color }}"></div>
             <div>
                 <img src="{{ $cardInfo->image_path }}" class="h-16 absolute"
                     style=" top: {{ $card->profile_logo_y }}px;left: {{ $card->profile_logo_x }}px;" />
@@ -73,9 +73,10 @@
             </div>
         </div>
 
-        <div class=" h-[2.13in] w-[3.5in] max-h-[2.13in] max-w-[3.5in]  block rounded-xl relative bg-contain bg-center bg-local bg-no-repeat "
+        {{-- <div class="space-x-1"></div> --}}
+        <div class=" h-[2.2in] w-[3.44in] max-h-[2.13in] max-w-[3.5in]  block rounded-xl relative bg-cover bg-center bg-local bg-no-repeat "
             style="background-image: url('/storage/{{ $card->background_logo }}');color:{{ $card->font_color }}">
-            <div class="h-[1.75rem]" style="background-color: {{ $card->color }}"></div>
+            <div class="h-[2.5rem]" style="background-color: {{ $card->color }}"></div>
             <div class="px-2 py-3">
                 <div class="text-sm font-medium">{!! $card->remark !!}</div>
             </div>

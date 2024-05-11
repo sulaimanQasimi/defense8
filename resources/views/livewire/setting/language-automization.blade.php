@@ -70,7 +70,7 @@
 
                     <div class="font-medium"> {{ $key }}:</div>
                     <div class="inputbox">
-                        <input wire:model.live.debounce.750ms="lang.{{ $key }}"
+                        <input wire:model.lazy="lang.{{ $key }}"
                         type="text"
                         {{-- class="bg-transparent px-3 py-2 text-xs hover:ring-1 rounded-lg" --}}
                             wire:loading.attr="disabled" />

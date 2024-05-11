@@ -11,4 +11,7 @@ class PrintCardFrame extends Model
 {
     use HasFactory;
     use SoftDeletes;
- }
+    protected $casts = [
+        'attribute' => 'array',
+    ];
+}

@@ -31,15 +31,25 @@ class PrintCardFrame extends Resource
     public function fields(NovaRequest $request)
     {
         return [
-            Text::make(trans("Name"), 'name')->required(),
+            Text::make(trans("Name"), 'name')->required()->rules("required"),
             Select::make(trans("Type"), 'type')->options([
                 PrintTypeEnum::ArmorCar => trans("Armor Vehical Card"),
                 PrintTypeEnum::BlackMirrorCar => trans("Black Mirror Vehical Card"),
                 PrintTypeEnum::Employee => trans("Employee"),
                 PrintTypeEnum::EmployeeCar => trans("Employee Vehical Card"),
                 PrintTypeEnum::Gun => trans("Gun Card"),
-            ])->displayUsingLabels(),
+            ])
+                ->displayUsingLabels()
+                ->required()
+                ->rules("required"),
 
+            Select::make(trans("Dimentions"), 'dim')->options([
+                'vertical' => trans("Vertical"),
+                'horizontal' => trans("Horizotal"),
+            ])
+                ->displayUsingLabels()
+                ->required()
+                ->rules("required"),
         ];
     }
 

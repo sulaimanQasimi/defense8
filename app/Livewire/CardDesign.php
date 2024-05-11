@@ -12,6 +12,8 @@ class CardDesign extends Component
 {
     use WithFileUploads;
     public PrintCardFrame $cardFrame;
+
+    public $attr = [];
     #[Rule('required|string')]
     public $color;
     #[Rule('required|string')]
@@ -72,6 +74,7 @@ class CardDesign extends Component
         $this->cardFrame = $printCardFrame;
         //
         $this->background_path = $this->cardFrame->background_logo;
+        $this->attr = $this->cardFrame->attribute;
 
         //
         $this->qr_x = $this->cardFrame->qr_code_logo_x;
@@ -118,6 +121,10 @@ class CardDesign extends Component
             case "gov_logo":
                 $this->gov_logo_path = Str::after($this->gov_logo->store(path: 'public/card/logo'), 'public/');
                 $this->cardFrame->gov_logo = $this->gov_logo_path;
+                break;
+
+            case "attr":
+                $this->cardFrame->attribute = $this->attr;
                 break;
 
             case "qr_x":

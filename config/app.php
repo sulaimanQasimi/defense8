@@ -17,20 +17,15 @@ return [
 
 
     'fallback_locale' => 'fa',
-
     'faker_locale' => 'en_US',
-
     'key' => env('APP_KEY'),
-
     'cipher' => 'AES-256-CBC',
-
     'maintenance' => [
         'driver' => 'file',
         // 'store' => 'redis',
     ],
-
-
-    'providers' => ServiceProvider::defaultProviders()->merge([
+    'providers' => ServiceProvider::defaultProviders()
+    ->merge([
         /*
          * Package Service Providers...
          */

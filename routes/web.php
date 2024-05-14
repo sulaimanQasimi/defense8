@@ -19,18 +19,31 @@ use Spatie\BackupTool\Jobs\CreateBackupJob;
 Route::prefix("guest")
     ->controller(QRCodeGenerateController::class)
     ->group(function () {
+
+        //
         Route::middleware(['auth', "guestGatePassed"])->get('passguest/{guest:id}/to', 'state')->name('guest.check');
+
+        //
         Route::middleware(['auth', "guestGatePassed"])->get('passemployee/{cardInfo:id}/to', 'employeeState')->name('employee.check');
-        Route::middleware('auth')->get('/generate/{guest:id}', 'generate')->name('guest.generate');
+
+        //
+        Route::middleware(['auth'])->get('/generate/{guest:id}', 'generate')->name('guest.generate');
     });
 
 
 Route::middleware(['auth', "guestGatePassed"])
-    ->controller(EmployeeScanCard::class)->group(function () {
-        Route::middleware(['can:gateChecker,\App\Models\Gate'])->get('employee', 'scan')->name('employee.check.card');
-        Route::get('other', 'scan_other_website_employee')
-            ->name('employee.check.other-website-employee');
+    ->controller(EmployeeScanCard::class)
+    ->middleware(['can:gateChecker,\App\Models\Gate'])
+    ->name('employee.check.')
+    ->group(function () {
+
+        // Self Website Check
+        Route::get('employee', 'scan')->name('card');
+
+        // Other Orginization
+        Route::get('other', 'scan_other_website_employee')->name('other-website-employee');
     });
+
 
 // Other Website Employees Check
 Route::middleware(['auth', 'permission:see-other-website-data',])
@@ -51,27 +64,27 @@ Route::middleware(['auth', 'role:super-admin'])
 
 Route::middleware(['auth'])
     ->group(function () {
+
         Route::middleware(['role:super-admin'])->get("attend", \App\Livewire\Attendance::class)->name("employee.attendance.check");
-        Route::middleware(['can:admin,department'])->get("attendance/{department:id?}", \App\Livewire\Department\SetAttendance::class)->name("department.employee.attendance.check");
+        Route::middleware(['can:admin,department','permission:check own department attendance'])->get("attendance/{department:id?}", \App\Livewire\Department\SetAttendance::class)->name("department.employee.attendance.check");
         Route::middleware(['role:super-admin'])->get('employee/attendance/current/month', CurrentMonthEmployeeAttendance::class)->name("employee.attendance.current.month");
         Route::middleware(['role:super-admin'])->get('employee/attendance/current/month/employee/{cardInfo:id}', [CurrentMonthEmployeeAttendance::class, 'single_employee'])->name("employee.attendance.current.month.single");
         Route::middleware(['role:super-admin'])->get('employee/attendance/current/month/department/{department:id}', [CurrentMonthEmployeeAttendance::class, 'single_department'])->name("employee.attendance.current.month..department.single");
-        Route::middleware(['role:super-admin'])->get('attendance/pdf/generator', AttendanceGenerator::class)
+        Route::middleware(['role:super-admin'])->get('attendance/pdf/generator', AttendanceGenerator::class)->name("employee.attendance.pdf.generator");
 
-            ->name("employee.attendance.pdf.generator");
-
-        Route::prefix('export/')->name('export.excel.')
+        Route::prefix('export/')
+            ->name('export.excel.')
             ->controller(ExcelEmployeeExportController::class)
             ->group(function () {
-                Route::get('attendance/{department:id}', 'attendance')->name('attendance');
+                Route::middleware(['can:admin,department'])->get('attendance/{department:id}', 'attendance')->name('attendance');
             });
 
         Route::prefix("employee/")
             ->controller(EmployeeInfoPDF::class)
             ->group(function () {
-
                 Route::get('{cardInfo:id}/personal/info', 'info')
                     ->name("employee.personal.info");
+
                 Route::get('department/{department:id}/personal/info', 'department')
                     ->name("department.employee.personal.info");
             });
@@ -83,8 +96,6 @@ Route::middleware(['auth'])->group(function () {
 
     // Card Frame Design Request Route
     Route::middleware('role:Design Card')->get('card-design/{printCardFrame:id}', CardDesign::class)->name('employee.design-card');
-
-
 
     // Card Frame Print Request Route
 

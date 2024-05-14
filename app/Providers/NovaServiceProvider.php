@@ -43,18 +43,22 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 MenuItem::resource(Host::class),
                 MenuItem::resource(Gate::class),
                 MenuItem::resource(Guest::class),
-                MenuSection::make(__('Guest Report'), [
-                    MenuItem::externalLink(__("Daily Guest Report"), route("guest.report.daily"))->canSee(fn() => auth()->user()->hasRole('super-admin'))->openInNewTab(),
 
-                    MenuItem::externalLink(__("Weekly Guest Report"), route("guest.report.weekly"))->canSee(fn() => auth()->user()->hasRole('super-admin'))->openInNewTab(),
+            ])
+                ->collapsable()
+                ->collapsedByDefault()
+                ->icon('user-group'),
+            MenuSection::make(__('Guest Report'), [
+                MenuItem::externalLink(__("Daily Guest Report"), route("guest.report.daily"))->canSee(fn() => auth()->user()->hasRole('super-admin'))->openInNewTab(),
 
-                    MenuItem::externalLink(__("Monthly Guest Report"), route("guest.report.monthly"))->canSee(fn() => auth()->user()->hasRole('super-admin'))->openInNewTab(),
+                MenuItem::externalLink(__("Weekly Guest Report"), route("guest.report.weekly"))->canSee(fn() => auth()->user()->hasRole('super-admin'))->openInNewTab(),
 
-                    MenuItem::externalLink(__("Yearly Guest Report"), route("guest.report.yearly"))->canSee(fn() => auth()->user()->hasRole('super-admin'))->openInNewTab(),
+                MenuItem::externalLink(__("Monthly Guest Report"), route("guest.report.monthly"))->canSee(fn() => auth()->user()->hasRole('super-admin'))->openInNewTab(),
 
-                ])->collapsable()->collapsedByDefault()->icon('document'),
+                MenuItem::externalLink(__("Yearly Guest Report"), route("guest.report.yearly"))->canSee(fn() => auth()->user()->hasRole('super-admin'))->openInNewTab(),
 
-            ])->collapsable()->collapsedByDefault()->icon('user-group'),
+            ])->collapsable()->collapsedByDefault()->icon('document'),
+
 
 
             MenuSection::make(__('Card'), [
@@ -69,7 +73,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         ['department' => auth()->user()?->department]
                     )
                 )
-                    ->canSee(fn() => auth()->user()->department),
+                    ->canSee(fn() => auth()->user()->hasPermissionTo('check own department attendance')),
                 MenuItem::externalLink(__("Employee Attendance Check Department"), route("employee.attendance.check"))
                     ->canSee(fn() => auth()->user()->hasRole('super-admin')),
 
@@ -148,7 +152,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
             new \Sereny\NovaPermissions\NovaPermissions(),
             new \Bolechen\NovaActivitylog\NovaActivitylog(),
-            (new BackupTool)->canSee(fn() => auth()->user()->hasRole('super-admin')),
+            (new BackupTool)
+                ->canSee(fn() => auth()->user()
+                    ->hasRole('super-admin')),
 
             // new \GeneaLabs\NovaPassportManager\NovaPassportManager,
         ];

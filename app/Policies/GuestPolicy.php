@@ -16,7 +16,7 @@ class GuestPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasPermissionTo(PermissionTranslation::viewAny("Guest")) || $user->gate;
+        return $user->hasPermissionTo(PermissionTranslation::viewAny("Guest")) || \Illuminate\Support\Facades\Gate::allows('gateChecker', \App\Models\Gate::class);
     }
 
     /**

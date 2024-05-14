@@ -7,6 +7,7 @@ use App\Nova\Actions\EditCardInfoRemark;
 use App\Nova\Actions\ExportCardInfo;
 use App\Nova\Actions\PrintAllTypeCardEmployeeAction;
 use App\Nova\Attendance;
+use App\Nova\Career;
 use App\Nova\Department;
 use App\Nova\District;
 use App\Nova\Gate;
@@ -37,6 +38,8 @@ class CardInfo extends Resource
     public static $model = \App\Models\Card\CardInfo::class;
 
     public static $title = 'name';
+
+    public static $showPollingToggle = true;
     public static $search = [
         'name',
         'last_name',
@@ -51,6 +54,7 @@ class CardInfo extends Resource
 
     ];
 
+    public static $tableStyle = 'tight';
     public static function indexQuery(NovaRequest $request, $query)
     {
         if (auth()->user()->department) {
@@ -135,6 +139,7 @@ class CardInfo extends Resource
             Panel::make(__("Job"), [
 
                 BelongsTo::make(__("Department/Chancellor"), 'orginization', Department::class)
+                    ->searchable()
                     ->filterable()
                     ->sortable(),
                 BelongsTo::make(__("Gate"), 'gate', Gate::class)->dependsOn(
@@ -146,37 +151,49 @@ class CardInfo extends Resource
                         });
                     }
                 ),
+                BelongsTo::make(__("Career"), 'career', Career::class)
+                    ->dependsOn(
+                        ['orginization'],
+                        function (BelongsTo $field, NovaRequest $request, FormData $formData) {
 
-                Text::make(__("Degree"), "degree")
-                    ->nullable()
-                    ->rules('nullable', 'string')
+                            $field->relatableQueryUsing(
+                                function (NovaRequest $request, Builder $query) use ($formData) {
+                                    $query->where('department_id', $formData->orginization);
+                                }
+                            );
+                        }
+                    ),
 
-                    ->placeholder(__("Enter Field", ['name' => __("Degree")])),
-                Text::make(__("Grade"), "grade")
-                    ->nullable()
-                    ->rules('nullable', 'string')
+                // Text::make(__("Degree"), "degree")
+                //     ->nullable()
+                //     ->rules('nullable', 'string')
 
-                    ->placeholder(__("Enter Field", ['name' => __("Grade")])),
-                Text::make(__("Acupation"), "acupation")
-                    ->nullable()
-                    ->rules('nullable', 'string')
+                //     ->placeholder(__("Enter Field", ['name' => __("Degree")])),
+                // Text::make(__("Grade"), "grade")
+                //     ->nullable()
+                //     ->rules('nullable', 'string')
 
-                    ->placeholder(__("Enter Field", ['name' => __("Acupation")])),
+                //     ->placeholder(__("Enter Field", ['name' => __("Grade")])),
+                // Text::make(__("Acupation"), "acupation")
+                //     ->nullable()
+                //     ->rules('nullable', 'string')
 
-                Text::make(__("Job Stracture Title"), "job_structure")
-                    ->nullable()
-                    ->rules('nullable', 'string')
+                //     ->placeholder(__("Enter Field", ['name' => __("Acupation")])),
 
-                    ->placeholder(__("Enter Field", ['name' => __("Job Stracture Title")])),
-                Text::make(__("Previous Job"), "previous_job")
-                    ->nullable()
-                    ->rules('nullable', 'string')
+                // Text::make(__("Job Stracture Title"), "job_structure")
+                //     ->nullable()
+                //     ->rules('nullable', 'string')
 
-                    ->placeholder(__("Enter Field", ['name' => __("Previous Job")])),
-                Text::make(__("Department/Chancellor"), "department")
-                    ->nullable()
-                    ->rules('nullable', 'string')
-                    ->placeholder(__("Enter Field", ['name' => __("Department/Chancellor")])),
+                //     ->placeholder(__("Enter Field", ['name' => __("Job Stracture Title")])),
+                // Text::make(__("Previous Job"), "previous_job")
+                //     ->nullable()
+                //     ->rules('nullable', 'string')
+
+                //     ->placeholder(__("Enter Field", ['name' => __("Previous Job")])),
+                // Text::make(__("Department/Chancellor"), "department")
+                //     ->nullable()
+                //     ->rules('nullable', 'string')
+                //     ->placeholder(__("Enter Field", ['name' => __("Department/Chancellor")])),
 
                 Tag::make(__("Condition"), 'employeeOptions', GuestOption::class)->showCreateRelationButton()->displayAsList()->exceptOnForms(),
 
@@ -185,7 +202,8 @@ class CardInfo extends Resource
 
                 BelongsTo::make(__("Province"), "main_province", Province::class)
                     ->nullable()
-                ,
+                    ->hideFromIndex()
+                    ->searchable(),
 
                 BelongsTo::make(__("District"), "main_district", District::class)
                     ->dependsOn(
@@ -196,6 +214,7 @@ class CardInfo extends Resource
                             });
                         }
                     )
+                    ->hideFromIndex()
                     ->nullable(),
 
                 BelongsTo::make(__("Village"), "main_village", Village::class)
@@ -207,16 +226,15 @@ class CardInfo extends Resource
                             });
                         }
                     )
+                    ->hideFromIndex()
                     ->nullable(),
-
-
-
             ])->limit(0),
 
             Panel::make(__("Current Address"), [
                 BelongsTo::make(__("Province"), "current_province", Province::class)
-
-                    ->nullable(),
+                    ->nullable()
+                    ->hideFromIndex()
+                    ->searchable(),
 
                 BelongsTo::make(__("District"), "current_district", District::class)
                     ->dependsOn(
@@ -227,6 +245,7 @@ class CardInfo extends Resource
                             });
                         }
                     )
+                    ->hideFromIndex()
                     ->nullable(),
 
                 BelongsTo::make(__("Village"), "current_village", Village::class)
@@ -238,11 +257,14 @@ class CardInfo extends Resource
                             });
                         }
                     )
+                    ->hideFromIndex()
                     ->nullable(),
 
             ]),
 
-            Trix::make(__("Remark"), 'remark')->exceptOnForms(),
+            Trix::make(__("Remark"), 'remark')
+                ->exceptOnForms()
+                ->hideFromIndex(),
             HasOne::make(__("Main Card"), 'main_card', MainCard::class),
             HasOne::make(__("Gun Card"), 'gun_card', GunCard::class),
             HasOne::make(__("Armor Vehical Card"), 'armor_vehical_card', ArmorVehicalCard::class),
@@ -336,7 +358,7 @@ class CardInfo extends Resource
                 //  ->canRun(fn($request, $employee) => auth()->user()->department?->id === $employee->orginization?->id)
                 ->withoutConfirmation()
                 ->onlyOnDetail(),
-            (new PrintAllTypeCardEmployeeAction)->onlyOnDetail()->canRun(fn()=>auth()->user()->hasRole("Print Card"))
+            (new PrintAllTypeCardEmployeeAction)->onlyOnDetail()->canRun(fn() => auth()->user()->hasRole("Print Card"))
 
         ];
     }

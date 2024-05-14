@@ -84,6 +84,8 @@ Route::middleware(['auth'])->group(function () {
     // Card Frame Design Request Route
     Route::middleware('role:Design Card')->get('card-design/{printCardFrame:id}', CardDesign::class)->name('employee.design-card');
 
+
+
     // Card Frame Print Request Route
 
     // Employee Card
@@ -100,12 +102,21 @@ Route::middleware(['auth'])->group(function () {
 
     // Black Mirror Car Card
     Route::middleware('role:Print Card')->get('print/blackMirrorCar/{cardInfo:id}/card/{printCardFrame}', (new PrintCardController())->black_mirror_car(...))->name('black-mirror-car.print-card-for');
-});
-Route::middleware(['auth', 'role:super-admin'])->prefix('app/setting/')->name('app.setting.')->group(function () {
-    Route::get('language', LanguageAutomization::class)->name('language');
+
+
 });
 
-Route::get('test',function ()  {
+
+//
+Route::middleware(['auth', 'role:super-admin'])
+    ->prefix('app/setting/')
+    ->name('app.setting.')
+    ->group(function () {
+        Route::get('language', LanguageAutomization::class)->name('language');
+    });
+
+
+Route::get('test', function () {
 
     $option = '';
     dispatch(new CreateBackupJob);

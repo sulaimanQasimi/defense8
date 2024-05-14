@@ -3,6 +3,7 @@
 namespace App\Models\Card;
 
 use App\Models\Attendance;
+use App\Models\Career;
 use App\Models\Department;
 use App\Models\Gate;
 use App\Models\GuestOption;
@@ -133,6 +134,14 @@ class CardInfo extends Model
     {
         return $this->belongsTo(Department::class);
     }
+
+
+    public function career(): BelongsTo
+    {
+        return $this->belongsTo(Career::class);
+    }
+
+
     public function orginization(): BelongsTo
     {
         return $this->belongsTo(Department::class, 'department_id');

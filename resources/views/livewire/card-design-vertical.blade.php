@@ -435,11 +435,9 @@
                                 :style="{ top: ministryY + 'px', left: ministryX + 'px' }" />
                         </div>
                         <div :style="{
-                            'font-size': infoSize + 'px',
-                            'color': fontColor,
+                            'font-size': infoSize + 'px','color': fontColor,
                             // 'background-color': color,
-                            'background-image': 'url(\'/storage/' +
-                                background_path + '\')'
+                            'background-image': 'url(\'/storage/' + background_path + '\')'
                         }"
                             class="bg-cover bg-center bg-local bg-no-repeat">
                             <div class="px-2">
@@ -474,7 +472,7 @@
                         </div>
                         <div>
                             <img src="{{ asset('11.jpg') }}" class="h-16 absolute"
-                                :style="{ top: proY + 'px', left: proX + 'px',height:attr.qrscale + 'px'}" />
+                                :style="{ top: proY + 'px', left: proX + 'px', height: attr.qrscale + 'px' }" />
                         </div>
                         <h1 x-on:click="console.log(attr.qrscale)">dznk</h1>
                         <div id="qrcode" style="width:30px; position: absolute;;"
@@ -504,8 +502,6 @@
                         height: 100
                     });
                     qrcode.makeCode("123");
-
-
                 </script>
             @endpush
         @endonce

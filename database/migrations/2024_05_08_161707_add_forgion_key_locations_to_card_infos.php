@@ -12,13 +12,13 @@ return new class extends Migration {
     {
         Schema::table('card_infos', function (Blueprint $table) {
 
-            $table->foreignId("m_village")->nullable();
-            $table->foreignId("m_district")->nullable();
-            $table->foreignId("m_province")->nullable();
+            $table->foreignId("m_village")->change()->nullable();
+            $table->foreignId("m_district")->change()->nullable();
+            $table->foreignId("m_province")->change()->nullable();
 
-            $table->foreignId("c_village")->nullable();
-            $table->foreignId("c_district")->nullable();
-            $table->foreignId("c_province")->nullable();
+            $table->foreignId("c_village")->change()->nullable();
+            $table->foreignId("c_district")->change()->nullable();
+            $table->foreignId("c_province")->change()->nullable();
 
             $table->foreign("m_village")->references('id')->on('villages')->nullOnDelete();
             $table->foreign("m_district")->references('id')->on('districts')->nullOnDelete();

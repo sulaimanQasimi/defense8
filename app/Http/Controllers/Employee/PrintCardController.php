@@ -19,7 +19,7 @@ class PrintCardController extends Controller
         if (!$card->type == PrintTypeEnum::Employee) {
             return abort(404);
         }
-        return view('employee.print.card', compact('cardInfo', 'card'));
+        return $this->view_layout($cardInfo, $card, ($card->dim === "vertical") ? true : false);
     }
     public function gun(Request $request, CardInfo $cardInfo, int $printCardFrame): View
     {
@@ -27,7 +27,7 @@ class PrintCardController extends Controller
         if (!$card->type == PrintTypeEnum::Gun) {
             return abort(404);
         }
-        return view('employee.print.card', compact('cardInfo', 'card'));
+        return $this->view_layout($cardInfo, $card, ($card->dim === "vertical") ? true : false);
     }
 
     public function employee_car(Request $request, CardInfo $cardInfo, int $printCardFrame): View
@@ -36,7 +36,7 @@ class PrintCardController extends Controller
         if (!$card->type == PrintTypeEnum::EmployeeCar) {
             return abort(404);
         }
-        return view('employee.print.card', compact('cardInfo', 'card'));
+        return $this->view_layout($cardInfo, $card, ($card->dim === "vertical") ? true : false);
     }
 
 
@@ -46,7 +46,7 @@ class PrintCardController extends Controller
         if (!$card->type == PrintTypeEnum::BlackMirrorCar) {
             return abort(404);
         }
-        return view('employee.print.card', compact('cardInfo', 'card'));
+        return $this->view_layout($cardInfo, $card, ($card->dim === "vertical") ? true : false);
     }
 
 
@@ -56,6 +56,14 @@ class PrintCardController extends Controller
         if (!$card->type == PrintTypeEnum::ArmorCar) {
             return abort(404);
         }
-        return view('employee.print.card', compact('cardInfo', 'card'));
+        return $this->view_layout($cardInfo, $card, ($card->dim === "vertical") ? true : false);
+
+    }
+    public function view_layout($cardInfo, $card, bool $vertical)
+    {
+        if($vertical){
+            return view('employee.print.card-vertical', compact('cardInfo', 'card'));
+        }
+        return view('employee.print.card-horizontal', compact('cardInfo', 'card'));
     }
 }

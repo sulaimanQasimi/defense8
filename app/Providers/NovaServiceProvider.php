@@ -107,7 +107,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 MenuItem::externalLink(__("Create Token"), url("user/api-tokens"))
                     ->canSee(fn() => auth()->user()->hasRole('api-token'))->openInNewTab(),
                 MenuItem::make(__('Backups'))
-                    ->path('/backups'),
+                    ->path('/backups')
+                    ->canSee(fn() => auth()->user()->hasRole('super-admin'))->openInNewTab(),
             ])
                 ->icon('cog')->collapsable()->collapsedByDefault(),
 

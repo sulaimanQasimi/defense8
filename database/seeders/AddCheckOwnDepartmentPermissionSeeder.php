@@ -14,6 +14,6 @@ class AddCheckOwnDepartmentPermissionSeeder extends Seeder
     public function run(): void
     {
 
-        Permission::create(['name' => 'check own department attendance','fa_name'=>trans("Employee Attendance Check Self Department")]);
+        Permission::create(['name' => 'check own department attendance','group'=>'Department','fa_name'=>trans("Employee Attendance Check Self Department")]);
     }
 }

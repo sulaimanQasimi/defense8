@@ -3,6 +3,7 @@ namespace App\Nova;
 
 use App\Nova\Metrics\HostGuestValue;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Gate;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\Select;
@@ -32,18 +33,18 @@ class Guest extends Resource
 
     public static function indexQuery(NovaRequest $request, $query)
     {
+
         if (auth()->user()->host) {
             return $query->where('host_id', auth()->user()->host->id)->orderBy('registered_at', 'desc');
         }
-        if (auth()->user()->gate) {
+
+        if (auth()->user()->can('gateChecker','App\\Models\Gate')) {
             return $query
                 ->whereYear('registered_at', now()->year)
                 ->whereMonth("registered_at", now()->month)
                 ->whereDay("registered_at", now()->day)
                 ->orderBy('registered_at', 'desc');
-
         }
-
         return $query->orderBy('registered_at', "desc");
     }
     public function fields(NovaRequest $request)
@@ -81,8 +82,9 @@ class Guest extends Resource
                 ->placeholder(__("Enter Field", ['name' => __("Career")])),
             // Host
             BelongsTo::make(__("Host"), 'host', Host::class)
-            ->filterable()
-            ->showCreateRelationButton(),
+                ->filterable()
+                ->showCreateRelationButton()
+                ->exceptOnForms(),
 
             Text::make(__("Invited By"), fn() => $this->host->head_name),
 
@@ -98,7 +100,7 @@ class Guest extends Resource
                 ->hideWhenUpdating(fn() => $this->registered_at->isBefore(Carbon::today()))
                 ->required()->rules('required', 'date'),
             Select::make(__("Enter Gate"), 'enter_gate')->options(
-                \App\Support\Defense\Gate::gate_options ()
+                \App\Support\Defense\Gate::gate_options()
             )->filterable()
                 ->displayUsingLabels()
                 ->required()

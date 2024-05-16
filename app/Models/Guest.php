@@ -32,15 +32,26 @@ class Guest extends Model
     {
         parent::boot();
 
-        static::created(function ($guest) {
-            $fetch = Guest::query()->where("year", now()->year)->orderBy("day", 'desc')->first();
-            $guest->year = now()->year;
-            $day = ($fetch) ? $fetch->day + 1 : 1;
-            $guest->day = $day;
-            $len = strlen($day);
-            $guest->barcode = "G-" . now()->format("Ym") . str_pad($day, 9 - $len, "0", STR_PAD_LEFT);
-            $guest->save();
-        });
+        static::created(
+            function ($guest) {
+                if (auth()->user()->host) {
+                    $guest->host_id = auth()->user()->host->id;
+    
+                    $guest->save();
+
+                    $fetch = Guest::query()->where("year", now()->year)->orderBy("day", 'desc')->first();
+
+                    $guest->year = now()->year;
+
+                    $day = ($fetch) ? $fetch->day + 1 : 1;
+                    $guest->day = $day;
+                    $len = strlen($day);
+                    $guest->barcode = "G-" . now()->format("Ym") . str_pad($day, 9 - $len, "0", STR_PAD_LEFT);
+
+                    $guest->save();
+                }
+            }
+        );
     }
 
     public function host(): BelongsTo

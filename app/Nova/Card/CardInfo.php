@@ -57,9 +57,6 @@ class CardInfo extends Resource
     public static $tableStyle = 'tight';
     public static function indexQuery(NovaRequest $request, $query)
     {
-        if (auth()->user()->department) {
-            return $query->where('department_id', auth()->user()->department->id);
-        }
         return $query;
     }
 

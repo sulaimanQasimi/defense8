@@ -84,15 +84,16 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     ->canSee(fn() => auth()->user()->hasRole('super-admin'))->openInNewTab(),
 
 
-                MenuSection::make(__('Location'), [
-                    MenuItem::resource(Province::class),
-                    MenuItem::resource(District::class),
-                    MenuItem::resource(Village::class),
-                ])->icon('map-pin')
-                    ->collapsable()
-                    ->collapsedByDefault(),
+
 
             ])
+            ->collapsable()
+                ->collapsedByDefault(),
+            MenuSection::make(__('Location'), [
+                MenuItem::resource(Province::class),
+                MenuItem::resource(District::class),
+                MenuItem::resource(Village::class),
+            ])->icon('map-pin')
                 ->collapsable()
                 ->collapsedByDefault(),
             MenuSection::make(__('Administration'), [

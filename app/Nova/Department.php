@@ -71,10 +71,14 @@ class Department extends Resource
                     DepartmentTypeEnum::Directorate => trans("Directorate"),
                 ])
                 ->rules('required', 'in:Independant,Assistant,Directory,HeaderShip,Commander,Management,Directorate')->filterable()->displayUsingLabels(),
+            Text::make(trans("Hosts"), fn()=>$this->hosts->count())->onlyOnIndex(),
+            Text::make(trans("Employees"), fn()=>$this->card_infos->count())->onlyOnIndex(),
+
             HasMany::make(trans("Users"), 'user', User::class),
             HasMany::make(trans("Under Departments"), 'departments', Department::class),
             HasMany::make(trans("Gates"), 'gates', \App\Nova\Gate::class),
             HasMany::make(trans("Employee"), 'card_infos', CardInfo::class),
+            HasMany::make(trans("Hosts"), 'hosts', Host::class),
 
         ];
     }

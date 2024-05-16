@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Jetstream\HasProfilePhoto;
+use Laravel\Nova\Auth\Impersonatable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -22,8 +23,9 @@ class User extends Authenticatable
     use HasProfilePhoto;
     use Notifiable;
     use HasRoles;
-    use HasPermissions;
+    use Impersonatable,HasPermissions;
     use SoftDeletes;
+
     //    use TwoFactorAuthenticatable;
 
     use LogsActivity;
@@ -98,4 +100,18 @@ class User extends Authenticatable
         return LogOptions::defaults()->logAll();
     }
 
+    public function canImpersonate()
+    {
+        return  $this->hasRole('super-admin');
+    }
+
+    /**
+     * Determine if the user can be impersonated.
+     *
+     * @return bool
+     */
+    public function canBeImpersonated()
+    {
+        return true;
+    }
 }

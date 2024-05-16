@@ -28,6 +28,17 @@ class Department extends Model
         return $this->hasMany(Department::class);
     }
 
+
+
+    /**
+     * Hosts of this Department
+     */
+    public function hosts(): HasMany
+    {
+        return $this->hasMany(Host::class);
+    }
+
+
     public function gates(): HasMany
     {
         return $this->hasMany(Gate::class, 'department_id');

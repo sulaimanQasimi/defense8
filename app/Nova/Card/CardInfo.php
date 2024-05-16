@@ -151,49 +151,38 @@ class CardInfo extends Resource
                         });
                     }
                 ),
-                BelongsTo::make(__("Career"), 'career', Career::class)
-                    ->dependsOn(
-                        ['orginization'],
-                        function (BelongsTo $field, NovaRequest $request, FormData $formData) {
 
-                            $field->relatableQueryUsing(
-                                function (NovaRequest $request, Builder $query) use ($formData) {
-                                    $query->where('department_id', $formData->orginization);
-                                }
-                            );
-                        }
-                    ),
 
-                // Text::make(__("Degree"), "degree")
-                //     ->nullable()
-                //     ->rules('nullable', 'string')
+                Text::make(__("Degree"), "degree")
+                    ->nullable()
+                    ->rules('nullable', 'string')
 
-                //     ->placeholder(__("Enter Field", ['name' => __("Degree")])),
-                // Text::make(__("Grade"), "grade")
-                //     ->nullable()
-                //     ->rules('nullable', 'string')
+                    ->placeholder(__("Enter Field", ['name' => __("Degree")])),
+                Text::make(__("Grade"), "grade")
+                    ->nullable()
+                    ->rules('nullable', 'string')
 
-                //     ->placeholder(__("Enter Field", ['name' => __("Grade")])),
-                // Text::make(__("Acupation"), "acupation")
-                //     ->nullable()
-                //     ->rules('nullable', 'string')
+                    ->placeholder(__("Enter Field", ['name' => __("Grade")])),
+                Text::make(__("Acupation"), "acupation")
+                    ->nullable()
+                    ->rules('nullable', 'string')
 
-                //     ->placeholder(__("Enter Field", ['name' => __("Acupation")])),
+                    ->placeholder(__("Enter Field", ['name' => __("Acupation")])),
 
-                // Text::make(__("Job Stracture Title"), "job_structure")
-                //     ->nullable()
-                //     ->rules('nullable', 'string')
+                Text::make(__("Job Stracture Title"), "job_structure")
+                    ->nullable()
+                    ->rules('nullable', 'string')
 
-                //     ->placeholder(__("Enter Field", ['name' => __("Job Stracture Title")])),
-                // Text::make(__("Previous Job"), "previous_job")
-                //     ->nullable()
-                //     ->rules('nullable', 'string')
+                    ->placeholder(__("Enter Field", ['name' => __("Job Stracture Title")])),
+                Text::make(__("Previous Job"), "previous_job")
+                    ->nullable()
+                    ->rules('nullable', 'string')
 
-                //     ->placeholder(__("Enter Field", ['name' => __("Previous Job")])),
-                // Text::make(__("Department/Chancellor"), "department")
-                //     ->nullable()
-                //     ->rules('nullable', 'string')
-                //     ->placeholder(__("Enter Field", ['name' => __("Department/Chancellor")])),
+                    ->placeholder(__("Enter Field", ['name' => __("Previous Job")])),
+                Text::make(__("Department/Chancellor"), "department")
+                    ->nullable()
+                    ->rules('nullable', 'string')
+                    ->placeholder(__("Enter Field", ['name' => __("Department/Chancellor")])),
 
                 Tag::make(__("Condition"), 'employeeOptions', GuestOption::class)->showCreateRelationButton()->displayAsList()->exceptOnForms(),
 

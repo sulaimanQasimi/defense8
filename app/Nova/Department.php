@@ -42,28 +42,35 @@ class Department extends Resource
     {
         return [
             BelongsTo::make(trans("Header Department"), 'department', Department::class)
-                ->nullable()->filterable(),
+                ->nullable()
+                ->filterable(),
+
             Text::make(trans("Name"), 'fa_name')
                 ->required()
                 ->creationRules('required', 'unique:departments,fa_name')
                 ->updateRules('required', 'unique:departments,fa_name,{{resourceId}}'),
+
             Text::make(trans("Pashto Name"), 'pa_name')
                 ->required()
                 ->creationRules('required', 'unique:departments,pa_name')
                 ->updateRules('required', 'unique:departments,pa_name,{{resourceId}}'),
+
             Text::make(trans("English Name"), 'en_name')
                 ->required()
                 ->creationRules('required', 'unique:departments,en_name')
                 ->updateRules('required', 'unique:departments,en_name,{{resourceId}}'),
-            Select::make(trans("Type"), 'type')->options([
-                DepartmentTypeEnum::Independant => trans("Independant"),
-                DepartmentTypeEnum::Assistant => trans("Assistant"),
-                DepartmentTypeEnum::Directory => trans("Directory"),
-                DepartmentTypeEnum::HeaderShip => trans("HeaderShip"),
-                DepartmentTypeEnum::Commander => trans("Commander"),
-                DepartmentTypeEnum::Management => trans("Management"),
-                DepartmentTypeEnum::Directorate => trans("Directorate"),
-            ])->rules('required', 'in:Independant,Assistant,Directory,HeaderShip,Commander,Management,Directorate')->filterable()->displayUsingLabels(),
+
+            Select::make(trans("Type"), 'type')
+                ->options([
+                    DepartmentTypeEnum::Independant => trans("Independant"),
+                    DepartmentTypeEnum::Assistant => trans("Assistant"),
+                    DepartmentTypeEnum::Directory => trans("Directory"),
+                    DepartmentTypeEnum::HeaderShip => trans("HeaderShip"),
+                    DepartmentTypeEnum::Commander => trans("Commander"),
+                    DepartmentTypeEnum::Management => trans("Management"),
+                    DepartmentTypeEnum::Directorate => trans("Directorate"),
+                ])
+                ->rules('required', 'in:Independant,Assistant,Directory,HeaderShip,Commander,Management,Directorate')->filterable()->displayUsingLabels(),
             HasMany::make(trans("Users"), 'user', User::class),
             HasMany::make(trans("Under Departments"), 'departments', Department::class),
             HasMany::make(trans("Gates"), 'gates', \App\Nova\Gate::class),
@@ -117,7 +124,7 @@ class Department extends Resource
         return [];
     }
 
-    /**
+    /*
      * Get the lenses available for the resource.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
@@ -139,7 +146,8 @@ class Department extends Resource
         return [
             Action::openInNewTab(
                 __("In this Page you can set each employee attendance"),
-                fn($department) => route('department.employee.attendance.check', ['department' => $department->id]))
+                fn($department) => route('department.employee.attendance.check', ['department' => $department->id])
+            )
                 ->sole()
                 ->canRun(fn($request, $department) => Gate::allows('admin', $department))
                 ->withoutConfirmation()

@@ -15,6 +15,7 @@ trait VehicalDriverField
     {
         return [
             BelongsTo::make(__('Info'), 'card_info', CardInfo::class),
+
             Text::make(__("Vehical Type"), "vehical_type")
                 ->required()
                 ->rules('required', 'string')
@@ -49,11 +50,13 @@ trait VehicalDriverField
                 ->nullable()
                 ->rules('nullable', 'string')
                 ->placeholder(__("Enter Field", ['name' => __("Vehical Engine NO")])),
-            Text::make(__("Vehical Registration NO"), "vehical_registration_no")
+
+                Text::make(__("Vehical Registration NO"), "vehical_registration_no")
                 ->nullable()
                 ->rules('nullable', 'string')
                 ->placeholder(__("Enter Field", ['name' => __("Vehical Registration NO")])),
-            Panel::make(__("Driver"), [
+
+                Panel::make(__("Driver"), [
                 Text::make(__("Name"), "name")
                     ->nullable()
                     ->rules('nullable', 'string')

@@ -61,13 +61,15 @@
     <div class="page">
     <div class="card">
         <table>
+
             <tr>
                 <th>@lang("Name")</th>
                 <th>{{$guest->name}}</th>
             </tr>
+
             <tr>
                 <td>@lang("Invited By")</td>
-                <td>{{$guest->host->name}}</td>
+                <td>{{$guest->host->department?->fa_name}}</td>
             </tr>
             <tr>
                 <td>@lang("Address")</td>

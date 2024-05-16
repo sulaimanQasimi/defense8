@@ -12,7 +12,7 @@ class Host extends Resource
 {
     public static $model = \App\Models\Host::class;
 
-    public static $title = 'name';
+    public static $title = 'department.fa_name';
 
     public static $search = [
         'name',
@@ -38,6 +38,7 @@ class Host extends Resource
         if (auth()->user()->host) {
             return $query->where('id', auth()->user()->host->id);
         }
+
         return $query;
     }
 
@@ -83,6 +84,7 @@ class Host extends Resource
                 ->rules('required', 'string')
                 ->placeholder(__("Enter Field", ['name' => __("Department Address")])),
 
+            // User
             BelongsTo::make(__("User"), 'user', User::class)->showCreateRelationButton()->searchable(),
             HasMany::make(__('Guests'), 'guests', Guest::class),
         ];

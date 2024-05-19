@@ -27,10 +27,11 @@
                         @endif
                     </div>
                     <div>
-                        <a href="{{ route('employee.check.other-website-employee') }}"
-                            class="px-7 rounded-lg hover:scale-95 py-2 text-white bg-gradient-to-t from-indigo-700 to-indigo-600"
-                            style="">@lang('Other Orginization')</a>
-
+                        @can('see-other-website-data')
+                            <a href="{{ route('employee.check.other-website-employee') }}"
+                                class="px-7 rounded-lg hover:scale-95 py-2 text-white bg-gradient-to-t from-indigo-700 to-indigo-600"
+                                style="">@lang('Other Orginization')</a>
+                        @endcan
                         <a href="/"
                             class="px-7 rounded-lg hover:scale-95 py-2 text-white bg-gradient-to-t from-blue-600 to-blue-500"
                             style="">@lang('Home')</a>
@@ -43,7 +44,6 @@
                 @includeWhen($guest, 'employee.guest')
             </div>
         </div>
-
     </div>
 </body>
 

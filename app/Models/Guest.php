@@ -36,7 +36,7 @@ class Guest extends Model
             function ($guest) {
                 if (auth()->user()->host) {
                     $guest->host_id = auth()->user()->host->id;
-    
+
                     $guest->save();
 
                     $fetch = Guest::query()->where("year", now()->year)->orderBy("day", 'desc')->first();
@@ -49,6 +49,11 @@ class Guest extends Model
                     $guest->barcode = "G-" . now()->format("Ym") . str_pad($day, 9 - $len, "0", STR_PAD_LEFT);
 
                     $guest->save();
+
+                    activity()
+                        ->performedOn($guest)
+                        ->causedBy(auth()->user())
+                        ->withProperties(['QrCode' => $guest->barcode])->log(trans("Guest Created"));
                 }
             }
         );

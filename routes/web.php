@@ -31,9 +31,8 @@ Route::prefix("guest")
     });
 
 
-Route::middleware(['auth', "guestGatePassed"])
+Route::middleware(['auth', "guestGatePassed", 'can:gateChecker,\App\Models\Gate'])
     ->controller(EmployeeScanCard::class)
-    ->middleware(['can:gateChecker,\App\Models\Gate'])
     ->name('employee.check.')
     ->group(function () {
 
@@ -41,12 +40,12 @@ Route::middleware(['auth', "guestGatePassed"])
         Route::get('employee', 'scan')->name('card');
 
         // Other Orginization
-        Route::get('other', 'scan_other_website_employee')->name('other-website-employee');
+        Route::middleware(['permission:see-other-website-data'])->get('other', 'scan_other_website_employee')->name('other-website-employee');
     });
 
 
 // Other Website Employees Check
-Route::middleware(['auth', 'permission:see-other-website-data',])
+Route::middleware(['auth', 'permission:see-other-website-data'])
     ->get('other-websites', (new EmployeeScanCard())->scan_other_website_employee(...))
     ->name('check.other-website-employee');
 
@@ -66,7 +65,7 @@ Route::middleware(['auth'])
     ->group(function () {
 
         Route::middleware(['role:super-admin'])->get("attend", \App\Livewire\Attendance::class)->name("employee.attendance.check");
-        Route::middleware(['can:admin,department','permission:check own department attendance'])->get("attendance/{department:id?}", \App\Livewire\Department\SetAttendance::class)->name("department.employee.attendance.check");
+        Route::middleware(['can:admin,department', 'permission:check own department attendance'])->get("attendance/{department:id?}", \App\Livewire\Department\SetAttendance::class)->name("department.employee.attendance.check");
         Route::middleware(['role:super-admin'])->get('employee/attendance/current/month', CurrentMonthEmployeeAttendance::class)->name("employee.attendance.current.month");
         Route::middleware(['role:super-admin'])->get('employee/attendance/current/month/employee/{cardInfo:id}', [CurrentMonthEmployeeAttendance::class, 'single_employee'])->name("employee.attendance.current.month.single");
         Route::middleware(['role:super-admin'])->get('employee/attendance/current/month/department/{department:id}', [CurrentMonthEmployeeAttendance::class, 'single_department'])->name("employee.attendance.current.month..department.single");
@@ -123,12 +122,13 @@ Route::middleware(['auth', 'role:super-admin'])
     ->prefix('app/setting/')
     ->name('app.setting.')
     ->group(function () {
-        Route::get('language', LanguageAutomization::class)->name('language');
+
+        Route::get('language/{file}', LanguageAutomization::class)->name('language');
+
+
     });
 
 
 Route::get('test', function () {
-
-    $option = '';
-    dispatch(new CreateBackupJob);
+    dd(app()->getLocale());
 });

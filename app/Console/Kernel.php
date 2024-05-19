@@ -2,8 +2,10 @@
 
 namespace App\Console;
 
+use App\Models\User;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Laravel\Nova\Notifications\NovaNotification;
 
 class Kernel extends ConsoleKernel
 {
@@ -12,8 +14,22 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        $schedule->command('telescope:prune --hours=48')->daily();
-        $schedule->command('backup:run --only-db');
+        // $schedule->command('telescope:prune --hours=48')->daily();
+        $schedule->command('backup:run --only-db')->dailyAt("21:30");
+        
+        $schedule->call(function () {
+            foreach (User::all() as $user) {
+                $user->notify(
+                    NovaNotification::make()
+                        ->message(trans("Good Morning Sir."))
+                        ->type('info')
+                );
+            }
+        })->everySecond();
+        // $schedule->command('backup:clean')->everyMinute();
+        // $schedule->command('view:clear')->everyMinute();
+        // $schedule->exec('npm run build')->everyMinute();
+        // $schedule->exec('npm run build')->everyMinute();
     }
 
     /**

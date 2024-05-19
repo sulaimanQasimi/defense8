@@ -85,7 +85,9 @@ class Host extends Resource
                 ->placeholder(__("Enter Field", ['name' => __("Department Address")])),
 
             // User
-            BelongsTo::make(__("User"), 'user', User::class)->showCreateRelationButton()->searchable(),
+            BelongsTo::make(__("User"), 'user', User::class)
+            ->rules('required','unique:hosts,user_id')
+            ->showCreateRelationButton()->searchable(),
             HasMany::make(__('Guests'), 'guests', Guest::class),
         ];
     }

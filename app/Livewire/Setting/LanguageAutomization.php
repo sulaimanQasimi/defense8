@@ -12,11 +12,12 @@ class LanguageAutomization extends Component
     public $words;
     public $lang;
     public $keywords;
+    public $crossed_file;
 
-    public function mount()
+    public function mount($file)
     {
-        $this->keywords = collect(json_decode(File::get(lang_path('vendor/nova/fa.json'))));
-// dd($this->keywords);
+        $this->crossed_file = lang_path("vendor/nova/{$file}.json");
+        $this->keywords = collect(json_decode(File::get($this->crossed_file)));
         foreach ($this->keywords as $key => $keyword) {
             $this->words[$key] = $keyword;
             $this->lang[$key] = $keyword;
@@ -26,7 +27,8 @@ class LanguageAutomization extends Component
     public function updated($name, $value)
     {
         $this->keywords->put(str_replace('lang.', '', $name), $value);
-        File::put(lang_path('vendor/nova/fa.json'), $this->keywords->toJson(JSON_UNESCAPED_UNICODE));
+        
+        File::put($this->crossed_file, $this->keywords->toJson(JSON_UNESCAPED_UNICODE));
 
     }
 

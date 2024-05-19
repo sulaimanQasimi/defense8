@@ -33,10 +33,10 @@ class Province extends Resource
                 ->creationRules('required', 'unique:provinces,name')
                 ->updateRules('required', 'unique:provinces,name,{{resourceId}}'),
 
-            Text::make(trans("Code"), 'code')
-                ->required()
-                ->creationRules('required', 'unique:provinces,code')
-                ->updateRules('required', 'unique:provinces,code,{{resourceId}}'),
+            // Text::make(trans("Code"), 'code')
+            //     ->required()
+            //     ->creationRules('required', 'unique:provinces,code')
+            //     ->updateRules('required', 'unique:provinces,code,{{resourceId}}'),
         ];
     }
 

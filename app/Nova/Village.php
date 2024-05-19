@@ -22,6 +22,7 @@ class Village extends Resource
     {
         return [
             BelongsTo::make(trans("Province"), 'province', Province::class)->searchable(),
+            
             BelongsTo::make(trans("District"), 'district', District::class)
             ->dependsOn(
                 ['province'],
@@ -36,10 +37,10 @@ class Village extends Resource
                 ->creationRules('required', 'unique:districts,name')
                 ->updateRules('required', 'unique:districts,name,{{resourceId}}'),
 
-            Text::make(trans("Code"), 'code')
-                ->required()
-                ->creationRules('required', 'unique:districts,code')
-                ->updateRules('required', 'unique:districts,code,{{resourceId}}'),
+            // Text::make(trans("Code"), 'code')
+            //     ->required()
+            //     ->creationRules('required', 'unique:districts,code')
+            //     ->updateRules('required', 'unique:districts,code,{{resourceId}}'),
 
         ];
     }

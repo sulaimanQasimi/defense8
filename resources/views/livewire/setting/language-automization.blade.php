@@ -60,8 +60,12 @@
             </style>
         @endpush
     @endonce
-    <div dir="rtl" class="bg-white px-3 py-4 rounded-xl">
+    <div class="block my-5 ">
+    <a href="/" class="px-4 py-2 bg-gradient-to-tr from-indigo-600 to-indigo-800 rounded-xl text-white ">@lang("Home")</a>
 
+    </div>
+
+    <div dir="rtl" class="bg-white px-3 py-4 rounded-xl">
         <div>@lang('Change Application Language')</div>
         <div class="grid lg:grid-cols-5 gap-5 sm:grid-cols-2 md:grid-cols-3">
 

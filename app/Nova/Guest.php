@@ -38,7 +38,7 @@ class Guest extends Resource
             return $query->where('host_id', auth()->user()->host->id)->orderBy('registered_at', 'desc');
         }
 
-        if (auth()->user()->can('gateChecker','App\\Models\Gate')) {
+        if (auth()->user()->can('gateChecker', 'App\\Models\Gate')) {
             return $query
                 ->whereYear('registered_at', now()->year)
                 ->whereMonth("registered_at", now()->month)
@@ -155,5 +155,9 @@ class Guest extends Resource
     public function actions(NovaRequest $request)
     {
         return [];
+    }
+    public static function redirectAfterCreate(NovaRequest $request, $resource)
+    {
+        return '/resources/' . static::uriKey();
     }
 }

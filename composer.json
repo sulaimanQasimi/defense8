@@ -9,6 +9,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "badinansoft/nova-language-switch": "^1.2",
         "barryvdh/laravel-dompdf": "*",
         "bolechen/nova-activitylog": "^0.4.3",
         "coroowicaksono/chart-js-integration": "^0.4.3",

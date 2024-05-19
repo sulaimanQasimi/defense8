@@ -33,10 +33,10 @@ class District extends Resource
                 ->creationRules('required', 'unique:districts,name')
                 ->updateRules('required', 'unique:districts,name,{{resourceId}}'),
 
-            Text::make(trans("Code"), 'code')
-                ->required()
-                ->creationRules('required', 'unique:districts,code')
-                ->updateRules('required', 'unique:districts,code,{{resourceId}}'),
+            // Text::make(trans("Code"), 'code')
+            //     ->required()
+            //     ->creationRules('required', 'unique:districts,code')
+            //     ->updateRules('required', 'unique:districts,code,{{resourceId}}'),
 
         ];
     }

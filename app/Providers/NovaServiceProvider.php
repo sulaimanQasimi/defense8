@@ -48,6 +48,10 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 ->collapsable()
                 ->collapsedByDefault()
                 ->icon('user-group'),
+
+
+
+
             MenuSection::make(__('Guest Report'), [
                 MenuItem::externalLink(__("Daily Guest Report"), route("guest.report.daily"))->canSee(fn() => auth()->user()->hasRole('super-admin'))->openInNewTab(),
 
@@ -64,30 +68,31 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             MenuSection::make(__('Card'), [
                 MenuItem::resource(Department::class),
                 MenuItem::resource(CardCardInfo::class),
-                MenuItem::externalLink(__("Employee Check Card"), route("employee.check.card"))
-                    ->canSee(fn() => \Illuminate\Support\Facades\Gate::allows('gateChecker', \App\Models\Gate::class)),
+
+                MenuItem::externalLink(__("Employee Check Card"), route("employee.check.card"))->canSee(fn() => \Illuminate\Support\Facades\Gate::allows('gateChecker', \App\Models\Gate::class)),
+
+
                 MenuItem::externalLink(
                     __("Employee Attendance Check Self Department"),
                     route(
                         "department.employee.attendance.check",
                         ['department' => auth()->user()?->department]
                     )
-                )
-                    ->canSee(fn() => auth()->user()->hasPermissionTo('check own department attendance')),
+                )->canSee(fn() => auth()->user()->hasPermissionTo('check own department attendance')),
+
+
+
+
+
                 MenuItem::externalLink(__("Employee Attendance Check Department"), route("employee.attendance.check"))
                     ->canSee(fn() => auth()->user()->hasRole('super-admin')),
 
                 // MenuItem::externalLink(__("Download CURRENT MONTH ATTENDANCE EMPLOYEE"), route("employee.attendance.current.month"))
                 //     ->canSee(fn() => auth()->user()->hasRole('super-admin'))->openInNewTab(),
 
-                MenuItem::externalLink(__("ATTENDANCE EMPLOYEE Report Generator"), route("employee.attendance.pdf.generator"))
-                    ->canSee(fn() => auth()->user()->hasRole('super-admin'))->openInNewTab(),
-
-
-
-
+                MenuItem::externalLink(__("ATTENDANCE EMPLOYEE Report Generator"), route("employee.attendance.pdf.generator"))->canSee(fn() => auth()->user()->hasRole('super-admin'))->openInNewTab(),
             ])
-            ->collapsable()
+                ->collapsable()
                 ->collapsedByDefault(),
             MenuSection::make(__('Location'), [
                 MenuItem::resource(Province::class),
@@ -96,6 +101,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             ])->icon('map-pin')
                 ->collapsable()
                 ->collapsedByDefault(),
+
+
             MenuSection::make(__('Administration'), [
                 MenuItem::resource(PrintCardFrame::class),
                 MenuItem::resource(GuestOption::class),
@@ -104,8 +111,18 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 MenuItem::resource(User::class),
                 MenuItem::resource(Activitylog::class)->canSee(fn() => auth()->user()->hasRole('super-admin')),
                 MenuItem::resource(Website::class)->canSee(fn() => auth()->user()->hasRole('super-admin')),
-                MenuItem::externalLink(__("Change Application Language"), route("app.setting.language"))
+
+                MenuItem::externalLink(__("Change Application Language", ['lang' => trans("Dari")]), route("app.setting.language", ['file' => 'fa']))
                     ->canSee(fn() => auth()->user()->hasRole('super-admin')),
+
+
+                MenuItem::externalLink(__("Change Application Language", ['lang' => trans("Pashto")]), route("app.setting.language", ['file' => 'pa']))
+                    ->canSee(fn() => auth()->user()->hasRole('super-admin')),
+
+                MenuItem::externalLink(__("Change Application Language", ['lang' => trans("Arabic")]), route("app.setting.language", ['file' => 'ar']))
+                    ->canSee(fn() => auth()->user()->hasRole('super-admin')),
+
+
                 MenuItem::externalLink(__("See Other Website Data"), route("check.other-website-employee"))
                     ->canSee(fn() => auth()->user()->hasPermissionTo('see-other-website-data'))
                     ->openInNewTab(),
@@ -156,6 +173,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             (new BackupTool)
                 ->canSee(fn() => auth()->user()
                     ->hasRole('super-admin')),
+
+            new \Badinansoft\LanguageSwitch\LanguageSwitch,
 
             // new \GeneaLabs\NovaPassportManager\NovaPassportManager,
         ];

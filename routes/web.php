@@ -118,14 +118,11 @@ Route::middleware(['auth'])->group(function () {
 
 
 //
-Route::middleware(['auth', 'role:super-admin'])
+Route::middleware(['auth', 'permission:change_language'])
     ->prefix('app/setting/')
     ->name('app.setting.')
     ->group(function () {
-
         Route::get('language/{file}', LanguageAutomization::class)->name('language');
-
-
     });
 
 

@@ -16,7 +16,7 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('telescope:prune --hours=48')->daily();
         $schedule->command('backup:run --only-db')->dailyAt("21:30");
-        
+        //
         $schedule->call(function () {
             foreach (User::all() as $user) {
                 $user->notify(
@@ -25,7 +25,7 @@ class Kernel extends ConsoleKernel
                         ->type('info')
                 );
             }
-        })->everySecond();
+        })->dailyAt("09:00");
         // $schedule->command('backup:clean')->everyMinute();
         // $schedule->command('view:clear')->everyMinute();
         // $schedule->exec('npm run build')->everyMinute();

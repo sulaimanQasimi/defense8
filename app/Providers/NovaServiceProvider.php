@@ -36,42 +36,56 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     public function boot(): void
     {
         parent::boot();
+
+        // Left to right Direction
         Nova::enableRTL();
+
+        // Side Bar Menu
         Nova::mainMenu(fn(Request $request) => [
             MenuSection::dashboard(Main::class)->icon('chart-bar'),
+
+            // Guest Menu Section
             MenuSection::make(__('Guest'), [
                 MenuItem::resource(Host::class),
-                MenuItem::resource(Gate::class),
                 MenuItem::resource(Guest::class),
 
-            ])
-                ->collapsable()
+            ])->collapsable()
                 ->collapsedByDefault()
                 ->icon('user-group'),
 
-
-
-
+            // Guest Report Menu Section
             MenuSection::make(__('Guest Report'), [
+
+                // Daily Guest Report Menu Item
                 MenuItem::externalLink(__("Daily Guest Report"), route("guest.report.daily"))->canSee(fn() => auth()->user()->hasRole('super-admin'))->openInNewTab(),
 
+                // Weekly Guest Report Menu Item
                 MenuItem::externalLink(__("Weekly Guest Report"), route("guest.report.weekly"))->canSee(fn() => auth()->user()->hasRole('super-admin'))->openInNewTab(),
 
+                // Monthly Guest Report Menu Item
                 MenuItem::externalLink(__("Monthly Guest Report"), route("guest.report.monthly"))->canSee(fn() => auth()->user()->hasRole('super-admin'))->openInNewTab(),
 
+                // Yearly Guest Report Menu Item
                 MenuItem::externalLink(__("Yearly Guest Report"), route("guest.report.yearly"))->canSee(fn() => auth()->user()->hasRole('super-admin'))->openInNewTab(),
 
             ])->collapsable()->collapsedByDefault()->icon('document'),
 
+            // Card and Employee Section
+            MenuSection::make(__('Employees'), [
 
-
-            MenuSection::make(__('Card'), [
+                // Department Menu Item
                 MenuItem::resource(Department::class),
+
+                // Gate Menu Item
+                MenuItem::resource(Gate::class),
+
+                // Employee Menu Item
                 MenuItem::resource(CardCardInfo::class),
 
+                // Employee Check out Page
                 MenuItem::externalLink(__("Employee Check Card"), route("employee.check.card"))->canSee(fn() => \Illuminate\Support\Facades\Gate::allows('gateChecker', \App\Models\Gate::class)),
 
-
+                // Self Employee Attendance
                 MenuItem::externalLink(
                     __("Employee Attendance Check Self Department"),
                     route(
@@ -80,61 +94,65 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     )
                 )->canSee(fn() => auth()->user()->hasPermissionTo('check own department attendance')),
 
-
-
-
-
+                // Check Attendance of Department
                 MenuItem::externalLink(__("Employee Attendance Check Department"), route("employee.attendance.check"))
                     ->canSee(fn() => auth()->user()->hasRole('super-admin')),
 
                 // MenuItem::externalLink(__("Download CURRENT MONTH ATTENDANCE EMPLOYEE"), route("employee.attendance.current.month"))
                 //     ->canSee(fn() => auth()->user()->hasRole('super-admin'))->openInNewTab(),
 
+                // Report Generator of Attendance
                 MenuItem::externalLink(__("ATTENDANCE EMPLOYEE Report Generator"), route("employee.attendance.pdf.generator"))->canSee(fn() => auth()->user()->hasRole('super-admin'))->openInNewTab(),
-            ])
-                ->collapsable()
-                ->collapsedByDefault(),
+
+                // Frame of Printable Card Menu Item
+                MenuItem::resource(PrintCardFrame::class),
+
+
+            ])->collapsable()->collapsedByDefault(),
+
+            // Location Menu Section
             MenuSection::make(__('Location'), [
                 MenuItem::resource(Province::class),
                 MenuItem::resource(District::class),
                 MenuItem::resource(Village::class),
-            ])->icon('map-pin')
-                ->collapsable()
-                ->collapsedByDefault(),
+            ])->icon('map-pin')->collapsable()->collapsedByDefault(),
 
 
             MenuSection::make(__('Administration'), [
-                MenuItem::resource(PrintCardFrame::class),
                 MenuItem::resource(GuestOption::class),
                 MenuItem::resource(Permission::class),
                 MenuItem::resource(Role::class),
                 MenuItem::resource(User::class),
-                MenuItem::resource(Activitylog::class)->canSee(fn() => auth()->user()->hasRole('super-admin')),
-                MenuItem::resource(Website::class)->canSee(fn() => auth()->user()->hasRole('super-admin')),
-
-                MenuItem::externalLink(__("Change Application Language", ['lang' => trans("Dari")]), route("app.setting.language", ['file' => 'fa']))
-                    ->canSee(fn() => auth()->user()->hasRole('super-admin')),
-
-
-                MenuItem::externalLink(__("Change Application Language", ['lang' => trans("Pashto")]), route("app.setting.language", ['file' => 'pa']))
-                    ->canSee(fn() => auth()->user()->hasRole('super-admin')),
-
-                MenuItem::externalLink(__("Change Application Language", ['lang' => trans("Arabic")]), route("app.setting.language", ['file' => 'ar']))
-                    ->canSee(fn() => auth()->user()->hasRole('super-admin')),
 
 
                 MenuItem::externalLink(__("See Other Website Data"), route("check.other-website-employee"))
                     ->canSee(fn() => auth()->user()->hasPermissionTo('see-other-website-data'))
                     ->openInNewTab(),
+
                 MenuItem::externalLink(__("Create Token"), url("user/api-tokens"))
                     ->canSee(fn() => auth()->user()->hasRole('api-token'))->openInNewTab(),
+            ])->icon('cog')->collapsable()->collapsedByDefault(),
+
+
+            MenuSection::make(__("System"), [
+                MenuItem::resource(Activitylog::class)->canSee(fn() => auth()->user()->hasRole('super-admin')),
+                MenuItem::resource(Website::class)->canSee(fn() => auth()->user()->hasRole('super-admin')),
                 MenuItem::make(__('Backups'))
                     ->path('/backups')
                     ->canSee(fn() => auth()->user()->hasRole('super-admin'))->openInNewTab(),
-            ])
-                ->icon('cog')->collapsable()->collapsedByDefault(),
 
 
+                MenuItem::externalLink(__("Change Application Language", ['lang' => trans("Dari")]), route("app.setting.language", ['file' => 'fa']))
+                    ->canSee(fn() => auth()->user()->hasPermissionTo('change_language')),
+
+
+                MenuItem::externalLink(__("Change Application Language", ['lang' => trans("Pashto")]), route("app.setting.language", ['file' => 'pa']))
+                    ->canSee(fn() => auth()->user()->hasPermissionTo('change_language')),
+
+                MenuItem::externalLink(__("Change Application Language", ['lang' => trans("Arabic")]), route("app.setting.language", ['file' => 'ar']))
+                    ->canSee(fn() => auth()->user()->hasPermissionTo('change_language')),
+
+            ])->icon('language')->collapsable()->collapsedByDefault(),
 
         ]);
 

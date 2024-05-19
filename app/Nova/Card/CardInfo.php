@@ -188,8 +188,8 @@ class CardInfo extends Resource
 
                 BelongsTo::make(__("Province"), "main_province", Province::class)
                     ->nullable()
-                    ->hideFromIndex()
-                    ->searchable(),
+                    ->searchable()
+                    ->showCreateRelationButton(),
 
                 BelongsTo::make(__("District"), "main_district", District::class)
                     ->dependsOn(
@@ -200,8 +200,9 @@ class CardInfo extends Resource
                             });
                         }
                     )
-                    ->hideFromIndex()
-                    ->nullable(),
+                    ->nullable()
+
+                    ->showCreateRelationButton(),
 
                 BelongsTo::make(__("Village"), "main_village", Village::class)
                     ->dependsOn(
@@ -212,14 +213,13 @@ class CardInfo extends Resource
                             });
                         }
                     )
-                    ->hideFromIndex()
-                    ->nullable(),
+                    ->nullable()
+                    ->showCreateRelationButton(),
             ])->limit(0),
 
             Panel::make(__("Current Address"), [
                 BelongsTo::make(__("Province"), "current_province", Province::class)
                     ->nullable()
-                    ->hideFromIndex()
                     ->searchable(),
 
                 BelongsTo::make(__("District"), "current_district", District::class)
@@ -231,8 +231,9 @@ class CardInfo extends Resource
                             });
                         }
                     )
-                    ->hideFromIndex()
-                    ->nullable(),
+                    ->nullable()
+
+                    ->showCreateRelationButton(),
 
                 BelongsTo::make(__("Village"), "current_village", Village::class)
                     ->dependsOn(
@@ -243,8 +244,8 @@ class CardInfo extends Resource
                             });
                         }
                     )
-                    ->hideFromIndex()
-                    ->nullable(),
+                    ->nullable()
+                    ->showCreateRelationButton(),
 
             ]),
 

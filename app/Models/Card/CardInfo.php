@@ -19,17 +19,25 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class CardInfo extends Model
 {
     use HasFactory;
     use SoftDeletes;
 
+    use LogsActivity;
 
     protected $casts = [
         'birthday' => 'date',
     ];
     protected $fillable = ['remark'];
+    public function getActivitylogOptions():LogOptions
+    {
+        return LogOptions::defaults()->logAll()
+        ->setDescriptionForEvent(fn(string $eventName) => "This model has been {$eventName}");
+    }
     public function getJalaliBirthDateAttribute()
     {
         return verta($this->registered_at)->format("Y/m/d");
@@ -134,14 +142,6 @@ class CardInfo extends Model
     {
         return $this->belongsTo(Department::class);
     }
-
-
-    public function career(): BelongsTo
-    {
-        return $this->belongsTo(Career::class);
-    }
-
-
     public function orginization(): BelongsTo
     {
         return $this->belongsTo(Department::class, 'department_id');

@@ -60,8 +60,7 @@ class Guest extends Resource
                 ->rules('required', 'string')
                 ->hideWhenUpdating(fn() => $this->registered_at->isBefore(Carbon::today()))
 
-                ->placeholder(__("Enter Field", ['name' => __("Name")]))
-            ,
+                ->placeholder(__("Enter Field", ['name' => __("Name")])),
 
             // Guest Last Name
             Text::make(__("Last Name"), 'last_name')
@@ -80,12 +79,15 @@ class Guest extends Resource
                 ->sortable()
                 ->rules('required', 'string')
                 ->placeholder(__("Enter Field", ['name' => __("Career")])),
+
+
             // Host
             BelongsTo::make(__("Host"), 'host', Host::class)
                 ->filterable()
                 ->showCreateRelationButton()
                 ->exceptOnForms(),
 
+            //
             Text::make(__("Invited By"), fn() => $this->host->head_name),
 
             Text::make(__("Address"), 'address')
@@ -101,7 +103,8 @@ class Guest extends Resource
                 ->required()->rules('required', 'date'),
             Select::make(__("Enter Gate"), 'enter_gate')->options(
                 \App\Support\Defense\Gate::gate_options()
-            )->filterable()
+            )
+                ->filterable()
                 ->displayUsingLabels()
                 ->required()
                 ->creationRules('required')
@@ -109,8 +112,6 @@ class Guest extends Resource
             ,
             Tag::make(__("Condition"), 'Guestoptions', GuestOption::class)->showCreateRelationButton()->displayAsList(),
 
-            //  PersianDate::make(__("Enter At"), 'enter_at'),
-            //  PersianDate::make(__("Exit At"), 'exit_at'),
 
             HasMany::make(__("Gate Passed"), 'guestGate', GuestGate::class),
 

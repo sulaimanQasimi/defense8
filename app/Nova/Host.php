@@ -15,7 +15,7 @@ class Host extends Resource
     public static $title = 'department.fa_name';
 
     public static $search = [
-        'name',
+        'department.fa_name',
         'head_name',
         'phone',
         'address',

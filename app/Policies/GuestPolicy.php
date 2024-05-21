@@ -85,4 +85,9 @@ class GuestPolicy
     {
         return false;
     }
+    public function generate(User $user,Guest $guest): bool
+    {
+        return $user->id === $guest->host->user_id || \Illuminate\Support\Facades\Gate::allows('gateChecker', \App\Models\Gate::class);
+    }
+
 }

@@ -10,6 +10,7 @@ use App\Models\GuestOption;
 use App\Models\PrintCardFrame;
 use App\Models\Province;
 use App\Models\District;
+use App\Models\Village;
 use Hekmatinasser\Verta\Facades\Verta;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -170,12 +171,12 @@ class CardInfo extends Model
     }
     public function main_village(): BelongsTo
     {
-        return $this->belongsTo(District::class, 'm_village');
+        return $this->belongsTo(Village::class, 'm_village');
     }
 
     public function current_village(): BelongsTo
     {
-        return $this->belongsTo(District::class, 'c_village');
+        return $this->belongsTo(Village::class, 'c_village');
     }
 
 }

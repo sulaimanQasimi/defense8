@@ -28,7 +28,7 @@ const logout = () => {
 </script>
 
 <template>
-    <div>
+    <div dir="rtl">
         <Head :title="title" />
 
         <Banner />
@@ -41,12 +41,12 @@ const logout = () => {
                         <div class="flex">
                             <!-- Logo -->
                             <div class="shrink-0 flex items-center">
-                               
+
                             </div>
 
                             <!-- Navigation Links -->
                             <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                               
+
                             </div>
                         </div>
 
@@ -130,27 +130,12 @@ const logout = () => {
 
                                     <template #content>
                                         <!-- Account Management -->
-                                        <div class="block px-4 py-2 text-xs text-gray-400">
-                                            Manage Account
-                                        </div>
 
-                                        <DropdownLink :href="route('profile.show')">
-                                            Profile
+                                        <DropdownLink href="/">
+                                            خانه
                                         </DropdownLink>
 
-                                        <DropdownLink v-if="$page.props.jetstream.hasApiFeatures" :href="route('api-tokens.index')">
-                                            API Tokens
-                                        </DropdownLink>
-
-                                        <div class="border-t border-gray-200 dark:border-gray-600" />
-
-                                        <!-- Authentication -->
-                                        <form @submit.prevent="logout">
-                                            <DropdownLink as="button">
-                                                Log Out
-                                            </DropdownLink>
-                                        </form>
-                                    </template>
+                                      </template>
                                 </Dropdown>
                             </div>
                         </div>
@@ -187,7 +172,7 @@ const logout = () => {
                 <!-- Responsive Navigation Menu -->
                 <div :class="{'block': showingNavigationDropdown, 'hidden': ! showingNavigationDropdown}" class="sm:hidden">
                     <div class="pt-2 pb-3 space-y-1">
-                        
+
                     </div>
 
                     <!-- Responsive Settings Options -->

@@ -40,16 +40,15 @@ const updatePassword = () => {
 <template>
     <FormSection @submitted="updatePassword">
         <template #title>
-            Update Password
+            تغییر گذرواژه
         </template>
 
         <template #description>
-            Ensure your account is using a long, random password to stay secure.
         </template>
 
         <template #form>
             <div class="col-span-6 sm:col-span-4">
-                <InputLabel for="current_password" value="Current Password" />
+                <InputLabel for="current_password" value="پسورد فعلی" />
                 <TextInput
                     id="current_password"
                     ref="currentPasswordInput"
@@ -62,7 +61,7 @@ const updatePassword = () => {
             </div>
 
             <div class="col-span-6 sm:col-span-4">
-                <InputLabel for="password" value="New Password" />
+                <InputLabel for="password" value="پسورد جدید" />
                 <TextInput
                     id="password"
                     ref="passwordInput"
@@ -75,7 +74,7 @@ const updatePassword = () => {
             </div>
 
             <div class="col-span-6 sm:col-span-4">
-                <InputLabel for="password_confirmation" value="Confirm Password" />
+                <InputLabel for="password_confirmation" value="تکرار پسورد جدید" />
                 <TextInput
                     id="password_confirmation"
                     v-model="form.password_confirmation"
@@ -89,11 +88,11 @@ const updatePassword = () => {
 
         <template #actions>
             <ActionMessage :on="form.recentlySuccessful" class="me-3">
-                Saved.
+               ذخیره شد.
             </ActionMessage>
 
             <PrimaryButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                Save
+                ذخیره
             </PrimaryButton>
         </template>
     </FormSection>

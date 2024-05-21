@@ -18,7 +18,7 @@ class EmployeeScanCard extends Controller
 
         $code = $request->input("code");
 
-        if (\Illuminate\Support\Str::startsWith($code, 'G-')) {
+        if (\Illuminate\Support\Str::startsWith($code, 'Guest-')) {
             $guest = Guest::query()->where('barcode', $code)->first();
         }
 
@@ -33,7 +33,7 @@ class EmployeeScanCard extends Controller
         $employee = null;
 
         $websites = Website::all();
-        
+
         $website = $request->input("website");
 
         $code = $request->input("code");

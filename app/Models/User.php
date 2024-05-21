@@ -23,7 +23,7 @@ class User extends Authenticatable
     use HasProfilePhoto;
     use Notifiable;
     use HasRoles;
-    use Impersonatable,HasPermissions;
+    use HasPermissions;
     use SoftDeletes;
 
     //    use TwoFactorAuthenticatable;

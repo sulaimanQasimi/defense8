@@ -95,7 +95,7 @@
                         <td class="px-4 py-2  text-2xl">
 
                             <p class="font-medium leading-none text-gray-700 mr-2 text-2xl">
-                                {{ $employee->orginization?->name }}
+                                {{ $employee->orginization?->fa_name }}
                             </p>
                         </td>
                     </tr>

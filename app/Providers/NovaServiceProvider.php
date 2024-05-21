@@ -40,6 +40,25 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         // Left to right Direction
         Nova::enableRTL();
 
+
+        Nova::userMenu(function (Request $request, Menu $menu) {
+            return $menu
+                ->append(
+                    MenuItem::externalLink(__('Monitor'), url('/telescope'))
+                        ->openInNewTab()
+                        ->canSee(fn() => auth()->user()->hasRole('super-admin'))
+                )
+                ->prepend(MenuItem::externalLink(__('My Profile'), route('profile.show'))->openInNewTab());
+        });
+
+
+
+
+
+
+
+
+
         // Side Bar Menu
         Nova::mainMenu(fn(Request $request) => [
             MenuSection::dashboard(Main::class)->icon('chart-bar'),

@@ -46,7 +46,7 @@ class Guest extends Model
                     $day = ($fetch) ? $fetch->day + 1 : 1;
                     $guest->day = $day;
                     $len = strlen($day);
-                    $guest->barcode = "G-" . now()->format("Ym") . str_pad($day, 9 - $len, "0", STR_PAD_LEFT);
+                    $guest->barcode = "Guest-" . now()->format("Ym") . str_pad($day, 9 - $len, "0", STR_PAD_LEFT);
 
                     $guest->save();
 

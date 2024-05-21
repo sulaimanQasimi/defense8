@@ -27,7 +27,7 @@ Route::prefix("guest")
         Route::middleware(['auth', "guestGatePassed"])->get('passemployee/{cardInfo:id}/to', 'employeeState')->name('employee.check');
 
         //
-        Route::middleware(['auth'])->get('/generate/{guest:id}', 'generate')->name('guest.generate');
+        Route::middleware(['auth','can:generate,guest'])->get('/generate/{guest:id}', 'generate')->name('guest.generate');
     });
 
 

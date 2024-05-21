@@ -55,6 +55,7 @@ class CardInfo extends Resource
     ];
 
     public static $tableStyle = 'tight';
+    public static $trafficCop = false;
     public static function indexQuery(NovaRequest $request, $query)
     {
         return $query;
@@ -186,11 +187,15 @@ class CardInfo extends Resource
             ])->limit(0),
             Panel::make(__("Main Address"), [
 
+                //
                 BelongsTo::make(__("Province"), "main_province", Province::class)
                     ->nullable()
                     ->searchable()
                     ->showCreateRelationButton(),
 
+
+
+                //
                 BelongsTo::make(__("District"), "main_district", District::class)
                     ->dependsOn(
                         ['main_province'],
@@ -201,9 +206,10 @@ class CardInfo extends Resource
                         }
                     )
                     ->nullable()
-
                     ->showCreateRelationButton(),
 
+
+                //
                 BelongsTo::make(__("Village"), "main_village", Village::class)
                     ->dependsOn(
                         ['main_district'],

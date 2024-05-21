@@ -15,14 +15,23 @@ class Village extends Resource
     public static $model = \App\Models\Village::class;
     public static $title = 'name';
     public static $search = [
-        'name','code','province.name','district.name'
+        'name'
     ];
 
+    public static function label()
+    {
+        return __('Villages');
+    }
+
+    public static function singularLabel()
+    {
+        return __('Village');
+    }
     public function fields(NovaRequest $request)
     {
         return [
             BelongsTo::make(trans("Province"), 'province', Province::class)->searchable(),
-            
+
             BelongsTo::make(trans("District"), 'district', District::class)
             ->dependsOn(
                 ['province'],

@@ -9,6 +9,7 @@ use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Tag;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Trix;
 use Laravel\Nova\Fields\URL;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use MZiraki\PersianDateField\PersianDateTime;
@@ -108,10 +109,10 @@ class Guest extends Resource
                 ->displayUsingLabels()
                 ->required()
                 ->creationRules('required')
-                ->hideWhenUpdating(fn() => $this->registered_at->isBefore(Carbon::today()))
-            ,
-            Tag::make(__("Condition"), 'Guestoptions', GuestOption::class)->showCreateRelationButton()->displayAsList(),
+                ->hideWhenUpdating(fn() => $this->registered_at->isBefore(Carbon::today())),
 
+            Tag::make(__("Condition"), 'Guestoptions', GuestOption::class)->showCreateRelationButton()->displayAsList(),
+            Trix::make(trans("Remark"), 'remark')->nullable(),
 
             HasMany::make(__("Gate Passed"), 'guestGate', GuestGate::class),
 

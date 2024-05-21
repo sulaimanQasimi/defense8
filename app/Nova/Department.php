@@ -43,6 +43,7 @@ class Department extends Resource
         return [
             BelongsTo::make(trans("Header Department"), 'department', Department::class)
                 ->nullable()
+                ->searchable()
                 ->filterable(),
 
             Text::make(trans("Name"), 'fa_name')

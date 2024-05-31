@@ -93,7 +93,7 @@ trait Template
         });
 
 
-        TCPDF::SetFont('mod_font', '', 10);
+        TCPDF::SetFont('mod_font', '', 7);
     }
     public function row($guest, $i): void
     {
@@ -101,7 +101,7 @@ trait Template
         TCPDF::Cell(25, 7, $guest->name, true, false, 'C');
         TCPDF::Cell(25, 7, $guest->last_name, true, false, 'C');
         TCPDF::Cell(20, 7, $guest->career, true, false, 'C');
-        TCPDF::Cell(30, 7, $guest->host->name, true, false, 'C');
+        TCPDF::Cell(30, 7, $guest->host->department->fa_name, true, false, 'C');
         TCPDF::Cell(30, 7, $guest->address, true, false, 'C');
         TCPDF::Cell(30, 7, verta($guest->registered_at), true, false, 'C');
         TCPDF::Cell(30, 7, $guest->enter_gate, true, false, 'C');

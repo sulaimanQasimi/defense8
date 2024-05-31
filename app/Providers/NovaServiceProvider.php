@@ -51,14 +51,6 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 ->prepend(MenuItem::externalLink(__('My Profile'), route('profile.show'))->openInNewTab());
         });
 
-
-
-
-
-
-
-
-
         // Side Bar Menu
         Nova::mainMenu(fn(Request $request) => [
             MenuSection::dashboard(Main::class)->icon('chart-bar'),

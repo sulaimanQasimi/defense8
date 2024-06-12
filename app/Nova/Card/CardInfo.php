@@ -60,9 +60,6 @@ class CardInfo extends Resource
     {
         return $query;
     }
-
-
-
     public static function label()
     {
         return __('Employees');

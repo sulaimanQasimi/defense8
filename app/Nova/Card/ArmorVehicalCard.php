@@ -12,10 +12,15 @@ class ArmorVehicalCard extends Resource
 {
     use VehicalDriverField;
     public static $model = \App\Models\Card\ArmorVehicalCard::class;
-    public static $title = 'id';
+
+    public static $title = 'vehical_palete';
     public static $search = [
-        'id',
+        'vehical_type',
+        "vehical_colour",
+        "vehical_palete",
+
     ];
+
 
     public static function label()
     {

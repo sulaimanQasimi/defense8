@@ -16,6 +16,7 @@ class EmployeeVehicalCard extends Model
     use HasFactory;
     use SoftDeletes;
     use HasCardInfo;
+    use HasDriver;
     protected $casts=[
         "birthday"=>"date"
     ];

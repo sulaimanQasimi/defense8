@@ -1,4 +1,7 @@
 {
+
+    "Organization":"جز تام",
+    "Organizations":"جز تام ها",
     "Monitor":"نظارت کلی",
     "My Profile":"پروفایل من",
 
@@ -19,7 +22,7 @@
     "Grade 11": "بست یازدهم",
     "Grade 12": "بست دوازدهم",
     "Careers": "وظایف",
-    "": "",
+    "Save": "ذخیره",
     "Dimentions": "جهت",
     "Vertical": "عمودی",
     "Horizotal": "افقی",

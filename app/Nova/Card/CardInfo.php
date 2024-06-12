@@ -65,12 +65,12 @@ class CardInfo extends Resource
 
     public static function label()
     {
-        return __('Card Info');
+        return __('Employees');
     }
 
     public static function singularLabel()
     {
-        return __('Card Info');
+        return __('Employee');
     }
     public function fields(NovaRequest $request)
     {

@@ -9,7 +9,7 @@ use Illuminate\Auth\Access\Response;
 
 class GatePolicy
 {
-    public $resource = "Department";
+    public $resource = "Gate";
 
     /**
      * Determine whether the user can view any models.

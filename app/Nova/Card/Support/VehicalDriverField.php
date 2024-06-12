@@ -5,8 +5,6 @@ use App\Nova\Card\CardInfo;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Laravel\Nova\Panel;
-use MZiraki\PersianDateField\PersianDate;
 
 trait VehicalDriverField
 {
@@ -30,17 +28,16 @@ trait VehicalDriverField
                 ->required()
                 ->rules('required', 'string')
                 ->placeholder(__("Enter Field", ['name' => __("Vehical Palete")])),
+
             Text::make(__("Vehical Chassis"), "vehical_chassis")
                 ->required()
                 ->rules('required', 'string')
                 ->placeholder(__("Enter Field", ['name' => __("Vehical Chassis")])),
             Text::make(__("Vehical Model"), "vehical_model")
-
                 ->nullable()
                 ->rules('nullable', 'string')
                 ->placeholder(__("Enter Field", ['name' => __("Vehical Model")])),
             Text::make(__("Vehical Owner"), "vehical_owner")
-
                 ->nullable()
                 ->rules('nullable', 'string')
                 ->placeholder(__("Enter Field", ['name' => __("Vehical Owner")])),

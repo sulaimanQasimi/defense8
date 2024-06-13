@@ -152,6 +152,19 @@
                         transform: rotate(360deg);
                     }
                 }
+
+                ::-webkit-scrollbar {
+                    width: 10px;
+                }
+
+                ::-webkit-scrollbar-thumb {
+                    background-color: #d7d2e9;
+                    border-radius: 0;
+                }
+
+                ::-webkit-scrollbar-track {
+                    background-color: hsl(0, 0%, 100%);
+                }
             </style>
         @endpush
     @endonce
@@ -340,7 +353,6 @@
         ministryX: $wire.entangle('ministry_x').live,
         ministryY: $wire.entangle('ministry_y').live,
         govLogo: $wire.entangle('gov_logo_path').live,
-
         govX: $wire.entangle('gov_x').live,
         govY: $wire.entangle('gov_y').live,
         remark: $wire.entangle('remark').live,
@@ -404,20 +416,22 @@
                     {{-- Ministry Logo Dimentions --}}
                     <x-form.dimention-slider label="Government Logo Dimentions" xModel="govX" yModel="govY"
                         xMax="260" yMax="160" />
+
                     <div class="my-2 col-span-2">
+
+                        <div>{name} {father_name} {job} {department} {taskra_num}</div>
                         <label for="font-size" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                            @lang('Remark')</label>
-                        <textarea type="text" id="remark" x-model="remark" rows="4"
+                            @lang(':resource Details', ['resource' => ''])</label>
+                        <textarea type="text" id="details" x-model="details" rows="4"
                             class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
 
 
                     </div>
-                    <div class="my-2 col-span-2">
 
-                        <div>{name} {father_name} {job} {department}</div>
+                    <div class="my-2 col-span-2">
                         <label for="font-size" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                            @lang(':resource Details',['resource'=>''])</label>
-                        <textarea type="text" id="details" x-model="details" rows="4"
+                            @lang('Remark')</label>
+                        <textarea type="text" id="remark" x-model="remark" rows="4"
                             class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
 
 
@@ -447,7 +461,7 @@
                             'background-image': 'url(\'/storage/' +
                                 background_path + '\')'
                         }"
-                            class="bg-cover bg-center bg-local bg-no-repeat">
+                            class="bg-cover bg-center bg-local bg-no-repeat h-[1.6in]">
                             <div class="px-2">
                                 {!! $details !!}
                             </div>
@@ -471,28 +485,22 @@
                 </div>
             </div>
         </div>
-
-        @once
-            @push('js')
-                <script type="text/javascript">
-                    var qrcode = new QRCode(document.getElementById("qrcode"), {
-                        width: 100,
-                        height: 100
-                    });
-
-                    qrcode.makeCode("123");
-                </script>
-            @endpush
-        @endonce
         @script
             <script>
+                // Remark Field
                 CKEDITOR.replace('remark').on('change', function(e) {
                     $wire.set('remark', this.getData());
                 });
-
+                // Details Field
                 CKEDITOR.replace('details').on('change', function(e) {
                     $wire.set('details', this.getData());
                 });
+                var qrcode =
+                    new QRCode(document.getElementById("qrcode"), {
+                        width: 100,
+                        height: 100
+                    });
+                qrcode.makeCode("123");
             </script>
         @endscript
     </div>

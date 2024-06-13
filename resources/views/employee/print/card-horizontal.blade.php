@@ -26,7 +26,7 @@
 
     {{-- Print Context --}}
     <div>
-        <div class="bg-white  h-[2.2in] w-[3.44in] block relative ">
+        <div class="bg-white  h-[2.2in] w-[3.44in] block relative mb-2">
             <div class=" border-t " style="background-color: {{ $card->color }}">
                 <div class="text-center" style="font-size: {{ $card->gov_name_font_size }}px">{{ $card->gov_name }}
                 </div>
@@ -39,28 +39,10 @@
             </div>
 
             <div style="font-size: {{ $card->info_font_size }}px; background-image: url('/storage/{{ $card->background_logo }}');color:{{ $card->font_color }}"
-                class="bg-cover bg-center bg-local bg-no-repeat ">
+                class="bg-cover bg-center bg-local bg-no-repeat  h-[1.6in]">
                 {{-- Diffrent Cards component --}}
                 <div class="px-2">
                     {!! $details !!}
-                    {{-- @includeWhen(
-                        $card->type == \App\Support\Defense\Print\PrintTypeEnum::Employee,
-                        'employee.print.employee')
-
-                    @includeWhen(
-                        $card->type == \App\Support\Defense\Print\PrintTypeEnum::Gun,
-                        'employee.print.gun')
-                    @includeWhen(
-                        $card->type == \App\Support\Defense\Print\PrintTypeEnum::EmployeeCar,
-                        'employee.print.employeeCar')
-
-                    @includeWhen(
-                        $card->type == \App\Support\Defense\Print\PrintTypeEnum::BlackMirrorCar,
-                        'employee.print.blackMirrorCar')
-
-                    @includeWhen(
-                        $card->type == \App\Support\Defense\Print\PrintTypeEnum::ArmorCar,
-                        'employee.print.ArmorCar') --}}
                 </div>
             </div>
             <div class="h-4 border-b " style="background-color: {{ $card->color }}"></div>
@@ -76,9 +58,8 @@
         {{-- <div class="space-x-1"></div> --}}
         <div class=" h-[2.2in] w-[3.44in] max-h-[2.13in] max-w-[3.5in]  block rounded-xl relative bg-cover bg-center bg-local bg-no-repeat "
             style="background-image: url('/storage/{{ $card->background_logo }}');color:{{ $card->font_color }}">
-            <div class="h-[2.5rem]" style="background-color: {{ $card->color }}"></div>
             <div class="px-2 py-3">
-                <div class="text-sm font-medium">{!! $card->remark !!}</div>
+                <div class="text-sm font-medium">{!! $remark !!}</div>
             </div>
         </div>
     </div>

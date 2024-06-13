@@ -66,11 +66,20 @@ class PrintCardController extends Controller
             ->replace('{name}', $cardInfo->name)
             ->replace('{father_name}', $cardInfo->father_name)
             ->replace('{department}', $cardInfo->orginization?->fa_name)
-            ->replace('{job}', $cardInfo->job_structure);
+            ->replace('{job}', $cardInfo->job_structure)
+            ->replace('{taskra_num}', $cardInfo->national_id);
+
+
+        $remark = Str::of($card->remark)
+        ->replace('{name}', $cardInfo->name)
+        ->replace('{father_name}', $cardInfo->father_name)
+        ->replace('{department}', $cardInfo->orginization?->fa_name)
+        ->replace('{job}', $cardInfo->job_structure)
+        ->replace('{taskra_num}', $cardInfo->national_id);
 
         if ($vertical) {
             return view('employee.print.card-vertical', compact('cardInfo', 'card'));
         }
-        return view('employee.print.card-horizontal', compact('cardInfo', 'card', 'details'));
+        return view('employee.print.card-horizontal', compact('cardInfo', 'card', 'details','remark'));
     }
 }

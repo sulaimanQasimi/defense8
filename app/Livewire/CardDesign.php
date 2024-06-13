@@ -65,8 +65,10 @@ class CardDesign extends Component
     public $gov_y;
     // Back of the Card file
 
-    #[Rule('required|string')]
+    #[Rule('required')]
     public $remark;
+    #[Rule('required')]
+    public $details;
     #[Rule('required|string')]
     public $font_color;
     public function mount(PrintCardFrame $printCardFrame): void
@@ -102,6 +104,7 @@ class CardDesign extends Component
         $this->color = $this->cardFrame->color;
         $this->info_size = $this->cardFrame->info_font_size;
         $this->remark = $this->cardFrame->remark;
+        $this->details = $this->cardFrame->details;
         $this->font_color = $this->cardFrame->font_color;
     }
     public function updated($name, $value): void
@@ -172,6 +175,9 @@ class CardDesign extends Component
                 break;
             case "remark":
                 $this->cardFrame->remark = $this->remark;
+            case "details":
+                $this->cardFrame->details = $this->details;
+
                 break;
             case "font_color":
                 $this->cardFrame->font_color = $this->font_color;

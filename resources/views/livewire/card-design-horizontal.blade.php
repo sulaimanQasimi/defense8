@@ -344,6 +344,7 @@
         govX: $wire.entangle('gov_x').live,
         govY: $wire.entangle('gov_y').live,
         remark: $wire.entangle('remark').live,
+        details: $wire.entangle('details').live,
     }" x-show="state.show" x-cloak>
         <div class="grid md:grid-cols-6 sm:grid-cols-1 gap-x-6">
             <div class="bg-white bg-opacity-50 rounded-lg shadow-lg p-6 relative overflow-hidden row-span-2 col-span-3">
@@ -411,6 +412,16 @@
 
 
                     </div>
+                    <div class="my-2 col-span-2">
+
+                        <div>{name} {father_name} {job} {department}</div>
+                        <label for="font-size" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                            @lang(':resource Details',['resource'=>''])</label>
+                        <textarea type="text" id="details" x-model="details" rows="4"
+                            class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+
+
+                    </div>
                 </div>
             </div>
 
@@ -438,28 +449,7 @@
                         }"
                             class="bg-cover bg-center bg-local bg-no-repeat">
                             <div class="px-2">
-                                @includeWhen(
-                                    $cardFrame->type == \App\Support\Defense\Print\PrintTypeEnum::Employee,
-                                    'livewire.cards.employee',
-                                    ['status' => 'complete']
-                                )
-                                @includeWhen(
-                                    $cardFrame->type == \App\Support\Defense\Print\PrintTypeEnum::Gun,
-                                    'livewire.cards.gun',
-                                    ['status' => 'complete']
-                                )
-                                @includeWhen(
-                                    $cardFrame->type == \App\Support\Defense\Print\PrintTypeEnum::EmployeeCar,
-                                    'livewire.cards.employeeCar')
-
-                                @includeWhen(
-                                    $cardFrame->type == \App\Support\Defense\Print\PrintTypeEnum::BlackMirrorCar,
-                                    'livewire.cards.blackMirrorCar')
-
-                                @includeWhen(
-                                    $cardFrame->type == \App\Support\Defense\Print\PrintTypeEnum::ArmorCar,
-                                    'livewire.cards.armorCar')
-
+                                {!! $details !!}
                             </div>
 
                         </div>
@@ -496,11 +486,13 @@
         @endonce
         @script
             <script>
+                CKEDITOR.replace('remark').on('change', function(e) {
+                    $wire.set('remark', this.getData());
+                });
 
-                    CKEDITOR.replace('remark').on('change', function(e) {
-                        $wire.remark=this.getData();
-                        console.log();
-                    });
+                CKEDITOR.replace('details').on('change', function(e) {
+                    $wire.set('details', this.getData());
+                });
             </script>
         @endscript
     </div>

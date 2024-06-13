@@ -10,8 +10,10 @@ use App\Http\Controllers\Report\DailyGuestsReport;
 use App\Livewire\AttendanceGenerator;
 use App\Livewire\CardDesign;
 use App\Livewire\Setting\LanguageAutomization;
+use App\Models\PrintCardFrame;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Str;
 use Spatie\BackupTool\Jobs\CreateBackupJob;
 
 
@@ -116,7 +118,6 @@ Route::middleware(['auth'])->group(function () {
 
 });
 
-
 //
 Route::middleware(['auth', 'permission:change_language'])
     ->prefix('app/setting/')
@@ -127,5 +128,6 @@ Route::middleware(['auth', 'permission:change_language'])
 
 
 Route::get('test', function () {
-    dd(app()->getLocale());
+// $m=PrintCardFrame::find(2)->details;
+// echo Str::replace('{name}','ali',$m);
 });

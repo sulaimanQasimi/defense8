@@ -9,6 +9,7 @@ use App\Models\PrintCardFrame;
 use App\Support\Defense\Print\PrintTypeEnum;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class PrintCardController extends Controller
@@ -61,9 +62,15 @@ class PrintCardController extends Controller
     }
     public function view_layout($cardInfo, $card, bool $vertical)
     {
-        if($vertical){
+        $details = Str::of($card->details)
+            ->replace('{name}', $cardInfo->name)
+            ->replace('{father_name}', $cardInfo->father_name)
+            ->replace('{department}', $cardInfo->orginization?->fa_name)
+            ->replace('{job}', $cardInfo->job_structure);
+
+        if ($vertical) {
             return view('employee.print.card-vertical', compact('cardInfo', 'card'));
         }
-        return view('employee.print.card-horizontal', compact('cardInfo', 'card'));
+        return view('employee.print.card-horizontal', compact('cardInfo', 'card', 'details'));
     }
 }

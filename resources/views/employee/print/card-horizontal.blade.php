@@ -21,6 +21,7 @@
     </style>
     <script src="{{ asset('alpine.min.js') }}"></script>
 </head>
+
 <body class="persian-font antialiased">
 
     {{-- Print Context --}}
@@ -41,8 +42,8 @@
                 class="bg-cover bg-center bg-local bg-no-repeat ">
                 {{-- Diffrent Cards component --}}
                 <div class="px-2">
-
-                    @includeWhen(
+                    {!! $details !!}
+                    {{-- @includeWhen(
                         $card->type == \App\Support\Defense\Print\PrintTypeEnum::Employee,
                         'employee.print.employee')
 
@@ -59,7 +60,7 @@
 
                     @includeWhen(
                         $card->type == \App\Support\Defense\Print\PrintTypeEnum::ArmorCar,
-                        'employee.print.ArmorCar')
+                        'employee.print.ArmorCar') --}}
                 </div>
             </div>
             <div class="h-4 border-b " style="background-color: {{ $card->color }}"></div>

@@ -28,5 +28,15 @@ trait GunCardField
             $text .= self::gun_translated_field($field) . " ";
         }
         return $text;
+
+    }
+    protected function gun_render($context)
+    {
+        return Str::of($context)
+            ->replace($this->gun_translated_field("gun_type"), $this->employee->gun_card?->gun_type)
+            ->replace($this->gun_translated_field("gun_no"), $this->employee->gun_card?->gun_no)
+            ->replace($this->gun_translated_field("range"), $this->employee->gun_card?->range)
+            ->replace($this->gun_translated_field("gun_recieved_date"), ($this->employee->gun_card?->filled_form_date)?verta($this->employee->gun_card?->filled_form_date)->format("Y/m/d"):"")
+        ;
     }
 }

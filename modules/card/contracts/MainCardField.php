@@ -13,17 +13,13 @@ trait MainCardField
         return [
             "card_perform" => __("Preform Date"),
             "card_expired_date" => __("Expire Date"),
-            "gun_type" => __("Gun Type"),
-            "gun_no" => __("Gun No"),
-            "range" => __("Gun Range"),
-            "gun_recieved_date"=>__("Gun Recieved Date"),
-       ];
+        ];
 
     }
 
-    protected static function main_translated_field($field)
+    private static function main_translated_field($field)
     {
-        return Str::of(self::info_field()[$field])->wrap("{", "}");
+        return Str::of(self::main_field()[$field])->wrap("{", "}");
     }
     public static function main_allowed_field(): string
     {
@@ -32,5 +28,11 @@ trait MainCardField
             $text .= self::main_translated_field($field) . " ";
         }
         return $text;
+    }
+    protected function main_render(string $context): string
+    {
+        return Str::of($context)
+            ->replace($this->main_translated_field('card_perform'), ($this->employee->main_card?->card_perform) ? verta($this->employee->main_card?->card_perform)->format("Y/m/d") : "N/A")
+            ->replace($this->main_translated_field('card_expired_date'), ($this->employee->main_card?->card_expired_date) ? verta($this->employee->main_card?->card_expired_date)->format("Y/m/d") : "N/A");
     }
 }

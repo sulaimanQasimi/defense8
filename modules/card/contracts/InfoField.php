@@ -25,17 +25,9 @@ trait InfoField
             "department" => trans("Department"),
             //
             "gate" => trans("Gate"),
-            //
-            "card_perform" => __("Preform Date"),
-            "card_expired_date" => __("Expire Date"),
-            //
-            "gun_type" => __("Gun Type"),
-            "gun_no" => __("Gun No"),
-            "range" => __("Gun Range"),
-            "gun_recieved_date"=>__("Gun Recieved Date"),
-       ];
+        ];
     }
-    protected static function info_translated_field($field)
+    private static function info_translated_field($field)
     {
         return Str::of(self::info_field()[$field])->wrap("{", "}");
     }
@@ -46,5 +38,20 @@ trait InfoField
             $text .= self::info_translated_field($field) . " ";
         }
         return $text;
+    }
+    protected function info_render($context)
+    {
+       return Str::of($context)
+            ->replace($this->info_translated_field('name'), $this->employee->name)
+            ->replace($this->info_translated_field('father_name'), $this->employee->father_name)
+            ->replace($this->info_translated_field('last_name'), $this->employee->last_name)
+            ->replace($this->info_translated_field('department'), $this->employee->orginization?->fa_name)
+            ->replace($this->info_translated_field('job_structure'), $this->employee->job_structure)
+            ->replace($this->info_translated_field('national_id'), $this->employee->national_id)
+            ->replace($this->info_translated_field('degree'), $this->employee->degree)
+            ->replace($this->info_translated_field('grade'), $this->employee->grade)
+            ->replace($this->info_translated_field('registare_no'), $this->employee->registare_no)
+            ->replace($this->info_translated_field('gate'), $this->employee->gate?->fa_name)
+        ;
     }
 }

@@ -10,6 +10,7 @@ use App\Support\Defense\Print\PrintTypeEnum;
 use Card\PrintCardField;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 
@@ -17,7 +18,6 @@ class PrintCardController extends Controller
 {
     public function employee(Request $request, CardInfo $cardInfo, int $printCardFrame): View
     {
-
         $card = PrintCardFrame::findOrFail($printCardFrame);
         if (!$card->type == PrintTypeEnum::Employee) {
             return abort(404);
@@ -65,14 +65,14 @@ class PrintCardController extends Controller
     public function layout($cardInfo, $card, bool $vertical)
     {
         app()->setLocale('fa');
-        $field=new PrintCardField($cardInfo,$card);
+        $field = new PrintCardField($cardInfo, $card);
         $details = $field->details;
         $remark = $field->remark;
-
+        Cookie::make('your_id', time(), 1);
         if ($vertical) {
             return view('employee.print.card-vertical', compact('cardInfo', 'card'));
         }
 
-        return view('employee.print.card-horizontal', compact('cardInfo', 'card', 'details','remark'));
+        return view('employee.print.card-horizontal', compact('cardInfo', 'card', 'details', 'remark'));
     }
 }

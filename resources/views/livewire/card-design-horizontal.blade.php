@@ -171,7 +171,7 @@
 
     <div>
 
-        {{--  --}}
+        {{-- Loader --}}
         @teleport('body')
             <div wire:loading>
                 <div class="absolute inset-0 flex justify-center items-center">
@@ -262,7 +262,7 @@
             </div>
         @endteleport
 
-        {{--  --}}
+        {{-- Loader --}}
 
 
         <div class="grid grid-cols-6 gap-4">
@@ -333,7 +333,8 @@
     </div>
     <div id="printable" class="pt-6 pb-3" wire:ignore x-data="{
         state: {
-            show: true
+            show: true,
+            backCardText:false
         },
         background_path: @entangle('background_path').live,
         uploading: false,
@@ -419,7 +420,7 @@
 
                     <div class="my-2 col-span-2">
 
-                        <div>{name} {father_name} {job} {department} {taskra_num}</div>
+                        <div>{{\Card\PrintCardField::allowedField()}}</div>
                         <label for="font-size" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                             @lang(':resource Details', ['resource' => ''])</label>
                         <textarea type="text" id="details" x-model="details" rows="4"

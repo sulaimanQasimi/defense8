@@ -21,7 +21,6 @@ class ArmorVehicalCard extends Resource
 
     ];
 
-
     public static function label()
     {
         return __('Armor Vehical Card');

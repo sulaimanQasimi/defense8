@@ -13,7 +13,6 @@
 
     @stack('css')
     <link type="text/css" href="{{ asset('single.css') }}" rel="stylesheet" />
-    
 </head>
 <body class="persian-font antialiased bg-sky-300">
     <div class="px-4 py-2">

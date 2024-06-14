@@ -7,6 +7,7 @@ use App\Models\Card\CardInfo;
 use App\Models\Card\GunCard;
 use App\Models\PrintCardFrame;
 use App\Support\Defense\Print\PrintTypeEnum;
+use Card\PrintCardField;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Str;
@@ -16,11 +17,12 @@ class PrintCardController extends Controller
 {
     public function employee(Request $request, CardInfo $cardInfo, int $printCardFrame): View
     {
+
         $card = PrintCardFrame::findOrFail($printCardFrame);
         if (!$card->type == PrintTypeEnum::Employee) {
             return abort(404);
         }
-        return $this->view_layout($cardInfo, $card, ($card->dim === "vertical") ? true : false);
+        return $this->layout($cardInfo, $card, ($card->dim === "vertical") ? true : false);
     }
     public function gun(Request $request, CardInfo $cardInfo, int $printCardFrame): View
     {
@@ -28,7 +30,7 @@ class PrintCardController extends Controller
         if (!$card->type == PrintTypeEnum::Gun) {
             return abort(404);
         }
-        return $this->view_layout($cardInfo, $card, ($card->dim === "vertical") ? true : false);
+        return $this->layout($cardInfo, $card, ($card->dim === "vertical") ? true : false);
     }
 
     public function employee_car(Request $request, CardInfo $cardInfo, int $printCardFrame): View
@@ -37,7 +39,7 @@ class PrintCardController extends Controller
         if (!$card->type == PrintTypeEnum::EmployeeCar) {
             return abort(404);
         }
-        return $this->view_layout($cardInfo, $card, ($card->dim === "vertical") ? true : false);
+        return $this->layout($cardInfo, $card, ($card->dim === "vertical") ? true : false);
     }
 
 
@@ -47,7 +49,7 @@ class PrintCardController extends Controller
         if (!$card->type == PrintTypeEnum::BlackMirrorCar) {
             return abort(404);
         }
-        return $this->view_layout($cardInfo, $card, ($card->dim === "vertical") ? true : false);
+        return $this->layout($cardInfo, $card, ($card->dim === "vertical") ? true : false);
     }
 
 
@@ -57,29 +59,20 @@ class PrintCardController extends Controller
         if (!$card->type == PrintTypeEnum::ArmorCar) {
             return abort(404);
         }
-        return $this->view_layout($cardInfo, $card, ($card->dim === "vertical") ? true : false);
+        return $this->layout($cardInfo, $card, ($card->dim === "vertical") ? true : false);
 
     }
-    public function view_layout($cardInfo, $card, bool $vertical)
+    public function layout($cardInfo, $card, bool $vertical)
     {
-        $details = Str::of($card->details)
-            ->replace('{name}', $cardInfo->name)
-            ->replace('{father_name}', $cardInfo->father_name)
-            ->replace('{department}', $cardInfo->orginization?->fa_name)
-            ->replace('{job}', $cardInfo->job_structure)
-            ->replace('{taskra_num}', $cardInfo->national_id);
-
-
-        $remark = Str::of($card->remark)
-        ->replace('{name}', $cardInfo->name)
-        ->replace('{father_name}', $cardInfo->father_name)
-        ->replace('{department}', $cardInfo->orginization?->fa_name)
-        ->replace('{job}', $cardInfo->job_structure)
-        ->replace('{taskra_num}', $cardInfo->national_id);
+        app()->setLocale('fa');
+        $field=new PrintCardField($cardInfo,$card);
+        $details = $field->details;
+        $remark = $field->remark;
 
         if ($vertical) {
             return view('employee.print.card-vertical', compact('cardInfo', 'card'));
         }
+
         return view('employee.print.card-horizontal', compact('cardInfo', 'card', 'details','remark'));
     }
 }

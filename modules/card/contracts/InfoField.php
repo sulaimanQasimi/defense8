@@ -19,11 +19,9 @@ trait InfoField
             "grade" => trans("Grade"),
             "registare_no" => trans("Register No"),
             "national_id" => trans("National ID"),
-
             "birthday" => trans("Date of Birth"),
             "job_structure" => trans("Job Stracture Title"),
             "department" => trans("Department"),
-            //
             "gate" => trans("Gate"),
         ];
     }
@@ -51,7 +49,6 @@ trait InfoField
             ->replace($this->info_translated_field('degree'), $this->employee->degree)
             ->replace($this->info_translated_field('grade'), $this->employee->grade)
             ->replace($this->info_translated_field('registare_no'), $this->employee->registare_no)
-            ->replace($this->info_translated_field('gate'), $this->employee->gate?->fa_name)
-        ;
+            ->replace($this->info_translated_field('gate'), $this->employee->gate?->fa_name);
     }
 }

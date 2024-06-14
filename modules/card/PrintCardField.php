@@ -6,6 +6,7 @@ use App\Models\PrintCardFrame as Frame;
 use Card\Contracts\GunCardField;
 use Card\Contracts\InfoField;
 use Card\Contracts\MainCardField;
+use Card\Contracts\VehicalCardField;
 use Closure;
 use Illuminate\Support\Facades\Pipeline;
 use Illuminate\Support\Str;
@@ -16,6 +17,7 @@ final class PrintCardField
     use GunCardField;
     use InfoField;
     use MainCardField;
+    use VehicalCardField;
     public function __construct(private Employee $employee, private Frame $frame)
     {
 
@@ -28,6 +30,7 @@ final class PrintCardField
                     fn($context, Closure $next) => $next($this->info_render($context)),
                     fn($context, Closure $next) => $next($this->main_render($context)),
                     fn($context, Closure $next) => $next($this->gun_render($context)),
+                    fn($context, Closure $next) => $next($this->vehical_render($context)),
                 ]
             )
                 ->then(fn($context) => $context);

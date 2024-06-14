@@ -423,6 +423,7 @@
                         <div>{{\Card\PrintCardField::info_allowed_field()}}</div>
                         <div>{{\Card\PrintCardField::main_allowed_field()}}</div>
                         <div>{{\Card\PrintCardField::gun_allowed_field()}}</div>
+                        <div>{{\Card\PrintCardField::vehical_allowed_field()}}</div>
                         <label for="font-size" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                             @lang(':resource Details', ['resource' => ''])</label>
                         <textarea type="text" id="details" x-model="details" rows="4"

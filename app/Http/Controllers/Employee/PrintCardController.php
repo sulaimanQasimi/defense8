@@ -65,12 +65,13 @@ class PrintCardController extends Controller
     public function layout($cardInfo, $card, bool $vertical)
     {
         app()->setLocale('fa');
+        // Get / Replace the field to Value
         $field = new PrintCardField($cardInfo, $card);
         $details = $field->details;
         $remark = $field->remark;
         Cookie::make('your_id', time(), 1);
         if ($vertical) {
-            return view('employee.print.card-vertical', compact('cardInfo', 'card'));
+            return view('employee.print.card-vertical', compact('cardInfo', 'card', 'details', 'remark'));
         }
 
         return view('employee.print.card-horizontal', compact('cardInfo', 'card', 'details', 'remark'));

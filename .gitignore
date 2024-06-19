@@ -5,6 +5,8 @@
 /public/storage
 /storage/*.key
 /vendor
+/package
+/storage/app/public/*
 /nova
 .env
 .env.backup

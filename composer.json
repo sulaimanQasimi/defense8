@@ -32,6 +32,7 @@
         "pragmarx/artisan-tool": "^0.4.0",
         "radwanic/resource-listing": "^1.0",
         "sereny/nova-permissions": "^1.4",
+        "spatie/laravel-settings": "^3.3",
         "spatie/nova-backup-tool": "^5.0",
         "tightenco/ziggy": "^1.0"
     },
@@ -43,6 +44,9 @@
         {
             "type": "path",
             "url": "nova"
+        } ,{
+            "type": "path",
+            "url": "package"
         }
     ],
     "autoload": {
@@ -50,6 +54,7 @@
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
             "Card\\": "modules/card/",
+            "Translation\\": "modules/translation/",
             "Database\\Seeders\\": "database/seeders/"
         }
     },

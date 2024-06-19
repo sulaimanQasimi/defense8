@@ -345,86 +345,93 @@
         govY: $wire.entangle('gov_y').live,
         remark: $wire.entangle('remark').live,
         attr: $wire.entangle('attr').live,
+        remark: $wire.entangle('remark').live,
+        details: $wire.entangle('details').live,
     }" x-show="state.show" x-cloak>
-        <div class="grid grid-cols-4 gap-x-6">
-            <div class="bg-white bg-opacity-50 rounded-lg shadow-lg p-6 relative overflow-hidden row-span-2">
-                <div class="mb-5">
-                    <label for="email"
-                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">@lang('Government Name')</label>
-                    <input type="text" x-model="gov"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
-                </div>
-                <div class="mb-5">
-                    <label for="email"
-                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">@lang('Ministry Name')</label>
+        <div class="grid grid-cols-6 gap-x-6">
+            <div class="bg-white bg-opacity-50 rounded-lg shadow-lg p-6 relative overflow-hidden col-span-4 row-span-6">
+                <div class="grid grid-cols-2 gap-x-2 gap-y-3">
 
-                    <input type="text" x-model="ministry"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
-                </div>
-                <div class="my-2">
-                    <label for="font-size" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                        @lang('Government Font Size')
-                    </label>
-                    <label class="slider">
-                        <input type="range" class="level" x-model="govSize" max="15">
-                    </label>
-                </div>
-                <div class="my-2">
-                    <label for="font-size" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                        @lang('Ministry Font Size')
-                    </label>
-                    <label class="slider">
-                        <input type="range" class="level" x-model="ministrySize" max="15">
-                    </label>
-                </div>
-                {{-- Card Info Text Size --}}
-                <div class="my-2">
-                    <label for="font-size" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                        @lang('Text Font Size')
-                    </label>
-                    <label class="slider">
-                        <input type="range" class="level" x-model="infoSize" max="100">
-                    </label>
-                </div>
-                {{-- Card Info Text Size --}}
-                <div class="my-2">
-                    <label for="font-size" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                        @lang('QR Code Scale')
-                    </label>
-                    <label class="slider">
-                        <input type="range" class="level" x-model="attr.qrscale" max="100">
-                    </label>
-                </div>
+                    <div class="mb-5">
+                        <label for="email"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">@lang('Government Name')</label>
+                        <input type="text" x-model="gov"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                    </div>
+                    <div class="mb-5">
+                        <label for="email"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">@lang('Ministry Name')</label>
 
-                <input type="color" x-model="color" />
-                <input type="color" x-model="fontColor" />
-                {{-- QR Code Dimentions --}}
-                <x-form.dimention-slider label="QR code Dimentions" xModel="qrX" yModel="qrY" xMax="270"
-                    yMax="270" />
+                        <input type="text" x-model="ministry"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                    </div>
+                    <div class="my-2">
+                        <label for="font-size" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                            @lang('Government Font Size')
+                        </label>
+                        <label class="slider">
+                            <input type="range" class="level" x-model="govSize" max="15">
+                        </label>
+                    </div>
+                    <div class="my-2">
+                        <label for="font-size" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                            @lang('Ministry Font Size')
+                        </label>
+                        <label class="slider">
+                            <input type="range" class="level" x-model="ministrySize" max="15">
+                        </label>
+                    </div>
+                    {{-- Card Info Text Size --}}
+                    <div class="my-2">
+                        <label for="font-size" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                            @lang('Text Font Size')
+                        </label>
+                        <label class="slider">
+                            <input type="range" class="level" x-model="infoSize" max="100">
+                        </label>
+                    </div>
+                    {{-- Card Info Text Size --}}
+                    <input type="color" x-model="color" />
+                    <input type="color" x-model="fontColor" />
+                    {{-- QR Code Dimentions --}}
+                    <x-form.dimention-slider label="QR code Dimentions" xModel="qrX" yModel="qrY" xMax="270"
+                        yMax="270" />
 
-                {{-- Image Dimentions --}}
-                <x-form.dimention-slider label="Image Dimentions" xModel="proX" yModel="proY" xMax="270"
-                    yMax="160" />
-                {{-- Ministry Logo Dimentions --}}
-                <x-form.dimention-slider label="Ministry Logo Dimentions" xModel="ministryX" yModel="ministryY"
-                    xMax="300" yMax="160" />
-                {{-- Ministry Logo Dimentions --}}
-                <x-form.dimention-slider label="Government Logo Dimentions" xModel="govX" yModel="govY"
-                    xMax="260" yMax="160" />
-                <div class="my-2">
-                    <label for="font-size" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                        @lang('Remark')</label>
-                    <textarea type="text" x-model="remark" rows="4"
-                        class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                    {{-- Image Dimentions --}}
+                    <x-form.dimention-slider label="Image Dimentions" xModel="proX" yModel="proY" xMax="270"
+                        yMax="160" />
+                    {{-- Ministry Logo Dimentions --}}
+                    <x-form.dimention-slider label="Ministry Logo Dimentions" xModel="ministryX" yModel="ministryY"
+                        xMax="300" yMax="160" />
+                    {{-- Ministry Logo Dimentions --}}
+                    <x-form.dimention-slider label="Government Logo Dimentions" xModel="govX" yModel="govY"
+                        xMax="260" yMax="160" />
 
+                    <div class="my-2 col-span-2">
 
+                        <div>{{ \Card\PrintCardField::info_allowed_field() }}</div>
+                        <div>{{ \Card\PrintCardField::main_allowed_field() }}</div>
+                        <div>{{ \Card\PrintCardField::gun_allowed_field() }}</div>
+                        <div>{{ \Card\PrintCardField::vehical_allowed_field() }}</div>
+                        <label for="font-size" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                            @lang(':resource Details', ['resource' => ''])</label>
+                        <textarea type="text" id="details" x-model="details" rows="4"
+                            class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                    </div>
+
+                    <div class="my-2 col-span-2">
+                        <label for="font-size" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                            @lang('Remark')</label>
+                        <textarea type="text" id="remark" x-model="remark" rows="4"
+                            class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                    </div>
                 </div>
             </div>
-            <div class="col-span-3">
-
-                <div class=" flex  justify-items-end">
-                    <div class="bg-white max-h-[3.44in] h-[3.44in] w-[2.2in] block  rounded-xl relative ">
-                        <div class=" border-t rounded-t-xl" :style="{ 'background-color': color }">
+            <div class="col-span-2">
+                <div class="grid grid-cols-2">
+                    <div class="bg-white max-h-[3.44in] h-[3.44in] w-[2.2in] block  rounded-xl relative  bg-cover bg-center bg-local bg-no-repeat"
+                    :style="{ 'background-image': 'url(\'/storage/' + background_path + '\')' }">
+                        <div class="h-[3rem] border-t rounded-t-xl" :style="{ 'background-color': color }">
                             <div class="text-center" :style="{ 'font-size': govSize + 'px' }" x-text="gov"></div>
                             <div class="text-center" :style="{ 'font-size': ministrySize + 'px' }" x-text="ministry">
                             </div>
@@ -435,75 +442,54 @@
                                 :style="{ top: ministryY + 'px', left: ministryX + 'px' }" />
                         </div>
                         <div :style="{
-                            'font-size': infoSize + 'px','color': fontColor,
+                            'font-size': infoSize + 'px',
+                            'color': fontColor,
                             // 'background-color': color,
-                            'background-image': 'url(\'/storage/' + background_path + '\')'
+                            // 'background-image': 'url(\'/storage/' + background_path + '\')'
                         }"
-                            class="bg-cover bg-center bg-local bg-no-repeat">
-                            <div class="px-2">
-                                @includeWhen(
-                                    $cardFrame->type == \App\Support\Defense\Print\PrintTypeEnum::Employee,
-                                    'livewire.cards.employee',
-                                    ['status' => 'complete']
-                                )
-                                @includeWhen(
-                                    $cardFrame->type == \App\Support\Defense\Print\PrintTypeEnum::Gun,
-                                    'livewire.cards.gun',
-                                    ['status' => 'complete']
-                                )
-                                @includeWhen(
-                                    $cardFrame->type == \App\Support\Defense\Print\PrintTypeEnum::EmployeeCar,
-                                    'livewire.cards.employeeCar')
-
-                                @includeWhen(
-                                    $cardFrame->type == \App\Support\Defense\Print\PrintTypeEnum::BlackMirrorCar,
-                                    'livewire.cards.blackMirrorCar')
-
-                                @includeWhen(
-                                    $cardFrame->type == \App\Support\Defense\Print\PrintTypeEnum::ArmorCar,
-                                    'livewire.cards.armorCar')
-
-                            </div>
+                            class="bg-cover bg-center bg-local bg-no-repeat h-{201 px} max-h-{201 px}"
+                            style="height: 201px;max-height: 201px">
+                            <div class="px-2"  x-html="details"></div>
 
                         </div>
-                        <div class="h-4 border-b rounded-b-xl p-sticky " style="margin-top:65px;"
+                        <div class="h-4 border-b rounded-b-xl" style="margin-top:65px;"
                             :style="{ 'background-color': color }">
-
                         </div>
                         <div>
                             <img src="{{ asset('11.jpg') }}" class="h-16 absolute"
-                                :style="{ top: proY + 'px', left: proX + 'px', height: attr.qrscale + 'px' }" />
+                                :style="{ top: proY + 'px', left: proX + 'px' }" />
                         </div>
-                        <h1 x-on:click="console.log(attr.qrscale)">dznk</h1>
                         <div id="qrcode" style="width:30px; position: absolute;;"
                             :style="{ top: qrY + 'px', left: qrX + 'px' }"></div>
+
                     </div>
-                </div>
-                <div class="space-y-3"></div>
-                {{-- Back of the Card --}}
-                <div class="block justify-items-end">
-                    <div class="bg-white h-[3.44in] w-[2.2in] block  rounded-xl relative bg-cover bg-center bg-local bg-no-repeat "
+                    {{-- Back of the Card --}}
+                    <div class="bg-white h-[3.44in] w-[2.2in] block  rounded-xl relative bg-cover bg-center bg-local bg-no-repeat"
                         :style="{ 'background-image': 'url(\'/storage/' + background_path + '\')' }">
-                        <div class="h-h-[1.75rem]" :style="{ 'background-color': color }"></div>
-                        <div class="mx-3 my-2 text-sm font-medium" x-html="remark" :style="{ 'color': fontColor }">
-                        </div>
+                        <div class="h-[3rem]" :style="{ 'background-color': color }"></div>
+                        <div class="mx-3 my-2 text-sm font-medium" x-html="remark" :style="{ 'color': fontColor }"></div>
 
                     </div>
                 </div>
-
             </div>
         </div>
-
-        @once
-            @push('js')
-                <script type="text/javascript">
-                    var qrcode = new QRCode(document.getElementById("qrcode"), {
+        @script
+            <script>
+                // Remark Field
+                CKEDITOR.replace('remark').on('change', function(e) {
+                    $wire.set('remark', this.getData());
+                });
+                // Details Field
+                CKEDITOR.replace('details').on('change', function(e) {
+                    $wire.set('details', this.getData());
+                });
+                var qrcode =
+                    new QRCode(document.getElementById("qrcode"), {
                         width: 100,
                         height: 100
                     });
-                    qrcode.makeCode("123");
-                </script>
-            @endpush
-        @endonce
+                qrcode.makeCode("123");
+            </script>
+        @endscript
     </div>
 </div>

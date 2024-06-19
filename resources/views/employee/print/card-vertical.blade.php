@@ -24,46 +24,27 @@
 
 <body class="persian-font antialiased">
     {{-- Print Context --}}
-    <div>
+    <div class="grid grid-cols-1 gap-y-2">
+        {{-- Front --}}
+        <div class="bg-white max-h-[3.44in] h-[3.44in] w-[2.2in] block relative  bg-cover bg-center bg-local bg-no-repeat"
+            style="background-image: url('/storage/{{ $card->background_logo }}');">
 
-        <div class="bg-white  h-[2.2in] w-[3.44in] block relative ">
-            <div class=" border-t " style="background-color: {{ $card->color }}">
-                <div class="text-center" style="font-size: {{ $card->gov_name_font_size }}px">{{ $card->gov_name }}
-                </div>
-                <div class="text-center" style="font-size: {{ $card->ministry_name_font_size }}px">
-                    {{ $card->ministry_name }}</div>
+            <div class="h-[3rem] border-t  rounded-t-xl" style="background-color: {{ $card->color }}">
+                <div class="text-center" style="font-size: {{ $card->gov_name_font_size }}px">{{ $card->gov_name }}</div>
+                <div class="text-center" style="font-size: {{ $card->ministry_name_font_size }}px">{{ $card->ministry_name }}</div>
                 <img src="/storage/{{ $card->gov_logo }}" class="h-12 absolute rounded-full"
-                    style="top: {{ $card->gov_logo_y }}px; left: {{ $card->gov_logo_x }}px" />
+                style="top: {{ $card->gov_logo_y }}px; left: {{ $card->gov_logo_x }}px" />
                 <img src="/storage/{{ $card->ministry_logo }}" class="h-12 absolute rounded-full"
                     style="top: {{ $card->ministry_logo_y }}px; left: {{ $card->ministry_logo_x }}px" />
             </div>
 
-            <div style="font-size: {{ $card->info_font_size }}px; background-image: url('/storage/{{ $card->background_logo }}');color:{{ $card->font_color }}"
-                class="bg-cover bg-center bg-local bg-no-repeat ">
+            <div style="font-size: {{ $card->info_font_size }}px;color:{{ $card->font_color }};height: 266px;max-height: 266px">
                 {{-- Diffrent Cards component --}}
                 <div class="px-2">
-
-                    @includeWhen(
-                        $card->type == \App\Support\Defense\Print\PrintTypeEnum::Employee,
-                        'employee.print.employee')
-
-                    @includeWhen(
-                        $card->type == \App\Support\Defense\Print\PrintTypeEnum::Gun,
-                        'employee.print.gun')
-                    @includeWhen(
-                        $card->type == \App\Support\Defense\Print\PrintTypeEnum::EmployeeCar,
-                        'employee.print.employeeCar')
-
-                    @includeWhen(
-                        $card->type == \App\Support\Defense\Print\PrintTypeEnum::BlackMirrorCar,
-                        'employee.print.blackMirrorCar')
-
-                    @includeWhen(
-                        $card->type == \App\Support\Defense\Print\PrintTypeEnum::ArmorCar,
-                        'employee.print.ArmorCar')
+                    {!! $details !!}
                 </div>
             </div>
-            <div class="h-4 border-b " style="background-color: {{ $card->color }}"></div>
+            <div class="h-4" style="background-color: {{ $card->color }}"></div>
             <div>
                 <img src="{{ $cardInfo->image_path }}" class="h-16 absolute"
                     style=" top: {{ $card->profile_logo_y }}px;left: {{ $card->profile_logo_x }}px;" />
@@ -72,13 +53,12 @@
                 style="width:30px; height:30px;position: absolute;top: {{ $card->qr_code_logo_y }}px; left: {{ $card->qr_code_logo_x }}px;">
             </div>
         </div>
-
-        {{-- <div class="space-x-1"></div> --}}
-        <div class=" h-[2.2in] w-[3.44in] max-h-[2.13in] max-w-[3.5in]  block rounded-xl relative bg-cover bg-center bg-local bg-no-repeat "
+        {{-- Back  --}}
+        <div class="h-[3.44in] w-[2.2in] block  relative bg-cover bg-center bg-local bg-no-repeat "
             style="background-image: url('/storage/{{ $card->background_logo }}');color:{{ $card->font_color }}">
             <div class="h-[2.5rem]" style="background-color: {{ $card->color }}"></div>
             <div class="px-2 py-3">
-                <div class="text-sm font-medium">{!! $card->remark !!}</div>
+                <div class="text-sm font-medium">{!! $remark !!}</div>
             </div>
         </div>
     </div>

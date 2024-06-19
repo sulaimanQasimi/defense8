@@ -10,12 +10,8 @@ use App\Http\Controllers\Report\DailyGuestsReport;
 use App\Livewire\AttendanceGenerator;
 use App\Livewire\CardDesign;
 use App\Livewire\Setting\LanguageAutomization;
-use App\Models\PrintCardFrame;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Str;
-use Spatie\BackupTool\Jobs\CreateBackupJob;
-
+use Translation\PolicyTranslation;
 
 // Guests Routes
 Route::prefix("guest")
@@ -29,7 +25,7 @@ Route::prefix("guest")
         Route::middleware(['auth', "guestGatePassed"])->get('passemployee/{cardInfo:id}/to', 'employeeState')->name('employee.check');
 
         //
-        Route::middleware(['auth','can:generate,guest'])->get('/generate/{guest:id}', 'generate')->name('guest.generate');
+        Route::middleware(['auth', 'can:generate,guest'])->get('/generate/{guest:id}', 'generate')->name('guest.generate');
     });
 
 
@@ -125,9 +121,7 @@ Route::middleware(['auth', 'permission:change_language'])
     ->group(function () {
         Route::get('language/{file}', LanguageAutomization::class)->name('language');
     });
-
-
 Route::get('test', function () {
-// $m=PrintCardFrame::find(2)->details;
-// echo Str::replace('{name}','ali',$m);
+
+    dd((new PolicyTranslation)->model()->persian_view_policy());
 });

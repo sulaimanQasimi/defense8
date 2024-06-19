@@ -23,12 +23,7 @@ trait GunCardField
     }
     public static function gun_allowed_field(): string
     {
-        $text = "";
-        foreach (self::gun_field() as $field => $value) {
-            $text .= self::gun_translated_field($field) . " ";
-        }
-        return $text;
-
+        return implode(' ', array_map([self::class, 'gun_translated_field'], array_keys(self::gun_field())));
     }
     protected function gun_render($context)
     {

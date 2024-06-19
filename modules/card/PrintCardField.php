@@ -18,9 +18,9 @@ final class PrintCardField
     use InfoField;
     use MainCardField;
     use VehicalCardField;
-    public function __construct(private Employee $employee, private Frame $frame)
-    {
-
+    public $version;
+    public function __construct(private Employee $employee, private Frame $frame){
+        $this->version=app()->version();
     }
     private function replace(string $context)
     {
@@ -39,10 +39,10 @@ final class PrintCardField
     public function __get($name)
     {
         if ($name == 'details') {
-            return $this->replace($this->frame->details);
+            return $this->replace($this->frame->details ?? "");
         }
         if ($name == 'remark') {
-            return $this->replace($this->frame->remark);
+            return $this->replace($this->frame->remark??"");
         }
     }
 }

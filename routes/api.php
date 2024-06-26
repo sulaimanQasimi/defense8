@@ -3,6 +3,8 @@
 use App\Http\Controllers\Api\CheckEmployeeInfo;
 use App\Http\Resources\CardInfoResource;
 use App\Models\Card\CardInfo;
+use App\Models\PrintCardFrame;
+use Card\ShareCardApi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -15,3 +17,7 @@ Route::name('api')
                 Route::get("employee/check", 'check')->name('employee.check');
             });
     });
+
+Route::get('design-cards', function () {
+    return (new ShareCardApi)->share();
+});

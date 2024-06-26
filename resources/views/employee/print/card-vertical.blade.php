@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }} " dir="rtl">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="rtl">
 
 <head>
     <meta charset="utf-8">
@@ -27,14 +27,14 @@
     <div class="grid grid-cols-1 gap-y-2">
         {{-- Front --}}
         <div class="bg-white max-h-[3.44in] h-[3.44in] w-[2.2in] block relative  bg-cover bg-center bg-local bg-no-repeat"
-            style="background-image: url('/storage/{{ $card->background_logo }}');">
+            style="background-image: url('{{ $card->background_logo }}');">
 
             <div class="h-[3rem] border-t  rounded-t-xl" style="background-color: {{ $card->color }}">
                 <div class="text-center" style="font-size: {{ $card->gov_name_font_size }}px">{{ $card->gov_name }}</div>
                 <div class="text-center" style="font-size: {{ $card->ministry_name_font_size }}px">{{ $card->ministry_name }}</div>
-                <img src="/storage/{{ $card->gov_logo }}" class="h-12 absolute rounded-full"
+                <img src="{{ $card->gov_logo }}" class="h-12 absolute rounded-full"
                 style="top: {{ $card->gov_logo_y }}px; left: {{ $card->gov_logo_x }}px" />
-                <img src="/storage/{{ $card->ministry_logo }}" class="h-12 absolute rounded-full"
+                <img src="{{ $card->ministry_logo }}" class="h-12 absolute rounded-full"
                     style="top: {{ $card->ministry_logo_y }}px; left: {{ $card->ministry_logo_x }}px" />
             </div>
 
@@ -55,7 +55,7 @@
         </div>
         {{-- Back  --}}
         <div class="h-[3.44in] w-[2.2in] block  relative bg-cover bg-center bg-local bg-no-repeat "
-            style="background-image: url('/storage/{{ $card->background_logo }}');color:{{ $card->font_color }}">
+            style="background-image: url('{{ $card->background_logo }}');color:{{ $card->font_color }}">
             <div class="h-[2.5rem]" style="background-color: {{ $card->color }}"></div>
             <div class="px-2 py-3">
                 <div class="text-sm font-medium">{!! $remark !!}</div>

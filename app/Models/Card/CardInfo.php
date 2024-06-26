@@ -52,23 +52,6 @@ class CardInfo extends Model
         return $this->hasOne(MainCard::class);
     }
     /**
-     * Armor Vehical Card
-     */
-
-    public function armor_vehical_card(): HasOne
-    {
-        return $this->hasOne(ArmorVehicalCard::class);
-    }
-    /**
-     * Black Mirror Vehical Card
-     */
-
-    public function black_mirror_vehical_card(): HasOne
-    {
-        return $this->hasOne(BlackMirrorVehicalCard::class);
-    }
-
-    /**
      *  Employee Vehical Card
      */
     public function employee_vehical_card(): HasOne

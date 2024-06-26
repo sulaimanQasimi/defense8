@@ -33,13 +33,13 @@
                 </div>
                 <div class="text-center" style="font-size: {{ $card->ministry_name_font_size }}px">
                     {{ $card->ministry_name }}</div>
-                <img src="/storage/{{ $card->gov_logo }}" class="h-12 absolute rounded-full"
+                <img src="{{ $card->gov_logo }}" class="h-12 absolute rounded-full"
                     style="top: {{ $card->gov_logo_y }}px; left: {{ $card->gov_logo_x }}px" />
-                <img src="/storage/{{ $card->ministry_logo }}" class="h-12 absolute rounded-full"
+                <img src="{{ $card->ministry_logo }}" class="h-12 absolute rounded-full"
                     style="top: {{ $card->ministry_logo_y }}px; left: {{ $card->ministry_logo_x }}px" />
             </div>
 
-            <div style="font-size: {{ $card->info_font_size }}px; background-image: url('/storage/{{ $card->background_logo }}');color:{{ $card->font_color }}"
+            <div style="font-size: {{ $card->info_font_size }}px; background-image: url('{{ $card->background_logo }}');color:{{ $card->font_color }}"
                 class="bg-cover bg-center bg-local bg-no-repeat  h-[1.6in]">
                 {{-- Diffrent Cards component --}}
                 <div class="px-2">
@@ -57,8 +57,8 @@
         </div>
 
         {{-- <div class="space-x-1"></div> --}}
-        <div class=" h-[2.2in] w-[3.44in] max-h-[2.13in] max-w-[3.5in]  block rounded-xl relative bg-cover bg-center bg-local bg-no-repeat "
-            style="background-image: url('/storage/{{ $card->background_logo }}');color:{{ $card->font_color }}">
+        <div class=" h-[2.2in] w-[3.44in] max-h-[2.13in] max-w-[3.44in]  block rounded-xl relative bg-cover bg-center bg-local bg-no-repeat "
+            style="background-image: url('{{ $card->background_logo }}');color:{{ $card->font_color }}">
             <div class="px-2 py-3">
                 <div class="text-sm font-medium">{!! $remark !!}</div>
             </div>

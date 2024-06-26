@@ -1,6 +1,7 @@
 <?php
 namespace App\Nova;
 
+use App\Nova\Actions\FetchCardDesign;
 use App\Support\Defense\Print\PrintTypeEnum;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\ID;
@@ -33,10 +34,8 @@ class PrintCardFrame extends Resource
         return [
             Text::make(trans("Name"), 'name')->required()->rules("required"),
             Select::make(trans("Type"), 'type')->options([
-                PrintTypeEnum::ArmorCar => trans("Armor Vehical Card"),
-                PrintTypeEnum::BlackMirrorCar => trans("Black Mirror Vehical Card"),
                 PrintTypeEnum::Employee => trans("Employee"),
-                PrintTypeEnum::EmployeeCar => trans("Employee Vehical Card"),
+                PrintTypeEnum::EmployeeCar => trans("Vehical Card"),
                 PrintTypeEnum::Gun => trans("Gun Card"),
             ])
                 ->displayUsingLabels()
@@ -100,7 +99,9 @@ class PrintCardFrame extends Resource
                 ->sole()
                 ->withoutConfirmation()
                 ->onlyOnDetail()
-                ->canRun(fn() => auth()->user()->hasRole("Design Card"))
+                ->canRun(fn() => auth()->user()->hasRole("Design Card")),
+(new FetchCardDesign)->canRun(fn() => auth()->user()->hasRole("Design Card"))
+
         ];
     }
 }

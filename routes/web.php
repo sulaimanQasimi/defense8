@@ -10,7 +10,9 @@ use App\Http\Controllers\Report\DailyGuestsReport;
 use App\Livewire\AttendanceGenerator;
 use App\Livewire\CardDesign;
 use App\Livewire\Setting\LanguageAutomization;
+use App\Models\PrintCardFrame;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 use Translation\PolicyTranslation;
 
 // Guests Routes
@@ -104,14 +106,6 @@ Route::middleware(['auth'])->group(function () {
 
     // Employee Car Card
     Route::middleware('role:Print Card')->get('print/employeeCar/{cardInfo:id}/card/{printCardFrame}', (new PrintCardController())->employee_car(...))->name('employee-car.print-card-for');
-
-    // Armor Car Card
-    Route::middleware('role:Print Card')->get('print/ArmorCar/{cardInfo:id}/card/{printCardFrame}', (new PrintCardController())->armor_car(...))->name('armor-car.print-card-for');
-
-    // Black Mirror Car Card
-    Route::middleware('role:Print Card')->get('print/blackMirrorCar/{cardInfo:id}/card/{printCardFrame}', (new PrintCardController())->black_mirror_car(...))->name('black-mirror-car.print-card-for');
-
-
 });
 
 //
@@ -122,6 +116,43 @@ Route::middleware(['auth', 'permission:change_language'])
         Route::get('language/{file}', LanguageAutomization::class)->name('language');
     });
 Route::get('test', function () {
-
-    dd((new PolicyTranslation)->model()->persian_view_policy());
+    return PrintCardFrame::all()->toJson(JSON_UNESCAPED_UNICODE);
 });
+Route::get('fetch', function () {
+
+    $a = Http::get("http://127.0.0.1/test");
+  foreach(collect(json_decode($a))->select([
+        "name",
+        "gov_logo",
+        "ministry_logo",
+        "background_logo",
+        "gov_logo_x",
+        "gov_logo_y",
+        "ministry_logo_x",
+        "ministry_logo_y",
+        "profile_logo_x",
+        "profile_logo_y",
+        "qr_code_logo_x",
+        "qr_code_logo_y",
+        "gov_name",
+        "gov_name_font_size",
+        "ministry_name",
+        "ministry_name_font_size",
+        "info_font_size",
+        "color",
+        "type",
+        "deleted_at",
+        "created_at",
+        "updated_at",
+        "remark",
+        "font_color",
+        "dim",
+        "attribute",
+        "details",
+    ]) as $card){
+        PrintCardFrame::create($card);
+    }
+
+    return;
+});
+

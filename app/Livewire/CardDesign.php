@@ -111,19 +111,25 @@ class CardDesign extends Component
     {
         $this->validateOnly($name);
         switch ($name) {
+
+            // V17.0.1
             case "background":
                 $this->background_path = Str::after($this->background->store(path: 'public/background'), 'public/');
-                $this->cardFrame->background_logo = $this->background_path;
+                $this->cardFrame->background_logo = url("storage/{$this->background_path}");
+                $this->background_path = url("storage/{$this->background_path}");
                 break;
 
             case "ministry_logo":
                 $this->ministry_logo_path = Str::after($this->ministry_logo->store(path: 'public/card/logo'), 'public/');
-                $this->cardFrame->ministry_logo = $this->ministry_logo_path;
+                $this->cardFrame->ministry_logo = url("storage/{$this->ministry_logo_path}");
+                $this->ministry_logo_path = url("storage/{$this->ministry_logo_path}");
+
                 break;
 
             case "gov_logo":
                 $this->gov_logo_path = Str::after($this->gov_logo->store(path: 'public/card/logo'), 'public/');
-                $this->cardFrame->gov_logo = $this->gov_logo_path;
+                $this->cardFrame->gov_logo = url("storage/{$this->gov_logo_path}");
+                $this->gov_logo_path = url("storage/{$this->gov_logo_path}");
                 break;
 
             case "attr":

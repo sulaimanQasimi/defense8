@@ -2,7 +2,11 @@
 
 namespace App\Providers;
 
+use App\Nova\Card\ArmorVehicalCard;
+use App\Nova\Card\BlackMirrorVehicalCard;
 use App\Nova\Card\CardInfo as CardCardInfo;
+use App\Nova\Card\EmployeeVehicalCard;
+use App\Nova\Card\GunCard;
 use App\Nova\CardInfo;
 use App\Nova\Dashboards\Main;
 use App\Nova\Department;
@@ -92,6 +96,18 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
                 // Employee Menu Item
                 MenuItem::resource(CardCardInfo::class),
+
+                // Employee Menu Item
+                // MenuItem::resource(ArmorVehicalCard::class),
+
+                // Employee Menu Item
+                // MenuItem::resource(BlackMirrorVehicalCard::class),
+
+                // Employee Menu Item
+                MenuItem::resource(EmployeeVehicalCard::class),
+
+                // Employee Menu Item
+                MenuItem::resource(GunCard::class),
 
                 // Employee Check out Page
                 MenuItem::externalLink(__("Employee Check Card"), route("employee.check.card"))->canSee(fn() => \Illuminate\Support\Facades\Gate::allows('gateChecker', \App\Models\Gate::class)),

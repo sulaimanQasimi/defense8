@@ -1,12 +1,16 @@
 <html>
-<head>
 
+<head>
+    <title>{{ config('app.name') }}</title>
     <meta name="theme-color" content="#fff">
     <meta charset="utf-8">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta name="viewport" content="width=device-width"/>
-    <meta name="locale" content="{{ app()->getLocale() }}"/>
+    <meta name="viewport" content="width=device-width" />
+    <meta name="locale" content="{{ app()->getLocale() }}" />
     <meta name="robots" content="noindex">
+
+    <link rel="icon" href="{{ asset('logo 32X32.png') }}">
+
     <style>
         * {
             box-sizing: border-box;
@@ -205,12 +209,24 @@
             font-family: 'persian-font';
             /* Change 'Arial' to the desired font family */
         }
-    </style>
 
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: #d7d2e9;
+            border-radius: 0;
+        }
+
+        ::-webkit-scrollbar-track {
+            background-color: hsl(0, 0%, 100%);
+        }
+    </style>
 </head>
 
 <body>
-    <div class="container" id="container">
+    <div class="container" id="container" x-data="{}">
         <div class="form-container log-in-container">
             <form action="/login" method="POST"> @csrf
                 <h1 class="title">د ملي دفاع وزارت</h1>

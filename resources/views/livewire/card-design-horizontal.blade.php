@@ -265,13 +265,12 @@
         {{-- Loader --}}
 
 
-        <div class="grid grid-cols-6 gap-4">
+        <div class="grid md:grid-cols-6 gap-4 sm:grid-cols-1">
 
 
-            <div>
                 <div class="flex items-center justify-center w-full">
                     <label for="background-logo-file-upload"
-                        class="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+                        class="flex flex-col items-center justify-center w-full h-24 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50">
                         <div class="flex flex-col items-center justify-center pt-5 pb-6">
                             <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
                                 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
@@ -286,13 +285,10 @@
                             wire:model.live="background" />
                     </label>
                 </div>
-            </div>
 
-
-            <div>
                 <div class="flex items-center justify-center w-full">
                     <label for="gov-logo-file-upload"
-                        class="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+                        class="flex flex-col items-center justify-center w-full h-24 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50">
                         <div class="flex flex-col items-center justify-center pt-5 pb-6">
                             <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
                                 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
@@ -305,13 +301,10 @@
                         <input id="gov-logo-file-upload" type="file" class="hidden" wire:model.live="gov_logo" />
                     </label>
                 </div>
-            </div>
 
-
-            <div>
                 <div class="flex items-center justify-center w-full">
                     <label for="ministry-logo-file-upload"
-                        class="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+                        class="flex flex-col items-center justify-center w-full h-24 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50">
                         <div class="flex flex-col items-center justify-center pt-5 pb-6">
                             <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
                                 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
@@ -325,16 +318,13 @@
                             wire:model.live="ministry_logo" />
                     </label>
                 </div>
-            </div>
-
-
         </div>
 
     </div>
     <div id="printable" class="pt-6 pb-3" wire:ignore x-data="{
         state: {
             show: true,
-            backCardText:false
+            backCardText: false
         },
         background_path: @entangle('background_path').live,
         uploading: false,
@@ -359,25 +349,25 @@
         remark: $wire.entangle('remark').live,
         details: $wire.entangle('details').live,
     }" x-show="state.show" x-cloak>
-        <div class="grid md:grid-cols-6 sm:grid-cols-1 gap-x-6">
+        <div class="grid md:grid-cols-6 sm:grid-cols-1 gap-x-6 gap-y-3">
             <div class="bg-white bg-opacity-50 rounded-lg shadow-lg p-6 relative overflow-hidden row-span-2 col-span-3">
 
                 <div class="grid md:grid-cols-2 sm:grid-cols-1 gap-3">
                     <div class="mb-5">
                         <label for="email"
-                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">@lang('Government Name')</label>
+                            class="block mb-2 text-sm font-medium text-gray-900 ">@lang('Government Name')</label>
                         <input type="text" x-model="gov"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-3xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 " />
                     </div>
                     <div class="mb-5">
                         <label for="email"
-                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">@lang('Ministry Name')</label>
+                            class="block mb-2 text-sm font-medium text-gray-900 ">@lang('Ministry Name')</label>
 
                         <input type="text" x-model="ministry"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-3xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 " />
                     </div>
                     <div class="my-2">
-                        <label for="font-size" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                        <label for="font-size" class="block mb-2 text-sm font-medium text-gray-900 ">
                             @lang('Government Font Size')
                         </label>
                         <label class="slider">
@@ -385,7 +375,7 @@
                         </label>
                     </div>
                     <div class="my-2">
-                        <label for="font-size" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                        <label for="font-size" class="block mb-2 text-sm font-medium text-gray-900 ">
                             @lang('Ministry Font Size')
                         </label>
                         <label class="slider">
@@ -394,7 +384,7 @@
                     </div>
                     {{-- Card Info Text Size --}}
                     <div class="my-2">
-                        <label for="font-size" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                        <label for="font-size" class="block mb-2 text-sm font-medium text-gray-900 ">
                             @lang('Text Font Size')
                         </label>
                         <label class="slider">
@@ -413,30 +403,30 @@
                         yMax="160" />
                     {{-- Ministry Logo Dimentions --}}
                     <x-form.dimention-slider label="Ministry Logo Dimentions" xModel="ministryX" yModel="ministryY"
-                        xMax="300" yMax="160" />
+                        xMax="280" yMax="160" />
                     {{-- Ministry Logo Dimentions --}}
                     <x-form.dimention-slider label="Government Logo Dimentions" xModel="govX" yModel="govY"
-                        xMax="260" yMax="160" />
+                        xMax="280" yMax="160" />
 
                     <div class="my-2 col-span-2">
 
-                        <div>{{\Card\PrintCardField::info_allowed_field()}}</div>
-                        <div>{{\Card\PrintCardField::main_allowed_field()}}</div>
-                        <div>{{\Card\PrintCardField::gun_allowed_field()}}</div>
-                        <div>{{\Card\PrintCardField::vehical_allowed_field()}}</div>
-                        <label for="font-size" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                        <div>{{ \Card\PrintCardField::info_allowed_field() }}</div>
+                        <div>{{ \Card\PrintCardField::main_allowed_field() }}</div>
+                        <div>{{ \Card\PrintCardField::gun_allowed_field() }}</div>
+                        <div>{{ \Card\PrintCardField::vehical_allowed_field() }}</div>
+                        <label for="font-size" class="block mb-2 text-sm font-medium text-gray-900 ">
                             @lang(':resource Details', ['resource' => ''])</label>
                         <textarea type="text" id="details" x-model="details" rows="4"
-                            class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                            class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
 
 
                     </div>
 
                     <div class="my-2 col-span-2">
-                        <label for="font-size" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                        <label for="font-size" class="block mb-2 text-sm font-medium text-gray-900 ">
                             @lang('Remark')</label>
                         <textarea type="text" id="remark" x-model="remark" rows="4"
-                            class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                            class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
 
 
                     </div>
@@ -446,24 +436,22 @@
             <div class="col-span-3 flex  justify-items-end">
 
                 <div class="grid md:grid-cols-2 sm:grid-cols-1 gap-7">
-
-                    <div class="bg-white max-h-[2.2in] h-[2.2in] w-[3.44in] block  rounded-xl relative ">
+                    <div class="bg-white h-[2.2in] w-[3.44in] block  rounded-xl relative ">
                         <div class=" border-t rounded-t-xl" :style="{ 'background-color': color }">
                             <div class="text-center" :style="{ 'font-size': govSize + 'px' }" x-text="gov"></div>
                             <div class="text-center" :style="{ 'font-size': ministrySize + 'px' }" x-text="ministry">
                             </div>
 
-                            <img :src="'/storage/' + govLogo" class="h-12 absolute rounded-full"
+                            <img :src="govLogo" class="h-12 absolute rounded-full"
                                 :style="{ top: govY + 'px', left: govX + 'px' }" />
-                            <img :src="'/storage/' + ministryLogo" class="h-12 absolute rounded-full"
+                            <img :src="ministryLogo" class="h-12 absolute rounded-full"
                                 :style="{ top: ministryY + 'px', left: ministryX + 'px' }" />
                         </div>
                         <div :style="{
                             'font-size': infoSize + 'px',
                             'color': fontColor,
                             // 'background-color': color,
-                            'background-image': 'url(\'/storage/' +
-                                background_path + '\')'
+                            'background-image': 'url(' + background_path + ')'
                         }"
                             class="bg-cover bg-center bg-local bg-no-repeat h-[1.6in]">
                             <div class="px-2">
@@ -480,7 +468,7 @@
                             :style="{ top: qrY + 'px', left: qrX + 'px' }"></div>
                     </div>
                     <div class="bg-white h-[2.2in] w-[3.44in] block  rounded-xl relative bg-cover bg-center bg-local bg-no-repeat "
-                        :style="{ 'background-image': 'url(\'/storage/' + background_path + '\')' }">
+                        :style="{ 'background-image': 'url(' + background_path + ')' }">
                         <div class="h-h-[1.75rem]" :style="{ 'background-color': color }"></div>
                         <div class="mx-3 my-2 text-sm font-medium" x-html="remark" :style="{ 'color': fontColor }">
                         </div>

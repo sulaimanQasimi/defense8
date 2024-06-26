@@ -8,6 +8,8 @@
     <meta name="locale" content="{{ $locale }}"/>
     <meta name="robots" content="noindex">
 
+    <link rel="icon" href="{{asset('logo 32X32.png')}}">
+
     @include('nova::partials.meta')
 
     <!-- Styles cnkxlmcvkl-->

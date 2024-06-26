@@ -20,6 +20,9 @@ trait VehicalCardField
             "vehical_owner" => trans("Vehical Owner"),
             "vehical_engine_no" => trans("Vehical Engine NO"),
             "vehical_registration_no" => trans("Vehical Registration NO"),
+            'driver_name'=>trans("Driver Name"),
+            'driver_last_name'=>trans("Driver Last Name"),
+            'driver_registare_no'=>trans("Driver ID")
         ];
     }
     private static function vehical_translated_field($field)
@@ -36,29 +39,20 @@ trait VehicalCardField
     }
     protected function vehical_render(string $context): string
     {
-        switch ($this->frame->type) {
-            case PrintTypeEnum::ArmorCar:
-                $type = "armor_vehical_card";
-                break;
-            case PrintTypeEnum::BlackMirrorCar:
-                $type = "armor_vehical_card";
-                break;
-            case PrintTypeEnum::EmployeeCar:
-                $type = "employee_vehical_card";
-                break;
-            default:
-            $type = "not_avilable";
-
-        }
         return Str::of($context)
-            ->replace($this->vehical_translated_field('vehical_type'), $this->employee->{$type}?->vehical_type)
-            ->replace($this->vehical_translated_field('vehical_colour'), $this->employee->{$type}?->vehical_colour)
-            ->replace($this->vehical_translated_field('vehical_palete'), $this->employee->{$type}?->vehical_palete)
-            ->replace($this->vehical_translated_field('vehical_chassis'), $this->employee->{$type}?->vehical_chassis)
-            ->replace($this->vehical_translated_field('vehical_model'), $this->employee->{$type}?->vehical_model)
-            ->replace($this->vehical_translated_field('vehical_owner'), $this->employee->{$type}?->vehical_owner)
-            ->replace($this->vehical_translated_field('vehical_engine_no'), $this->employee->{$type}?->vehical_engine_no)
-            ->replace($this->vehical_translated_field('vehical_registration_no'), $this->employee->{$type}?->vehical_registration_no)
+            // Vehical Infos
+            ->replace($this->vehical_translated_field('vehical_type'), $this->employee->employee_vehical_card?->vehical_type)
+            ->replace($this->vehical_translated_field('vehical_colour'), $this->employee->employee_vehical_card?->vehical_colour)
+            ->replace($this->vehical_translated_field('vehical_palete'), $this->employee->employee_vehical_card?->vehical_palete)
+            ->replace($this->vehical_translated_field('vehical_chassis'), $this->employee->employee_vehical_card?->vehical_chassis)
+            ->replace($this->vehical_translated_field('vehical_model'), $this->employee->employee_vehical_card?->vehical_model)
+            ->replace($this->vehical_translated_field('vehical_owner'), $this->employee->employee_vehical_card?->vehical_owner)
+            ->replace($this->vehical_translated_field('vehical_engine_no'), $this->employee->employee_vehical_card?->vehical_engine_no)
+            ->replace($this->vehical_translated_field('vehical_registration_no'), $this->employee->employee_vehical_card?->vehical_registration_no)
+            // Driver Infos
+            ->replace($this->vehical_translated_field('driver_name'), $this->employee->employee_vehical_card?->driver?->name)
+            ->replace($this->vehical_translated_field('driver_last_name'), $this->employee->employee_vehical_card?->driver?->last_name)
+            ->replace($this->vehical_translated_field('driver_registare_no'), $this->employee->employee_vehical_card?->driver?->registare_no)
         ;
     }
 }

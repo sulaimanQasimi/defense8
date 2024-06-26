@@ -36,14 +36,6 @@ class PrintAllTypeCardEmployeeAction extends Action
             if ($fields->type === PrintTypeEnum::Gun) {
                 return $this->route('gun.print-card-for', $model->id, $fields->frame);
             }
-
-            if ($fields->type === PrintTypeEnum::BlackMirrorCar) {
-                return $this->route('black-mirror-car.print-card-for', $model->id, $fields->frame);
-            }
-
-            if ($fields->type === PrintTypeEnum::ArmorCar) {
-                return $this->route('armor-car.print-card-for', $model->id, $fields->frame);
-            }
         }
     }
 
@@ -62,8 +54,6 @@ class PrintAllTypeCardEmployeeAction extends Action
         return [
 
             Select::make(trans("Type"), 'type')->options([
-                PrintTypeEnum::ArmorCar => trans("Armor Vehical Card"),
-                PrintTypeEnum::BlackMirrorCar => trans("Black Mirror Vehical Card"),
                 PrintTypeEnum::Employee => trans("Employee"),
                 PrintTypeEnum::EmployeeCar => trans("Employee Vehical Card"),
                 PrintTypeEnum::Gun => trans("Gun Card"),

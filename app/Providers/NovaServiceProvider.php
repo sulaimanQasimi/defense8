@@ -2,8 +2,6 @@
 
 namespace App\Providers;
 
-use App\Nova\Card\ArmorVehicalCard;
-use App\Nova\Card\BlackMirrorVehicalCard;
 use App\Nova\Card\CardInfo as CardCardInfo;
 use App\Nova\Card\EmployeeVehicalCard;
 use App\Nova\Card\GunCard;

@@ -412,9 +412,11 @@
                         <div>{{ \Card\PrintCardField::info_allowed_field() }}</div>
                         <div>{{ \Card\PrintCardField::main_allowed_field() }}</div>
                         <div>{{ \Card\PrintCardField::gun_allowed_field() }}</div>
-                        <div>{{ \Card\PrintCardField::vehical_allowed_field() }}</div>
-                        <label for="font-size" class="block mb-2 text-sm font-medium text-gray-900 >
-                            @lang(':resource Details', ['resource' => ''])</label>
+                        @if ($cardFrame->type == \Card\PrintTypeEnum::EmployeeCar)
+                            <div>{{ \Card\PrintCardField::vehical_allowed_field() }}</div>
+                        @endif
+                        <label for="font-size" class="block mb-2 text-sm font-medium text-gray-900">
+                            @lang(':resource Details', ['resource' => '']) </label>
                         <textarea type="text" id="details" x-model="details" rows="4"
                             class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
                     </div>

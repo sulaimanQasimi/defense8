@@ -54,9 +54,9 @@ class CardInfo extends Model
     /**
      *  Employee Vehical Card
      */
-    public function employee_vehical_card(): HasOne
+    public function employee_vehical_card(): HasMany
     {
-        return $this->hasOne(EmployeeVehicalCard::class);
+        return $this->hasMany(EmployeeVehicalCard::class);
     }
     /**
      *  Gun Card

@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>{{ config('app.name', 'Laravel') }} || {{   Cookie::get('your_id',0);}}</title>
+    <title>{{ config('app.name', 'Laravel') }} || @lang("Print Card Frame")</title>
     @vite(['resources/js/app.js'])
     <link type="text/css" href="{{ asset('single.css') }}" rel="stylesheet" />
     <style>

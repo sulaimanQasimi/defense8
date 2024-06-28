@@ -28,7 +28,7 @@ class EmployeeCarPrintCardAction extends Action
     public function handle(ActionFields $fields, Collection $models)
     {
         foreach ($models as $model) {
-            return ActionResponse::openInNewTab(route('employee-car.print-card-for',['cardInfo'=>$model->card_info->id, "printCardFrame"=>$fields->frame]));
+            return ActionResponse::openInNewTab(route('employee-car.print-card-for',['employeeVehicalCard'=>$model->id, "printCardFrame"=>$fields->frame]));
         }
     }
 

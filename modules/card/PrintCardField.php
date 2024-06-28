@@ -18,21 +18,21 @@ final class PrintCardField
     use InfoField;
     use MainCardField;
     use VehicalCardField;
+
     public $version;
-    public function __construct(private Employee $employee, private Frame $frame){
+
+    public function __construct(private Employee $employee, private Frame $frame,public $vehical = null){
         $this->version=app()->version();
     }
     private function replace(string $context)
     {
         return
-            Pipeline::send($context)->through(
-                [
+            Pipeline::send($context)->through([
                     fn($context, Closure $next) => $next($this->info_render($context)),
                     fn($context, Closure $next) => $next($this->main_render($context)),
                     fn($context, Closure $next) => $next($this->gun_render($context)),
-                    fn($context, Closure $next) => $next($this->vehical_render($context)),
-                ]
-            )
+                    fn($context, Closure $next) => $next($this->vehical_render($context,$this->vehical)),
+                ])
                 ->then(fn($context) => $context);
     }
 

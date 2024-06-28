@@ -24,15 +24,9 @@ class PrintAllTypeCardEmployeeAction extends Action
     {
         foreach ($models as $model) {
 
-
-            if ($fields->type === PrintTypeEnum::EmployeeCar) {
-                return $this->route('employee-car.print-card-for', $model->id, $fields->frame);
-            }
-
             if ($fields->type === PrintTypeEnum::Employee) {
                 return $this->route('employee.print-card-for', $model->id, $fields->frame);
             }
-
             if ($fields->type === PrintTypeEnum::Gun) {
                 return $this->route('gun.print-card-for', $model->id, $fields->frame);
             }
@@ -55,7 +49,6 @@ class PrintAllTypeCardEmployeeAction extends Action
 
             Select::make(trans("Type"), 'type')->options([
                 PrintTypeEnum::Employee => trans("Employee"),
-                PrintTypeEnum::EmployeeCar => trans("Employee Vehical Card"),
                 PrintTypeEnum::Gun => trans("Gun Card"),
             ])->displayUsingLabels(),
             Select::make(trans("Card Type"), 'frame')

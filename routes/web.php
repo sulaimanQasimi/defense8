@@ -10,22 +10,15 @@ use App\Http\Controllers\Report\DailyGuestsReport;
 use App\Livewire\AttendanceGenerator;
 use App\Livewire\CardDesign;
 use App\Livewire\Setting\LanguageAutomization;
-use App\Models\PrintCardFrame;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Storage;
-use Translation\PolicyTranslation;
-
 // Guests Routes
 Route::prefix("guest")
     ->controller(QRCodeGenerateController::class)
     ->group(function () {
-
         //
         Route::middleware(['auth', "guestGatePassed"])->get('passguest/{guest:id}/to', 'state')->name('guest.check');
-
         //
         Route::middleware(['auth', "guestGatePassed"])->get('passemployee/{cardInfo:id}/to', 'employeeState')->name('employee.check');
-
         //
         Route::middleware(['auth', 'can:generate,guest'])->get('/generate/{guest:id}', 'generate')->name('guest.generate');
     });
@@ -42,14 +35,10 @@ Route::middleware(['auth', "guestGatePassed", 'can:gateChecker,\App\Models\Gate'
         // Other Orginization
         Route::middleware(['permission:see-other-website-data'])->get('other', 'scan_other_website_employee')->name('other-website-employee');
     });
-
-
 // Other Website Employees Check
 Route::middleware(['auth', 'permission:see-other-website-data'])
     ->get('other-websites', (new EmployeeScanCard())->scan_other_website_employee(...))
     ->name('check.other-website-employee');
-
-
 // Guests Report Only Admin
 Route::middleware(['auth', 'role:super-admin'])
     ->prefix('report/guest/')
@@ -60,7 +49,6 @@ Route::middleware(['auth', 'role:super-admin'])
         Route::get('weekly', \App\Http\Controllers\Report\WeeklyGuestsReport::class)->name('weekly');
         Route::get('yearly', \App\Http\Controllers\Report\YearlyGuestsReport::class)->name('yearly');
     });
-
 Route::middleware(['auth'])
     ->group(function () {
 
@@ -105,7 +93,7 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware('role:Print Card')->get('print/gun/{cardInfo:id}/card/{printCardFrame}', (new PrintCardController())->gun(...))->name('gun.print-card-for');
 
     // Employee Car Card
-    Route::middleware('role:Print Card')->get('print/employeeCar/{cardInfo:id}/card/{printCardFrame}', (new PrintCardController())->employee_car(...))->name('employee-car.print-card-for');
+    Route::middleware('role:Print Card')->get('print/employeeCar/{employeeVehicalCard:id}/card/{printCardFrame}', (new PrintCardController())->employee_car(...))->name('employee-car.print-card-for');
 });
 
 //
@@ -115,44 +103,3 @@ Route::middleware(['auth', 'permission:change_language'])
     ->group(function () {
         Route::get('language/{file}', LanguageAutomization::class)->name('language');
     });
-Route::get('test', function () {
-    return PrintCardFrame::all()->toJson(JSON_UNESCAPED_UNICODE);
-});
-Route::get('fetch', function () {
-
-    $a = Http::get("http://127.0.0.1/test");
-  foreach(collect(json_decode($a))->select([
-        "name",
-        "gov_logo",
-        "ministry_logo",
-        "background_logo",
-        "gov_logo_x",
-        "gov_logo_y",
-        "ministry_logo_x",
-        "ministry_logo_y",
-        "profile_logo_x",
-        "profile_logo_y",
-        "qr_code_logo_x",
-        "qr_code_logo_y",
-        "gov_name",
-        "gov_name_font_size",
-        "ministry_name",
-        "ministry_name_font_size",
-        "info_font_size",
-        "color",
-        "type",
-        "deleted_at",
-        "created_at",
-        "updated_at",
-        "remark",
-        "font_color",
-        "dim",
-        "attribute",
-        "details",
-    ]) as $card){
-        PrintCardFrame::create($card);
-    }
-
-    return;
-});
-

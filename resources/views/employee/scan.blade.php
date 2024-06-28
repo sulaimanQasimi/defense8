@@ -8,6 +8,21 @@
     @vite(['resources/js/app.js', 'resources/js/app.js'])
     <link rel="stylesheet" href="{{ asset('single.css') }}" />
 
+    <style>
+
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: #d7d2e9;
+            border-radius: 0;
+        }
+
+        ::-webkit-scrollbar-track {
+            background-color: hsl(0, 0%, 100%);
+        }
+    </style>
 </head>
 
 <body dir="rtl">

@@ -78,7 +78,7 @@ class EmployeeVehicalCard extends Resource
                 ->options([
                     'employee' => trans("Employee Vehical Card"),
                     'armor' => trans("Armor Vehical Card"),
-                    'black_mirror' => trans("Armor Black Mirror Vehical"),
+                    'black_mirror' => trans("Black Mirror Vehical Card"),
                 ])
                 ->rules('required', 'in:employee,armor,Directory,black_mirror')
                 ->filterable()

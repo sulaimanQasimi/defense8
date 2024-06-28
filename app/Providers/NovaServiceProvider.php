@@ -94,13 +94,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
                 // Employee Menu Item
                 MenuItem::resource(CardCardInfo::class),
-
-                // Employee Menu Item
-                // MenuItem::resource(ArmorVehicalCard::class),
-
-                // Employee Menu Item
-                // MenuItem::resource(BlackMirrorVehicalCard::class),
-
+                
                 // Employee Menu Item
                 MenuItem::resource(EmployeeVehicalCard::class),
 

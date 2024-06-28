@@ -20,5 +20,7 @@ class EmployeeVehicalCard extends Model
     protected $casts=[
         "birthday"=>"date"
     ];
+    protected $fillable = ['remark'];
+
 
 }

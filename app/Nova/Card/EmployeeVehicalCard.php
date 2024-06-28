@@ -2,17 +2,18 @@
 namespace App\Nova\Card;
 
 use App\Nova\Actions\EmployeeCarPrintCardAction;
+use App\Nova\Actions\VehicalRemarkAction;
 use App\Nova\Card\Support\VehicalDriverField;
 use App\Nova\Resource;
+use Illuminate\Validation\Rule;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Trix;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class EmployeeVehicalCard extends Resource
 {
-
-    // use VehicalDriverField;
     public static $model = \App\Models\Card\EmployeeVehicalCard::class;
 
     public static $title = 'vehical_palete';
@@ -36,7 +37,7 @@ class EmployeeVehicalCard extends Resource
     public function fields(NovaRequest $request)
     {
         return [
-            BelongsTo::make(__('Employee'), 'card_info', CardInfo::class),
+            BelongsTo::make(__('Employee'), 'card_info', CardInfo::class)->nullable()->searchable(),
 
             Text::make(__("Vehical Type"), "vehical_type")
                 ->required()
@@ -49,12 +50,12 @@ class EmployeeVehicalCard extends Resource
                 ->placeholder(__("Enter Field", ['name' => __("Vehical Colour")])),
             Text::make(__("Vehical Palete"), "vehical_palete")
                 ->required()
-                ->rules('required', 'string')
+                ->rules('required', 'string','unique:employee_vehical_cards,vehical_palete,{{resourceId}}')
                 ->placeholder(__("Enter Field", ['name' => __("Vehical Palete")])),
 
             Text::make(__("Vehical Chassis"), "vehical_chassis")
                 ->required()
-                ->rules('required', 'string')
+                ->rules('required', 'string','unique:employee_vehical_cards,vehical_chassis,{{resourceId}}')
                 ->placeholder(__("Enter Field", ['name' => __("Vehical Chassis")])),
             Text::make(__("Vehical Model"), "vehical_model")
                 ->nullable()
@@ -84,9 +85,13 @@ class EmployeeVehicalCard extends Resource
                 ->filterable()
                 ->displayUsingLabels(),
 
+
             BelongsTo::make(__('Driver'), 'driver', CardInfo::class)
                 ->searchable()
                 ->nullable(),
+            Trix::make(__("Remark"), 'remark')
+                ->exceptOnForms()
+                ->hideFromIndex()
         ];
     }
 
@@ -108,7 +113,9 @@ class EmployeeVehicalCard extends Resource
     public function actions(NovaRequest $request)
     {
         return [
-            (new EmployeeCarPrintCardAction)->onlyOnDetail()->canRun(fn() => auth()->user()->hasRole("Print Card"))
+            (new EmployeeCarPrintCardAction)->onlyOnDetail()->canRun(fn() => auth()->user()->hasRole("Print Card")),
+            (new VehicalRemarkAction)->canSee(fn() => auth()->user()->hasPermissionTo("add remark for vehical")),
+
         ];
     }
 }

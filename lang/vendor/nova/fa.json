@@ -1,4 +1,9 @@
 {
+    "Too many requests":"لطفا بعدن کوشش کنید",
+    "User Token Don't have API Token Role!":"یوزر صلاحیت لازم را ندارد",
+    "Server is not responding":"سرور پاسخ نمی دهد",
+    "Employee Not Found":"شخص مورد نظر یافت نشد",
+    "Server is Offline":"سرور افلاین است",
     "Background of Card":"پس زمینه کارت",
     "Government Logo":"لوکو دولت",
     "Ministry Logo":"لوگو وزارت",

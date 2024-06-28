@@ -4,7 +4,7 @@
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 ">
 
                 <tr>
-                    <th scope="col" class="px-6  border-1 border-gray-600 py-3 text-center text-[32px]" colspan="5">
+                    <th scope="col" class="px-6  border-1 border-gray-600 py-3 text-center text-[32px]" colspan="7">
                         @lang('Employee Vehical Card')
                     </th>
                 </tr>
@@ -16,10 +16,16 @@
                         @lang('Vehical Colour')
                     </th>
                     <th scope="col" class="px-6  border-1 border-gray-600 py-3">
+                        @lang('Vehical Chassis')
+                    </th>
+                    <th scope="col" class="px-6  border-1 border-gray-600 py-3">
                         @lang('Vehical Model')
                     </th>
                     <th scope="col" class="px-6  border-1 border-gray-600 py-3">
                         @lang('Driver')
+                    </th>
+                    <th scope="col" class="px-6  border-1 border-gray-600 py-3">
+                        @lang('Remark')
                     </th>
                 </tr>
             </thead>
@@ -28,41 +34,29 @@
                     <tr tabindex="0" class="bg-white border-b">
 
                         <td class="px-6  border-1 border-gray-600 py-4">
-                            <div class="flex items-center pl-5">
-                                <p class="text-base font-medium leading-none text-gray-700 mr-2">
-                                    {{ $vehical->vehical_palete }}</p>
+                            {{ $vehical->vehical_palete }}
 
-                            </div>
                         </td>
                         <td class="px-6  border-1 border-gray-600 py-4">
-                            <div class="flex items-center pl-5">
-                                <p class="text-base font-medium leading-none text-gray-700 mr-2">
-                                    {{ $vehical->vehical_colour }}</p>
-
-                            </div>
+                            {{ $vehical->vehical_colour }}
                         </td>
                         <td class="px-6  border-1 border-gray-600 py-4">
-                            <div class="flex items-center pl-5">
-                                <p class="text-base font-medium leading-none text-gray-700 mr-2">
-                                    {{ $vehical->vehical_model }}</p>
-
-                            </div>
+                            {{ $vehical->vehical_chassis }}
                         </td>
                         <td class="px-6  border-1 border-gray-600 py-4">
-                            <div class="flex items-center pl-5">
-                                <p class="text-base font-medium leading-none text-gray-700 mr-2">
-                                    <a href="{{ route('employee.check.card', ['code' => $vehical->driver->registare_no]) }}"
-                                        class="text-blue-600 text-lg"> {{ $vehical->driver->full_name }}</a>
-                                </p>
-
-                            </div>
+                            {{ $vehical->vehical_model }}
+                        </td>
+                        <td class="px-6  border-1 border-gray-600 py-4">
+                            <a href="{{ route('employee.check.card', ['code' => $vehical->driver->registare_no]) }}"
+                                class="text-blue-600 text-lg"> {{ $vehical->driver->full_name }}</a>
+                        </td>
+                        <td class="px-6  border-1 border-gray-600 py-4">
+                            {!! $vehical->remark !!}
                         </td>
                     </tr>
                 @empty
-
-
                     <tr class="bg-white border-b">
-                        <td class="px-6  border-1 border-gray-600 py-4 text-center text-pretty" colspan="4">
+                        <td class="px-6  border-1 border-gray-600 py-4 text-center text-pretty" colspan="7">
                             @lang('Not Found')
 
                         </td>

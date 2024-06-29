@@ -43,6 +43,13 @@ return [
             'visibility' => 'public',
             'throw' => false,
         ],
+        'vehical' => [
+            'driver' => 'local',
+            'root' => public_path('app/vehical'),
+            'url' => env('APP_URL').'/app/vehical',
+            'visibility' => 'public',
+            'throw' => false,
+        ],
         'trix' => [
             'driver' => 'local',
             'root' => public_path('trix/file'),

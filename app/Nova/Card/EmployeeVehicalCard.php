@@ -12,6 +12,8 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Trix;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
+use Laravel\Nova\Fields\Image;
+
 class EmployeeVehicalCard extends Resource
 {
     public static $model = \App\Models\Card\EmployeeVehicalCard::class;
@@ -37,6 +39,8 @@ class EmployeeVehicalCard extends Resource
     public function fields(NovaRequest $request)
     {
         return [
+
+            Image::make(__('Photo'), 'photo')->disk('vehical'),
             BelongsTo::make(__('Employee'), 'card_info', CardInfo::class)->nullable()->searchable(),
 
             Text::make(__("Vehical Type"), "vehical_type")
@@ -50,12 +54,14 @@ class EmployeeVehicalCard extends Resource
                 ->placeholder(__("Enter Field", ['name' => __("Vehical Colour")])),
             Text::make(__("Vehical Palete"), "vehical_palete")
                 ->required()
-                ->rules('required', 'string','unique:employee_vehical_cards,vehical_palete,{{resourceId}}')
+                ->creationRules('required', 'string', 'unique:employee_vehical_cards,vehical_palete')
+                ->updateRules('required', 'string', 'unique:employee_vehical_cards,vehical_palete,{{resourceId}}')
                 ->placeholder(__("Enter Field", ['name' => __("Vehical Palete")])),
 
             Text::make(__("Vehical Chassis"), "vehical_chassis")
                 ->required()
-                ->rules('required', 'string','unique:employee_vehical_cards,vehical_chassis,{{resourceId}}')
+                ->creationRules('required', 'string', 'unique:employee_vehical_cards,vehical_chassis')
+                ->updateRules('required', 'string', 'unique:employee_vehical_cards,vehical_chassis,{{resourceId}}')
                 ->placeholder(__("Enter Field", ['name' => __("Vehical Chassis")])),
             Text::make(__("Vehical Model"), "vehical_model")
                 ->nullable()

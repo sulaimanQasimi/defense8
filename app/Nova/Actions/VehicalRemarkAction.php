@@ -30,7 +30,7 @@ class VehicalRemarkAction extends Action
     {
         return [
 
-            Trix::make(__("Remark"), 'remark'),
+            Trix::make(__("Remark"), 'remark')->withFiles('public'),
         ];
     }
 }

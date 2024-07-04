@@ -40,7 +40,7 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
-            ],
+    ],
 
     /*
     |--------------------------------------------------------------------------
@@ -89,14 +89,11 @@ return [
     | quickly generating a very large amount of password reset tokens.
     |
     */
-
-    'passwords' => [
-        'users' => [
-            'provider' => 'users',
-            'table' => 'password_reset_tokens',
-            'expire' => 1,
-            'throttle' => 1,
-        ],
+    'users' => [
+        'provider' => 'users',
+        'table' => 'password_reset_tokens',
+        'expire' => 60,
+        'throttle' => 60,
     ],
 
     /*
@@ -110,6 +107,5 @@ return [
     |
     */
 
-    'password_timeout' => 10,
-
+    'password_timeout' => 10800,
 ];

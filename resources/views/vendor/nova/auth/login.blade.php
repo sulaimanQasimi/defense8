@@ -231,11 +231,11 @@
             <form action="/login" method="POST"> @csrf
                 <h1 class="title">د ملي دفاع وزارت</h1>
                 <h3>سیستم ته د ننوتلو پاڼه</h3>
-                <input type="email" placeholder="Email" name="email" />
+                <input type="email" placeholder="@lang("Email")" name="email" />
                 @error('email')
                     <span class="error">{{ $message }}</span>
                 @enderror
-                <input type="password" placeholder="Password" name="password" />
+                <input type="password" placeholder="@lang("Password")" name="password" />
                 @error('password')
                     <span class="error">{{ $message }}</span>
                 @enderror

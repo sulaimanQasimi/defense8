@@ -55,7 +55,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
         // Side Bar Menu
         Nova::mainMenu(fn(Request $request) => [
-            MenuSection::dashboard(Main::class)->icon('chart-bar'),
+            MenuSection::dashboard(Main::class)->icon('fas fa-database fa-2x'),
 
             // Guest Menu Section
             MenuSection::make(__('Guest'), [
@@ -64,7 +64,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
             ])->collapsable()
                 ->collapsedByDefault()
-                ->icon('user-group'),
+                ->icon('fas fa-person-shelter fa-2x'),
 
             // Guest Report Menu Section
             MenuSection::make(__('Guest Report'), [
@@ -81,7 +81,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 // Yearly Guest Report Menu Item
                 MenuItem::externalLink(__("Yearly Guest Report"), route("guest.report.yearly"))->canSee(fn() => auth()->user()->hasRole('super-admin'))->openInNewTab(),
 
-            ])->collapsable()->collapsedByDefault()->icon('document'),
+            ])->collapsable()->collapsedByDefault()->icon('fas fa-file-signature fa-2x'),
 
             // Card and Employee Section
             MenuSection::make(__('Employees'), [
@@ -94,7 +94,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
                 // Employee Menu Item
                 MenuItem::resource(CardCardInfo::class),
-                
+
                 // Employee Menu Item
                 MenuItem::resource(EmployeeVehicalCard::class),
 
@@ -127,14 +127,14 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 MenuItem::resource(PrintCardFrame::class),
 
 
-            ])->collapsable()->collapsedByDefault(),
+            ])->collapsable()->collapsedByDefault()->icon("fas fa-users-rectangle fa-2x"),
 
             // Location Menu Section
             MenuSection::make(__('Location'), [
                 MenuItem::resource(Province::class),
                 MenuItem::resource(District::class),
                 MenuItem::resource(Village::class),
-            ])->icon('map-pin')->collapsable()->collapsedByDefault(),
+            ])->icon('fas fa-globe fa-2x')->collapsable()->collapsedByDefault(),
 
 
             MenuSection::make(__('Administration'), [
@@ -150,7 +150,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
                 MenuItem::externalLink(__("Create Token"), url("user/api-tokens"))
                     ->canSee(fn() => auth()->user()->hasRole('api-token'))->openInNewTab(),
-            ])->icon('cog')->collapsable()->collapsedByDefault(),
+            ])->icon('fas fa-coins fa-2x')->collapsable()->collapsedByDefault(),
 
 
             MenuSection::make(__("System"), [
@@ -171,7 +171,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 MenuItem::externalLink(__("Change Application Language", ['lang' => trans("Arabic")]), route("app.setting.language", ['file' => 'ar']))
                     ->canSee(fn() => auth()->user()->hasPermissionTo('change_language')),
 
-            ])->icon('language')->collapsable()->collapsedByDefault(),
+            ])->icon('fas fa-toolbox fa-2x')->collapsable()->collapsedByDefault(),
 
         ]);
 

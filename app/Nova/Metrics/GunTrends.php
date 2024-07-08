@@ -5,9 +5,10 @@ namespace App\Nova\Metrics;
 use App\Models\Card\GunCard;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Metrics\Trend;
+use Laravel\Nova\Metrics\Value;
 use Laravel\Nova\Nova;
 
-class GunTrends extends Trend
+class GunTrends extends Value
 {
     /**
      * Calculate the value of the metric.
@@ -16,8 +17,8 @@ class GunTrends extends Trend
      */
     public function calculate(NovaRequest $request)
     {
-        return $this->countByDays($request, GunCard::class);
-    }
+
+        return $this->count($request, GunCard::class);}
 
     /**
      * Get the ranges available for the metric.

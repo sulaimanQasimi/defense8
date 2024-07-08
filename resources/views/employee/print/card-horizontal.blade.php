@@ -9,6 +9,10 @@
     @vite(['resources/js/app.js'])
     <link type="text/css" href="{{ asset('single.css') }}" rel="stylesheet" />
     <style>
+        body{
+            margin: 0;
+            padding: 0;
+        }
         @page {
             height: 3.34in;
             width: 2.13in;
@@ -27,7 +31,7 @@
 
     {{-- Print Context --}}
     <div>
-        <div class="bg-white  h-[2.2in] w-[3.44in] block relative mb-2">
+        <div class="bg-white  h-[2.2in] w-[3.44in] block relative">
             <div class=" border-t " style="background-color: {{ $card->color }}">
                 <div class="text-center" style="font-size: {{ $card->gov_name_font_size }}px">{{ $card->gov_name }}
                 </div>
@@ -55,9 +59,7 @@
                 style="width:30px; height:30px;position: absolute;top: {{ $card->qr_code_logo_y }}px; left: {{ $card->qr_code_logo_x }}px;">
             </div>
         </div>
-
-        {{-- <div class="space-x-1"></div> --}}
-        <div class=" h-[2.2in] w-[3.44in] max-h-[2.13in] max-w-[3.44in]  block rounded-xl relative bg-cover bg-center bg-local bg-no-repeat "
+        <div class=" h-[2.2in] w-[3.44in] max-h-[2.13in] max-w-[3.44in]  block  relative bg-cover bg-center bg-local bg-no-repeat "
             style="background-image: url('{{ $card->background_logo }}');color:{{ $card->font_color }}">
             <div class="px-2 py-3">
                 <div class="text-sm font-medium">{!! $remark !!}</div>

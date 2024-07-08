@@ -31,6 +31,7 @@
     </script>
 
   <link rel="stylesheet" href="{{ asset('style.css') }}" />
+  <link rel="stylesheet" href="{{ asset('fontawesom/all.min.css') }}" />
 </head>
 <body class="min-w-site text-sm font-medium min-h-full text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-900">
     @inertia

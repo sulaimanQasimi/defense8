@@ -44,15 +44,15 @@ class Main extends Dashboard
             ->orderBy('year')
             ->pluck('num', 'year');
         return [
-            GuestCount::make()->icon('academic-cap'),
-            new EmpolyeeTrends,
-            new GunTrends,
-            new TodayGuest,
-            new PresentEmployeeMetric,
-            new TodayExitEmployeeMetric,
-            TodayEnterGuestMetric::make()->icon('login'),
-            TodayExitGuestMetric::make()->icon('logout'),
-            TodayPresentEmployee::make(),
+            GuestCount::make()->icon('fas fa-person-shelter fa-2x'),
+            EmpolyeeTrends::make()->icon('fa fa-user-plus fa-2x'),
+            GunTrends::make()->icon('fas fa-gun fa-2x'),
+            TodayGuest::make()->icon('fas fa-person-shelter fa-2x'),
+            PresentEmployeeMetric::make()->icon("fas fa-person-circle-check fa-2x"),
+            TodayExitEmployeeMetric::make()->icon('fas fa-person-walking-arrow-loop-left fa-2x'),
+            TodayEnterGuestMetric::make()->icon('fas fa-person-walking fa-2x'),
+            TodayExitGuestMetric::make()->icon('fas fa-person-walking-arrow-loop-left fa-2x'),
+            TodayPresentEmployee::make()->icon('fas fa-person-circle-check fa-2x'),
             (new LineChart)
                 ->title("")
                 ->series(

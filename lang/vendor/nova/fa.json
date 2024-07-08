@@ -1,4 +1,6 @@
+
 {
+    "Actions":"عملکرد ها",
     "Too many requests":"لطفا بعدن کوشش کنید",
     "User Token Don't have API Token Role!":"یوزر صلاحیت لازم را ندارد",
     "Server is not responding":"سرور پاسخ نمی دهد",

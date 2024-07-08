@@ -100,6 +100,8 @@ class Guest extends Resource
 
             // ‌Boolean::make(__('Status'),'status')->onlyIndex(),
             PersianDateTime::make(__("Guest Enter Date"), 'registered_at')
+
+            ->format('jYYYY/jMM/jDD h:mm a')
                 ->hideWhenUpdating(fn() => $this->registered_at->isBefore(Carbon::today()))
                 ->required()->rules('required', 'date'),
             Select::make(__("Enter Gate"), 'enter_gate')->options(

@@ -52,6 +52,7 @@ class EmployeeVehicalCard extends Resource
                 ->nullable()
                 ->rules('nullable', 'string')
                 ->placeholder(__("Enter Field", ['name' => __("Vehical Colour")])),
+
             Text::make(__("Vehical Palete"), "vehical_palete")
                 ->required()
                 ->creationRules('required', 'string', 'unique:employee_vehical_cards,vehical_palete')
@@ -63,10 +64,12 @@ class EmployeeVehicalCard extends Resource
                 ->creationRules('required', 'string', 'unique:employee_vehical_cards,vehical_chassis')
                 ->updateRules('required', 'string', 'unique:employee_vehical_cards,vehical_chassis,{{resourceId}}')
                 ->placeholder(__("Enter Field", ['name' => __("Vehical Chassis")])),
+
             Text::make(__("Vehical Model"), "vehical_model")
                 ->nullable()
                 ->rules('nullable', 'string')
                 ->placeholder(__("Enter Field", ['name' => __("Vehical Model")])),
+
             Text::make(__("Vehical Owner"), "vehical_owner")
                 ->nullable()
                 ->rules('nullable', 'string')
@@ -81,20 +84,21 @@ class EmployeeVehicalCard extends Resource
                 ->rules('nullable', 'string')
                 ->placeholder(__("Enter Field", ['name' => __("Vehical Registration NO")])),
 
-            Select::make(trans("Type"), 'type')
-                ->options([
-                    'employee' => trans("Employee Vehical Card"),
-                    'armor' => trans("Armor Vehical Card"),
-                    'black_mirror' => trans("Black Mirror Vehical Card"),
-                ])
-                ->rules('required', 'in:employee,armor,Directory,black_mirror')
-                ->filterable()
-                ->displayUsingLabels(),
+            // Select::make(trans("Type"), 'type')
+            //     ->options([
+            //         'employee' => trans("Employee Vehical Card"),
+            //         'armor' => trans("Armor Vehical Card"),
+            //         'black_mirror' => trans("Black Mirror Vehical Card"),
+            //     ])
+            //     ->rules('required', 'in:employee,armor,Directory,black_mirror')
+            //     ->filterable()
+            //     ->displayUsingLabels(),
 
 
             BelongsTo::make(__('Driver'), 'driver', CardInfo::class)
                 ->searchable()
                 ->nullable(),
+                
             Trix::make(__("Remark"), 'remark')
                 ->exceptOnForms()
                 ->hideFromIndex()

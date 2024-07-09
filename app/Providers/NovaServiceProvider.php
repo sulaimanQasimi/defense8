@@ -6,6 +6,7 @@ use App\Nova\Card\CardInfo as CardCardInfo;
 use App\Nova\Card\EmployeeVehicalCard;
 use App\Nova\Card\GunCard;
 use App\Nova\CardInfo;
+use App\Nova\Dashboards\GraphDashboard;
 use App\Nova\Dashboards\Main;
 use App\Nova\Department;
 use App\Nova\District;
@@ -56,6 +57,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         // Side Bar Menu
         Nova::mainMenu(fn(Request $request) => [
             MenuSection::dashboard(Main::class)->icon('fas fa-database fa-2x'),
+            MenuSection::dashboard(GraphDashboard::class)->icon('fas fa-chart-pie fa-2x'),
 
             // Guest Menu Section
             MenuSection::make(__('Guest'), [
@@ -198,6 +200,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     {
         return [
             new Main,
+            new GraphDashboard
         ];
     }
 

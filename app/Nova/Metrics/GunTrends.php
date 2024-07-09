@@ -25,15 +25,7 @@ class GunTrends extends Value
      *
      * @return array
      */
-    public function ranges()
-    {
-        return [
-            30 => Nova::__('30 Days'),
-            60 => Nova::__('60 Days'),
-            90 => Nova::__('90 Days'),
-        ];
-    }
-
+  
     /**
      * Determine the amount of time the results of the metric should be cached.
      *
@@ -57,5 +49,14 @@ class GunTrends extends Value
     public function name(){
         return __('Registered Gun');
 
+    }
+    public function ranges()
+    {
+        return [
+            30 => Nova::__('30 Days'),
+            60 => Nova::__('60 Days'),
+            90 => Nova::__('90 Days'),
+            'ALL'=> Nova::__('All'),
+        ];
     }
 }

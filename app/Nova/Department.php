@@ -93,29 +93,7 @@ class Department extends Resource
     public function cards(NovaRequest $request)
     {
         //
-        $info = DB::table('card_infos')
-            ->join("departments", 'departments.id', 'card_infos.department_id')
-            ->select(DB::raw('count(card_infos.id) as num,departments.fa_name as name'))
-            ->groupByRaw("departments.fa_name")
-            ->orderBy('name')
-            ->pluck('num', 'name');
-        return [
-            (new LineChart)
-                ->title("")
-                ->series(
-                    array(
-                        [
-                            'barPercentage' => 0.5,
-                            'label' => trans("Employees"),
-                            'borderColor' => "#f7a35c",
-                            'data' => $info
-                        ]
-                    )
-                )
-                ->options([
-                    'xaxis' => collect($info)->keys()
-                ]),
-        ];
+       return [];
     }
 
     /**

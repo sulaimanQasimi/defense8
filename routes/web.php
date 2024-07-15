@@ -10,7 +10,9 @@ use App\Http\Controllers\Report\DailyGuestsReport;
 use App\Livewire\AttendanceGenerator;
 use App\Livewire\CardDesign;
 use App\Livewire\Setting\LanguageAutomization;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
+
 // Guests Routes
 Route::prefix("guest")
     ->controller(QRCodeGenerateController::class)
@@ -103,3 +105,17 @@ Route::middleware(['auth', 'permission:change_language'])
     ->group(function () {
         Route::get('language/{file}', LanguageAutomization::class)->name('language');
     });
+
+Route::get('test', function () {
+    dd(DB::table('card_infos')
+        ->join("departments", 'departments.id', 'card_infos.department_id')
+        ->select(DB::raw('count(card_infos.id) as num,departments.fa_name as name'))
+        ->groupByRaw("departments.fa_name")
+        ->orderBy('name')
+        ->pluck('num', 'name')->map(function ($employee,$key) {
+            return [
+                "x"=>$key,
+                "y"=>$employee
+            ];
+        }));
+});

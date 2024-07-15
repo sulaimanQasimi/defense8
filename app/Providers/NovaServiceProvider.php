@@ -6,6 +6,7 @@ use App\Nova\Card\CardInfo as CardCardInfo;
 use App\Nova\Card\EmployeeVehicalCard;
 use App\Nova\Card\GunCard;
 use App\Nova\CardInfo;
+use App\Nova\Dashboards\EducationalVideo;
 use App\Nova\Dashboards\GraphDashboard;
 use App\Nova\Dashboards\Main;
 use App\Nova\Department;
@@ -83,7 +84,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 // Yearly Guest Report Menu Item
                 MenuItem::externalLink(__("Yearly Guest Report"), route("guest.report.yearly"))->canSee(fn() => auth()->user()->hasRole('super-admin'))->openInNewTab(),
 
-            ])->collapsable()->collapsedByDefault()->icon('fas fa-file-signature fa-2x'),
+            ])->collapsable()->collapsedByDefault()->icon('fas fa-file-lines fa-2x'),
 
             // Card and Employee Section
             MenuSection::make(__('Employees'), [
@@ -174,6 +175,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     ->canSee(fn() => auth()->user()->hasPermissionTo('change_language')),
 
             ])->icon('fas fa-toolbox fa-2x')->collapsable()->collapsedByDefault(),
+            MenuSection::dashboard(EducationalVideo::class)->icon('fab fa-youtube fa-2x'),
 
         ]);
 
@@ -200,7 +202,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     {
         return [
             new Main,
-            new GraphDashboard
+            new GraphDashboard,
+            new EducationalVideo
         ];
     }
 

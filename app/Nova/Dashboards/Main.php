@@ -17,6 +17,7 @@ use Coroowicaksono\ChartJsIntegration\ScatterChart;
 use Coroowicaksono\ChartJsIntegration\StackedChart;
 use Illuminate\Support\Facades\DB;
 use Laravel\Nova\Cards\Help;
+use Laravel\Nova\Cards\VideoCard;
 use Laravel\Nova\Dashboards\Main as Dashboard;
 
 class Main extends Dashboard
@@ -38,7 +39,7 @@ class Main extends Dashboard
             TodayEnterGuestMetric::make()->icon('fas fa-person-walking fa-2x'),
             TodayExitGuestMetric::make()->icon('fas fa-person-walking-arrow-loop-left fa-2x'),
             TodayPresentEmployee::make()->icon('fas fa-person-circle-check fa-2x'),
-          
+
         ];
     }
 

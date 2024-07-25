@@ -34,19 +34,22 @@
         "sereny/nova-permissions": "^1.4",
         "spatie/laravel-settings": "^3.3",
         "spatie/nova-backup-tool": "^5.0",
-        "tightenco/ziggy": "^1.0"
-    },
-
-    "require-dev": {
-        "fakerphp/faker": "*"
+        "tightenco/ziggy": "^1.0",
+        "acme/price-tracker": "@dev",
+        "acme/guest-report": "@dev"
     },
     "repositories": [
         {
             "type": "path",
             "url": "nova"
-        } ,{
+        },
+        {
             "type": "path",
-            "url": "package"
+            "url": "./nova-components/PriceTracker"
+        },
+        {
+            "type": "path",
+            "url": "./nova-components/GuestReport"
         }
     ],
     "autoload": {
@@ -55,6 +58,8 @@
             "Database\\Factories\\": "database/factories/",
             "Card\\": "modules/card/",
             "Translation\\": "modules/translation/",
+            "Vehical\\": "modules/vehical/",
+            "Support\\": "modules/Support/",
             "Database\\Seeders\\": "database/seeders/"
         }
     },

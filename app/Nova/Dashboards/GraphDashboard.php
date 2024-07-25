@@ -27,6 +27,33 @@ class GraphDashboard extends Dashboard
                 ];
             }));
     }
+
+    public function apex_chart_oil_disterbution()
+    {
+
+        return collect(DB::table('oil_disterbutions')
+            // ->join("departments", 'departments.id', 'card_infos.department_id')
+            ->select(DB::raw('sum(oil_disterbutions.oil_amount) as num'))
+            ->selectRaw("date(filled_date) as date")
+            ->groupByRaw("date")
+            ->orderBy('date')
+
+            ->get(['num', 'date'])->map(function ($oil) {
+                // dd($oil);
+                return [
+                    "x" => verta($oil->date)->format("Y/m/d"),
+                    "y" => $oil->num
+                ];
+            }));
+    }
+
+
+
+
+
+
+
+
     public function cards()
     {
         $department_employee = DB::table('card_infos')
@@ -68,7 +95,7 @@ class GraphDashboard extends Dashboard
                     array(
                         [
                             'barPercentage' => 0.5,
-                            'label' => trans("Card Info"),
+                            'label' => trans("Card Info"),  
                             'borderColor' => "#f7a35c",
                             'data' => $info
                         ],
@@ -234,7 +261,32 @@ class GraphDashboard extends Dashboard
                     //     ],
                     //   ]
 
-                ])->width("1/2")
+                ])->width("1/2"),
+            (new ApexLineChart())
+                ->options([
+                    "chart" => [
+                        "type" => "area",
+                    ],
+
+                    // "plotOptions" => [
+                    //     "bar" => [
+                    //         // "horizontal" => true
+                    //     ]
+                    // ],
+                    "series" => [
+                        [
+                            "name" => trans("Oil Disterbution"),
+                            "data" => $this->apex_chart_oil_disterbution()->toArray()
+                        ],
+                    ],
+
+                    // "xaxis" => [
+                    //     "type" => 'category'
+                    // ]
+                ])->width('1/2'),
+
+
+
 
 
 

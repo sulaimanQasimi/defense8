@@ -6,6 +6,7 @@ use App\Nova\Metrics\EmpolyeeTrends;
 use App\Nova\Metrics\GuestCount;
 use App\Nova\Metrics\GunTrends;
 use App\Nova\Metrics\PresentEmployeeMetric;
+use App\Nova\Metrics\RemainPetrol;
 use App\Nova\Metrics\TodayEnterGuestMetric;
 use App\Nova\Metrics\TodayExitEmployeeMetric;
 use App\Nova\Metrics\TodayExitGuestMetric;
@@ -39,6 +40,7 @@ class Main extends Dashboard
             TodayEnterGuestMetric::make()->icon('fas fa-person-walking fa-2x'),
             TodayExitGuestMetric::make()->icon('fas fa-person-walking-arrow-loop-left fa-2x'),
             TodayPresentEmployee::make()->icon('fas fa-person-circle-check fa-2x'),
+           
 
         ];
     }

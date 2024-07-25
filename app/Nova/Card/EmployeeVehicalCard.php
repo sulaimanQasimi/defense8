@@ -7,12 +7,14 @@ use App\Nova\Card\Support\VehicalDriverField;
 use App\Nova\Resource;
 use Illuminate\Validation\Rule;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Trix;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 use Laravel\Nova\Fields\Image;
+use Vehical\OilType;
 
 class EmployeeVehicalCard extends Resource
 {
@@ -74,7 +76,8 @@ class EmployeeVehicalCard extends Resource
                 ->nullable()
                 ->rules('nullable', 'string')
                 ->placeholder(__("Enter Field", ['name' => __("Vehical Owner")])),
-            Text::make(__("Vehical Engine NO"), "vehical_engine_no")
+
+                Text::make(__("Vehical Engine NO"), "vehical_engine_no")
                 ->nullable()
                 ->rules('nullable', 'string')
                 ->placeholder(__("Enter Field", ['name' => __("Vehical Engine NO")])),
@@ -84,21 +87,10 @@ class EmployeeVehicalCard extends Resource
                 ->rules('nullable', 'string')
                 ->placeholder(__("Enter Field", ['name' => __("Vehical Registration NO")])),
 
-            // Select::make(trans("Type"), 'type')
-            //     ->options([
-            //         'employee' => trans("Employee Vehical Card"),
-            //         'armor' => trans("Armor Vehical Card"),
-            //         'black_mirror' => trans("Black Mirror Vehical Card"),
-            //     ])
-            //     ->rules('required', 'in:employee,armor,Directory,black_mirror')
-            //     ->filterable()
-            //     ->displayUsingLabels(),
-
-
             BelongsTo::make(__('Driver'), 'driver', CardInfo::class)
                 ->searchable()
                 ->nullable(),
-                
+
             Trix::make(__("Remark"), 'remark')
                 ->exceptOnForms()
                 ->hideFromIndex()

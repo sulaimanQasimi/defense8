@@ -7,7 +7,7 @@
       :disabled="disabled"
     />
     <slot />
-  </label>
+  </label>2
 </template>
 
 <script>

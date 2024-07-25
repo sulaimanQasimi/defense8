@@ -54,7 +54,6 @@
                     </div>
 
                 </div>
-
                 @includeWhen($employee, 'employee.employee')
                 @includeWhen($guest, 'employee.guest')
             </div>

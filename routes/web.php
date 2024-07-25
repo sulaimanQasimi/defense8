@@ -6,11 +6,10 @@ use App\Http\Controllers\EmployeeInfoPDF;
 use App\Http\Controllers\EmployeeScanCard;
 use App\Http\Controllers\ExcelEmployeeExportController;
 use App\Http\Controllers\Guest\QRCodeGenerateController;
+use App\Http\Controllers\Oil\OilDisterbution;
 use App\Http\Controllers\Report\DailyGuestsReport;
-use App\Livewire\AttendanceGenerator;
 use App\Livewire\CardDesign;
 use App\Livewire\Setting\LanguageAutomization;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 // Guests Routes
@@ -44,12 +43,13 @@ Route::middleware(['auth', 'permission:see-other-website-data'])
 // Guests Report Only Admin
 Route::middleware(['auth', 'role:super-admin'])
     ->prefix('report/guest/')
-    ->name('guest.report.')
     ->group(function () {
-        Route::get('daily', DailyGuestsReport::class)->name('daily');
-        Route::get('monthy', \App\Http\Controllers\Report\MonthlyGuestsReport::class)->name('monthly');
-        Route::get('weekly', \App\Http\Controllers\Report\WeeklyGuestsReport::class)->name('weekly');
-        Route::get('yearly', \App\Http\Controllers\Report\YearlyGuestsReport::class)->name('yearly');
+
+        Route::get('custom', \App\Http\Controllers\Report\CustomGuestsReport::class)->name('guest.report.daily');
+        Route::get('daily', DailyGuestsReport::class)->name('guest.report.daily');
+        Route::get('monthy', \App\Http\Controllers\Report\MonthlyGuestsReport::class)->name('guest.report.monthly');
+        Route::get('weekly', \App\Http\Controllers\Report\WeeklyGuestsReport::class)->name('guest.report.weekly');
+        Route::get('yearly', \App\Http\Controllers\Report\YearlyGuestsReport::class)->name('guest.report.yearly');
     });
 Route::middleware(['auth'])
     ->group(function () {
@@ -58,8 +58,7 @@ Route::middleware(['auth'])
         Route::middleware(['can:admin,department', 'permission:check own department attendance'])->get("attendance/{department:id?}", \App\Livewire\Department\SetAttendance::class)->name("department.employee.attendance.check");
         Route::middleware(['role:super-admin'])->get('employee/attendance/current/month', CurrentMonthEmployeeAttendance::class)->name("employee.attendance.current.month");
         Route::middleware(['role:super-admin'])->get('employee/attendance/current/month/employee/{cardInfo:id}', [CurrentMonthEmployeeAttendance::class, 'single_employee'])->name("employee.attendance.current.month.single");
-        Route::middleware(['role:super-admin'])->get('employee/attendance/current/month/department/{department:id}', [CurrentMonthEmployeeAttendance::class, 'single_department'])->name("employee.attendance.current.month..department.single");
-        Route::middleware(['role:super-admin'])->get('attendance/pdf/generator', AttendanceGenerator::class)->name("employee.attendance.pdf.generator");
+        Route::middleware(['role:super-admin'])->get('employee/attendance/current/month/department/{department:id}', [CurrentMonthEmployeeAttendance::class, 'single_department'])->name("employee.attendance.current.month.department.single");
 
         Route::prefix('export/')
             ->name('export.excel.')
@@ -105,17 +104,9 @@ Route::middleware(['auth', 'permission:change_language'])
     ->group(function () {
         Route::get('language/{file}', LanguageAutomization::class)->name('language');
     });
+Route::middleware(['auth', 'permission:access_to_disterbuted_oil_page'])
+    ->controller(OilDisterbution::class)->group(function () {
+        Route::get('oil', 'index')->name('oil');
+        Route::put('oil/{cardInfo:id}', 'store')->name('oil.store');
 
-Route::get('test', function () {
-    dd(DB::table('card_infos')
-        ->join("departments", 'departments.id', 'card_infos.department_id')
-        ->select(DB::raw('count(card_infos.id) as num,departments.fa_name as name'))
-        ->groupByRaw("departments.fa_name")
-        ->orderBy('name')
-        ->pluck('num', 'name')->map(function ($employee,$key) {
-            return [
-                "x"=>$key,
-                "y"=>$employee
-            ];
-        }));
-});
+    });

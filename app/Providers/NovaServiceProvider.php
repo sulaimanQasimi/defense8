@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use Acme\GuestReport\GuestReport;
+use Acme\PriceTracker\PriceTracker;
 use App\Nova\Card\CardInfo as CardCardInfo;
 use App\Nova\Card\EmployeeVehicalCard;
 use App\Nova\Card\GunCard;
@@ -9,12 +11,15 @@ use App\Nova\CardInfo;
 use App\Nova\Dashboards\EducationalVideo;
 use App\Nova\Dashboards\GraphDashboard;
 use App\Nova\Dashboards\Main;
+use App\Nova\Dashboards\OilDistribution;
 use App\Nova\Department;
 use App\Nova\District;
 use App\Nova\Gate;
 use App\Nova\Guest;
 use App\Nova\GuestOption;
 use App\Nova\Host;
+use App\Nova\Oil;
+use App\Nova\OilDisterbution;
 use App\Nova\PrintCardFrame;
 use App\Nova\Province;
 use App\Nova\User;
@@ -64,27 +69,12 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             MenuSection::make(__('Guest'), [
                 MenuItem::resource(Host::class),
                 MenuItem::resource(Guest::class),
-
+                // Guest Report Menu Section
+                MenuItem::link(__('Guest Report'), '/guest-report'),
             ])->collapsable()
                 ->collapsedByDefault()
                 ->icon('fas fa-person-shelter fa-2x'),
 
-            // Guest Report Menu Section
-            MenuSection::make(__('Guest Report'), [
-
-                // Daily Guest Report Menu Item
-                MenuItem::externalLink(__("Daily Guest Report"), route("guest.report.daily"))->canSee(fn() => auth()->user()->hasRole('super-admin'))->openInNewTab(),
-
-                // Weekly Guest Report Menu Item
-                MenuItem::externalLink(__("Weekly Guest Report"), route("guest.report.weekly"))->canSee(fn() => auth()->user()->hasRole('super-admin'))->openInNewTab(),
-
-                // Monthly Guest Report Menu Item
-                MenuItem::externalLink(__("Monthly Guest Report"), route("guest.report.monthly"))->canSee(fn() => auth()->user()->hasRole('super-admin'))->openInNewTab(),
-
-                // Yearly Guest Report Menu Item
-                MenuItem::externalLink(__("Yearly Guest Report"), route("guest.report.yearly"))->canSee(fn() => auth()->user()->hasRole('super-admin'))->openInNewTab(),
-
-            ])->collapsable()->collapsedByDefault()->icon('fas fa-file-lines fa-2x'),
 
             // Card and Employee Section
             MenuSection::make(__('Employees'), [
@@ -124,13 +114,21 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 //     ->canSee(fn() => auth()->user()->hasRole('super-admin'))->openInNewTab(),
 
                 // Report Generator of Attendance
-                MenuItem::externalLink(__("ATTENDANCE EMPLOYEE Report Generator"), route("employee.attendance.pdf.generator"))->canSee(fn() => auth()->user()->hasRole('super-admin'))->openInNewTab(),
+                MenuItem::link(__("ATTENDANCE EMPLOYEE Report Generator"), 'price-tracker')->canSee(fn() => auth()->user()->hasRole('super-admin')),
 
                 // Frame of Printable Card Menu Item
                 MenuItem::resource(PrintCardFrame::class),
 
 
             ])->collapsable()->collapsedByDefault()->icon("fas fa-users-rectangle fa-2x"),
+            MenuSection::make(__('Oil Disterbution'), [
+                MenuItem::dashboard(OilDistribution::class),
+                MenuItem::resource(Oil::class),
+                MenuItem::resource(OilDisterbution::class),
+                MenuItem::externalLink(trans("Oil Disterbution"), route('oil'))
+                    ->canSee(fn() => auth()->user()->hasPermissionTo('access_to_disterbuted_oil_page'))
+                    ->openInNewTab()
+            ])->collapsable()->collapsedByDefault()->icon("fas fa-oil-well fa-2x"),
 
             // Location Menu Section
             MenuSection::make(__('Location'), [
@@ -203,7 +201,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         return [
             new Main,
             new GraphDashboard,
-            new EducationalVideo
+            new EducationalVideo,
+            new OilDistribution,
         ];
     }
 
@@ -220,6 +219,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             new \Badinansoft\LanguageSwitch\LanguageSwitch,
 
             // new \GeneaLabs\NovaPassportManager\NovaPassportManager,
+
+            (new PriceTracker)->canSee(fn() => auth()->user()->hasRole('super-admin')),
+            (new GuestReport)->canSee(fn() => auth()->user()->hasRole('super-admin')),
         ];
     }
     public function register(): void

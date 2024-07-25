@@ -6,6 +6,7 @@
 /public/storage
 /storage/*.key
 /vendor
+/packages
 /package
 /storage/app/public/*
 /nova

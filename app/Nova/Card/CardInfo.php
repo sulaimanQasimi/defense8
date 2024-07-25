@@ -12,6 +12,7 @@ use App\Nova\Department;
 use App\Nova\District;
 use App\Nova\Gate;
 use App\Nova\GuestOption;
+use App\Nova\OilDisterbution;
 use App\Nova\Province;
 use App\Nova\Resource;
 use App\Nova\Village;
@@ -19,18 +20,22 @@ use App\Support\Defense\EditAditionalCardInfoEnum;
 use Coroowicaksono\ChartJsIntegration\LineChart;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 use Laravel\Nova\Actions\Action;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\FormData;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\MorphToMany;
+use Laravel\Nova\Fields\Number;
+use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Tag;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Trix;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
 use MZiraki\PersianDateField\PersianDate;
+use Vehical\OilType;
 
 class CardInfo extends Resource
 {
@@ -258,6 +263,24 @@ class CardInfo extends Resource
             HasOne::make(__("Main Card"), 'main_card', MainCard::class),
             HasOne::make(__("Gun Card"), 'gun_card', GunCard::class),
             HasMany::make(__("Employee Vehical Card"), 'employee_vehical_card', EmployeeVehicalCard::class),
+            Panel::make(
+                trans("Oil Disterbution"),
+                [
+                    Select::make(trans("Oil Type"), 'oil_type')
+                        ->options([
+                            OilType::Diesel => trans("Diesel"),
+                            OilType::Petrole => trans("Petrole"),
+                        ])
+                        ->rules('required', Rule::in([OilType::Diesel, OilType::Petrole]))
+                        ->filterable()
+                        ->displayUsingLabels(),
+                    Number::make(trans("Monthly Rate"), "monthly_rate")->displayUsing(fn($monthly_rate) => trans("Liter", ["value" => $monthly_rate]))->rules("required", 'numeric'),
+                    Text::make(trans("Consumtion Amount"),fn()=>$this->current_month_oil_consumtion)->displayUsing(fn($monthly_rate) => trans("Liter", ["value" => $monthly_rate]))->rules("required", 'numeric'),
+                    Text::make(trans("Remain"),fn()=>$this->current_month_oil_remain)->displayUsing(fn($monthly_rate) => trans("Liter", ["value" => $monthly_rate]))->rules("required", 'numeric')
+                ]
+
+            ),
+            HasMany::make(__("Oil Report"), 'oil_disterbutions', OilDisterbution::class),
             HasMany::make(__("Attendance"), 'attendance', Attendance::class),
             // MorphToMany::make(__("Print Card"), 'PrintCardFrame', \App\Nova\PrintCardFrame::class),
         ];

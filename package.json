@@ -5,7 +5,11 @@
         "dev": "vite",
         "build": "vite build",
         "build-analytics": "cd nova-components/Analytics && npm run dev",
-        "build-analytics-prod": "cd nova-components/Analytics && npm run prod"
+        "build-analytics-prod": "cd nova-components/Analytics && npm run prod",
+        "build-price-tracker": "cd nova-components/PriceTracker && npm run dev",
+        "build-price-tracker-prod": "cd nova-components/PriceTracker && npm run prod",
+        "build-guest-report": "cd nova-components/GuestReport && npm run dev",
+        "build-guest-report-prod": "cd nova-components/GuestReport && npm run prod"
     },
     "devDependencies": {
         "@inertiajs/vue3": "^1.0.0",

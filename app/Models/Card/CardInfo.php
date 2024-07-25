@@ -3,15 +3,19 @@
 namespace App\Models\Card;
 
 use App\Models\Attendance;
+use App\Models\Card\Contracts\EmployeeOilDisterbutionAttributes;
 use App\Models\Career;
+use App\Models\Card\Contracts\CardInfoAttributes;
 use App\Models\Department;
 use App\Models\Gate;
 use App\Models\GuestOption;
+use App\Models\OilDisterbution;
 use App\Models\PrintCardFrame;
 use App\Models\Province;
 use App\Models\District;
 use App\Models\Village;
 use Hekmatinasser\Verta\Facades\Verta;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -27,23 +31,18 @@ class CardInfo extends Model
 {
     use HasFactory;
     use SoftDeletes;
-
     use LogsActivity;
-
+    use CardInfoAttributes;
+    use EmployeeOilDisterbutionAttributes;
     protected $casts = [
         'birthday' => 'date',
     ];
+    protected $appends = [
+        'current_month_oil_consumtion',
+        'current_month_oil_remain',
+    ];
     protected $fillable = ['remark'];
-    public function getActivitylogOptions():LogOptions
-    {
-        return LogOptions::defaults()->logAll()
-        ->setDescriptionForEvent(fn(string $eventName) => "This model has been {$eventName}");
-    }
-    public function getJalaliBirthDateAttribute()
-    {
-        return verta($this->registered_at)->format("Y/m/d");
 
-    }
     /**
      * Main Card
      */
@@ -73,46 +72,9 @@ class CardInfo extends Model
     {
         return $this->belongsToMany(GuestOption::class, 'employee_option_related');
     }
-    public function getImagePathAttribute()
-    {
-        return asset("storage/{$this->photo}");
-    }
-    public function getGateEnteredTodayAttribute()
-    {
-        return $this->one(Gate::class, 'cardinfo_gates')
-            ->wherePivot('entered_at', '>=', now()->startOfDay())
-            ->wherePivot('entered_at', '<=', now()->endOfDay())
-            ->withPivot('entered_at', 'exit_at')
-            ->withTimestamps()->first();
-    }
     public function current_gate_attendance()
     {
         return $this->hasOne(Attendance::class)->where('date', now()->format('Y-m-d'));
-    }
-    public function getCurrentMonthPresentAttribute()
-    {
-
-        $start_month = Verta::startMonth()->format("Y-m-d");
-        $end_month = Verta::endMonth()->format("Y-m-d");
-        $database_start_month = Verta::parse($start_month)->toCarbon();
-        $database_end_month = Verta::parse($end_month)->toCarbon();
-
-        return $this->attendance()->whereBetween("date", [$database_start_month->format('Y-m-d'), $database_end_month->format('Y-m-d')])->where("state", 'P')->count();
-    }
-    public function getCurrentMonthUpsentAttribute()
-    {
-
-        $start_month = Verta::startMonth()->format("Y-m-d");
-        $end_month = Verta::endMonth()->format("Y-m-d");
-        $database_start_month = Verta::parse($start_month)->toCarbon();
-        $database_end_month = Verta::parse($end_month)->toCarbon();
-
-        return $this->attendance()->whereBetween("date", [$database_start_month->format('Y-m-d'), $database_end_month->format('Y-m-d')])->where("state", 'U')->count();
-    }
-
-    public function getFullNameAttribute()
-    {
-        return "{$this->name} {$this->last_name}";
     }
     public function attendance()
     {
@@ -160,6 +122,10 @@ class CardInfo extends Model
     public function current_village(): BelongsTo
     {
         return $this->belongsTo(Village::class, 'c_village');
+    }
+    public function oil_disterbutions(): HasMany
+    {
+        return $this->hasMany(OilDisterbution::class);
     }
 
 }

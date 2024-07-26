@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "936a24a7004b93b0d1c1f1acfdb1bf31",
+    "content-hash": "a359e24bfe798ce1c9945d91f763c21c",
     "packages": [
         {
             "name": "acme/guest-report",
@@ -28,6 +28,42 @@
             "autoload": {
                 "psr-4": {
                     "Acme\\GuestReport\\": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "A Laravel Nova tool.",
+            "keywords": [
+                "laravel",
+                "nova"
+            ],
+            "transport-options": {
+                "relative": true
+            }
+        },
+        {
+            "name": "acme/oil-report",
+            "version": "dev-master",
+            "dist": {
+                "type": "path",
+                "url": "./nova-components/OilReport",
+                "reference": "43a78afc9943a73c2ed09d0eb427d2b6472f3dbf"
+            },
+            "require": {
+                "php": "^7.3|^8.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Acme\\OilReport\\ToolServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Acme\\OilReport\\": "src/"
                 }
             },
             "license": [
@@ -10164,7 +10200,8 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "acme/price-tracker": 20,
-        "acme/guest-report": 20
+        "acme/guest-report": 20,
+        "acme/oil-report": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

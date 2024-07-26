@@ -1,5 +1,12 @@
 
 {
+    "Create Imported Oil Report":"تهیه راپور تیل اکمال شده",
+    "Create Disterbuted Oil Report":"تهیه تیل توزیع شده",
+    "Here you can generate report":"از اینجا راپور تهیه میشود",
+    "Remain Petrol":"پترول باقیمانده",
+    "Remain Diesel":"دیزل باقیمانده",
+    "Expend Petrol":"پترول مصرف شده",
+    "Expend Diesel":"دیزل مصرف شده",
     "Here you can generate guest report":"از اینجا راپور مهمانان وزارتخانه ایجاد می شود",
     "Day":"روز",
     "Oil Report":"گزارش مصرف تیل کارمند",

@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Acme\GuestReport\GuestReport;
+use Acme\OilReport\OilReport;
 use Acme\PriceTracker\PriceTracker;
 use App\Nova\Card\CardInfo as CardCardInfo;
 use App\Nova\Card\EmployeeVehicalCard;
@@ -70,7 +71,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 MenuItem::resource(Host::class),
                 MenuItem::resource(Guest::class),
                 // Guest Report Menu Section
-                MenuItem::link(__('Guest Report'), '/guest-report'),
+                MenuItem::link(__('Guest Report'), '/guest-report')
+                    ->canSee(fn() => auth()->user()->hasRole('super-admin')),
             ])->collapsable()
                 ->collapsedByDefault()
                 ->icon('fas fa-person-shelter fa-2x'),
@@ -110,9 +112,6 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 MenuItem::externalLink(__("Employee Attendance Check Department"), route("employee.attendance.check"))
                     ->canSee(fn() => auth()->user()->hasRole('super-admin')),
 
-                // MenuItem::externalLink(__("Download CURRENT MONTH ATTENDANCE EMPLOYEE"), route("employee.attendance.current.month"))
-                //     ->canSee(fn() => auth()->user()->hasRole('super-admin'))->openInNewTab(),
-
                 // Report Generator of Attendance
                 MenuItem::link(__("ATTENDANCE EMPLOYEE Report Generator"), 'price-tracker')->canSee(fn() => auth()->user()->hasRole('super-admin')),
 
@@ -127,7 +126,10 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 MenuItem::resource(OilDisterbution::class),
                 MenuItem::externalLink(trans("Oil Disterbution"), route('oil'))
                     ->canSee(fn() => auth()->user()->hasPermissionTo('access_to_disterbuted_oil_page'))
-                    ->openInNewTab()
+                    ->openInNewTab(),
+
+                MenuItem::link(__('Oil Report'), '/oil-report')
+                    ->canSee(fn() => auth()->user()->hasRole('super-admin')),
             ])->collapsable()->collapsedByDefault()->icon("fas fa-oil-well fa-2x"),
 
             // Location Menu Section
@@ -222,6 +224,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
             (new PriceTracker)->canSee(fn() => auth()->user()->hasRole('super-admin')),
             (new GuestReport)->canSee(fn() => auth()->user()->hasRole('super-admin')),
+            (new OilReport())->canSee(fn() => auth()->user()->hasRole('super-admin')),
         ];
     }
     public function register(): void

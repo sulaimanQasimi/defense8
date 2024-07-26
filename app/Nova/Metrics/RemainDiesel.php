@@ -44,4 +44,8 @@ class RemainDiesel extends Value
     {
         // return now()->addMinutes(5);
     }
+    public function name()
+    {
+        return trans("Remain Diesel");
+    }
 }

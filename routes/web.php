@@ -7,7 +7,6 @@ use App\Http\Controllers\EmployeeScanCard;
 use App\Http\Controllers\ExcelEmployeeExportController;
 use App\Http\Controllers\Guest\QRCodeGenerateController;
 use App\Http\Controllers\Oil\OilDisterbution;
-use App\Http\Controllers\Report\DailyGuestsReport;
 use App\Livewire\CardDesign;
 use App\Livewire\Setting\LanguageAutomization;
 use Illuminate\Support\Facades\Route;
@@ -23,16 +22,12 @@ Route::prefix("guest")
         //
         Route::middleware(['auth', 'can:generate,guest'])->get('/generate/{guest:id}', 'generate')->name('guest.generate');
     });
-
-
 Route::middleware(['auth', "guestGatePassed", 'can:gateChecker,\App\Models\Gate'])
     ->controller(EmployeeScanCard::class)
     ->name('employee.check.')
     ->group(function () {
-
         // Self Website Check
         Route::get('employee', 'scan')->name('card');
-
         // Other Orginization
         Route::middleware(['permission:see-other-website-data'])->get('other', 'scan_other_website_employee')->name('other-website-employee');
     });
@@ -44,12 +39,7 @@ Route::middleware(['auth', 'permission:see-other-website-data'])
 Route::middleware(['auth', 'role:super-admin'])
     ->prefix('report/guest/')
     ->group(function () {
-
         Route::get('custom', \App\Http\Controllers\Report\CustomGuestsReport::class)->name('guest.report.daily');
-        Route::get('daily', DailyGuestsReport::class)->name('guest.report.daily');
-        Route::get('monthy', \App\Http\Controllers\Report\MonthlyGuestsReport::class)->name('guest.report.monthly');
-        Route::get('weekly', \App\Http\Controllers\Report\WeeklyGuestsReport::class)->name('guest.report.weekly');
-        Route::get('yearly', \App\Http\Controllers\Report\YearlyGuestsReport::class)->name('guest.report.yearly');
     });
 Route::middleware(['auth'])
     ->group(function () {
@@ -97,6 +87,7 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware('role:Print Card')->get('print/employeeCar/{employeeVehicalCard:id}/card/{printCardFrame}', (new PrintCardController())->employee_car(...))->name('employee-car.print-card-for');
 });
 
+
 //
 Route::middleware(['auth', 'permission:change_language'])
     ->prefix('app/setting/')
@@ -104,9 +95,19 @@ Route::middleware(['auth', 'permission:change_language'])
     ->group(function () {
         Route::get('language/{file}', LanguageAutomization::class)->name('language');
     });
+//
 Route::middleware(['auth', 'permission:access_to_disterbuted_oil_page'])
     ->controller(OilDisterbution::class)->group(function () {
         Route::get('oil', 'index')->name('oil');
         Route::put('oil/{cardInfo:id}', 'store')->name('oil.store');
 
+
+
     });
+Route::middleware(['auth','role:super-admin'])->group(function () {
+
+    Route::get("oil/report/disterbuted", \App\Http\Controllers\Oil\DisterbutedOil::class);
+    Route::get("oil/report/imported", \App\Http\Controllers\Oil\ImportedOil::class);
+
+});
+

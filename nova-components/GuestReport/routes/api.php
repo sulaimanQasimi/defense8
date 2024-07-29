@@ -1,5 +1,7 @@
 <?php
 
+use Acme\GuestReport\Http\Controller\ApiController;
+use App\Models\Department;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +16,5 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get('/', function (Request $request) {
-//     //
-// });
+Route::get('/departments', [ApiController::class,'departments']);
+Route::get('/guests', [ApiController::class,'guests']);

@@ -9,7 +9,7 @@
     "prod": "npm run production",
     "production": "mix --production",
     "format": "prettier --write 'resources/**/*.{css,js,vue}'",
-  
+
     "nova:install": "npm --prefix='../../vendor/laravel/nova' ci"
 
   },
@@ -17,7 +17,11 @@
     "@vue/compiler-sfc": "^3.2.22",
     "laravel-mix": "^6.0.41",
     "postcss": "^8.3.11",
-    "vue-loader": "^16.8.3"
+    "vue-loader": "^16.8.3",
+    "sweetalert2": "^11.12.3",
+    "vue-sweetalert2": "^5.0.11",
+    "vue3-persian-datetime-picker": "^1.2.2"
+  
   },
   "dependencies": {}
 }

@@ -1,5 +1,10 @@
 <?php
 
+use Acme\GuestReport\Http\Controller\ApiController;
+use App\Models\Guest;
+use App\Models\GuestGate;
+use Carbon\Carbon;
+use Hekmatinasser\Verta\Facades\Verta;
 use Illuminate\Support\Facades\Route;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
@@ -15,18 +20,5 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 */
 
 Route::get('/', function (NovaRequest $request) {
-
-    $url=config('guest-report.custom');
-
-    $years = [];
-    for ($i = 1388; $i <= verta()->year; $i++) {
-        $years[] = $i;
-    }
-
-    $days = [];
-
-    for ($i = 1; $i <= 31; $i++) {
-        $days[] = $i;
-    }
-    return inertia('GuestReport',compact('years','days','url'));
+    return inertia('GuestReport', ['guests' => (new ApiController)->guest(), 'date' => $request->input('date', null), 'selectedDepartment' => $request->input('department', null)]);
 });

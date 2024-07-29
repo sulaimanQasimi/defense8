@@ -24,10 +24,13 @@ class ToolServiceProvider extends ServiceProvider
 
 
         Nova::serving(function (ServingNova $event) {
-            //
+            Nova::provideToScript([
+                'pdf' => config('guest-report.pdf'),
+                'excel' => config('guest-report.excel'),
+            ]);
         });
         $this->publishes([
-            __DIR__.'/../config/guest-report.php' => config_path('guest-report.php'),
+            __DIR__ . '/../config/guest-report.php' => config_path('guest-report.php'),
         ], 'guestReport-config');
 
     }
@@ -44,11 +47,11 @@ class ToolServiceProvider extends ServiceProvider
         }
 
         Nova::router(['nova', Authenticate::class, Authorize::class], 'guest-report')
-            ->group(__DIR__.'/../routes/inertia.php');
+            ->group(__DIR__ . '/../routes/inertia.php');
 
         Route::middleware(['nova', Authorize::class])
             ->prefix('nova-vendor/guest-report')
-            ->group(__DIR__.'/../routes/api.php');
+            ->group(__DIR__ . '/../routes/api.php');
     }
 
     /**

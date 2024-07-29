@@ -1,5 +1,4 @@
 <template>
-
   <div class="mt-6 bg-white px-3 py-4 rounded-2xl">
     <div v-html="__(title)"></div>
     <div class="grid grid-cols-4 gap-3">
@@ -15,13 +14,12 @@
             <!-- Search Input --><!-- Select Input Field -->
             <div class="flex relative w-full">
               <select
-
-              @change="$emit('year',$event)"
+                @change="$emit('year', $event)"
                 id="enter_gate"
                 dusk="enter_gate"
                 class="w-full block form-control form-control-bordered form-input"
               >
-                <option disabled="" value="" selected >یک گزینه را انتخاب کنید</option>
+                <option disabled="" value="" selected>یک گزینه را انتخاب کنید</option>
 
                 <option v-for="year in years" v-html="year" v-bind:value="year" />
               </select>
@@ -42,7 +40,7 @@
           </div>
         </div>
       </div>
-      <month-field @change="$emit('month',$event)"/>
+      <month-field @change="$emit('month', $event)" />
       <div>
         <div
           class="space-y-2 md:flex @md/modal:flex md:flex-row @md/modal:flex-row md:space-y-0 @md/modal:space-y-0 py-5"
@@ -55,12 +53,12 @@
             <!-- Search Input --><!-- Select Input Field -->
             <div class="flex relative w-full">
               <select
-                @change="$emit('day',$event)"
+                @change="$emit('day', $event)"
                 id="enter_gate"
                 dusk="enter_gate"
                 class="w-full block form-control form-control-bordered form-input"
               >
-                <option disabled="" value="" selected >یک گزینه را انتخاب کنید</option>
+                <option disabled="" value="" selected>یک گزینه را انتخاب کنید</option>
 
                 <option v-for="day in days" v-html="day" v-bind:value="day" />
               </select>
@@ -85,23 +83,20 @@
   </div>
 </template>
 <script>
-
 export default {
-
-  emits: ['month','year','day'],
+  emits: ["month", "year", "day"],
   props: {
     title: String,
     years: Object,
     days: Object,
   },
   mounted() {
-    this.$parent.$emit('get_date')
+    this.$parent.$emit("get_date");
   },
   methods: {
-    li(value){
-        console.log(value)
-
-    }
+    li(value) {
+      console.log(value);
+    },
   },
 };
 </script>

@@ -95,18 +95,18 @@ trait Template
 
         TCPDF::SetFont('mod_font', '', 7);
     }
-    public function row($guest, $i): void
+    public function row($pass, $i): void
     {
         TCPDF::Cell(9, 7, $i, true, false, 'C');
-        TCPDF::Cell(25, 7, $guest->name, true, false, 'C');
-        TCPDF::Cell(25, 7, $guest->last_name, true, false, 'C');
-        TCPDF::Cell(20, 7, $guest->career, true, false, 'C');
-        TCPDF::Cell(30, 7, $guest->host->department->fa_name, true, false, 'C');
-        TCPDF::Cell(30, 7, $guest->address, true, false, 'C');
-        TCPDF::Cell(30, 7, verta($guest->registered_at), true, false, 'C');
-        TCPDF::Cell(30, 7, $guest->enter_gate, true, false, 'C');
-        TCPDF::Cell(30, 7, $guest->ExitGate?->exit_at, true, false, 'C');
-        TCPDF::Cell(60, 7, $this->condition_wrap($guest->Guestoptions), true, true, 'C');
+        TCPDF::Cell(25, 7, $pass->guest->name, true, false, 'C');
+        TCPDF::Cell(25, 7, $pass->guest->last_name, true, false, 'C');
+        TCPDF::Cell(20, 7, $pass->guest->career, true, false, 'C');
+        TCPDF::Cell(30, 7, $pass->guest->host->department->fa_name, true, false, 'C');
+        TCPDF::Cell(30, 7, $pass->guest->address, true, false, 'C');
+        TCPDF::Cell(30, 7, verta($pass->guest->registered_at)->format("Y/m/d h:i a"), true, false, 'C');
+        TCPDF::Cell(30, 7, verta($pass->guest->EnterGate->enter_at)->format("Y/m/d h:i a"), true, false, 'C');
+        TCPDF::Cell(30, 7, verta($pass->guest->ExitGate?->exit_at)->format("Y/m/d h:i a"), true, false, 'C');
+        TCPDF::Cell(60, 7, $this->condition_wrap($pass->guest->Guestoptions), true, true, 'C');
 
     }
 

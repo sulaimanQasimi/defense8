@@ -1,7 +1,6 @@
 import Tool from './pages/Tool'
-import ReportHeader from './components/ReportHeader.vue'
-import DateField from './components/DateField.vue'
-import MonthField from './components/MonthField.vue'
+import GalaxyCard from './components/GalaxyCard.vue'
+import GuestDetails from "./components/GuestDetails";
 
 Nova.booting((app, store) => {
 
@@ -9,9 +8,9 @@ Nova.booting((app, store) => {
 })
 
 Nova.booting((Vue) => {
-    Vue.component('report-header', ReportHeader);
-    Vue.component('date-field', DateField);
-    Vue.component('month-field', MonthField);
+
+    Vue.component('guest-details', GuestDetails);
+    Vue.component('g-card', GalaxyCard);
 
 })
 

@@ -84,6 +84,14 @@ class Guest extends Model
                     ->whereNotNull('entered_at');
             });
     }
+    public function EnterGateModel(): HasOne
+    {
+        return $this->hasOne(GuestGate::class)
+            ->whereHas('gate', function ($query) {
+                $query->where('level', 1)
+                    ->whereNotNull('entered_at');
+            });
+    }
 
 
     public function ExitGate(): HasOne

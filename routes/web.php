@@ -9,6 +9,7 @@ use App\Http\Controllers\Guest\QRCodeGenerateController;
 use App\Http\Controllers\Oil\OilDisterbution;
 use App\Livewire\CardDesign;
 use App\Livewire\Setting\LanguageAutomization;
+use App\Models\GuestGate;
 use Illuminate\Support\Facades\Route;
 
 // Guests Routes
@@ -37,9 +38,10 @@ Route::middleware(['auth', 'permission:see-other-website-data'])
     ->name('check.other-website-employee');
 // Guests Report Only Admin
 Route::middleware(['auth', 'role:super-admin'])
-    ->prefix('report/guest/')
+    // ->prefix('report/guest/')
     ->group(function () {
-        Route::get('custom', \App\Http\Controllers\Report\CustomGuestsReport::class)->name('guest.report.daily');
+        Route::get('guest/pdf', \App\Http\Controllers\Report\CustomGuestsReport::class)->name('guest.report.pdf');
+        Route::get('guest/excel', [\App\Http\Controllers\Report\CustomGuestsReport::class, 'excel_report'])->name('guest.report.excel');
     });
 Route::middleware(['auth'])
     ->group(function () {
@@ -104,10 +106,25 @@ Route::middleware(['auth', 'permission:access_to_disterbuted_oil_page'])
 
 
     });
-Route::middleware(['auth','role:super-admin'])->group(function () {
+Route::middleware(['auth', 'role:super-admin'])->group(function () {
 
     Route::get("oil/report/disterbuted", \App\Http\Controllers\Oil\DisterbutedOil::class);
     Route::get("oil/report/imported", \App\Http\Controllers\Oil\ImportedOil::class);
 
 });
 
+
+Route::get("test", function () {
+
+    dd(
+        GuestGate::query()->whereHas(
+
+            'guest.host',
+            function ($query) {
+                return $query->where("department_id", 1);
+            }
+        )
+            ->toSql()
+    );
+
+});

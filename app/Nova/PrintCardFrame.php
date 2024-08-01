@@ -100,7 +100,7 @@ class PrintCardFrame extends Resource
                 ->withoutConfirmation()
                 ->onlyOnDetail()
                 ->canRun(fn() => auth()->user()->hasRole("Design Card")),
-(new FetchCardDesign)->canRun(fn() => auth()->user()->hasRole("Design Card"))
+            (new FetchCardDesign)->canRun(fn() => auth()->user()->hasRole("Design Card"))
 
         ];
     }

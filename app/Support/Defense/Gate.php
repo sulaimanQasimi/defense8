@@ -25,8 +25,8 @@ class Gate
         if ($this->user->hasPermissionTo(GatePermissionEumn::SideWalk)) {
             $gate[GateEumn::SideWalk] = ['label' => __(GateTranslationEnum::SideWalk)];
         }
-        if ($this->user->hasPermissionTo(GatePermissionEumn::Exit)) {
-            $gate[GateEumn::Exit] = ['label' => __(GateTranslationEnum::Exit)];
+        if ($this->user->hasPermissionTo(GatePermissionEumn::Exit )) {
+            $gate[GateEumn::Exit] = ['label' => __(GateTranslationEnum::Exit )];
         }
         if ($this->user->hasPermissionTo(GatePermissionEumn::All)) {
             $gate[GateEumn::All] = ['label' => __(GateTranslationEnum::All)];
@@ -37,5 +37,15 @@ class Gate
     {
         $gate = new static(auth()->user());
         return $gate->gate_permission();
+    }
+    public static function key_value_filter_options()
+    {
+        $gate = [];
+        $gate[GateEumn::Kalid] = __(GateTranslationEnum::Kalid);
+        $gate[GateEumn::Obaeda] = __(GateTranslationEnum::Obaeda);
+        $gate[GateEumn::SideWalk] = __(GateTranslationEnum::SideWalk);
+        $gate[GateEumn::Exit] = __(GateTranslationEnum::Exit );
+        $gate[GateEumn::All] = __(GateTranslationEnum::All);
+        return $gate;
     }
 }

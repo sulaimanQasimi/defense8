@@ -1,9 +1,9 @@
 <?php
 namespace App\Nova;
 
-use App\Nova\Metrics\HostGuestValue;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Gate;
+use DigitalCreative\MegaFilter\MegaFilter;
+use DigitalCreative\MegaFilter\MegaFilterTrait;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\Select;
@@ -13,9 +13,15 @@ use Laravel\Nova\Fields\Trix;
 use Laravel\Nova\Fields\URL;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use MZiraki\PersianDateField\PersianDateTime;
+use Sq\Query\SqNovaDateFilter;
+use Sq\Query\SqNovaSelectFilter;
+use Sq\Query\SqNovaTextFilter;
 
 class Guest extends Resource
 {
+
+    use MegaFilterTrait;
+
     public static $model = \App\Models\Guest::class;
     public static $title = 'name';
     public static $search = [
@@ -100,20 +106,21 @@ class Guest extends Resource
 
             // ‌Boolean::make(__('Status'),'status')->onlyIndex(),
             PersianDateTime::make(__("Guest Enter Date"), 'registered_at')
-
-            ->format('jYYYY/jMM/jDD h:mm a')
+                ->format('jYYYY/jMM/jDD h:mm a')
                 ->hideWhenUpdating(fn() => $this->registered_at->isBefore(Carbon::today()))
                 ->required()->rules('required', 'date'),
-            Select::make(__("Enter Gate"), 'enter_gate')->options(
-                \App\Support\Defense\Gate::gate_options()
-            )
-                ->filterable()
+
+            Select::make(__("Enter Gate"), 'enter_gate')
+                ->options(
+                    \App\Support\Defense\Gate::gate_options()
+                )->filterable()
                 ->displayUsingLabels()
                 ->required()
                 ->creationRules('required')
                 ->hideWhenUpdating(fn() => $this->registered_at->isBefore(Carbon::today())),
 
             Tag::make(__("Condition"), 'Guestoptions', GuestOption::class)->showCreateRelationButton()->displayAsList(),
+
             Trix::make(trans("Remark"), 'remark')->nullable(),
 
             HasMany::make(__("Gate Passed"), 'guestGate', GuestGate::class),
@@ -136,7 +143,27 @@ class Guest extends Resource
      */
     public function filters(NovaRequest $request)
     {
-        return [];
+        return [
+            MegaFilter::make([
+                new SqNovaTextFilter(column: 'name', label: trans("Name")),
+                new SqNovaTextFilter(column: 'last_name', label: trans("Last Name")),
+                new SqNovaTextFilter(label: __("Career"), column: 'career'),
+                new SqNovaTextFilter(label: __("Address"), column: 'address'),
+                new SqNovaDateFilter(label: __("Guest Enter Date"), column: 'registered_at'),
+                new SqNovaSelectFilter(
+                    label: __("Enter Gate"),
+                    column: 'enter_gate',
+                    options: \App\Support\Defense\Gate::key_value_filter_options()
+                ),
+                new SqNovaSelectFilter(
+                    label: __("Host"),
+                    column: 'host_id',
+                    options: \App\Models\Host::pluck('head_name','id')->toArray()
+                ),
+
+            ])->columns(3),
+            
+        ];
     }
 
     /**

@@ -16,5 +16,7 @@
     "postcss": "^8.3.11",
     "vue-loader": "^16.8.3"
   },
-  "dependencies": {}
+  "dependencies": {
+    "vue3-persian-datetime-picker": "^1.2.2"
+  }
 }

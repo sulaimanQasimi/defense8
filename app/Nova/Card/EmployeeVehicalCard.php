@@ -3,21 +3,22 @@ namespace App\Nova\Card;
 
 use App\Nova\Actions\EmployeeCarPrintCardAction;
 use App\Nova\Actions\VehicalRemarkAction;
-use App\Nova\Card\Support\VehicalDriverField;
 use App\Nova\Resource;
-use Illuminate\Validation\Rule;
+use DigitalCreative\MegaFilter\MegaFilter;
+use DigitalCreative\MegaFilter\MegaFilterTrait;
 use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Fields\Number;
-use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Trix;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 use Laravel\Nova\Fields\Image;
-use Vehical\OilType;
+use MZiraki\PersianDateField\PersianDate;
+use Sq\Query\SqNovaDateFilter;
+use Sq\Query\SqNovaTextFilter;
 
 class EmployeeVehicalCard extends Resource
 {
+    use MegaFilterTrait;
     public static $model = \App\Models\Card\EmployeeVehicalCard::class;
 
     public static $title = 'vehical_palete';
@@ -77,7 +78,7 @@ class EmployeeVehicalCard extends Resource
                 ->rules('nullable', 'string')
                 ->placeholder(__("Enter Field", ['name' => __("Vehical Owner")])),
 
-                Text::make(__("Vehical Engine NO"), "vehical_engine_no")
+            Text::make(__("Vehical Engine NO"), "vehical_engine_no")
                 ->nullable()
                 ->rules('nullable', 'string')
                 ->placeholder(__("Enter Field", ['name' => __("Vehical Engine NO")])),
@@ -90,6 +91,14 @@ class EmployeeVehicalCard extends Resource
             BelongsTo::make(__('Driver'), 'driver', CardInfo::class)
                 ->searchable()
                 ->nullable(),
+            PersianDate::make(__("Disterbute Date"), "register_date")
+                ->required()
+                ->rules('required', 'date')
+                ->placeholder(__("Enter Field", ['name' => __("Disterbute Date")])),
+            PersianDate::make(__("Expire Date"), "expire_date")
+                ->required()
+                ->rules('required', 'date')
+                ->placeholder(__("Enter Field", ['name' => __("Expire Date")])),
 
             Trix::make(__("Remark"), 'remark')
                 ->exceptOnForms()
@@ -100,12 +109,37 @@ class EmployeeVehicalCard extends Resource
 
     public function cards(NovaRequest $request)
     {
-        return [];
+        return [
+        ];
     }
 
     public function filters(NovaRequest $request)
     {
-        return [];
+        return [
+            MegaFilter::make([
+                //
+                new SqNovaTextFilter( label:trans("Vehical Type"), column:"vehical_type"),
+                //
+                new SqNovaTextFilter( label:trans("Vehical Colour"), column:"vehical_colour"),
+                //
+                new SqNovaTextFilter( label:trans("Vehical Palete"), column:"vehical_palete"),
+                //
+                new SqNovaTextFilter( label:trans("Vehical Chassis"), column:"vehical_chassis"),
+                //
+                new SqNovaTextFilter( label:trans("Vehical Model"), column:"vehical_model"),
+                //
+                new SqNovaTextFilter( label:trans("Vehical Owner"), column:"vehical_owner"),
+                //
+                new SqNovaTextFilter( label:trans("Vehical Engine NO"), column:"vehical_engine_no"),
+                //
+                new SqNovaTextFilter( label:trans("Vehical Registration NO"), column:"vehical_registration_no"),
+                //
+                new SqNovaDateFilter( label:trans("Disterbute Date"), column:"register_date"),
+                //
+                new SqNovaDateFilter( label:trans("Expire Date"), column:"expire_date"),
+            ])->columns(4)
+
+        ];
     }
     public function lenses(NovaRequest $request)
     {

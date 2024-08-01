@@ -40,8 +40,7 @@ Route::middleware(['auth', 'permission:see-other-website-data'])
 Route::middleware(['auth', 'role:super-admin'])
     // ->prefix('report/guest/')
     ->group(function () {
-        Route::get('guest/pdf', \App\Http\Controllers\Report\CustomGuestsReport::class)->name('guest.report.pdf');
-        Route::get('guest/excel', [\App\Http\Controllers\Report\CustomGuestsReport::class, 'excel_report'])->name('guest.report.excel');
+        Route::get('guest/report', \App\Http\Controllers\Report\CustomGuestsReport::class)->name('guest.report');
     });
 Route::middleware(['auth'])
     ->group(function () {
@@ -102,10 +101,8 @@ Route::middleware(['auth', 'permission:access_to_disterbuted_oil_page'])
     ->controller(OilDisterbution::class)->group(function () {
         Route::get('oil', 'index')->name('oil');
         Route::put('oil/{cardInfo:id}', 'store')->name('oil.store');
-
-
-
     });
+
 Route::middleware(['auth', 'role:super-admin'])->group(function () {
 
     Route::get("oil/report/disterbuted", \App\Http\Controllers\Oil\DisterbutedOil::class);
@@ -117,14 +114,10 @@ Route::middleware(['auth', 'role:super-admin'])->group(function () {
 Route::get("test", function () {
 
     dd(
-        GuestGate::query()->whereHas(
+        // collect(\App\Support\Defense\Gate::gate_options())->map(function FunctionName() : Returntype {
 
-            'guest.host',
-            function ($query) {
-                return $query->where("department_id", 1);
-            }
-        )
-            ->toSql()
+        // })
+        // array_flip(  \App\Support\Defense\Gate::gate_options())
     );
 
 });

@@ -1,15 +1,20 @@
 <?php
 namespace App\Nova;
 
+use DigitalCreative\MegaFilter\MegaFilter;
+use DigitalCreative\MegaFilter\MegaFilterTrait;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Sq\Query\SqNovaSelectFilter;
+use Sq\Query\SqNovaTextFilter;
 
 class Host extends Resource
 {
+    use MegaFilterTrait;
     public static $model = \App\Models\Host::class;
 
     public static $title = 'department.fa_name';
@@ -48,13 +53,6 @@ class Host extends Resource
     {
         return [
 
-            // Department Name
-            // Text::make(__("Department Name"), 'name')
-            //     ->required()
-            //     ->creationRules('required', 'string', 'unique:hosts,name')
-            //     ->creationRules('required', 'string', 'unique:hosts,name,{{resourceId}}')
-            //     ->placeholder(__("Enter Field", ['name' => __("Department Name")])),
-
             BelongsTo::make(__("Department/Chancellor"), 'department', Department::class)
                 ->filterable()
                 ->sortable()
@@ -86,8 +84,8 @@ class Host extends Resource
 
             // User
             BelongsTo::make(__("User"), 'user', User::class)
-            ->rules('required','unique:hosts,user_id')
-            ->showCreateRelationButton()->searchable(),
+                ->rules('required', 'unique:hosts,user_id')
+                ->showCreateRelationButton()->searchable(),
             HasMany::make(__('Guests'), 'guests', Guest::class),
         ];
     }
@@ -111,7 +109,28 @@ class Host extends Resource
      */
     public function filters(NovaRequest $request)
     {
-        return [];
+        return [
+            MegaFilter::make([
+                // Department
+                new SqNovaSelectFilter(
+                    label: __("Department/Chancellor"),
+                    column: 'department_id',
+                    options: \App\Models\Department::pluck('fa_name', 'id')->toArray()
+                ),
+
+                // Header Name
+                new SqNovaTextFilter(label: __("Header"), column: 'head_name'),
+
+                // Header Name
+                new SqNovaTextFilter(label: __("Job"), column: 'job'),
+
+                // Phone Number
+                new SqNovaTextFilter(label: __("Phone"), column: 'phone'),
+
+                // Department Address
+                new SqNovaTextFilter(label: __("Department Address"), column: 'address'),
+            ])->columns(3),
+        ];
     }
 
     /**

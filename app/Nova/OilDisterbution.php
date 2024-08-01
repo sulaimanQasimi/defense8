@@ -3,6 +3,8 @@
 namespace App\Nova;
 
 use App\Nova\Card\CardInfo;
+use DigitalCreative\MegaFilter\MegaFilter;
+use DigitalCreative\MegaFilter\MegaFilterTrait;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Laravel\Nova\Fields\BelongsTo;
@@ -11,10 +13,15 @@ use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use MZiraki\PersianDateField\PersianDate;
+use Sq\Query\SqNovaDateFilter;
+use Sq\Query\SqNovaNumberFilter;
+use Sq\Query\SqNovaSelectFilter;
 use Vehical\OilType;
+use Vehical\Vehical;
 
 class OilDisterbution extends Resource
 {
+    use MegaFilterTrait;
     public static $model = \App\Models\OilDisterbution::class;
     public static $title = 'id';
     public static $search = [
@@ -58,7 +65,17 @@ class OilDisterbution extends Resource
     }
     public function filters(NovaRequest $request)
     {
-        return [];
+        return [
+
+            MegaFilter::make([
+                new SqNovaSelectFilter(label: trans("Oil Type"), column: 'oil_type', options: [
+                    OilType::Diesel => trans("Diesel"),
+                    OilType::Petrole => trans("Petrole"),
+                ]),
+                new SqNovaNumberFilter(label: trans("Oil Amount"), column: "oil_amount"),
+                new SqNovaDateFilter(label: trans("Date"), column: 'filled_date'),
+            ])->columns(3)
+        ];
     }
 
     public function lenses(NovaRequest $request)

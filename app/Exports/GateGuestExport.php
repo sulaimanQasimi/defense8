@@ -19,6 +19,11 @@ use Maatwebsite\Excel\Events\AfterSheet;
 class GateGuestExport implements FromQuery, WithHeadings, WithMapping, WithEvents
 {
     use Exportable;
+    public $i=1;
+    public function __construct(private $guestQuery) {
+
+    }
+
     public function headings(): array
     {
         return [
@@ -39,55 +44,13 @@ class GateGuestExport implements FromQuery, WithHeadings, WithMapping, WithEvent
     }
     public function query()
     {
-
-        //
-        $start = null;
-        $end = null;
-        if (request()->has('date')) {
-            if (request()->input('date') != null && request()->input('date') != 'null' && request()->input('date') != '') {
-                $date = explode(',', request()->input('date'));
-
-                if (Arr::hasAny($date, 0)) {
-                    $start = Verta::parse(Str::before(request()->input('date'), ','))->toCarbon();
-                }
-                if (Arr::hasAny($date, 1)) {
-
-                    $end = Verta::parse(Str::after(request()->input('date'), ','))->toCarbon();
-                }
-            }
-        }
-        $guests = [];
-
-        $department = request()->input('department', null);
-
-        $guests = GuestGate::query()
-
-            ->when(
-                $department,
-                function ($query) use ($department) {
-                    return $query->whereHas('guest.host', function ($query) use ($department) {
-                        return $query->where("department_id", $department);
-                    });
-                }
-            )
-
-            ->when(
-                ($start != null && $end != null),
-                function ($query) use ($start, $end) {
-                    return $query->whereBetween('entered_at', [$start, Carbon::parse($end)->endOfDay()]);
-                }
-            )
-            ->when(($start && $end == null), function ($query) use ($start, $end) {
-                return $query->whereDate('entered_at', $start);
-            });
-
-        return $guests;
+        return $this->guestQuery;
     }
     public function map($guest): array
     {
         return [
 
-            'id' => $guest->id,
+            'id' => $this->i,
             'name' => $guest->guest->name,
             'last_name' => $guest->guest->last_name,
             'career' => $guest->guest->career,

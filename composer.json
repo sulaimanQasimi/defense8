@@ -9,11 +9,15 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "acme/guest-report": "@dev",
+        "acme/oil-report": "@dev",
+        "acme/price-tracker": "@dev",
         "badinansoft/nova-language-switch": "^1.2",
         "barryvdh/laravel-dompdf": "*",
         "bolechen/nova-activitylog": "^0.4.3",
         "coroowicaksono/chart-js-integration": "^0.4.3",
         "coroowicaksono/nova-carousel": "^0.0.6",
+        "digital-creative/nova-mega-filter": "^1.0",
         "elibyy/tcpdf-laravel": "^11.0",
         "guratr/nova-command-runner": "^1.0",
         "guzzlehttp/guzzle": "^7.2",
@@ -29,15 +33,15 @@
         "maatwebsite/laravel-nova-excel": "^1.3",
         "mziraki/nova-persian-date-field": "^1.1",
         "mziraki/nova-persian-date-filter": "^1.0",
+        "outl1ne/nova-multiselect-filter": "^4.0",
         "pragmarx/artisan-tool": "^0.4.0",
         "radwanic/resource-listing": "^1.0",
+        "seoegypt/value-filter": "^1.0",
         "sereny/nova-permissions": "^1.4",
         "spatie/laravel-settings": "^3.3",
         "spatie/nova-backup-tool": "^5.0",
-        "tightenco/ziggy": "^1.0",
-        "acme/price-tracker": "@dev",
-        "acme/guest-report": "@dev",
-        "acme/oil-report": "@dev"
+        "sq/query": "@dev",
+        "tightenco/ziggy": "^1.0"
     },
     "repositories": [
         {
@@ -55,6 +59,14 @@
         {
             "type": "path",
             "url": "./nova-components/OilReport"
+        },
+        {
+            "type": "path",
+            "url": "./nova-components/EmployeeChecker"
+        },
+        {
+            "type": "path",
+            "url": "./package/sq/query"
         }
     ],
     "autoload": {

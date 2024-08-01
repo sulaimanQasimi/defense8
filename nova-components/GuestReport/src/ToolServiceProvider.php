@@ -25,8 +25,7 @@ class ToolServiceProvider extends ServiceProvider
 
         Nova::serving(function (ServingNova $event) {
             Nova::provideToScript([
-                'pdf' => config('guest-report.pdf'),
-                'excel' => config('guest-report.excel'),
+                'report' => config('guest-report.report'),
             ]);
         });
         $this->publishes([

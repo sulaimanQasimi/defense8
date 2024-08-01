@@ -7,12 +7,12 @@
         :repo="__('Here you can generate guest report')"
       >
         <div class="grid grid-cols-2 gap-3">
-          <date-picker range clearable color="#e91e63" v-model="from" />
+          <date-picker range color="#e91e63" v-model="from" />
           <select
             v-model="department"
             class="w-full block form-control form-control-bordered form-input"
           >
-            <option value="" selected>{{ __("Department") }}</option>
+            <option :value="null" selected>{{ __("Department") }}</option>
             <option
               :value="department.id"
               :key="department.id"
@@ -25,7 +25,9 @@
       </g-card>
       <div class="flex">
         <a
-          v-bind:href="excelUrl"
+          v-bind:href="
+            reportUrl + '?file=excel&date=' + this.date + '&department=' + this.department
+          "
           target="_blank"
           class="border text-left appearance-none cursor-pointer rounded text-sm font-bold focus:outline-none focus:ring ring-primary-200 dark:ring-gray-600 disabled:cursor-not-allowed inline-flex items-center justify-center shadow h-9 px-3 bg-primary-500 border-primary-500 hover:[&:not(:disabled)]:bg-primary-400 hover:[&:not(:disabled)]:border-primary-400 text-white dark:text-gray-900 mt-2 mx-2"
         >
@@ -33,7 +35,9 @@
           <span>{{ __("Excel") }}</span>
         </a>
         <a
-          v-bind:href="pdfUrl"
+          v-bind:href="
+            reportUrl + '?file=pdf&date=' + this.date + '&department=' + this.department
+          "
           target="_blank"
           class="border text-left appearance-none cursor-pointer rounded text-sm font-bold focus:outline-none focus:ring ring-primary-200 dark:ring-gray-600 disabled:cursor-not-allowed inline-flex items-center justify-center shadow h-9 px-3 bg-primary-500 border-primary-500 hover:[&:not(:disabled)]:bg-primary-400 hover:[&:not(:disabled)]:border-primary-400 text-white dark:text-gray-900 mt-2 mx-2"
         >
@@ -61,8 +65,7 @@ export default {
 
   data() {
     return {
-      pdf: Nova.config("pdf"),
-      excel: Nova.config("excel"),
+      reportUrl: Nova.config("report"),
       departments: null,
       department: this.selectedDepartment,
       initialLoading: false,
@@ -89,7 +92,7 @@ export default {
   mounted() {
     Nova.addShortcut("ctrl+shift", (event) => {
       Nova.visit("/guest-report", {
-        onFinish: () => Nova.success(`Filter Applied`),
+        onFinish: () => Nova.success(`Page Reloaded`),
       });
     });
     Nova.request()
@@ -99,14 +102,7 @@ export default {
         Nova.success("It worked!");
       });
   },
-  methods: {
-    pdfUrl() {
-      return this.pdf + "?date=" + this.date + "&department=" + this.department;
-    },
-    excelUrl() {
-      return this.excel + "?date=" + this.date + "&department=" + this.department;
-    },
-  },
+  methods: {},
   computed: {},
 };
 </script>

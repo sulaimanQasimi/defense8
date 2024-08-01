@@ -1,6 +1,5 @@
 <?php
 
 return [
-    'pdf'=>'/guest/pdf',
-    'excel'=>'/guest/excel',
+    'report'=>'guest/report',
 ];

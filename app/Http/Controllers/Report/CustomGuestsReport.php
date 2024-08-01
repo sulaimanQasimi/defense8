@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Report;
 
 use App\Exports\GateGuestExport;
 use App\Http\Controllers\Controller;
+use Sq\Query\DateFromAndToModelQuery;
 use App\Http\Controllers\Report\Contracts\Template;
 use App\Models\Guest;
 use App\Models\GuestGate;
@@ -20,25 +21,15 @@ class CustomGuestsReport extends Controller
     use Template;
     public function __invoke(Request $request)
     {
-        //
-        $start = null;
-        $end = null;
-        if ($request->has('date')) {
-            if ($request->input('date') != null && $request->input('date') != 'null' && $request->input('date') != '') {
-                $date = explode(',', $request->input('date'));
-
-                if (Arr::hasAny($date, 0)) {
-                    $start = Verta::parse(Str::before($request->input('date'), ','))->toCarbon();
-                }
-                if (Arr::hasAny($date, 1)) {
-
-                    $end = Verta::parse(Str::after($request->input('date'), ','))->toCarbon();
-                }
-            }
-        }
-        $guests = [];
+        $createGuestQuery = new DateFromAndToModelQuery(GuestGate::class, 'entered_at');
         $department = $request->input('department', null);
-        $guests = GuestGate::query()
+        if (request()->input('department', null) == null || request()->input('department', null) == 'null') {
+            $department = null;
+
+        }
+
+        $query = $createGuestQuery->query()
+
             // Department Filter
             ->when(
                 $department,
@@ -47,19 +38,17 @@ class CustomGuestsReport extends Controller
                         return $query->where("department_id", $department);
                     });
                 }
-            )
+            );
 
-            ->when(
-                ($start != null && $end != null),
-                function ($query) use ($start, $end) {
-                    return $query->whereBetween('entered_at', [$start, Carbon::parse($end)->endOfDay()]);
-                }
-            )
-            ->when(($start && $end == null), function ($query) use ($start, $end) {
-                return $query->whereDate('entered_at', $start);
-            })->get();
+        if ($request->input('file') == 'excel') {
+            return $this->excel($query);
+        }
 
-
+        return $this->pdf($query);
+    }
+    public function pdf($query)
+    {
+        $guests = $query->get();
         $this->header(trans('Daily Guest Report'));
         TCPDF::SetTitle(trans("Daily Guest Report"));
         TCPDF::AddPage();
@@ -72,9 +61,9 @@ class CustomGuestsReport extends Controller
         return TCPDF::Output(trans("Daily Guest Report") . '.pdf', 'I');
 
     }
-    public function excel_report()
+    public function excel($query)
     {
-        return (new GateGuestExport)->download('guest.xlsx');
+        return (new GateGuestExport($query))->download('guest.xlsx');
     }
 
 }

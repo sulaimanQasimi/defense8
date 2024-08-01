@@ -2,6 +2,8 @@
 
 namespace App\Nova;
 
+use DigitalCreative\MegaFilter\MegaFilter;
+use DigitalCreative\MegaFilter\MegaFilterTrait;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules;
@@ -14,9 +16,12 @@ use Laravel\Nova\Fields\Password;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Sq\Query\SqNovaSelectFilter;
+use Sq\Query\SqNovaTextFilter;
 
 class User extends Resource
 {
+    use MegaFilterTrait;
     public static $model = \App\Models\User::class;
     public static $title = 'name';
     public static $search = [
@@ -90,7 +95,20 @@ class User extends Resource
      */
     public function filters(NovaRequest $request)
     {
-        return [];
+        return [
+            MegaFilter::make([
+                // Department
+                new SqNovaSelectFilter(
+                    label: __("Department/Chancellor"),
+                    column: 'department_id',
+                    options: \App\Models\Department::pluck('fa_name', 'id')->toArray()
+                ),
+                // Name Filter
+                new SqNovaTextFilter(label: trans("Name"), column: 'name'),
+                // Email Filter
+                new SqNovaTextFilter(label: trans("Email"), column: 'email'),
+            ])->columns(3),
+        ];
     }
 
     /**

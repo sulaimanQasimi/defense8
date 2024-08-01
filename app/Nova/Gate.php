@@ -2,6 +2,8 @@
 
 namespace App\Nova;
 
+use DigitalCreative\MegaFilter\MegaFilter;
+use DigitalCreative\MegaFilter\MegaFilterTrait;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\HasMany;
@@ -9,9 +11,12 @@ use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Sq\Query\SqNovaSelectFilter;
+use Sq\Query\SqNovaTextFilter;
 
 class Gate extends Resource
 {
+    use MegaFilterTrait;
     public static $model = \App\Models\Gate::class;
     public static $title = 'fa_name';
     public static $search = [
@@ -62,7 +67,28 @@ class Gate extends Resource
 
     public function filters(NovaRequest $request)
     {
-        return [];
+        return [
+
+            MegaFilter::make([
+                // Department
+                new SqNovaSelectFilter(
+                    label: __("Department/Chancellor"),
+                    column: 'department_id',
+                    options: \App\Models\Department::pluck('fa_name', 'id')->toArray()
+                ),
+                new SqNovaTextFilter(label: trans("Name"), column: 'fa_name'),
+
+                new SqNovaTextFilter(label: trans("Pashto Name"), column: 'pa_name'),
+
+                new SqNovaSelectFilter(
+                    label: trans("Gate Level"),
+                    column: 'level',
+                    options: [
+                        1 => trans("قرول"),
+                    ]
+                ),
+            ])->columns(3),
+        ];
     }
     public function lenses(NovaRequest $request)
     {

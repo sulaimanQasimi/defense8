@@ -3,13 +3,18 @@ namespace App\Nova\Card;
 
 use App\Nova\Actions\GunPrintCardAction;
 use App\Nova\Resource;
+use DigitalCreative\MegaFilter\MegaFilter;
+use DigitalCreative\MegaFilter\MegaFilterTrait;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use MZiraki\PersianDateField\PersianDate;
+use Sq\Query\SqNovaDateFilter;
+use Sq\Query\SqNovaTextFilter;
 
 class GunCard extends Resource
 {
+    use MegaFilterTrait;
 
     public static $model = \App\Models\Card\GunCard::class;
 
@@ -29,8 +34,6 @@ class GunCard extends Resource
         return __('Gun Card');
     }
 
-
-
     public function fields(NovaRequest $request)
     {
         return [
@@ -45,9 +48,18 @@ class GunCard extends Resource
             Text::make(__("Gun Range"), "range")
                 ->required()
                 ->rules("required", "string"),
-            PersianDate::make(__("Filled Form Date"), "filled_form_date")
+            // PersianDate::make(__("Filled Form Date"), "filled_form_date")
+            //     ->required()
+            //     ->rules("required", "date"),
+            PersianDate::make(__("Disterbute Date"), "register_date")
                 ->required()
-                ->rules("required", "date"),
+                ->rules('required', 'date')
+                ->placeholder(__("Enter Field", ['name' => __("Disterbute Date")])),
+            PersianDate::make(__("Expire Date"), "expire_date")
+                ->required()
+                ->rules('required', 'date')
+                ->placeholder(__("Enter Field", ['name' => __("Expire Date")])),
+
         ];
     }
 
@@ -70,7 +82,21 @@ class GunCard extends Resource
      */
     public function filters(NovaRequest $request)
     {
-        return [];
+        return [
+            MegaFilter::make([
+
+                new SqNovaTextFilter(label: trans("Gun Type"), column: 'gun_type'),
+                //
+                new SqNovaTextFilter(label: trans("Gun No"), column: 'gun_no'),
+                //
+                new SqNovaTextFilter(label: trans("Gun Range"), column: 'range'),
+                //
+                new SqNovaDateFilter(label: trans("Disterbute Date"), column: "register_date"),
+                //
+                new SqNovaDateFilter(label: trans("Expire Date"), column: "expire_date"),
+            ])->columns(4)
+
+        ];
     }
 
     /**
@@ -93,7 +119,7 @@ class GunCard extends Resource
     public function actions(NovaRequest $request)
     {
         return [
-            (new GunPrintCardAction)->onlyOnDetail()->canRun(fn()=>auth()->user()->hasRole("Print Card"))
+            (new GunPrintCardAction)->onlyOnDetail()->canRun(fn() => auth()->user()->hasRole("Print Card"))
 
         ];
     }

@@ -97,7 +97,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 MenuItem::resource(GunCard::class),
 
                 // Employee Check out Page
-                MenuItem::externalLink(__("Employee Check Card"), route("employee.check.card"))->canSee(fn() => \Illuminate\Support\Facades\Gate::allows('gateChecker', \App\Models\Gate::class)),
+                MenuItem::externalLink(__("Employee Check Card"), route("employee.check.card"))
+                ->canSee(fn() => \Illuminate\Support\Facades\Gate::allows('gateChecker', \App\Models\Gate::class)),
 
                 // Self Employee Attendance
                 MenuItem::externalLink(

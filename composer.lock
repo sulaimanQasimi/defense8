@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a359e24bfe798ce1c9945d91f763c21c",
+    "content-hash": "de567ad91191425a9f3c80f94bb3b64d",
     "packages": [
         {
             "name": "acme/guest-report",
@@ -858,6 +858,66 @@
                 "source": "https://github.com/dflydev/dflydev-dot-access-data/tree/v3.0.2"
             },
             "time": "2022-10-27T11:44:00+00:00"
+        },
+        {
+            "name": "digital-creative/nova-mega-filter",
+            "version": "v1.0.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dcasia/nova-mega-filter.git",
+                "reference": "592ff7017634086e2de0ff1bb4ea98a365b3a707"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dcasia/nova-mega-filter/zipball/592ff7017634086e2de0ff1bb4ea98a365b3a707",
+                "reference": "592ff7017634086e2de0ff1bb4ea98a365b3a707",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/nova": "^4.0",
+                "php": ">=8.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "DigitalCreative\\MegaFilter\\MegaFilterServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "DigitalCreative\\MegaFilter\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Rafael Milewski"
+                }
+            ],
+            "description": "Allows you to control the columns and filters shown on your nova resources.",
+            "keywords": [
+                "big-filter",
+                "columns",
+                "filter",
+                "laravel",
+                "nova"
+            ],
+            "support": {
+                "issues": "https://github.com/dcasia/nova-mega-filter/issues",
+                "source": "https://github.com/dcasia/nova-mega-filter/tree/v1.0.5"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/milewski",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-06-20T04:49:50+00:00"
         },
         {
             "name": "doctrine/cache",
@@ -5055,6 +5115,122 @@
             "time": "2024-05-06T07:22:51+00:00"
         },
         {
+            "name": "outl1ne/nova-multiselect-filter",
+            "version": "4.0.8",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/outl1ne/nova-multiselect-filter.git",
+                "reference": "13da4158177dcdfc7c389e99195af2642cf68761"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/outl1ne/nova-multiselect-filter/zipball/13da4158177dcdfc7c389e99195af2642cf68761",
+                "reference": "13da4158177dcdfc7c389e99195af2642cf68761",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/nova": "^4.0",
+                "outl1ne/nova-translations-loader": "^5.0.0",
+                "php": ">=8.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Outl1ne\\NovaMultiselectFilter\\FilterServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Outl1ne\\NovaMultiselectFilter\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Kaspar Rosin",
+                    "email": "kaspar.rosin@gmail.com",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Tarvo Reinpalu",
+                    "email": "tarvoreinpalu@gmail.com",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Outl1ne",
+                    "email": "info@optimistdigital.com",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "Multiselect filter for Laravel Nova.",
+            "keywords": [
+                "filter",
+                "laravel",
+                "laravel-nova",
+                "multiselect",
+                "nova",
+                "select"
+            ],
+            "support": {
+                "issues": "https://github.com/outl1ne/nova-multiselect-filter/issues",
+                "source": "https://github.com/outl1ne/nova-multiselect-filter/tree/4.0.8"
+            },
+            "time": "2023-07-24T08:40:51+00:00"
+        },
+        {
+            "name": "outl1ne/nova-translations-loader",
+            "version": "5.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/outl1ne/nova-translations-loader.git",
+                "reference": "baa886cb7082eb0fc399c64a54b996ca8df28f8d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/outl1ne/nova-translations-loader/zipball/baa886cb7082eb0fc399c64a54b996ca8df28f8d",
+                "reference": "baa886cb7082eb0fc399c64a54b996ca8df28f8d",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/nova": "^4.0",
+                "php": ">=8.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [],
+                    "aliases": []
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Outl1ne\\NovaTranslationsLoader\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "This Laravel Nova package helps developers load translations into their packages.",
+            "keywords": [
+                "laravel",
+                "nova",
+                "optimistdigital",
+                "outl1ne",
+                "translations"
+            ],
+            "support": {
+                "issues": "https://github.com/outl1ne/nova-translations-loader/issues",
+                "source": "https://github.com/outl1ne/nova-translations-loader/tree/5.0.2"
+            },
+            "time": "2024-03-13T08:57:31+00:00"
+        },
+        {
             "name": "paragonie/constant_time_encoding",
             "version": "v2.6.3",
             "source": {
@@ -6664,6 +6840,52 @@
             "time": "2020-10-06T05:48:55+00:00"
         },
         {
+            "name": "seoegypt/value-filter",
+            "version": "v1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/SeoDevs/value-filter.git",
+                "reference": "793e241eac7c0c05b6ca972afd968f1a7c18616f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/SeoDevs/value-filter/zipball/793e241eac7c0c05b6ca972afd968f1a7c18616f",
+                "reference": "793e241eac7c0c05b6ca972afd968f1a7c18616f",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/nova": "^4.0",
+                "php": "^7.3|^8.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Seoegypt\\ValueFilter\\FilterServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Seoegypt\\ValueFilter\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "A Laravel Nova filter.",
+            "keywords": [
+                "laravel",
+                "nova"
+            ],
+            "support": {
+                "issues": "https://github.com/SeoDevs/value-filter/issues",
+                "source": "https://github.com/SeoDevs/value-filter/tree/v1.0.2"
+            },
+            "time": "2023-05-15T12:53:30+00:00"
+        },
+        {
             "name": "sereny/nova-permissions",
             "version": "v1.6.0",
             "source": {
@@ -7468,6 +7690,30 @@
                 }
             ],
             "time": "2023-12-25T11:46:58+00:00"
+        },
+        {
+            "name": "sq/query",
+            "version": "dev-master",
+            "dist": {
+                "type": "path",
+                "url": "./package/sq/query",
+                "reference": "f2aab1ce69cead551cadb8fcf36d06f6300efe37"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Sq\\Query\\": "src/"
+                }
+            },
+            "authors": [
+                {
+                    "name": "Sulaiman",
+                    "email": "soliman@gmail.com"
+                }
+            ],
+            "transport-options": {
+                "relative": true
+            }
         },
         {
             "name": "symfony/console",
@@ -10199,9 +10445,10 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "acme/price-tracker": 20,
         "acme/guest-report": 20,
-        "acme/oil-report": 20
+        "acme/oil-report": 20,
+        "acme/price-tracker": 20,
+        "sq/query": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Oil;
 
+use App\Exports\ImportedOilExcelExport;
 use App\Http\Controllers\Controller;
 use App\Models\Card\CardInfo;
 use App\Models\Card\EmployeeVehicalCard;
@@ -13,6 +14,7 @@ use Hekmatinasser\Verta\Facades\Verta;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
+use Sq\Query\DateFromAndToModelQuery;
 use TCPDF_FONTS;
 use Vehical\OilType;
 use Vehical\Vehical;
@@ -21,13 +23,16 @@ class ImportedOil extends Controller
 {
     public function __invoke(Request $request)
     {
-        $start_date = Verta::parse(Verta::setDateJalali($request->input("startYear"), $request->input("startMonth"), $request->input("startDay")))->toCarbon();
-        $end_date = Verta::parse(Verta::setDateJalali($request->input("endYear"), $request->input("endMonth"), $request->input("endDay")))->toCarbon();
+        if ($request->input('file') == 'excel') {
+            return $this->excel();
+        }
+        return $this->pdf();
+    }
+    public function pdf()
+    {
+        $createQuery = new DateFromAndToModelQuery(Oil::class, 'filled_date');
 
-        $oil = Oil::query()
-        ->whereBetween('filled_date', [$start_date, $end_date])
-        ->orderBy("filled_date")
-        ->get();
+        $oil = $createQuery->query()->get();
 
         TCPDF_FONTS::addTTFfont(public_path('mod_font.ttf'), 'TrueTypeUnicode', '', 96);
         TCPDF::SetFont('mod_font', '', 11);
@@ -37,11 +42,11 @@ class ImportedOil extends Controller
         TCPDF::SetHeaderMargin(2);
         TCPDF::SetFooterMargin(5);
         TCPDF::SetAutoPageBreak(TRUE, 5);
-        TCPDF::setHeaderCallback(function ($pdf) use($start_date,$end_date) {
+        TCPDF::setHeaderCallback(function ($pdf) use ($createQuery) {
             $pdf->SetFont('mod_font', '', 11);
             $pdf->Cell(297, 10, config("app.name"), false, true, 'C');
-            $pdf->Cell(297, 10, trans("Oil Disterbution"), false, true, 'C');
-            $pdf->Cell(297, 10, verta($start_date)->format("Y/m/d").'-'.verta($end_date)->format("Y/m/d"), false, true, 'C');
+            $pdf->Cell(297, 10, trans("Disterbuted Oil"), false, true, 'C');
+            $pdf->Cell(297, 10, verta($createQuery->start)->format("Y/m/d") . '-' . verta($createQuery->end)->format("Y/m/d"), false, true, 'C');
             $pdf->SetFont('helvetica', '', 10);
             $pdf->Cell(107, 0, '');
             $style = [
@@ -99,13 +104,17 @@ class ImportedOil extends Controller
         foreach ($oil as $employee) {
             TCPDF::Cell(9, 7, $i++, true, false, 'C', false);
             TCPDF::Cell(55, 7, $employee->code, true, false, 'C', false);
-            TCPDF::Cell(55, 7, trans(($employee->oil_type ==OilType::Diesel)?"Diesel":"Petrole"), true, false, 'C', false);
+            TCPDF::Cell(55, 7, trans(($employee->oil_type == OilType::Diesel) ? "Diesel" : "Petrole"), true, false, 'C', false);
 
             TCPDF::Cell(55, 7, $employee->oil_quality, true, false, 'C', false);
             TCPDF::Cell(55, 7, trans("Liter", ['value' => $employee->oil_amount]), true, false, 'C', false);
             TCPDF::Cell(55, 7, verta($employee->filled_date)->format('Y/m/d'), true, true, 'C', false);
         }
         return TCPDF::Output("54.pdf", 'i');
+    }
+    public function excel()
+    {
+        return (new ImportedOilExcelExport)->download('imported_oil.xlsx');
     }
 
 }

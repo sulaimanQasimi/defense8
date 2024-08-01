@@ -1,5 +1,8 @@
 <?php
 
+use Sq\Query\DateFromAndToModelQuery;
+use App\Http\Resources\DisterbutedOilResource;
+use App\Models\OilDisterbution;
 use Illuminate\Support\Facades\Route;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
@@ -16,19 +19,10 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 
 Route::get('/', function (NovaRequest $request) {
 
-    $import=config('Oil-report.import');
-    $disterbute=config('Oil-report.disterbute');
+    $createDisterbutedOilQuery = new DateFromAndToModelQuery(OilDisterbution::class, 'filled_date');
 
-    $years = [];
-    for ($i = 1388; $i <= verta()->year; $i++) {
-        $years[] = $i;
-    }
-
-    $days = [];
-
-    for ($i = 1; $i <= 31; $i++) {
-        $days[] = $i;
-    }
-
-    return inertia('OilReport',compact('years','days','disterbute','import'));
+    return inertia('OilReport', [
+        'disterbutes' => DisterbutedOilResource::collection($createDisterbutedOilQuery->query()->paginate(25)),
+        'date'=>$request->input('date',verta()->format("Y/m/d"))
+        ]);
 });

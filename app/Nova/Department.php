@@ -5,6 +5,8 @@ namespace App\Nova;
 use App\Nova\Card\CardInfo;
 use App\Support\Defense\DepartmentTypeEnum;
 use Coroowicaksono\ChartJsIntegration\LineChart;
+use DigitalCreative\MegaFilter\MegaFilter;
+use DigitalCreative\MegaFilter\MegaFilterTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
@@ -16,9 +18,12 @@ use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\URL;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Sq\Query\SqNovaSelectFilter;
+use Sq\Query\SqNovaTextFilter;
 
 class Department extends Resource
 {
+    use MegaFilterTrait;
     public static $model = \App\Models\Department::class;
     public static $title = 'fa_name';
     public static $search = [
@@ -72,8 +77,8 @@ class Department extends Resource
                     DepartmentTypeEnum::Directorate => trans("Directorate"),
                 ])
                 ->rules('required', 'in:Independant,Assistant,Directory,HeaderShip,Commander,Management,Directorate')->filterable()->displayUsingLabels(),
-            Text::make(trans("Hosts"), fn()=>$this->hosts->count())->onlyOnIndex(),
-            Text::make(trans("Employees"), fn()=>$this->card_infos->count())->onlyOnIndex(),
+            Text::make(trans("Hosts"), fn() => $this->hosts->count())->onlyOnIndex(),
+            Text::make(trans("Employees"), fn() => $this->card_infos->count())->onlyOnIndex(),
 
             HasMany::make(trans("Users"), 'user', User::class),
             HasMany::make(trans("Under Departments"), 'departments', Department::class),
@@ -93,7 +98,7 @@ class Department extends Resource
     public function cards(NovaRequest $request)
     {
         //
-       return [];
+        return [];
     }
 
     /**
@@ -104,7 +109,35 @@ class Department extends Resource
      */
     public function filters(NovaRequest $request)
     {
-        return [];
+        return [
+            MegaFilter::make([
+                // Department
+                new SqNovaSelectFilter(
+                    label: __("Header Department"),
+                    column: 'department_id',
+                    options: \App\Models\Department::pluck('fa_name', 'id')->toArray()
+                ),
+                new SqNovaTextFilter(label: trans("Name"), column: 'fa_name'),
+
+                new SqNovaTextFilter(label: trans("Pashto Name"), column: 'pa_name'),
+
+                new SqNovaTextFilter(label: trans("English Name"), column: 'en_name'),
+
+                new SqNovaSelectFilter(
+                    label: trans("Type"),
+                    column: 'type',
+                    options: [
+                        DepartmentTypeEnum::Independant => trans("Independant"),
+                        DepartmentTypeEnum::Assistant => trans("Assistant"),
+                        DepartmentTypeEnum::Directory => trans("Directory"),
+                        DepartmentTypeEnum::HeaderShip => trans("HeaderShip"),
+                        DepartmentTypeEnum::Commander => trans("Commander"),
+                        DepartmentTypeEnum::Management => trans("Management"),
+                        DepartmentTypeEnum::Directorate => trans("Directorate"),
+                    ]
+                ),
+            ])->columns(3),
+        ];
     }
 
     /*

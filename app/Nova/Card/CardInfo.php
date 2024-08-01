@@ -18,6 +18,8 @@ use App\Nova\Resource;
 use App\Nova\Village;
 use App\Support\Defense\EditAditionalCardInfoEnum;
 use Coroowicaksono\ChartJsIntegration\LineChart;
+use DigitalCreative\MegaFilter\MegaFilter;
+use DigitalCreative\MegaFilter\MegaFilterTrait;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
@@ -35,10 +37,14 @@ use Laravel\Nova\Fields\Trix;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
 use MZiraki\PersianDateField\PersianDate;
+use Sq\Query\SqNovaDateFilter;
+use Sq\Query\SqNovaSelectFilter;
+use Sq\Query\SqNovaTextFilter;
 use Vehical\OilType;
 
 class CardInfo extends Resource
 {
+    use MegaFilterTrait;
 
     public static $model = \App\Models\Card\CardInfo::class;
 
@@ -275,8 +281,8 @@ class CardInfo extends Resource
                         ->filterable()
                         ->displayUsingLabels(),
                     Number::make(trans("Monthly Rate"), "monthly_rate")->displayUsing(fn($monthly_rate) => trans("Liter", ["value" => $monthly_rate]))->rules("required", 'numeric'),
-                    Text::make(trans("Consumtion Amount"),fn()=>$this->current_month_oil_consumtion)->displayUsing(fn($monthly_rate) => trans("Liter", ["value" => $monthly_rate]))->rules("required", 'numeric'),
-                    Text::make(trans("Remain"),fn()=>$this->current_month_oil_remain)->displayUsing(fn($monthly_rate) => trans("Liter", ["value" => $monthly_rate]))->rules("required", 'numeric')
+                    Text::make(trans("Consumtion Amount"), fn() => $this->current_month_oil_consumtion)->displayUsing(fn($monthly_rate) => trans("Liter", ["value" => $monthly_rate]))->rules("required", 'numeric'),
+                    Text::make(trans("Remain"), fn() => $this->current_month_oil_remain)->displayUsing(fn($monthly_rate) => trans("Liter", ["value" => $monthly_rate]))->rules("required", 'numeric')
                 ]
 
             ),
@@ -319,16 +325,55 @@ class CardInfo extends Resource
                 ]),
         ];
     }
-
-    /**
-     * Get the filters available for the resource.
-     *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @return array
-     */
     public function filters(NovaRequest $request)
     {
-        return [];
+        return [
+            MegaFilter::make([
+                //
+                new SqNovaTextFilter(label: __("Register No"), column: 'registare_no'),
+                //
+                new SqNovaTextFilter(label: __("Name"), column: 'name'),
+                //
+                new SqNovaTextFilter(label: __("Last Name"), column: 'last_name'),
+                //
+                new SqNovaTextFilter(label: __("Father Name"), column: 'father_name'),
+                //
+                new SqNovaTextFilter(label: __("Grand Father Name"), column: 'grand_father_name'),
+                //
+                new SqNovaTextFilter(label: __("National ID"), column: 'national_id'),
+                //
+                new SqNovaTextFilter(label: __("Phone"), column: 'phone'),
+                //
+                new SqNovaDateFilter(label: __("Date of Birth"), column: 'birthday'),
+                //
+                new SqNovaTextFilter(label: __("Degree"), column: 'degree'),
+                //
+                new SqNovaTextFilter(label: __("Grade"), column: 'grade'),
+                //
+                new SqNovaTextFilter(label: __("Acupation"), column: 'acupation'),
+                //
+                new SqNovaTextFilter(label: __("Job Stracture Title"), column: 'job_structure'),
+                //
+                new SqNovaTextFilter(label: __("Previous Job"), column: 'previous_job'),
+                //
+                new SqNovaSelectFilter(
+                    label: __("Department/Chancellor"),
+                    column: 'department_id',
+                    options: \App\Models\Department::pluck('fa_name', 'id')->toArray()
+                ),
+                //
+                new SqNovaSelectFilter(
+                    label: trans("Oil Type"),
+                    column: 'oil_type',
+                    options: [
+                        OilType::Diesel => trans("Diesel"),
+                        OilType::Petrole => trans("Petrole"),
+                    ]
+                ),
+                //
+                new SqNovaTextFilter(label: trans("Monthly Rate"), column: "monthly_rate"),
+            ])->columns(4)
+        ];
     }
 
     /**

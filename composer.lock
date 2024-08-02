@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "de567ad91191425a9f3c80f94bb3b64d",
+    "content-hash": "70e07d3b74e77c75ab9d4e0563251799",
     "packages": [
         {
             "name": "acme/guest-report",
@@ -7692,6 +7692,37 @@
             "time": "2023-12-25T11:46:58+00:00"
         },
         {
+            "name": "sq/card",
+            "version": "dev-master",
+            "dist": {
+                "type": "path",
+                "url": "./package/sq/card",
+                "reference": "069a071c43bab236b38ee37e88877eea8107fce2"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Sq\\Card\\CardCoreServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Sq\\Card\\": "src/"
+                }
+            },
+            "authors": [
+                {
+                    "name": "Sulaiman",
+                    "email": "soliman@gmail.com"
+                }
+            ],
+            "transport-options": {
+                "relative": true
+            }
+        },
+        {
             "name": "sq/query",
             "version": "dev-master",
             "dist": {
@@ -10448,7 +10479,8 @@
         "acme/guest-report": 20,
         "acme/oil-report": 20,
         "acme/price-tracker": 20,
-        "sq/query": 20
+        "sq/query": 20,
+        "sq/card": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

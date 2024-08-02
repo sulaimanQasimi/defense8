@@ -17,7 +17,8 @@ class ExpendDiesel extends Value
      */
     public function calculate(NovaRequest $request)
     {
-        return $this->result(Vehical::expend_diesel_oil()) ->format([
+        return $this->result(Vehical::expend_diesel_oil())
+        ->format([
             'thousandSeparated' => true,
             'mantissa' => 0,
         ])->suffix(trans("Liter",['value'=>'']));

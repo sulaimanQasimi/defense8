@@ -41,6 +41,7 @@
         "spatie/laravel-settings": "^3.3",
         "spatie/nova-backup-tool": "^5.0",
         "sq/query": "@dev",
+        "sq/card": "@dev",
         "tightenco/ziggy": "^1.0"
     },
     "repositories": [
@@ -62,11 +63,11 @@
         },
         {
             "type": "path",
-            "url": "./nova-components/EmployeeChecker"
+            "url": "./package/sq/query"
         },
         {
             "type": "path",
-            "url": "./package/sq/query"
+            "url": "./package/sq/card"
         }
     ],
     "autoload": {

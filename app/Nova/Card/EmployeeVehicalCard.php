@@ -1,7 +1,6 @@
 <?php
 namespace App\Nova\Card;
 
-use App\Nova\Actions\EmployeeCarPrintCardAction;
 use App\Nova\Actions\VehicalRemarkAction;
 use App\Nova\Resource;
 use DigitalCreative\MegaFilter\MegaFilter;
@@ -10,7 +9,6 @@ use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Trix;
 use Laravel\Nova\Http\Requests\NovaRequest;
-
 use Laravel\Nova\Fields\Image;
 use MZiraki\PersianDateField\PersianDate;
 use Sq\Query\SqNovaDateFilter;
@@ -149,7 +147,7 @@ class EmployeeVehicalCard extends Resource
     public function actions(NovaRequest $request)
     {
         return [
-            (new EmployeeCarPrintCardAction)->onlyOnDetail()->canRun(fn() => auth()->user()->hasRole("Print Card")),
+            (new \Sq\Card\Nova\Actions\EmployeeCarPrintCardAction)->onlyOnDetail()->canRun(fn() => auth()->user()->hasRole("Print Card")),
             (new VehicalRemarkAction)->canSee(fn() => auth()->user()->hasPermissionTo("add remark for vehical")),
 
         ];

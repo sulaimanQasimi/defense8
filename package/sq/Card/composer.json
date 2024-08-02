@@ -1,0 +1,22 @@
+{
+    "name": "sq/card",
+    "autoload": {
+        "psr-4": {
+            "Sq\\Card\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Sulaiman",
+            "email": "soliman@gmail.com"
+        }
+    ],
+    "require": {},
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Sq\\Card\\CardCoreServiceProvider"
+            ]
+        }
+    }
+}

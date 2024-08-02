@@ -10,7 +10,10 @@ use App\Http\Controllers\Oil\OilDisterbution;
 use App\Livewire\CardDesign;
 use App\Livewire\Setting\LanguageAutomization;
 use App\Models\GuestGate;
+use Hekmatinasser\Verta\Facades\Verta;
 use Illuminate\Support\Facades\Route;
+use Sq\Query\OilStatistics;
+use Vehical\OilType;
 
 // Guests Routes
 Route::prefix("guest")
@@ -70,24 +73,6 @@ Route::middleware(['auth'])
     });
 
 
-// Group for Desining and Printing Cards
-Route::middleware(['auth'])->group(function () {
-
-    // Card Frame Design Request Route
-    Route::middleware('role:Design Card')->get('card-design/{printCardFrame:id}', CardDesign::class)->name('employee.design-card');
-
-    // Card Frame Print Request Route
-
-    // Employee Card
-    Route::middleware('role:Print Card')->get('print-employee-card-for/{cardInfo:id}/card/{printCardFrame}', (new PrintCardController())->employee(...))->name('employee.print-card-for');
-
-    // Gun Card
-    Route::middleware('role:Print Card')->get('print/gun/{cardInfo:id}/card/{printCardFrame}', (new PrintCardController())->gun(...))->name('gun.print-card-for');
-
-    // Employee Car Card
-    Route::middleware('role:Print Card')->get('print/employeeCar/{employeeVehicalCard:id}/card/{printCardFrame}', (new PrintCardController())->employee_car(...))->name('employee-car.print-card-for');
-});
-
 
 //
 Route::middleware(['auth', 'permission:change_language'])
@@ -113,11 +98,11 @@ Route::middleware(['auth', 'role:super-admin'])->group(function () {
 
 Route::get("test", function () {
 
-    dd(
-        // collect(\App\Support\Defense\Gate::gate_options())->map(function FunctionName() : Returntype {
+    $query=new OilStatistics();
 
-        // })
-        // array_flip(  \App\Support\Defense\Gate::gate_options())
+    return dd(
+        (new OilStatistics)->make()
+
+
     );
-
 });

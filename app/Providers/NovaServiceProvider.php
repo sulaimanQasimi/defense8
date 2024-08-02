@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Acme\EmployeeChecker\EmployeeChecker;
 use Acme\GuestReport\GuestReport;
 use Acme\OilReport\OilReport;
 use Acme\PriceTracker\PriceTracker;
@@ -21,7 +22,6 @@ use App\Nova\GuestOption;
 use App\Nova\Host;
 use App\Nova\Oil;
 use App\Nova\OilDisterbution;
-use App\Nova\PrintCardFrame;
 use App\Nova\Province;
 use App\Nova\User;
 use App\Nova\Village;
@@ -117,7 +117,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 MenuItem::link(__("ATTENDANCE EMPLOYEE Report Generator"), 'price-tracker')->canSee(fn() => auth()->user()->hasRole('super-admin')),
 
                 // Frame of Printable Card Menu Item
-                MenuItem::resource(PrintCardFrame::class),
+                MenuItem::resource(\Sq\Card\Nova\PrintCardFrame::class),
 
 
             ])->collapsable()->collapsedByDefault()->icon("fas fa-users-rectangle fa-2x"),

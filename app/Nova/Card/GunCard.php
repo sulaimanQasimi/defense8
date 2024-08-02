@@ -1,7 +1,6 @@
 <?php
 namespace App\Nova\Card;
 
-use App\Nova\Actions\GunPrintCardAction;
 use App\Nova\Resource;
 use DigitalCreative\MegaFilter\MegaFilter;
 use DigitalCreative\MegaFilter\MegaFilterTrait;
@@ -119,7 +118,7 @@ class GunCard extends Resource
     public function actions(NovaRequest $request)
     {
         return [
-            (new GunPrintCardAction)->onlyOnDetail()->canRun(fn() => auth()->user()->hasRole("Print Card"))
+            (new \Sq\Card\Nova\Actions\GunPrintCardAction)->onlyOnDetail()->canRun(fn() => auth()->user()->hasRole("Print Card"))
 
         ];
     }

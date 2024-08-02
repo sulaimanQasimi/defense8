@@ -3,7 +3,6 @@
 use App\Http\Controllers\Api\CheckEmployeeInfo;
 use App\Http\Resources\CardInfoResource;
 use App\Models\Card\CardInfo;
-use App\Models\PrintCardFrame;
 use Card\ShareCardApi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;

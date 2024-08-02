@@ -1,0 +1,16 @@
+{
+    "name": "sq/query",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "Sq\\Query\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Sulaiman",
+            "email": "soliman@gmail.com"
+        }
+    ],
+    "require": {}
+}

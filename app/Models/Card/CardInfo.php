@@ -10,7 +10,7 @@ use App\Models\Department;
 use App\Models\Gate;
 use App\Models\GuestOption;
 use App\Models\OilDisterbution;
-use App\Models\PrintCardFrame;
+use Sq\Card\Models\PrintCardFrame;
 use App\Models\Province;
 use App\Models\District;
 use App\Models\Village;

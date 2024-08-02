@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\DB;
 use Laravel\Nova\Dashboard;
 use Laravel\Nova\Metrics\ApexLineChart;
 use Number;
+use Sq\Query\OilStatistics;
+use Sq\Query\SqNovaValueMetric;
 use Support\Defense;
 use Vehical\OilType;
 
@@ -48,7 +50,7 @@ class OilDistribution extends Dashboard
             (new ApexLineChart())
                 ->options([
                     "chart" => [
-                        "height"=>400,
+                        "height" => 400,
                         "type" => "area",
                     ],
                     "series" => [
@@ -72,13 +74,32 @@ class OilDistribution extends Dashboard
     }
     public function cards()
     {
+        $statistic = (new OilStatistics())->make();
         return [
-            RemainPetrol::make()->icon('fas fa-charging-station fa-2x '),
-            RemainDiesel::make()->icon('fas fa-gas-pump fa-2x'),
-            ExpendPetrol::make()->icon('fas fa-charging-station fa-2x'),
-            ExpendDiesel::make()->icon('fas fa-gas-pump fa-2x'),
-            $this->graph()
+            // ExpendPetrol::make()->icon('fas fa-charging-station fa-2x'),
+            // ExpendDiesel::make()->icon('fas fa-gas-pump fa-2x'),
+            // $this->graph()
+            (new SqNovaValueMetric(trans("Month Action", ['name' => __("Current Month"), 'type' => __(OilType::Petrole), 'action' => trans("Import")]), $statistic['current_month']['import'][OilType::Petrole]))->icon('fas fa-gas-pump fa-2x'),
+            (new SqNovaValueMetric(trans("Month Action", ['name' => __("Current Month"), 'type' => __(OilType::Diesel), 'action' => trans("Import")]), $statistic['current_month']['import'][OilType::Diesel]))->icon('fas fa-gas-pump fa-2x'),
+            //
+            (new SqNovaValueMetric(trans("Month Action", ['name' => __("Current Month"), 'type' => __(OilType::Petrole), 'action' => trans("Export")]), $statistic['current_month']['export'][OilType::Petrole]))->icon('fas fa-gas-pump fa-2x'),
+            (new SqNovaValueMetric(trans("Month Action", ['name' => __("Current Month"), 'type' => __(OilType::Diesel), 'action' => trans("Export")]), $statistic['current_month']['export'][OilType::Diesel]))->icon('fas fa-gas-pump fa-2x'),
+            //
+            (new SqNovaValueMetric(trans("Month Action", ['name' => __("Current Month"), 'type' => __(OilType::Petrole), 'action' => trans("Remain")]), $statistic['current_month']['remain'][OilType::Petrole]))->icon('fas fa-gas-pump fa-2x'),
+            (new SqNovaValueMetric(trans("Month Action", ['name' => __("Current Month"), 'type' => __(OilType::Diesel), 'action' => trans("Remain")]), $statistic['current_month']['remain'][OilType::Diesel]))->icon('fas fa-gas-pump fa-2x'),
 
+            //
+
+            (new SqNovaValueMetric(trans("Month Action", ['name' => __("Past Month"), 'type' => __(OilType::Petrole), 'action' => trans("Import")]), $statistic['past_month']['import'][OilType::Petrole]))->icon('fas fa-gas-pump fa-2x'),
+            (new SqNovaValueMetric(trans("Month Action", ['name' => __("Past Month"), 'type' => __(OilType::Diesel), 'action' => trans("Import")]), $statistic['past_month']['import'][OilType::Diesel]))->icon('fas fa-gas-pump fa-2x'),
+            //
+            (new SqNovaValueMetric(trans("Month Action", ['name' => __("Past Month"), 'type' => __(OilType::Petrole), 'action' => trans("Export")]), $statistic['past_month']['export'][OilType::Petrole]))->icon('fas fa-gas-pump fa-2x'),
+            (new SqNovaValueMetric(trans("Month Action", ['name' => __("Past Month"), 'type' => __(OilType::Diesel), 'action' => trans("Export")]), $statistic['past_month']['export'][OilType::Diesel]))->icon('fas fa-gas-pump fa-2x'),
+            //
+            (new SqNovaValueMetric(trans("Month Action", ['name' => __("Past Month"), 'type' => __(OilType::Petrole), 'action' => trans("Remain")]), $statistic['past_month']['remain'][OilType::Petrole]))->icon('fas fa-gas-pump fa-2x'),
+            (new SqNovaValueMetric(trans("Month Action", ['name' => __("Past Month"), 'type' => __(OilType::Diesel), 'action' => trans("Remain")]), $statistic['past_month']['remain'][OilType::Diesel]))->icon('fas fa-gas-pump fa-2x'),
+            RemainPetrol::make()->icon('fas fa-gas-pump fa-2x'),
+            RemainDiesel::make()->icon('fas fa-gas-pump fa-2x'),
         ];
     }
 

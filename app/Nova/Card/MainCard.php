@@ -80,7 +80,7 @@ class MainCard extends Resource
     public function actions(NovaRequest $request)
     {
         return [
-            (new EmployeePrintCardAction)->onlyOnDetail()->canRun(fn()=>auth()->user()->hasRole("Print Card"))
+            (new \Sq\Card\Nova\Actions\EmployeePrintCardAction)->onlyOnDetail()->canRun(fn()=>auth()->user()->hasRole("Print Card"))
         ];
     }
 }

@@ -1,5 +1,10 @@
 
 {
+    "Month Action":" مقدار تیل :type :action :name ",
+    "Current Month":"این ماه",
+    "Past Month":"ماه گذشته",
+    "Import":"اکمال شده",
+    "Export":"مصرف شده",
     "Disterbute Date":"تاری توزیع",
     "Excel":"اکسل",
     "PDF":"پی دی اف",

@@ -5,9 +5,7 @@ namespace App\Nova\Card;
 use App\Nova\Actions\EditCardInfoOption;
 use App\Nova\Actions\EditCardInfoRemark;
 use App\Nova\Actions\ExportCardInfo;
-use App\Nova\Actions\PrintAllTypeCardEmployeeAction;
 use App\Nova\Attendance;
-use App\Nova\Career;
 use App\Nova\Department;
 use App\Nova\District;
 use App\Nova\Gate;
@@ -28,7 +26,6 @@ use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\FormData;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\HasOne;
-use Laravel\Nova\Fields\MorphToMany;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Tag;
@@ -288,16 +285,8 @@ class CardInfo extends Resource
             ),
             HasMany::make(__("Oil Report"), 'oil_disterbutions', OilDisterbution::class),
             HasMany::make(__("Attendance"), 'attendance', Attendance::class),
-            // MorphToMany::make(__("Print Card"), 'PrintCardFrame', \App\Nova\PrintCardFrame::class),
         ];
     }
-
-    /**
-     * Get the cards available for the request.
-     *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @return array
-     */
     public function cards(NovaRequest $request)
     {
         //
@@ -376,12 +365,6 @@ class CardInfo extends Resource
         ];
     }
 
-    /**
-     * Get the lenses available for the resource.
-     *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @return array
-     */
     public function lenses(NovaRequest $request)
     {
         return [];
@@ -411,7 +394,7 @@ class CardInfo extends Resource
                 //  ->canRun(fn($request, $employee) => auth()->user()->department?->id === $employee->orginization?->id)
                 ->withoutConfirmation()
                 ->onlyOnDetail(),
-            (new PrintAllTypeCardEmployeeAction)->onlyOnDetail()->canRun(fn() => auth()->user()->hasRole("Print Card"))
+            (new \Sq\Card\Nova\Actions\PrintAllTypeCardEmployeeAction)->onlyOnDetail()->canRun(fn() => auth()->user()->hasRole("Print Card"))
 
         ];
     }

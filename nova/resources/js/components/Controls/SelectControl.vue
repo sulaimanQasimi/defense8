@@ -4,15 +4,17 @@
       v-bind="defaultAttributes"
       :value="selected"
       @change="handleChange"
-      class="w-full block form-control form-select"
+      class="w-full block form-control form-control-bordered form-input"
       ref="selectControl"
+      :disabled="disabled"
       :class="{
-        'form-control-sm': size === 'sm',
-        'form-control-xs': size === 'xs',
-        'form-control-xxs': size === 'xxs',
-        'form-select-bordered': bordered,
-        ...selectClasses,
+        'h-8 text-xs': size === 'sm',
+        'h-7 text-xs': size === 'xs',
+        'h-6 text-xs': size === 'xxs',
+        'form-control-bordered-error': hasError,
+        'form-input-disabled': disabled,
       }"
+      :data-disabled="disabled ? 'true' : null"
     >
       <slot />
       <template v-for="(options, group) in groupedOptions">
@@ -41,7 +43,15 @@
       </template>
     </select>
 
-    <IconArrow class="pointer-events-none form-select-arrow" />
+    <IconArrow
+      class="pointer-events-none absolute right-[11px]"
+      :class="{
+        'top-[15px]': size === 'md',
+        'top-[13px]': size === 'sm',
+        'top-[11px]': size === 'xs',
+        'top-[9px]': size === 'xxs',
+      }"
+    />
   </div>
 </template>
 
@@ -56,23 +66,15 @@ export default {
   inheritAttrs: false,
 
   props: {
-    options: {
-      type: Array,
-      default: [],
-    },
+    hasError: { type: Boolean, default: false },
     label: { default: 'label' },
+    options: { type: Array, default: [] },
+    disabled: { type: Boolean, default: false },
     selected: {},
     size: {
       type: String,
       default: 'md',
       validator: val => ['xxs', 'xs', 'sm', 'md'].includes(val),
-    },
-    bordered: {
-      type: Boolean,
-      default: true,
-    },
-    selectClasses: {
-      type: [String, Object, Array],
     },
   },
 

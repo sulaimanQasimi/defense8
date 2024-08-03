@@ -22,7 +22,7 @@ const toRGBString = hexCode => {
 const colors = { primary: twColors.sky, ...twColors, gray: twColors.slate }
 
 const except = omit(colors, [
-  'lightBlue',
+  'sky',
   'warmGray',
   'trueGray',
   'coolGray',

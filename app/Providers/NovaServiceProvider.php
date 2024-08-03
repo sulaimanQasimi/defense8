@@ -13,15 +13,12 @@ use App\Nova\CardInfo;
 use App\Nova\Dashboards\EducationalVideo;
 use App\Nova\Dashboards\GraphDashboard;
 use App\Nova\Dashboards\Main;
-use App\Nova\Dashboards\OilDistribution;
 use App\Nova\Department;
 use App\Nova\District;
 use App\Nova\Gate;
 use App\Nova\Guest;
 use App\Nova\GuestOption;
 use App\Nova\Host;
-use App\Nova\Oil;
-use App\Nova\OilDisterbution;
 use App\Nova\Province;
 use App\Nova\User;
 use App\Nova\Village;
@@ -122,9 +119,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
             ])->collapsable()->collapsedByDefault()->icon("fas fa-users-rectangle fa-2x"),
             MenuSection::make(__('Oil Disterbution'), [
-                MenuItem::dashboard(OilDistribution::class),
-                MenuItem::resource(Oil::class),
-                MenuItem::resource(OilDisterbution::class),
+                MenuItem::dashboard(\Sq\Oil\Nova\Dashboards\OilDistribution::class),
+                MenuItem::resource(\Sq\Oil\Nova\Oil::class),
+                MenuItem::resource(\Sq\Oil\Nova\OilDisterbution::class),
                 MenuItem::externalLink(trans("Oil Disterbution"), route('oil'))
                     ->canSee(fn() => auth()->user()->hasPermissionTo('access_to_disterbuted_oil_page'))
                     ->openInNewTab(),
@@ -205,7 +202,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             new Main,
             new GraphDashboard,
             new EducationalVideo,
-            new OilDistribution,
+            new \Sq\Oil\Nova\Dashboards\OilDistribution(),
         ];
     }
 

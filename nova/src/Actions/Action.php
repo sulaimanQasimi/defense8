@@ -488,9 +488,7 @@ class Action implements JsonSerializable
      */
     public function authorizedToRun(Request $request, $model)
     {
-        return $this->authorizedToRunAction = $this->runCallback
-            ? call_user_func($this->runCallback, $request, $model)
-            : true;
+        return $this->authorizedToRunAction = value($this->runCallback ?? true, $request, $model);
     }
 
     /**

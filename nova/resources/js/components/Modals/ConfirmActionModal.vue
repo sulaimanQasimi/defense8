@@ -5,6 +5,7 @@
     role="dialog"
     :size="action.modalSize"
     :modal-style="action.modalStyle"
+    :use-focus-trap="false"
   >
     <form
       ref="theForm"
@@ -93,6 +94,7 @@
 
 <script>
 import { PreventsModalAbandonment } from '@/mixins'
+import isObject from 'lodash/isObject'
 import { uid } from 'uid/single'
 import { Button } from 'laravel-nova-ui'
 
@@ -158,8 +160,11 @@ export default {
       if (this.selectedResources === 'all') {
         searchParams.append('resources', 'all')
       } else {
-        this.selectedResources.forEach(resourceId => {
-          searchParams.append('resources[]', resourceId)
+        this.selectedResources.forEach(resource => {
+          searchParams.append(
+            'resources[]',
+            isObject(resource) ? resource.id.value : resource
+          )
         })
       }
 

@@ -21,12 +21,12 @@ class OilStatistics
         $statistic = [
             "current_month" => [
                 "import" => [
-                    OilType::Diesel => $this->calculate(\App\Models\Oil::class, OilType::Diesel, [Verta::startMonth()->toCarbon(), Verta::endMonth()->toCarbon()], true),
-                    OilType::Petrole => $this->calculate(\App\Models\Oil::class, OilType::Petrole, [Verta::startMonth()->toCarbon(), Verta::endMonth()->toCarbon()], true),
+                    OilType::Diesel => $this->calculate(\Sq\Oil\Models\Oil::class, OilType::Diesel, [Verta::startMonth()->toCarbon(), Verta::endMonth()->toCarbon()], true),
+                    OilType::Petrole => $this->calculate(\Sq\Oil\Models\Oil::class, OilType::Petrole, [Verta::startMonth()->toCarbon(), Verta::endMonth()->toCarbon()], true),
                 ],
                 "export" => [
-                    OilType::Diesel => $this->calculate(\App\Models\OilDisterbution::class, OilType::Diesel, [Verta::startMonth()->toCarbon(), Verta::endMonth()->toCarbon()], true),
-                    OilType::Petrole => $this->calculate(\App\Models\OilDisterbution::class, OilType::Petrole, [Verta::startMonth()->toCarbon(), Verta::endMonth()->toCarbon()], true)
+                    OilType::Diesel => $this->calculate(\Sq\Oil\Models\OilDisterbution::class, OilType::Diesel, [Verta::startMonth()->toCarbon(), Verta::endMonth()->toCarbon()], true),
+                    OilType::Petrole => $this->calculate(\Sq\Oil\Models\OilDisterbution::class, OilType::Petrole, [Verta::startMonth()->toCarbon(), Verta::endMonth()->toCarbon()], true)
                 ],
                 'remain' => [
                     OilType::Diesel => null,
@@ -36,12 +36,12 @@ class OilStatistics
             "past_month" =>
                 [
                     "import" => [
-                        OilType::Diesel => $this->calculate(\App\Models\Oil::class, OilType::Diesel, Verta::startMonth()->toCarbon(), false, '<'),
-                        OilType::Petrole => $this->calculate(\App\Models\Oil::class, OilType::Petrole, Verta::startMonth()->toCarbon(), false, '<'),
+                        OilType::Diesel => $this->calculate(\Sq\Oil\Models\Oil::class, OilType::Diesel, Verta::startMonth()->toCarbon(), false, '<'),
+                        OilType::Petrole => $this->calculate(\Sq\Oil\Models\Oil::class, OilType::Petrole, Verta::startMonth()->toCarbon(), false, '<'),
                     ],
                     "export" => [
-                        OilType::Diesel => $this->calculate(\App\Models\OilDisterbution::class, OilType::Diesel, Verta::startMonth()->toCarbon(), false, '<'),
-                        OilType::Petrole => $this->calculate(\App\Models\OilDisterbution::class, OilType::Petrole, Verta::startMonth()->toCarbon(), false, '<')
+                        OilType::Diesel => $this->calculate(\Sq\Oil\Models\OilDisterbution::class, OilType::Diesel, Verta::startMonth()->toCarbon(), false, '<'),
+                        OilType::Petrole => $this->calculate(\Sq\Oil\Models\OilDisterbution::class, OilType::Petrole, Verta::startMonth()->toCarbon(), false, '<')
                     ],
                     'remain' => [
                         OilType::Diesel => null,

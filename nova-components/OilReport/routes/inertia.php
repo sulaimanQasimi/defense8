@@ -2,7 +2,7 @@
 
 use Sq\Query\DateFromAndToModelQuery;
 use App\Http\Resources\DisterbutedOilResource;
-use App\Models\OilDisterbution;
+use Sq\Oil\Models\OilDisterbution;
 use Illuminate\Support\Facades\Route;
 use Laravel\Nova\Http\Requests\NovaRequest;
 

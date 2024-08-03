@@ -7,7 +7,7 @@
   >
     <template #field>
       <div class="space-y-4">
-        <div class="flex items-center space-x-2">
+        <div class="flex items-center">
           <SearchSearchInput
             ref="searchable"
             :dusk="`${field.resourceName}-search-input`"

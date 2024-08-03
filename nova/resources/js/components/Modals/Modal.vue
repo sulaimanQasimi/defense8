@@ -47,12 +47,8 @@ import {
 } from 'vue'
 
 const modalContent = ref(null)
-
-const { activate, deactivate } = useFocusTrap(modalContent, {
-  initialFocus: true,
-  allowOutsideClick: false,
-  escapeDeactivates: false,
-})
+const activateFocusTrap = ref(() => {})
+const deactivateFocusTrap = ref(() => {})
 
 const attrs = useAttrs()
 
@@ -81,12 +77,24 @@ const props = defineProps({
   },
   modalStyle: { type: String, default: 'window' },
   role: { type: String, default: 'dialog' },
-  useFocusTrap: { type: Boolean, default: false },
+  useFocusTrap: { type: Boolean, default: true },
 })
+
+if (props.useFocusTrap) {
+  const { activate, deactivate } = useFocusTrap(modalContent, {
+    immediate: false,
+    allowOutsideClick: false,
+    escapeDeactivates: false,
+  })
+
+  activateFocusTrap.value = activate
+  deactivateFocusTrap.value = deactivate
+}
 
 watch(
   () => props.show,
-  v => handleVisibilityChange(v)
+  v => handleVisibilityChange(v),
+  { immediate: true }
 )
 
 useEventListener(document, 'keydown', e => {
@@ -102,7 +110,7 @@ onMounted(() => {
 onBeforeUnmount(() => {
   document.body.classList.remove('overflow-hidden')
   Nova.resumeShortcuts()
-  if (props.useFocusTrap === true) deactivate()
+  if (props.useFocusTrap) deactivateFocusTrap.value()
 })
 
 const store = useStore()
@@ -114,11 +122,12 @@ async function handleVisibilityChange(showing) {
     emit('showing')
     document.body.classList.add('overflow-hidden')
     Nova.pauseShortcuts()
-    if (props.useFocusTrap === true) activate()
+    if (props.useFocusTrap) activateFocusTrap.value()
   } else {
     emit('closing')
     document.body.classList.remove('overflow-hidden')
     Nova.resumeShortcuts()
+    if (props.useFocusTrap) deactivateFocusTrap.value()
   }
 
   store.commit('allowLeavingModal')

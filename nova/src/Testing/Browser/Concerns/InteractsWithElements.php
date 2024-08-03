@@ -56,6 +56,26 @@ trait InteractsWithElements
         } else {
             $browser->type($selector, '');
         }
+
+        $browser->pause(1000);
+    }
+
+    /**
+     * Type in a "datetime" filter input.
+     *
+     * @param  \Carbon\CarbonInterface|empty-string|null  $carbon
+     * @return void
+     */
+    public function typeInDateTimeField(Browser $browser, string $selector, $carbon)
+    {
+        if ($carbon instanceof CarbonInterface) {
+            $this->typeWithTabs($browser, $selector, $carbon->format(Env::get('DUSK_DATETIME_FORMAT', 'mdY-hia')));
+            $browser->keys($selector, ['{tab}']);
+        } else {
+            $browser->type($selector, '');
+        }
+
+        $browser->pause(1000);
     }
 
     /**
@@ -87,8 +107,14 @@ trait InteractsWithElements
     {
         $date = explode($separator, $date);
 
-        return array_map(function ($group) use ($date, $browser, $selector) {
-            $browser->type($selector, $group);
+        array_map(function ($group) use ($date, $browser, $selector) {
+            if (strtolower($group) === 'am') {
+                $browser->type($selector, 'a');
+            } elseif (strtolower($group) === 'pm') {
+                $browser->type($selector, 'p');
+            } else {
+                $browser->type($selector, $group);
+            }
 
             // if the item is not the last in the array, let's tab through
             if ($group !== end($date)) {

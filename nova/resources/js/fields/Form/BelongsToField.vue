@@ -6,7 +6,7 @@
     :full-width-content="fullWidthContent"
   >
     <template #field>
-      <div class="flex items-center space-x-2">
+      <div class="flex items-center">
         <SearchInput
           v-if="useSearchInput"
           :dusk="`${field.resourceName}-search-input`"
@@ -14,7 +14,7 @@
           @input="performResourceSearch"
           @clear="clearResourceSelection"
           @selected="selectResource"
-          :error="hasError"
+          :has-error="hasError"
           :debounce="currentField.debounce"
           :value="selectedResource"
           :data="filteredResources"
@@ -51,7 +51,7 @@
         <SelectControl
           v-else
           class="w-full"
-          :select-classes="{ 'form-input-border-error': hasError }"
+          :has-error="hasError"
           :dusk="`${field.resourceName}-select`"
           :disabled="currentlyIsReadonly"
           :options="availableResources"

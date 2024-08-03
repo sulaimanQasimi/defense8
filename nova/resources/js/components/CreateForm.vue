@@ -159,7 +159,7 @@ export default {
       if (this.isHasOneRelationship && this.alreadyFilled) {
         Nova.error(this.__('The HasOne relationship has already been filled.'))
 
-        Nova.visit(`/resources/${this.viaResource}/${this.viaResourceId}`)
+        Nova.visit(`/re sources/${this.viaResource}/${this.viaResourceId}`)
       }
 
       if (this.isHasOneThroughRelationship && this.alreadyFilled) {

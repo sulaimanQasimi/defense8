@@ -89,15 +89,6 @@ export default {
     },
   },
 
-  /**
-   * Mount the component.
-   */
-  mounted() {
-    this.$nextTick(() => {
-      // this.$refs.confirmButton.button.focus()
-    })
-  },
-
   computed: {
     uppercaseMode() {
       return startCase(this.mode)

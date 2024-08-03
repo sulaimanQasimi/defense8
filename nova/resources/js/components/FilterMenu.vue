@@ -1,9 +1,5 @@
 <template>
-  <Dropdown
-    v-if="filters.length > 0 || softDeletes || !viaResource"
-    dusk="filter-selector"
-    :should-close-on-blur="false"
-  >
+  <Dropdown dusk="filter-selector" :should-close-on-blur="false">
     <Button
       :variant="filtersAreApplied ? 'solid' : 'ghost'"
       dusk="filter-selector-button"
@@ -18,7 +14,6 @@
       <DropdownMenu width="260" dusk="filter-menu">
         <ScrollWrap :height="350" class="bg-white dark:bg-gray-900">
           <div
-            ref="theForm"
             class="divide-y divide-gray-200 dark:divide-gray-800 divide-solid"
           >
             <div v-if="filtersAreApplied" class="bg-gray-100">
@@ -37,8 +32,7 @@
                 :filter-key="filter.class"
                 :lens="lens"
                 :resource-name="resourceName"
-                @change="$emit('filter-changed')"
-                @input="$emit('filter-changed')"
+                @change="handleFilterChanged"
               />
             </div>
 
@@ -87,9 +81,7 @@ import map from 'lodash/map'
 import { Button } from 'laravel-nova-ui'
 
 export default {
-  components: {
-    Button,
-  },
+  components: { Button },
 
   emits: [
     'filter-changed',
@@ -99,22 +91,38 @@ export default {
   ],
 
   props: {
-    resourceName: String,
-    lens: {
-      type: String,
-      default: '',
-    },
-    viaResource: String,
-    softDeletes: Boolean,
-    trashed: {
-      type: String,
-      validator: value => ['', 'with', 'only'].indexOf(value) != -1,
-    },
+    activeFilterCount: Number,
+    filters: Array,
+    filtersAreApplied: Boolean,
+    lens: { type: String, default: '' },
     perPage: [String, Number],
     perPageOptions: Array,
+    resourceName: String,
+    softDeletes: Boolean,
+    trashed: { type: String, validator: v => ['', 'with', 'only'].includes(v) },
+    viaResource: String,
   },
 
   methods: {
+    handleFilterChanged(v) {
+      // Older filters generated with our stubs will not have a value, since they committed to the store directly
+      // instead of emitting a change event with the `filterKey` and `value`. We need to handle both cases.
+      if (v) {
+        const { filterClass, value } = v
+
+        if (filterClass) {
+          Nova.log(`Updating filter state ${filterClass}: ${value}`)
+
+          this.$store.commit(`${this.resourceName}/updateFilterState`, {
+            filterClass,
+            value,
+          })
+        }
+      }
+
+      this.$emit('filter-changed')
+    },
+
     handleClearSelectedFiltersClick() {
       Nova.$emit('clear-filter-values')
 
@@ -145,27 +153,6 @@ export default {
       get() {
         return this.perPage
       },
-    },
-
-    /**
-     * Return the filters from state
-     */
-    filters() {
-      return this.$store.getters[`${this.resourceName}/filters`]
-    },
-
-    /**
-     * Determine via state whether filters are applied
-     */
-    filtersAreApplied() {
-      return this.$store.getters[`${this.resourceName}/filtersAreApplied`]
-    },
-
-    /**
-     * Return the number of active filters
-     */
-    activeFilterCount() {
-      return this.$store.getters[`${this.resourceName}/activeFilterCount`]
     },
 
     /**

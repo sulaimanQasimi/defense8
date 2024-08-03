@@ -65,15 +65,6 @@ export default {
     },
   },
 
-  /**
-   * Mount the component.
-   */
-  mounted() {
-    this.$nextTick(() => {
-      // this.$refs.confirmButton.focus()
-    })
-  },
-
   methods: {
     handleClose() {
       this.$emit('close')

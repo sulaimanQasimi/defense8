@@ -24,11 +24,17 @@
         />
       </div>
       <div>
-        <div class="text-center">
+        <div
+          class="text-center"
+          :class="{
+            'bg-gray-50 dark:bg-gray-900 rounded-lg border-4 dark:border-gray-600 border-dashed py-3':
+              value.length === 0,
+          }"
+        >
           <Dropdown v-if="currentField.repeatables.length > 1">
             <Button
               variant="link"
-              icon="plus-circle"
+              leading-icon="plus-circle"
               trailing-icon="chevron-down"
             >
               {{ __('Add item') }}

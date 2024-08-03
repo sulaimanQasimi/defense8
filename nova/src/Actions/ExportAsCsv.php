@@ -12,6 +12,7 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\ActionRequest;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Nova;
+use Laravel\Nova\Rules\Filename;
 use Rap2hpoutre\FastExcel\FastExcel;
 use Symfony\Component\HttpFoundation\HeaderUtils;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -213,7 +214,7 @@ class ExportAsCsv extends Action
     public function nameable($default = null)
     {
         $this->actionFields->push(
-            Text::make(Nova::__('Filename'), 'filename')->default($default)->rules(['required', 'min:1'])
+            Text::make(Nova::__('Filename'), 'filename')->default($default)->rules(['required', 'min:1', new Filename()])
         );
 
         return $this;

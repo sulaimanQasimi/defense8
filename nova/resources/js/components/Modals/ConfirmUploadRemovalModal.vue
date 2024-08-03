@@ -49,13 +49,6 @@ export default {
     show: { type: Boolean, default: false },
   },
 
-  /**
-   * Mount the component.
-   */
-  mounted() {
-    // this.$refs.confirmButton.focus()
-  },
-
   data: () => ({ working: false }),
 
   watch: {

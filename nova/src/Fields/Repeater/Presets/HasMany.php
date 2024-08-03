@@ -105,7 +105,7 @@ class HasMany implements Preset
             });
 
         if ($deletableIds->isNotEmpty()) {
-            $model->{$attribute}()->whereKey($deletableIds)->delete();
+            $model->{$attribute}()->whereIn($uniqueField, $deletableIds)->delete();
         }
     }
 
@@ -122,10 +122,17 @@ class HasMany implements Preset
     public function upsertRelation(Model $model, Fluent $data, array $row, $uniqueField, EloquentHasMany $relation): void
     {
         $model->unguarded(function () use ($data, $row, $uniqueField, $relation) {
-            $relation->updateOrCreate(
-                [$uniqueField => $row['fields'][$uniqueField]],
-                Arr::except($data->getAttributes(), $uniqueField)
-            );
+            $uniqueValue = $row['fields'][$uniqueField];
+
+            $attributes = Arr::except($data->getAttributes(), $uniqueField);
+
+            if (empty($uniqueValue)) {
+                $relation->create($attributes);
+            } else {
+                $relation->updateOrCreate(
+                    [$uniqueField => $uniqueValue], $attributes
+                );
+            }
         });
     }
 }

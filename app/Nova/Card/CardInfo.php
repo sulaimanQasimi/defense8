@@ -10,7 +10,6 @@ use App\Nova\Department;
 use App\Nova\District;
 use App\Nova\Gate;
 use App\Nova\GuestOption;
-use App\Nova\OilDisterbution;
 use App\Nova\Province;
 use App\Nova\Resource;
 use App\Nova\Village;
@@ -283,7 +282,7 @@ class CardInfo extends Resource
                 ]
 
             ),
-            HasMany::make(__("Oil Report"), 'oil_disterbutions', OilDisterbution::class),
+            HasMany::make(__("Oil Report"), 'oil_disterbutions', \Sq\Oil\Nova\OilDisterbution::class),
             HasMany::make(__("Attendance"), 'attendance', Attendance::class),
         ];
     }

@@ -8,11 +8,7 @@
       <Head :title="__(`${resourceInformation.label}`)" />
     </template>
 
-    <Cards
-      v-if="shouldShowCards"
-      :cards="cards"
-      :resource-name="resourceName"
-    />
+    <Cards v-if="shouldShowCards" :cards="cards" :resource-name="resourceName" />
 
     <Heading
       :level="1"
@@ -84,19 +80,13 @@
           :action-query-string="actionQueryString"
           :all-matching-resource-count="allMatchingResourceCount"
           :authorized-to-delete-any-resources="authorizedToDeleteAnyResources"
-          :authorized-to-delete-selected-resources="
-            authorizedToDeleteSelectedResources
-          "
-          :authorized-to-force-delete-any-resources="
-            authorizedToForceDeleteAnyResources
-          "
+          :authorized-to-delete-selected-resources="authorizedToDeleteSelectedResources"
+          :authorized-to-force-delete-any-resources="authorizedToForceDeleteAnyResources"
           :authorized-to-force-delete-selected-resources="
             authorizedToForceDeleteSelectedResources
           "
           :authorized-to-restore-any-resources="authorizedToRestoreAnyResources"
-          :authorized-to-restore-selected-resources="
-            authorizedToRestoreSelectedResources
-          "
+          :authorized-to-restore-selected-resources="authorizedToRestoreSelectedResources"
           :available-actions="availableActions"
           :clear-selected-filters="clearSelectedFilters"
           :close-delete-modal="closeDeleteModal"
@@ -124,9 +114,7 @@
           :select-all-matching-checked="selectAllMatchingResources"
           @deselect="clearResourceSelections"
           :selected-resources="selectedResources"
-          :selected-resources-for-action-selector="
-            selectedResourcesForActionSelector
-          "
+          :selected-resources-for-action-selector="selectedResourcesForActionSelector"
           :should-show-action-selector="shouldShowActionSelector"
           :should-show-checkboxes="shouldShowCheckboxes"
           :should-show-delete-menu="shouldShowDeleteMenu"
@@ -215,7 +203,7 @@
 
 <script>
 // this.$refs.selectControl.selectedIndex = 0
-import { CancelToken, isCancel } from 'axios'
+import { CancelToken, isCancel } from "axios";
 import {
   HasCards,
   Paginatable,
@@ -227,12 +215,12 @@ import {
   InteractsWithResourceInformation,
   InteractsWithQueryString,
   SupportsPolling,
-} from '@/mixins'
-import { minimum } from '@/util'
-import { mapActions } from 'vuex'
+} from "@/mixins";
+import { minimum } from "@/util";
+import { mapActions } from "vuex";
 
 export default {
-  name: 'ResourceIndex',
+  name: "ResourceIndex",
 
   mixins: [
     Collapsable,
@@ -269,21 +257,21 @@ export default {
    * Mount the component and retrieve its initial data.
    */
   async created() {
-    if (!this.resourceInformation) return
+    if (!this.resourceInformation) return;
 
     // Bind the keydown event listener when the router is visited if this
     // component is not a relation on a Detail page
     if (this.shouldEnableShortcut === true) {
-      Nova.addShortcut('c', this.handleKeydown)
-      Nova.addShortcut('mod+a', this.toggleSelectAll)
-      Nova.addShortcut('mod+shift+a', this.toggleSelectAllMatching)
+      Nova.addShortcut("c", this.handleKeydown);
+      Nova.addShortcut("mod+a", this.toggleSelectAll);
+      Nova.addShortcut("mod+shift+a", this.toggleSelectAllMatching);
     }
 
-    this.getLenses()
+    this.getLenses();
 
-    Nova.$on('refresh-resources', this.getResources)
+    Nova.$on("refresh-resources", this.getResources);
 
-    if (this.actionCanceller !== null) this.actionCanceller()
+    if (this.actionCanceller !== null) this.actionCanceller();
   },
 
   /**
@@ -291,18 +279,18 @@ export default {
    */
   beforeUnmount() {
     if (this.shouldEnableShortcut) {
-      Nova.disableShortcut('c')
-      Nova.disableShortcut('mod+a')
-      Nova.disableShortcut('mod+shift+a')
+      Nova.disableShortcut("c");
+      Nova.disableShortcut("mod+a");
+      Nova.disableShortcut("mod+shift+a");
     }
 
-    Nova.$off('refresh-resources', this.getResources)
+    Nova.$off("refresh-resources", this.getResources);
 
-    if (this.actionCanceller !== null) this.actionCanceller()
+    if (this.actionCanceller !== null) this.actionCanceller();
   },
 
   methods: {
-    ...mapActions(['fetchPolicies']),
+    ...mapActions(["fetchPolicies"]),
 
     /**
      * Handle the keydown event
@@ -311,11 +299,11 @@ export default {
       // `c`
       if (
         this.authorizedToCreate &&
-        e.target.tagName !== 'INPUT' &&
-        e.target.tagName !== 'TEXTAREA' &&
-        e.target.contentEditable !== 'true'
+        e.target.tagName !== "INPUT" &&
+        e.target.tagName !== "TEXTAREA" &&
+        e.target.contentEditable !== "true"
       ) {
-        Nova.visit(`/resources/${this.resourceName}/new`)
+        Nova.visit(`/resources/${this.resourceName}/new`);
       }
     },
 
@@ -324,47 +312,47 @@ export default {
      */
     getResources() {
       if (this.shouldBeCollapsed) {
-        this.loading = false
-        return
+        this.loading = false;
+        return;
       }
 
-      this.loading = true
-      this.resourceResponseError = null
+      this.loading = true;
+      this.resourceResponseError = null;
 
       this.$nextTick(() => {
-        this.clearResourceSelections()
+        this.clearResourceSelections();
 
         return minimum(
-          Nova.request().get('/nova-api/' + this.resourceName, {
+          Nova.request().get("/nova-api/" + this.resourceName, {
             params: this.resourceRequestQueryString,
-            cancelToken: new CancelToken(canceller => {
-              this.canceller = canceller
+            cancelToken: new CancelToken((canceller) => {
+              this.canceller = canceller;
             }),
           }),
           300
         )
           .then(({ data }) => {
-            this.resources = []
+            this.resources = [];
 
-            this.resourceResponse = data
-            this.resources = data.resources
-            this.softDeletes = data.softDeletes
-            this.perPage = data.per_page
-            this.sortable = data.sortable
+            this.resourceResponse = data;
+            this.resources = data.resources;
+            this.softDeletes = data.softDeletes;
+            this.perPage = data.per_page;
+            this.sortable = data.sortable;
 
-            this.handleResourcesLoaded()
+            this.handleResourcesLoaded();
           })
-          .catch(e => {
+          .catch((e) => {
             if (isCancel(e)) {
-              return
+              return;
             }
 
-            this.loading = false
-            this.resourceResponseError = e
+            this.loading = false;
+            this.resourceResponseError = e;
 
-            throw e
-          })
-      })
+            throw e;
+          });
+      });
     },
 
     /**
@@ -374,63 +362,63 @@ export default {
       if (
         this.shouldBeCollapsed ||
         (!this.authorizedToCreate &&
-          this.relationshipType !== 'belongsToMany' &&
-          this.relationshipType !== 'morphToMany')
+          this.relationshipType !== "belongsToMany" &&
+          this.relationshipType !== "morphToMany")
       ) {
-        return
+        return;
       }
 
       if (!this.viaResource) {
-        return (this.authorizedToRelate = true)
+        return (this.authorizedToRelate = true);
       }
 
       return Nova.request()
         .get(
-          '/nova-api/' +
+          "/nova-api/" +
             this.resourceName +
-            '/relate-authorization' +
-            '?viaResource=' +
+            "/relate-authorization" +
+            "?viaResource=" +
             this.viaResource +
-            '&viaResourceId=' +
+            "&viaResourceId=" +
             this.viaResourceId +
-            '&viaRelationship=' +
+            "&viaRelationship=" +
             this.viaRelationship +
-            '&relationshipType=' +
+            "&relationshipType=" +
             this.relationshipType
         )
-        .then(response => {
-          this.authorizedToRelate = response.data.authorized
-        })
+        .then((response) => {
+          this.authorizedToRelate = response.data.authorized;
+        });
     },
 
     /**
      * Get the lenses available for the current resource.
      */
     getLenses() {
-      this.lenses = []
+      this.lenses = [];
 
       if (this.viaResource) {
-        return
+        return;
       }
 
       return Nova.request()
-        .get('/nova-api/' + this.resourceName + '/lenses')
-        .then(response => {
-          this.lenses = response.data
-        })
+        .get("/nova-api/" + this.resourceName + "/lenses")
+        .then((response) => {
+          this.lenses = response.data;
+        });
     },
 
     /**
      * Get the actions available for the current resource.
      */
     getActions() {
-      if (this.actionCanceller !== null) this.actionCanceller()
+      if (this.actionCanceller !== null) this.actionCanceller();
 
-      this.actions = []
-      this.pivotActions = null
+      this.actions = [];
+      this.pivotActions = null;
 
       if (this.shouldBeCollapsed) {
-        return
+        return;
       }
 
       return Nova.request()
@@ -440,25 +428,26 @@ export default {
             viaResourceId: this.viaResourceId,
             viaRelationship: this.viaRelationship,
             relationshipType: this.relationshipType,
-            display: 'index',
-            resources: this.selectedResourcesForActionSelector,
+            display: "index",
+            resources: this.selectAllMatchingChecked ? "all" : this.selectedResourceIds,
+            pivots: !this.selectAllMatchingChecked ? this.selectedPivotIds : null,
           },
-          cancelToken: new CancelToken(canceller => {
-            this.actionCanceller = canceller
+          cancelToken: new CancelToken((canceller) => {
+            this.actionCanceller = canceller;
           }),
         })
-        .then(response => {
-          this.actions = response.data.actions
-          this.pivotActions = response.data.pivotActions
-          this.resourceHasActions = response.data.counts.resource > 0
+        .then((response) => {
+          this.actions = response.data.actions;
+          this.pivotActions = response.data.pivotActions;
+          this.resourceHasActions = response.data.counts.resource > 0;
         })
-        .catch(e => {
+        .catch((e) => {
           if (isCancel(e)) {
-            return
+            return;
           }
 
-          throw e
-        })
+          throw e;
+        });
     },
 
     /**
@@ -466,12 +455,12 @@ export default {
      */
     getAllMatchingResourceCount() {
       Nova.request()
-        .get('/nova-api/' + this.resourceName + '/count', {
+        .get("/nova-api/" + this.resourceName + "/count", {
           params: this.resourceRequestQueryString,
         })
-        .then(response => {
-          this.allMatchingResourceCount = response.data.count
-        })
+        .then((response) => {
+          this.allMatchingResourceCount = response.data.count;
+        });
     },
 
     /**
@@ -479,13 +468,13 @@ export default {
      */
     loadMore() {
       if (this.currentPageLoadMore === null) {
-        this.currentPageLoadMore = this.currentPage
+        this.currentPageLoadMore = this.currentPage;
       }
 
-      this.currentPageLoadMore = this.currentPageLoadMore + 1
+      this.currentPageLoadMore = this.currentPageLoadMore + 1;
 
       return minimum(
-        Nova.request().get('/nova-api/' + this.resourceName, {
+        Nova.request().get("/nova-api/" + this.resourceName, {
           params: {
             ...this.resourceRequestQueryString,
             page: this.currentPageLoadMore, // We do this to override whatever page number is in the URL
@@ -493,42 +482,42 @@ export default {
         }),
         300
       ).then(({ data }) => {
-        this.resourceResponse = data
-        this.resources = [...this.resources, ...data.resources]
+        this.resourceResponse = data;
+        this.resources = [...this.resources, ...data.resources];
 
         if (data.total !== null) {
-          this.allMatchingResourceCount = data.total
+          this.allMatchingResourceCount = data.total;
         } else {
-          this.getAllMatchingResourceCount()
+          this.getAllMatchingResourceCount();
         }
 
-        Nova.$emit('resources-loaded', {
+        Nova.$emit("resources-loaded", {
           resourceName: this.resourceName,
-          mode: this.isRelation ? 'related' : 'index',
-        })
-      })
+          mode: this.isRelation ? "related" : "index",
+        });
+      });
     },
 
     async handleCollapsableChange() {
-      this.loading = true
+      this.loading = true;
 
-      this.toggleCollapse()
+      this.toggleCollapse();
 
       if (!this.collapsed) {
         if (!this.filterHasLoaded) {
-          await this.initializeFilters(null)
+          await this.initializeFilters(null);
           if (!this.hasFilters) {
-            await this.getResources()
+            await this.getResources();
           }
         } else {
-          await this.getResources()
+          await this.getResources();
         }
 
-        await this.getAuthorizationToRelate()
-        await this.getActions()
-        this.restartPolling()
+        await this.getAuthorizationToRelate();
+        await this.getActions();
+        this.restartPolling();
       } else {
-        this.loading = false
+        this.loading = false;
       }
     },
   },
@@ -542,25 +531,25 @@ export default {
         viaResource: this.viaResource,
         viaResourceId: this.viaResourceId,
         viaRelationship: this.viaRelationship,
-      }
+      };
     },
 
     /**
      * Determine if the index view should be collapsed.
      */
     shouldBeCollapsed() {
-      return this.collapsed && this.viaRelationship != null
+      return this.collapsed && this.viaRelationship != null;
     },
 
     collapsedByDefault() {
-      return this.field?.collapsedByDefault ?? false
+      return this.field?.collapsedByDefault ?? false;
     },
 
     /**
      * Get the endpoint for this resource's metrics.
      */
     cardsEndpoint() {
-      return `/nova-api/${this.resourceName}/cards`
+      return `/nova-api/${this.resourceName}/cards`;
     },
 
     /**
@@ -580,7 +569,7 @@ export default {
         viaRelationship: this.viaRelationship,
         viaResourceRelationship: this.viaResourceRelationship,
         relationshipType: this.relationshipType,
-      }
+      };
     },
 
     /**
@@ -592,7 +581,7 @@ export default {
           this.authorizedToForceDeleteSelectedResources ||
           this.authorizedToRestoreSelectedResources ||
           this.selectAllMatchingChecked
-      )
+      );
     },
 
     /**
@@ -600,19 +589,19 @@ export default {
      */
     headingTitle() {
       if (this.initialLoading) {
-        return '&nbsp;'
+        return "&nbsp;";
       } else {
         if (this.isRelation && this.field) {
-          return this.field.name
+          return this.field.name;
         } else {
           if (this.resourceResponse !== null) {
-            return this.resourceResponse.label
+            return this.resourceResponse.label;
           } else {
-            return this.resourceInformation.label
+            return this.resourceInformation.label;
           }
         }
       }
     },
   },
-}
+};
 </script>

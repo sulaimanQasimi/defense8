@@ -7,14 +7,17 @@
       dusk="notifications-dropdown"
     >
       <template v-if="unreadNotifications">
+        <!-- Notification Indicator w/ Count -->
         <span
           v-if="shouldShowUnreadCount"
           v-html="unreadNotifications > 99 ? '99+' : unreadNotifications"
           class="font-black tracking-normal absolute border-[3px] border-white dark:border-gray-800 top-[-5px] left-[15px] inline-flex items-center justify-center bg-primary-500 rounded-full text-white text-xxs p-[0px] px-1 min-w-[26px]"
         />
+
+        <!-- Notification Indicator -->
         <span
           v-else
-          class="absolute border-[3px] border-white dark:border-gray-800 top-0 right-[4px] inline-block bg-primary-500 rounded-full w-4 h-4"
+          class="absolute border-[3px] border-white dark:border-gray-800 top-0 right-[3px] inline-block bg-primary-500 rounded-full w-4 h-4"
         />
       </template>
     </Button>
@@ -69,7 +72,6 @@
                       <DropdownMenuItem
                         as="button"
                         @click="handleDeleteAllNotifications"
-                        destructive
                       >
                         {{ __('Delete all notifications') }}
                       </DropdownMenuItem>
@@ -84,7 +86,6 @@
           <NotificationList
             v-if="notifications.length > 0"
             :notifications="notifications"
-            :type="notificationType"
           />
 
           <!-- No Notifications -->

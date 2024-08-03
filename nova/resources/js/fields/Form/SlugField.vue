@@ -10,7 +10,7 @@
         <input
           v-bind="extraAttributes"
           ref="theInput"
-          class="w-full form-control form-input form-input-bordered"
+          class="w-full form-control form-input form-control-bordered"
           :id="field.uniqueKey"
           :dusk="field.attribute"
           v-model="value"

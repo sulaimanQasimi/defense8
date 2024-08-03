@@ -28,6 +28,12 @@ export default {
 
   mixins: [PreventsFormAbandonment, PreventsModalAbandonment],
 
+  provide() {
+    return {
+      removeFile: this.removeFile,
+    }
+  },
+
   props: {
     mode: {
       type: String,
@@ -90,6 +96,10 @@ export default {
      */
     onUpdateFormStatus() {
       this.mode === 'form' ? this.updateFormStatus() : this.updateModalStatus()
+    },
+
+    removeFile(attribute) {
+      //
     },
   },
 

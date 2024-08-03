@@ -3,7 +3,7 @@
 namespace App\Exports;
 
 use Sq\Query\DateFromAndToModelQuery;
-use App\Models\Oil;
+use Sq\Oil\Models\Oil;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\FromQuery;

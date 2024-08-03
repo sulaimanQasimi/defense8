@@ -4,18 +4,14 @@ namespace App\Models\Card;
 
 use App\Models\Attendance;
 use App\Models\Card\Contracts\EmployeeOilDisterbutionAttributes;
-use App\Models\Career;
 use App\Models\Card\Contracts\CardInfoAttributes;
 use App\Models\Department;
 use App\Models\Gate;
 use App\Models\GuestOption;
-use App\Models\OilDisterbution;
 use Sq\Card\Models\PrintCardFrame;
 use App\Models\Province;
 use App\Models\District;
 use App\Models\Village;
-use Hekmatinasser\Verta\Facades\Verta;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -125,7 +121,7 @@ class CardInfo extends Model
     }
     public function oil_disterbutions(): HasMany
     {
-        return $this->hasMany(OilDisterbution::class);
+        return $this->hasMany(\Sq\Oil\Models\OilDisterbution::class);
     }
 
 }

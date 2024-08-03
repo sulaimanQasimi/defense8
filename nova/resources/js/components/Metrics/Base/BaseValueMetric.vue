@@ -21,7 +21,8 @@
         v-if="icon"
         class="rounded-lg bg-primary-500 text-white h-14 w-14 flex items-center justify-center"
       >
-        <Icon :type="icon" width="24" height="24" />
+        <!-- <Icon :type="icon" /> -->
+        <i :class="icon" width="24" height="24"></i>
       </div>
 
       <div>
@@ -81,20 +82,20 @@
                 {{ __(increaseOrDecreaseLabel) }}
               </span>
 
-              <span v-else>{{ __('No Increase') }}</span>
+              <span v-else>{{ __("No Increase") }}</span>
             </span>
 
             <span class="text-gray-400 font-semibold" v-else>
               <span v-if="previous === '0' && value !== '0'">
-                {{ __('No Prior Data') }}
+                {{ __("No Prior Data") }}
               </span>
 
               <span v-if="value === '0' && previous !== '0' && !zeroResult">
-                {{ __('No Current Data') }}
+                {{ __("No Current Data") }}
               </span>
 
               <span v-if="value == '0' && previous == '0' && !zeroResult">
-                {{ __('No Data') }}
+                {{ __("No Data") }}
               </span>
             </span>
           </p>
@@ -105,15 +106,15 @@
 </template>
 
 <script>
-import { increaseOrDecrease, singularOrPlural } from '@/util'
-import { CopiesToClipboard } from '@/mixins'
+import { increaseOrDecrease, singularOrPlural } from "@/util";
+import { CopiesToClipboard } from "@/mixins";
 
 export default {
-  name: 'BaseValueMetric',
+  name: "BaseValueMetric",
 
   mixins: [CopiesToClipboard],
 
-  emits: ['selected'],
+  emits: ["selected"],
 
   props: {
     loading: { default: true },
@@ -125,13 +126,13 @@ export default {
     maxWidth: {},
     previous: {},
     value: {},
-    prefix: '',
-    suffix: '',
+    prefix: "",
+    suffix: "",
     suffixInflection: { default: true },
     selectedRangeKey: [String, Number],
     ranges: { type: Array, default: () => [] },
-    format: { type: String, default: '(0[.]00a)' },
-    tooltipFormat: { type: String, default: '(0[.]00)' },
+    format: { type: String, default: "(0[.]00a)" },
+    tooltipFormat: { type: String, default: "(0[.]00)" },
     zeroResult: { default: false },
   },
 
@@ -139,102 +140,95 @@ export default {
 
   methods: {
     handleChange(event) {
-      let value = event?.target?.value || event
+      let value = event?.target?.value || event;
 
-      this.$emit('selected', value)
+      this.$emit("selected", value);
     },
 
     handleCopyClick() {
       if (this.copyable) {
-        this.copied = true
-        this.copyValueToClipboard(this.tooltipFormattedValue)
+        this.copied = true;
+        this.copyValueToClipboard(this.tooltipFormattedValue);
 
         setTimeout(() => {
-          this.copied = false
-        }, 2000)
+          this.copied = false;
+        }, 2000);
       }
     },
   },
 
   computed: {
     growthPercentage() {
-      return Math.abs(this.increaseOrDecrease)
+      return Math.abs(this.increaseOrDecrease);
     },
 
     increaseOrDecrease() {
-      if (this.previous === 0 || this.previous == null || this.value === 0)
-        return 0
+      if (this.previous === 0 || this.previous == null || this.value === 0) return 0;
 
-      return increaseOrDecrease(this.value, this.previous).toFixed(2)
+      return increaseOrDecrease(this.value, this.previous).toFixed(2);
     },
 
     increaseOrDecreaseLabel() {
       switch (Math.sign(this.increaseOrDecrease)) {
         case 1:
-          return 'Increase'
+          return "Increase";
         case 0:
-          return 'Constant'
+          return "Constant";
         case -1:
-          return 'Decrease'
+          return "Decrease";
       }
     },
 
     sign() {
       switch (Math.sign(this.increaseOrDecrease)) {
         case 1:
-          return '+'
+          return "+";
         case 0:
-          return ''
+          return "";
         case -1:
-          return '-'
+          return "-";
       }
     },
 
     isNullValue() {
-      return this.value == null
+      return this.value == null;
     },
 
     isNullPreviousValue() {
-      return this.previous == null
+      return this.previous == null;
     },
 
     formattedValue() {
       if (!this.isNullValue) {
-        return this.prefix + Nova.formatNumber(String(this.value), this.format)
+        return this.prefix + Nova.formatNumber(new String(this.value), this.format);
       }
 
-      return ''
+      return "";
     },
 
     tooltipFormattedValue() {
       if (!this.isNullValue) {
-        return (
-          this.prefix +
-          Nova.formatNumber(String(this.value), this.tooltipFormat)
-        )
+        return this.value;
       }
 
-      return ''
+      return "";
     },
 
     tooltipFormattedPreviousValue() {
       if (!this.isNullPreviousValue) {
-        return (
-          this.prefix +
-          Nova.formatNumber(String(this.previous), this.tooltipFormat)
-        )
+        return this.previous;
       }
 
-      return ''
+      return "";
     },
 
     formattedSuffix() {
       if (this.suffixInflection === false) {
-        return this.suffix
+        return this.suffix;
       }
 
-      return singularOrPlural(this.value, this.suffix)
+      return singularOrPlural(this.value, this.suffix);
     },
   },
-}
+};
 </script>

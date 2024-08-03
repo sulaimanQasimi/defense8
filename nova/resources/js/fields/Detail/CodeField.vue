@@ -3,7 +3,7 @@
     <template #value>
       <div
         v-if="fieldValue"
-        class="form-input form-input-bordered px-0 overflow-hidden"
+        class="form-input form-control-bordered px-0 overflow-hidden"
       >
         <textarea ref="theTextarea" />
       </div>

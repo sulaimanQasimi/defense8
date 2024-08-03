@@ -7,9 +7,9 @@
         @keydown.enter.prevent="chooseSelected"
         @keydown.down.prevent="move(1)"
         @keydown.up.prevent="move(-1)"
-        class="block w-full form-control form-input form-input-bordered"
+        class="block w-full form-control form-input form-control-bordered"
         :class="{
-          'form-input-border-error': error,
+          'form-control-bordered-error': error,
         }"
         v-model="searchText"
         :disabled="disabled"
@@ -81,12 +81,12 @@
 
 <script setup>
 import { createPopper } from '@popperjs/core'
-import { ref, onMounted, onBeforeUnmount, computed, nextTick, watch } from 'vue'
+import { computed, nextTick, ref, watch } from 'vue'
 import debounce from 'lodash/debounce'
 import get from 'lodash/get'
-import findIndex from 'lodash/findIndex'
+import { useEventListener } from '@vueuse/core'
 
-const debouncer = debounce(callback => callback(), props.debounce)
+defineOptions({ inheritAttrs: false })
 
 // Events
 const emit = defineEmits(['clear', 'input', 'selected'])
@@ -101,6 +101,8 @@ const props = defineProps({
   debounce: { type: Number, default: 500 },
   trackBy: { type: String },
 })
+
+const debouncer = debounce(callback => callback(), props.debounce)
 
 // References
 const popper = ref(null)
@@ -118,8 +120,12 @@ const dropdownShown = ref(false)
 const selectedOptionIndex = ref(0)
 
 // Lifecycle Methods
-onMounted(() => document.addEventListener('keydown', handleEscape))
-onBeforeUnmount(() => document.removeEventListener('keydown', handleEscape))
+useEventListener(document, 'keydown', e => {
+  // 'tab' or 'escape'
+  if (dropdownShown.value && (e.keyCode === 9 || e.keyCode === 27)) {
+    setTimeout(() => close(), 50)
+  }
+})
 
 // Watchers
 watch(searchText, newValue => {
@@ -185,10 +191,6 @@ function move(offset) {
   }
 }
 
-function findOptionIndex(option) {
-  return findIndex(props.options, [props.trackBy, get(option, props.trackBy)])
-}
-
 function findOption(index) {
   return props.options[index]
 }
@@ -203,13 +205,6 @@ function chooseSelected(event) {
   if (event.isComposing || event.keyCode === 229) return
   const selectedOption = findOption(selectedOptionIndex.value)
   choose(selectedOption)
-}
-
-function handleEscape(e) {
-  // 'tab' or 'escape'
-  if (dropdownShown.value === true && (e.keyCode === 9 || e.keyCode === 27)) {
-    setTimeout(() => close(), 50)
-  }
 }
 
 function updateScrollPosition() {
@@ -243,35 +238,3 @@ function setSelectedRef(index, el) {
   }
 }
 </script>
-
-<script>
-export default {
-  inheritAttrs: false,
-}
-</script>
-
-<!--  props: {-->
-<!--    dataTestid: {},-->
-<!--  },-->
-
-<!--    chooseSelected(event) {-->
-<!--      if (event.isComposing || event.keyCode === 229) return-->
-
-<!--      if (this.data[this.selected] !== undefined) {-->
-<!--        this.$emit('selected', this.data[this.selected])-->
-<!--        this.$refs.search.focus()-->
-<!--        this.$nextTick(() => this.close())-->
-<!--        this.search = ''-->
-<!--      }-->
-<!--    },-->
-
-<!--    choose(option) {-->
-<!--      this.selected = findIndex(this.dusk, [-->
-<!--        this.trackBy,-->
-<!--        get(option, this.trackBy),-->
-<!--      ])-->
-<!--      this.$emit('selected', option)-->
-<!--      this.$refs.search.focus()-->
-<!--      this.$nextTick(() => this.close())-->
-<!--      this.search = ''-->
-<!--    },-->

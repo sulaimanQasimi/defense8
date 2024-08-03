@@ -3,48 +3,48 @@
     <Button variant="action" :icon="themeIcon" :class="themeColor" />
 
     <template #menu>
-      <div>
-        <DropdownMenu>
-          <div class="flex flex-col py-1">
-            <DropdownMenuItem
-              as="button"
-              @click.prevent="toggleLightTheme"
-              class="flex themeColor-center hover:bg-gray-100 py-1"
-            >
-              <Icon :solid="true" type="sun" />
-              <span class="ml-2">{{ __('Light') }}</span>
-            </DropdownMenuItem>
+      <DropdownMenu width="auto">
+        <nav class="flex flex-col py-1 px-1">
+          <DropdownMenuItem
+            as="button"
+            size="small"
+            class="flex items-center gap-2"
+            @click="toggleLightTheme"
+          >
+            <Icon name="sun" type="micro" />
+            <span>{{ __('Light') }}</span>
+          </DropdownMenuItem>
 
-            <DropdownMenuItem
-              as="button"
-              @click.prevent="toggleDarkTheme"
-              class="flex items-center hover:bg-gray-100"
-            >
-              <Icon :solid="true" type="moon" />
-              <span class="ml-2">{{ __('Dark') }}</span>
-            </DropdownMenuItem>
+          <DropdownMenuItem
+            as="button"
+            class="flex items-center gap-2"
+            @click="toggleDarkTheme"
+          >
+            <Icon name="moon" type="micro" />
+            <span>{{ __('Dark') }}</span>
+          </DropdownMenuItem>
 
-            <DropdownMenuItem
-              as="button"
-              @click.prevent="toggleSystemTheme"
-              class="flex items-center hover:bg-gray-100"
-            >
-              <Icon :solid="true" type="desktop-computer" />
-              <span class="ml-2">{{ __('System') }}</span>
-            </DropdownMenuItem>
-          </div>
-        </DropdownMenu>
-      </div>
+          <DropdownMenuItem
+            as="button"
+            class="flex items-center gap-2"
+            @click="toggleSystemTheme"
+          >
+            <Icon name="computer-desktop" type="micro" />
+            <span>{{ __('System') }}</span>
+          </DropdownMenuItem>
+        </nav>
+      </DropdownMenu>
     </template>
   </Dropdown>
 </template>
 
 <script>
-import { Button } from 'laravel-nova-ui'
+import { Button, Icon } from 'laravel-nova-ui'
 
 export default {
   components: {
     Button,
+    Icon,
   },
 
   data() {
@@ -62,8 +62,8 @@ export default {
         this.theme = localStorage.novaTheme
       }
 
-      this.listener = e => {
-        if (this.theme == 'system') {
+      this.listener = () => {
+        if (this.theme === 'system') {
           this.applyColorScheme()
         }
       }
@@ -128,6 +128,10 @@ export default {
     },
 
     themeIcon() {
+      // if (this.theme === 'system') {
+      //   return 'desktop-computer'
+      // }
+
       return {
         light: 'sun',
         dark: 'moon',
@@ -138,7 +142,7 @@ export default {
     themeColor() {
       return {
         light: 'text-primary-500',
-        dark: 'text-primary-500',
+        dark: 'dark:text-primary-500',
         system: '',
       }[this.theme]
     },

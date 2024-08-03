@@ -222,3 +222,6 @@ export { default as HeroiconsOutlineXCircle } from './HeroiconsOutlineXCircle'
 export { default as HeroiconsOutlineX } from './HeroiconsOutlineX'
 export { default as HeroiconsOutlineZoomIn } from './HeroiconsOutlineZoomIn'
 export { default as HeroiconsOutlineZoomOut } from './HeroiconsOutlineZoomOut'
+
+export { default as HeroiconsOutlineGun } from './HeroiconsOutlineGun.vue'
+export { default as HeroiconsOutlineCardsBlank } from './HeroiconsOutlineCardsBlank.vue'

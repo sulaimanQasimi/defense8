@@ -61,3 +61,7 @@
 @import 'nova';
 @import 'fonts';
 @import 'tailwindcss/utilities';
+
+body {
+    font-family: 'persian-font'; /* Change 'Arial' to the desired font family */
+}

@@ -42,6 +42,7 @@
         "spatie/nova-backup-tool": "^5.0",
         "sq/query": "@dev",
         "sq/card": "@dev",
+        "sq/oil": "@dev",
         "tightenco/ziggy": "^1.0"
     },
     "repositories": [
@@ -68,6 +69,10 @@
         {
             "type": "path",
             "url": "./package/sq/card"
+        },
+        {
+            "type": "path",
+            "url": "./package/sq/oil"
         }
     ],
     "autoload": {

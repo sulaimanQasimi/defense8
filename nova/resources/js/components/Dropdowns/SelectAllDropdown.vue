@@ -5,7 +5,8 @@
       trailing-icon="chevron-down"
       class="-ml-1"
       :class="{
-        '!bg-gray-50 dark:!bg-gray-950': selectAllOrSelectAllMatchingChecked,
+        'enabled:bg-gray-700/5 dark:enabled:bg-gray-950':
+          selectAllOrSelectAllMatchingChecked || selectedResourcesCount > 0,
       }"
       dusk="select-all-dropdown-trigger"
     >

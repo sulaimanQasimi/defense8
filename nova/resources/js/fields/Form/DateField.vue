@@ -9,7 +9,7 @@
       <div class="flex items-center">
         <input
           type="date"
-          class="form-control form-input form-input-bordered"
+          class="form-control form-input form-control-bordered"
           ref="dateTimePicker"
           :id="currentField.uniqueKey"
           :dusk="field.attribute"

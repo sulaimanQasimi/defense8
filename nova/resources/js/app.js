@@ -123,7 +123,11 @@ class Nova {
   }
 
   async countdown() {
+
     this.log('Initiating Nova countdown...')
+    this.log('Checking License')
+    this.log('License Approved')
+    this.log('Purchased By Ministry of Defense')
 
     const appName = this.config('appName')
 

@@ -4,6 +4,7 @@
     @close-via-escape="$emit('close')"
     role="alertdialog"
     size="2xl"
+    :use-focus-trap="false"
   >
     <LoadingView
       :loading="loading"

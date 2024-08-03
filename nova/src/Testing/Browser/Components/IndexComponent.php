@@ -195,7 +195,7 @@ class IndexComponent extends Component
     {
         $browser->openFilterSelector();
 
-        if (! is_null($fieldCallback)) {
+        if (is_callable($fieldCallback)) {
             $browser->elsewhereWhenAvailable('@filter-menu', function (Browser $browser) use ($fieldCallback) {
                 $fieldCallback($browser);
             });
@@ -509,7 +509,7 @@ class IndexComponent extends Component
                 $fieldCallback($browser);
             }
 
-            $browser->click('[dusk="confirm-action-button"]')->pause(250);
+            $browser->click('@confirm-action-button')->pause(250);
         });
     }
 
@@ -737,6 +737,8 @@ class IndexComponent extends Component
      */
     public function elements()
     {
-        return [];
+        return [
+            '@nova-opened-modal' => '.modal[data-modal-open=true]',
+        ];
     }
 }

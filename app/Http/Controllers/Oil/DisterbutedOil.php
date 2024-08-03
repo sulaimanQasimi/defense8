@@ -6,7 +6,7 @@ use App\Exports\DisterbutedOilExcelExport;
 use App\Http\Controllers\Controller;
 use App\Models\Card\CardInfo;
 use App\Models\Card\EmployeeVehicalCard;
-use App\Models\OilDisterbution;
+use Sq\Oil\Models\OilDisterbution;
 use Date;
 use Elibyy\TCPDF\Facades\TCPDF;
 use Hekmatinasser\Verta\Facades\Verta;

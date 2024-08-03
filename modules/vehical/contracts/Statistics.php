@@ -1,8 +1,8 @@
 <?php
 namespace Vehical\Contracts;
 
-use App\Models\Oil;
-use App\Models\OilDisterbution;
+use Sq\Oil\Models\Oil;
+use Sq\Oil\Models\OilDisterbution;
 use Vehical\OilType;
 
 trait Statistics

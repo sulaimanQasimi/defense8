@@ -20,8 +20,6 @@
         >
           <AppLogo class="h-6" />
         </Link>
-
-        <LicenseWarning />
       </div>
 
       <div class="flex flex-1 px-4 sm:px-8 lg:px-12">
@@ -125,51 +123,51 @@
 </template>
 
 <script setup>
-import { useStore } from 'vuex'
-import LicenseWarning from '@/components/LicenseWarning'
-import { Button } from 'laravel-nova-ui'
-import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
-import { computed, onBeforeUnmount, ref, watch } from 'vue'
+import { useStore } from "vuex";
+import LicenseWarning from "@/components/LicenseWarning";
+import { Button } from "laravel-nova-ui";
+import { useFocusTrap } from "@vueuse/integrations/useFocusTrap";
+import { computed, onBeforeUnmount, ref, watch } from "vue";
 
-const store = useStore()
+const store = useStore();
 
-const modalContent = ref(null)
+const modalContent = ref(null);
 
 const { activate, deactivate } = useFocusTrap(modalContent, {
   initialFocus: true,
   allowOutsideClick: false,
   escapeDeactivates: false,
-})
+});
 
-const toggleMainMenu = () => store.commit('toggleMainMenu')
+const toggleMainMenu = () => store.commit("toggleMainMenu");
 
-const globalSearchEnabled = computed(() => Nova.config('globalSearchEnabled'))
+const globalSearchEnabled = computed(() => Nova.config("globalSearchEnabled"));
 
 const notificationCenterEnabled = computed(() =>
-  Nova.config('notificationCenterEnabled')
-)
+  Nova.config("notificationCenterEnabled")
+);
 
-const mainMenuShown = computed(() => store.getters.mainMenuShown)
-const appName = computed(() => Nova.config('appName'))
+const mainMenuShown = computed(() => store.getters.mainMenuShown);
+const appName = computed(() => Nova.config("appName"));
 
 watch(
   () => mainMenuShown.value,
-  newValue => {
+  (newValue) => {
     if (newValue === true) {
-      document.body.classList.add('overflow-y-hidden')
-      Nova.pauseShortcuts()
-      return
+      document.body.classList.add("overflow-y-hidden");
+      Nova.pauseShortcuts();
+      return;
     }
 
-    document.body.classList.remove('overflow-y-hidden')
-    Nova.resumeShortcuts()
-    deactivate()
+    document.body.classList.remove("overflow-y-hidden");
+    Nova.resumeShortcuts();
+    deactivate();
   }
-)
+);
 
 onBeforeUnmount(() => {
-  document.body.classList.remove('overflow-hidden')
-  Nova.resumeShortcuts()
-  deactivate()
-})
+  document.body.classList.remove("overflow-hidden");
+  Nova.resumeShortcuts();
+  deactivate();
+});
 </script>

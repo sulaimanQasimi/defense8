@@ -8,6 +8,7 @@
     :resource-name="resourceName"
     @actionExecuted="$emit('actionExecuted')"
     :selected-resources="[resource.id.value]"
+    :show-headings="true"
   >
     <template #trigger>
       <Button
@@ -19,55 +20,62 @@
 
     <template #menu>
       <div
-        class="py-1"
         v-if="
           (resource.authorizedToView && resource.previewHasFields) ||
           resource.authorizedToReplicate ||
           (currentUser.canImpersonate && resource.authorizedToImpersonate)
         "
       >
-        <!-- Preview Resource Link -->
-        <DropdownMenuItem
-          v-if="resource.authorizedToView && resource.previewHasFields"
-          :dusk="`${resource.id.value}-preview-button`"
-          as="button"
-          @click.prevent="$emit('show-preview')"
-          :title="__('Preview')"
-        >
-          {{ __('Preview') }}
-        </DropdownMenuItem>
+        <DropdownMenuHeading>{{ __('Actions') }}</DropdownMenuHeading>
+        <div class="py-1">
+          <!-- Preview Resource Link -->
+          <DropdownMenuItem
+            v-if="resource.authorizedToView && resource.previewHasFields"
+            :dusk="`${resource.id.value}-preview-button`"
+            as="button"
+            @click.prevent="$emit('show-preview')"
+            :title="__('Preview')"
+          >
+            {{ __('Preview') }}
+          </DropdownMenuItem>
 
-        <!-- Replicate Resource Link -->
-        <DropdownMenuItem
-          v-if="resource.authorizedToReplicate"
-          :dusk="`${resource.id.value}-replicate-button`"
-          :href="
-            $url(`/resources/${resourceName}/${resource.id.value}/replicate`, {
-              viaResource,
-              viaResourceId,
-              viaRelationship,
-            })
-          "
-          :title="__('Replicate')"
-        >
-          {{ __('Replicate') }}
-        </DropdownMenuItem>
+          <!-- Replicate Resource Link -->
+          <DropdownMenuItem
+            v-if="resource.authorizedToReplicate"
+            :dusk="`${resource.id.value}-replicate-button`"
+            :href="
+              $url(
+                `/resources/${resourceName}/${resource.id.value}/replicate`,
+                {
+                  viaResource,
+                  viaResourceId,
+                  viaRelationship,
+                }
+              )
+            "
+            :title="__('Replicate')"
+          >
+            {{ __('Replicate') }}
+          </DropdownMenuItem>
 
-        <!-- Impersonate Resource Button -->
-        <DropdownMenuItem
-          as="button"
-          v-if="currentUser.canImpersonate && resource.authorizedToImpersonate"
-          :dusk="`${resource.id.value}-impersonate-button`"
-          @click.prevent="
-            startImpersonating({
-              resource: resourceName,
-              resourceId: resource.id.value,
-            })
-          "
-          :title="__('Impersonate')"
-        >
-          {{ __('Impersonate') }}
-        </DropdownMenuItem>
+          <!-- Impersonate Resource Button -->
+          <DropdownMenuItem
+            as="button"
+            v-if="
+              currentUser.canImpersonate && resource.authorizedToImpersonate
+            "
+            :dusk="`${resource.id.value}-impersonate-button`"
+            @click.prevent="
+              startImpersonating({
+                resource: resourceName,
+                resourceId: resource.id.value,
+              })
+            "
+            :title="__('Impersonate')"
+          >
+            {{ __('Impersonate') }}
+          </DropdownMenuItem>
+        </div>
       </div>
     </template>
   </ActionDropdown>

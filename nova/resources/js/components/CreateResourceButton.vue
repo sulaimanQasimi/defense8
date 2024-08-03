@@ -6,21 +6,18 @@
       v-if="shouldShowAttachButton"
       dusk="attach-button"
       :href="
-        $url(
-          `/resources/${viaResource}/${viaResourceId}/attach/${resourceName}`,
-          {
-            viaRelationship,
-            polymorphic: relationshipType === 'morphToMany' ? '1' : '0',
-          }
-        )
+        $url(`/resources/${viaResource}/${viaResourceId}/attach/${resourceName}`, {
+          viaRelationship,
+          polymorphic: relationshipType === 'morphToMany' ? '1' : '0',
+        })
       "
     >
       <slot>
         <span class="hidden md:inline-block">
-          {{ __('Attach :resource', { resource: singularName }) }}
+          {{ __("Attach :resource", { resource: singularName }) }}
         </span>
         <span class="inline-block md:hidden">
-          {{ __('Attach') }}
+          {{ __("Attach") }}
         </span>
       </slot>
     </ButtonInertiaLink>
@@ -43,23 +40,23 @@
         {{ label }}
       </span>
       <span class="inline-block md:hidden">
-        {{ __('Create') }}
+        {{ __("Create") }}
       </span>
     </ButtonInertiaLink>
   </div>
 </template>
 
 <script setup>
-import { useLocalization } from '@/composables/useLocalization'
-import { computed } from 'vue'
+import { useLocalization } from "@/composables/useLocalization";
+import { computed } from "vue";
 
-const { __ } = useLocalization()
+const { __ } = useLocalization();
 
 const props = defineProps({
   type: {
     type: String,
-    default: 'button',
-    validator: val => ['button', 'outline-button'].includes(val),
+    default: "button",
+    validator: (val) => ["button", "outline-button"].includes(val),
   },
   label: {},
   singularName: {},
@@ -71,23 +68,21 @@ const props = defineProps({
   authorizedToCreate: {},
   authorizedToRelate: {},
   alreadyFilled: { type: Boolean, default: false },
-})
+});
 
 const shouldShowAttachButton = computed(() => {
   return (
-    (props.relationshipType === 'belongsToMany' ||
-      props.relationshipType === 'morphToMany') &&
+    (props.relationshipType === "belongsToMany" ||
+      props.relationshipType === "morphToMany") &&
     props.authorizedToRelate
-  )
-})
+  );
+});
 
 const shouldShowCreateButton = computed(() => {
-  return (
-    props.authorizedToCreate && props.authorizedToRelate && !props.alreadyFilled
-  )
-})
+  return props.authorizedToCreate && props.authorizedToRelate && !props.alreadyFilled;
+});
 
 const shouldShowButtons = computed(() => {
-  return shouldShowAttachButton || shouldShowCreateButton
-})
+  return shouldShowAttachButton || shouldShowCreateButton;
+});
 </script>

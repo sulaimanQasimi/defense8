@@ -7,17 +7,12 @@
       :tabindex="displayAsButton ? 0 : null"
       class="w-full flex items-start px-1 py-1 rounded text-left text-gray-500 dark:text-gray-500 focus:outline-none focus:ring focus:ring-primary-200 dark:focus:ring-gray-600"
       :class="{
-        'cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-800':
-          displayAsButton,
+        'cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-800': displayAsButton,
         'font-bold text-primary-500 dark:text-primary-500': item.active,
       }"
     >
       <span class="inline-block shrink-0 w-6 h-6">
-        <component
-          :is="`heroicons-outline-${item.icon}`"
-          height="24"
-          width="24"
-        />
+        <i :class="item.icon" width="24" height="24"></i>
       </span>
 
       <span class="flex-1 flex items-center w-full px-3 text-base">
@@ -50,50 +45,50 @@
 </template>
 
 <script>
-import { Collapsable } from '@/mixins'
-import { mapGetters, mapMutations } from 'vuex'
+import { Collapsable } from "@/mixins";
+import { mapGetters, mapMutations } from "vuex";
 
 export default {
   mixins: [Collapsable],
 
-  props: ['item'],
+  props: ["item"],
 
   methods: {
-    ...mapMutations(['toggleMainMenu']),
+    ...mapMutations(["toggleMainMenu"]),
 
     handleClick() {
       if (this.item.collapsable) {
-        this.toggleCollapse()
+        this.toggleCollapse();
       }
 
-      if (this.mainMenuShown && this.component !== 'button') {
-        this.toggleMainMenu()
+      if (this.mainMenuShown && this.component !== "button") {
+        this.toggleMainMenu();
       }
     },
   },
 
   computed: {
-    ...mapGetters(['mainMenuShown']),
+    ...mapGetters(["mainMenuShown"]),
 
     component() {
       if (this.item.path) {
-        return 'Link'
+        return "Link";
       }
 
       if (this.item.items.length > 0 && this.item.collapsable) {
-        return 'button'
+        return "button";
       }
 
-      return 'h3'
+      return "h3";
     },
 
     displayAsButton() {
-      return ['Link', 'button'].includes(this.component)
+      return ["Link", "button"].includes(this.component);
     },
 
     collapsedByDefault() {
-      return this.item?.collapsedByDefault ?? false
+      return this.item?.collapsedByDefault ?? false;
     },
   },
-}
+};
 </script>

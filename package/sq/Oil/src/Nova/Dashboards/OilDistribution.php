@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Nova\Dashboards;
+namespace Sq\Oil\Nova\Dashboards;
 
 use App\Nova\Metrics\ExpendDiesel;
 use App\Nova\Metrics\ExpendPetrol;

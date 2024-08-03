@@ -55,8 +55,9 @@ export default {
 
   methods: {
     handleClick() {
-      this.visit()
+      this.$emit('toggle-mark-as-read')
       this.$emit('toggle-notifications')
+      this.visit()
     },
 
     handleDeleteClick() {

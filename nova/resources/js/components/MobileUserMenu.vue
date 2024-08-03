@@ -79,10 +79,16 @@ const hasUserMenu = computed(() => {
   )
 })
 
+const handleStopImpersonating = () => {
+  if (confirm(__('Are you sure you want to stop impersonating?'))) {
+    store.dispatch('stopImpersonating')
+  }
+}
+
 const attempt = async () => {
   if (confirm(__('Are you sure you want to log out?'))) {
     store
-      .dispatch('logout', () => Nova.config('customLogoutPath'))
+      .dispatch('logout', Nova.config('customLogoutPath'))
       .then(redirect => {
         if (redirect !== null) {
           location.href = redirect

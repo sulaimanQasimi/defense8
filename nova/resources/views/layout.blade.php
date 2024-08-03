@@ -21,14 +21,14 @@
     @endif
 
     <script>
-        if (localStorage.novaTheme === 'dark' || (!('novaTheme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.classList.add('dark')
-        } else {
-            document.documentElement.classList.remove('dark')
-        }
+        // if (localStorage.novaTheme === 'dark' || (!('novaTheme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        //     document.documentElement.classList.add('dark')
+        // } else {
+        //     document.documentElement.classList.remove('dark')
+        // }
     </script>
 </head>
-<body class="min-w-site text-sm font-medium min-h-full text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-900">
+<body class="min-w-site text-sm font-medium min-h-full text-gray-500 dark:text-gray-400 dark:bg-gray-900">
     @inertia
 
     <!-- Scripts -->

@@ -2,6 +2,7 @@
 
 namespace Laravel\Nova;
 
+use Laravel\Nova\Actions\Action;
 use Laravel\Nova\Actions\ActionCollection;
 use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\MorphToMany;
@@ -81,7 +82,9 @@ trait ResolvesActions
     {
         return $this->resolveActions($request)
                     ->authorizedToSeeOnDetail($request)
-                    ->each->authorizedToRun($request, $this->resource)
+                    ->each(function (Action $a) use ($request) {
+                        $a->authorizedToRun($request, $this->resource);
+                    })
                     ->values();
     }
 
@@ -95,7 +98,9 @@ trait ResolvesActions
     {
         return $this->resolveActions($request)
                     ->authorizedToSeeOnTableRow($request)
-                    ->each->authorizedToRun($request, $this->resource)
+                    ->each(function (Action $a) use ($request) {
+                        $a->authorizedToRun($request, $this->resource);
+                    })
                     ->values();
     }
 
@@ -155,7 +160,8 @@ trait ResolvesActions
         $field = $resource->availableFields($request)->first(function ($field) use ($request) {
             return isset($field->resourceName) &&
                    $field->resourceName == $request->resource &&
-                   ($field instanceof BelongsToMany || $field instanceof MorphToMany);
+                   ($field instanceof BelongsToMany || $field instanceof MorphToMany) &&
+                   $field->manyToManyRelationship === $request->viaRelationship;
         });
 
         if ($field && isset($field->actionsCallback)) {

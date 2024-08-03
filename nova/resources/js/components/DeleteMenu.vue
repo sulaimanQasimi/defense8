@@ -10,43 +10,42 @@
       />
 
       <template #menu>
-        <DropdownMenu
-          class="divide-y divide-gray-100 dark:divide-gray-800 divide-solid"
-          width="250"
-        >
-          <!-- Delete Menu -->
-          <DropdownMenuItem
-            v-if="shouldShowDeleteItem"
-            as="button"
-            class="border-none"
-            dusk="delete-selected-button"
-            @click.prevent="confirmDeleteSelectedResources"
-          >
-            {{ __(viaManyToMany ? 'Detach Selected' : 'Delete Selected') }}
-            <CircleBadge>{{ selectedResourcesCount }}</CircleBadge>
-          </DropdownMenuItem>
+        <DropdownMenu class="px-1" width="250">
+          <nav class="py-1">
+            <!-- Delete Menu -->
+            <DropdownMenuItem
+              v-if="shouldShowDeleteItem"
+              as="button"
+              class="border-none"
+              dusk="delete-selected-button"
+              @click.prevent="confirmDeleteSelectedResources"
+            >
+              {{ __(viaManyToMany ? 'Detach Selected' : 'Delete Selected') }}
+              <CircleBadge>{{ selectedResourcesCount }}</CircleBadge>
+            </DropdownMenuItem>
 
-          <!-- Restore Resources -->
-          <DropdownMenuItem
-            v-if="shouldShowRestoreItem"
-            as="button"
-            dusk="restore-selected-button"
-            @click.prevent="confirmRestore"
-          >
-            {{ __('Restore Selected') }}
-            <CircleBadge>{{ selectedResourcesCount }}</CircleBadge>
-          </DropdownMenuItem>
+            <!-- Restore Resources -->
+            <DropdownMenuItem
+              v-if="shouldShowRestoreItem"
+              as="button"
+              dusk="restore-selected-button"
+              @click.prevent="confirmRestore"
+            >
+              {{ __('Restore Selected') }}
+              <CircleBadge>{{ selectedResourcesCount }}</CircleBadge>
+            </DropdownMenuItem>
 
-          <!-- Force Delete Resources -->
-          <DropdownMenuItem
-            v-if="shouldShowForceDeleteItem"
-            as="button"
-            dusk="force-delete-selected-button"
-            @click.prevent="confirmForceDeleteSelectedResources"
-          >
-            {{ __('Force Delete Selected') }}
-            <CircleBadge>{{ selectedResourcesCount }}</CircleBadge>
-          </DropdownMenuItem>
+            <!-- Force Delete Resources -->
+            <DropdownMenuItem
+              v-if="shouldShowForceDeleteItem"
+              as="button"
+              dusk="force-delete-selected-button"
+              @click.prevent="confirmForceDeleteSelectedResources"
+            >
+              {{ __('Force Delete Selected') }}
+              <CircleBadge>{{ selectedResourcesCount }}</CircleBadge>
+            </DropdownMenuItem>
+          </nav>
         </DropdownMenu>
       </template>
     </Dropdown>

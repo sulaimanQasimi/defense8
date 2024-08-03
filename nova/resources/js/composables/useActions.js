@@ -1,9 +1,11 @@
 import { Errors } from '@/mixins'
-import { computed, reactive } from 'vue'
+import { computed, nextTick, reactive } from 'vue'
 import each from 'lodash/each'
 import find from 'lodash/find'
 import filter from 'lodash/filter'
 import isNil from 'lodash/isNil'
+import isObject from 'lodash/isObject'
+import map from 'lodash/map'
 import tap from 'lodash/tap'
 import trim from 'lodash/trim'
 import { useLocalization } from '@/composables/useLocalization'
@@ -102,7 +104,30 @@ export function useActions(props, emitter, store) {
 
   const actionFormData = computed(() => {
     return tap(new FormData(), formData => {
-      formData.append('resources', selectedResources.value)
+      if (selectedResources.value === 'all') {
+        formData.append('resources', 'all')
+      } else {
+        let pivotIds = filter(
+          map(selectedResources.value, resource =>
+            isObject(resource) ? resource.id.pivotValue : null
+          )
+        )
+
+        formData.append(
+          'resources',
+          map(selectedResources.value, resource =>
+            isObject(resource) ? resource.id.value : resource
+          )
+        )
+
+        if (
+          selectedResources.value !== 'all' &&
+          selectedActionIsPivotAction.value === true &&
+          pivotIds.length > 0
+        ) {
+          formData.append('pivots', pivotIds)
+        }
+      }
 
       each(selectedAction.value.fields, field => {
         field.fill(formData)
@@ -203,11 +228,8 @@ export function useActions(props, emitter, store) {
     }
 
     if (data instanceof Blob) {
-      return emitResponseCallback(() => {
+      return emitResponseCallback(async () => {
         let fileName = 'unknown'
-        let url = window.URL.createObjectURL(new Blob([data]))
-        let link = document.createElement('a')
-        link.href = url
 
         if (contentDisposition) {
           let fileNameMatch = contentDisposition
@@ -216,11 +238,18 @@ export function useActions(props, emitter, store) {
           if (fileNameMatch.length === 2) fileName = trim(fileNameMatch[1], '"')
         }
 
-        link.setAttribute('download', fileName)
-        document.body.appendChild(link)
-        link.click()
-        link.remove()
-        window.URL.revokeObjectURL(url)
+        await nextTick(() => {
+          let url = window.URL.createObjectURL(new Blob([data]))
+          let link = document.createElement('a')
+
+          link.href = url
+          link.setAttribute('download', fileName)
+          document.body.appendChild(link)
+          link.click()
+          link.remove()
+
+          window.URL.revokeObjectURL(url)
+        })
       })
     }
 
@@ -233,15 +262,17 @@ export function useActions(props, emitter, store) {
     }
 
     if (data.download) {
-      return emitResponseCallback(() => {
+      return emitResponseCallback(async () => {
         showActionResponseMessage(data)
 
-        let link = document.createElement('a')
-        link.href = data.download
-        link.download = data.name
-        document.body.appendChild(link)
-        link.click()
-        document.body.removeChild(link)
+        await nextTick(() => {
+          let link = document.createElement('a')
+          link.href = data.download
+          link.download = data.name
+          document.body.appendChild(link)
+          link.click()
+          document.body.removeChild(link)
+        })
       })
     }
 

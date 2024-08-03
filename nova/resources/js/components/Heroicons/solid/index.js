@@ -221,3 +221,5 @@ export { default as HeroiconsSolidXCircle } from './HeroiconsSolidXCircle'
 export { default as HeroiconsSolidX } from './HeroiconsSolidX'
 export { default as HeroiconsSolidZoomIn } from './HeroiconsSolidZoomIn'
 export { default as HeroiconsSolidZoomOut } from './HeroiconsSolidZoomOut'
+// My icons
+export { default as HeroiconsSolidGun } from './HeroiconsSolidGun.vue'

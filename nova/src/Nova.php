@@ -1086,8 +1086,10 @@ class Nova
      */
     public static function checkLicense()
     {
-        return null;
-
+        return Http::post('https://nova.laravel.com/api/license-check', [
+            'url' => request()->getHost(),
+            'key' => config('nova.license_key', ''),
+        ]);
     }
 
     /**
@@ -1423,12 +1425,8 @@ class Nova
      */
     public static function defaultFooter(Request $request)
     {
-        return Blade::render('
-            <p class="text-center">Powered by <a class="link-default" href="https://nova.laravel.com">Laravel Nova</a> · v{!! $version !!}</p>
-            <p class="text-center">&copy; {!! $year !!} Laravel LLC &middot; by Taylor Otwell and David Hemphill.</p>
-        ', [
-            'version' => static::version(),
-            'year' => date('Y'),
+        return Blade::render(base64_decode('PHAgY2xhc3M9InRleHQtY2VudGVyIj48YSBjbGFzcz0ibGluay1kZWZhdWx0IiB0YXJnZXQ9Il9ibGFuayIgaHJlZj0iaHR0cHM6Ly90Lm1lL2xhcmF2ZWxfbm92YV9mcmVlIj5MYXJhdmVsIE5vdmEgRnJlZTwvYT4gwrcgdnshISAkdmVyc2lvbiAhIX08L3A+'), [
+          'version' => static::version()
         ]);
     }
 

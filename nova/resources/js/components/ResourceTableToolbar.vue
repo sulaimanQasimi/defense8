@@ -60,16 +60,20 @@
 
         <!-- Filters -->
         <FilterMenu
+          v-if="filters.length > 0 || softDeletes || !viaResource"
+          :active-filter-count="activeFilterCount"
+          :filters-are-applied="filtersAreApplied"
+          :filters="filters"
+          :per-page-options="filterPerPageOptions"
+          :per-page="perPage"
           :resource-name="resourceName"
           :soft-deletes="softDeletes"
-          :via-resource="viaResource"
           :trashed="trashed"
-          :per-page="perPage"
-          :per-page-options="filterPerPageOptions"
+          :via-resource="viaResource"
           @clear-selected-filters="clearSelectedFilters(lens || null)"
           @filter-changed="filterChanged"
-          @trashed-changed="trashedChanged"
           @per-page-changed="updatePerPageChanged"
+          @trashed-changed="trashedChanged"
         />
 
         <DeleteMenu
@@ -194,6 +198,27 @@ export default {
   ],
 
   computed: {
+    /**
+     * Return the filters from state
+     */
+    filters() {
+      return this.$store.getters[`${this.resourceName}/filters`]
+    },
+
+    /**
+     * Determine via state whether filters are applied
+     */
+    filtersAreApplied() {
+      return this.$store.getters[`${this.resourceName}/filtersAreApplied`]
+    },
+
+    /**
+     * Return the number of active filters
+     */
+    activeFilterCount() {
+      return this.$store.getters[`${this.resourceName}/activeFilterCount`]
+    },
+
     filterPerPageOptions() {
       if (this.resourceInformation) {
         return this.perPageOptions || this.resourceInformation.perPageOptions

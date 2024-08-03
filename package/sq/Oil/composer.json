@@ -1,0 +1,22 @@
+{
+    "name": "sq/oil",
+    "autoload": {
+        "psr-4": {
+            "Sq\\Oil\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Sulaiman",
+            "email": "soliman@gmail.com"
+        }
+    ],
+    "require": {},
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Sq\\Oil\\OilServiceProvider"
+            ]
+        }
+    }
+}

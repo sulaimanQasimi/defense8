@@ -112,6 +112,7 @@ class NovaServiceProvider extends ServiceProvider
             Console\UserCommand::class,
             Console\UpgradeCommand::class,
             Console\ValueCommand::class,
+            Console\ApexLineChartCommand::class
         ]);
     }
 

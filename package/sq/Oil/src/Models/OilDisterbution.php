@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace Sq\Oil\Models;
 
 use App\Support\HasCardInfo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

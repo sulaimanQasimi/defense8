@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Policies;
+namespace Sq\Oil\Policies;
 
-use App\Models\Oil;
+use Sq\Oil\Models\Oil;
 use App\Models\User;
 use App\Support\Defense\PermissionTranslation;
 use Illuminate\Auth\Access\Response;

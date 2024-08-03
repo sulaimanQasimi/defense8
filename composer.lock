@@ -4,11 +4,11 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "70e07d3b74e77c75ab9d4e0563251799",
+    "content-hash": "8897c5222af4c689bf6c8d238dedd3b5",
     "packages": [
         {
             "name": "acme/guest-report",
-            "version": "dev-master",
+            "version": "dev-version-15",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/GuestReport",
@@ -44,7 +44,7 @@
         },
         {
             "name": "acme/oil-report",
-            "version": "dev-master",
+            "version": "dev-version-15",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/OilReport",
@@ -80,7 +80,7 @@
         },
         {
             "name": "acme/price-tracker",
-            "version": "dev-master",
+            "version": "dev-version-15",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/PriceTracker",
@@ -2927,11 +2927,11 @@
         },
         {
             "name": "laravel/nova",
-            "version": "4.32.1",
+            "version": "4.32.14",
             "dist": {
                 "type": "path",
                 "url": "nova",
-                "reference": "52d0e992fbe3efc77cb75c63170aabca32028d64"
+                "reference": "b27ac1380351455fccc6b56b3f3208bbd623db09"
             },
             "require": {
                 "brick/money": "^0.5.0|^0.6.0|^0.7.0|^0.8.0",
@@ -2950,12 +2950,12 @@
                 "symfony/process": "^5.4|^6.0"
             },
             "require-dev": {
+                "larastan/larastan": "^1.0.1|^2.5.1",
                 "laravel/nova-dusk-suite": "8.4.x-dev|9.4.x-dev|10.4.x-dev",
                 "laravel/pint": "^1.6",
                 "laravel/scout": "^9.8|^10.0",
                 "mockery/mockery": "^1.4.4",
-                "nunomaduro/larastan": "^1.0.1|^2.5.1",
-                "orchestra/testbench-dusk": "^6.24|^7.21|^8.0",
+                "orchestra/testbench-dusk": "^6.44|^7.40|^8.22",
                 "phpunit/phpunit": "^9.6|^10.1",
                 "predis/predis": "^1.1.9|^2.0"
             },
@@ -7693,7 +7693,7 @@
         },
         {
             "name": "sq/card",
-            "version": "dev-master",
+            "version": "dev-version-15",
             "dist": {
                 "type": "path",
                 "url": "./package/sq/card",
@@ -7723,8 +7723,39 @@
             }
         },
         {
+            "name": "sq/oil",
+            "version": "dev-version-15",
+            "dist": {
+                "type": "path",
+                "url": "./package/sq/oil",
+                "reference": "5abc375a8046ffb4dae86385e7f9d0d3118aa6e8"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Sq\\Oil\\OilServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Sq\\Oil\\": "src/"
+                }
+            },
+            "authors": [
+                {
+                    "name": "Sulaiman",
+                    "email": "soliman@gmail.com"
+                }
+            ],
+            "transport-options": {
+                "relative": true
+            }
+        },
+        {
             "name": "sq/query",
-            "version": "dev-master",
+            "version": "dev-version-15",
             "dist": {
                 "type": "path",
                 "url": "./package/sq/query",
@@ -10480,7 +10511,8 @@
         "acme/oil-report": 20,
         "acme/price-tracker": 20,
         "sq/query": 20,
-        "sq/card": 20
+        "sq/card": 20,
+        "sq/oil": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

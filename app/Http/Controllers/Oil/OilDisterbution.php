@@ -86,7 +86,7 @@ class OilDisterbution extends Controller
             }
         }
 
-        \App\Models\OilDisterbution::create([
+        \Sq\Oil\Models\OilDisterbution::create([
             "card_info_id" => $cardInfo->id,
             "oil_type" => $cardInfo->oil_type,
             "oil_amount" => $request->input('amount'),

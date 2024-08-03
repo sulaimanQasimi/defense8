@@ -1,6 +1,6 @@
 <div dir="rtl">
     <div class="grid md:grid-cols-6 sm:grid-cols-1 gap-x-6 gap-y-3">
-        <div class="bg-white bg-opacity-50 rounded-lg shadow-lg p-6 relative overflow-hidden row-span-2 col-span-3">
+        <div class="bg-blue-400 bg-opacity-50 rounded-lg shadow-lg p-6 relative overflow-hidden row-span-2 col-span-3">
             @include('sqcard::livewire.guest.components.controlPanel')
         </div>
 

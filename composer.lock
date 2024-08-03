@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8897c5222af4c689bf6c8d238dedd3b5",
+    "content-hash": "d2cf781fa38cf3fb6ce443e3f17b30e0",
     "packages": [
         {
             "name": "acme/guest-report",
@@ -7723,6 +7723,81 @@
             }
         },
         {
+            "name": "sq/employee",
+            "version": "dev-version-15",
+            "dist": {
+                "type": "path",
+                "url": "./package/sq/employee",
+                "reference": "14cd78618af14c6964537620967504d5d4c59c7c"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Sq\\Employee\\EmployeeServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Sq\\Employee\\": "src/"
+                }
+            },
+            "transport-options": {
+                "relative": true
+            }
+        },
+        {
+            "name": "sq/guest",
+            "version": "dev-version-15",
+            "dist": {
+                "type": "path",
+                "url": "./package/sq/guest",
+                "reference": "c70c0c20f09ab9489a63374c44e09a28ba9718a5"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Sq\\Guest\\GuestServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Sq\\Guest\\": "src/"
+                }
+            },
+            "transport-options": {
+                "relative": true
+            }
+        },
+        {
+            "name": "sq/location",
+            "version": "dev-version-15",
+            "dist": {
+                "type": "path",
+                "url": "./package/sq/location",
+                "reference": "9d6620f41781c358d33406c79bcb83ec7ae75585"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Sq\\Location\\LocationServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Sq\\Location\\": "src/"
+                }
+            },
+            "transport-options": {
+                "relative": true
+            }
+        },
+        {
             "name": "sq/oil",
             "version": "dev-version-15",
             "dist": {
@@ -10512,7 +10587,10 @@
         "acme/price-tracker": 20,
         "sq/query": 20,
         "sq/card": 20,
-        "sq/oil": 20
+        "sq/oil": 20,
+        "sq/location": 20,
+        "sq/employee": 20,
+        "sq/guest": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

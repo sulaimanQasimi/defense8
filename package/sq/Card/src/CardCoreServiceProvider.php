@@ -15,7 +15,7 @@ class CardCoreServiceProvider extends ServiceProvider
     {
         Livewire::component('sq-card-design', CardDesign::class);
         Nova::resources([
-PrintCardFrame::class
+            PrintCardFrame::class
         ]);
 
         Route::group($this->routeConfiguration(), function () {

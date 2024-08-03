@@ -1,0 +1,17 @@
+{
+    "name": "sq/guest",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "Sq\\Guest\\": "src/"
+        }
+    },
+    "require": {},
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Sq\\Guest\\GuestServiceProvider"
+            ]
+        }
+    }
+}

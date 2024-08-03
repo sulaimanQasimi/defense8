@@ -1,0 +1,16 @@
+{
+    "name": "sq/location",
+    "autoload": {
+        "psr-4": {
+            "Sq\\Location\\": "src/"
+        }
+    },
+    "require": {},
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Sq\\Location\\LocationServiceProvider"
+            ]
+        }
+    }
+}

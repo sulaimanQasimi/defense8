@@ -63,88 +63,21 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             MenuSection::dashboard(Main::class)->icon('fas fa-database fa-2x'),
             MenuSection::dashboard(GraphDashboard::class)->icon('fas fa-chart-pie fa-2x'),
 
-            // Guest Menu Section
-            MenuSection::make(__('Guest'), [
-                MenuItem::resource(Host::class),
-                MenuItem::resource(Guest::class),
-                // Guest Report Menu Section
-                MenuItem::link(__('Guest Report'), '/guest-report')
-                    ->canSee(fn() => auth()->user()->hasRole('super-admin')),
-            ])->collapsable()
-                ->collapsedByDefault()
-                ->icon('fas fa-person-shelter fa-2x'),
+            // Guest/Host Menu
+            \Sq\Guest\GuestServiceProvider::registerMenu(),
+            // Employee Menu
+            \Sq\Employee\EmployeeServiceProvider::registerMenu(),
 
+            //Oil Disterbution and Oil Import Menu
+            \Sq\Oil\OilServiceProvider::registerMenu(),
 
-            // Card and Employee Section
-            MenuSection::make(__('Employees'), [
-
-                // Department Menu Item
-                MenuItem::resource(Department::class),
-
-                // Gate Menu Item
-                MenuItem::resource(Gate::class),
-
-                // Employee Menu Item
-                MenuItem::resource(CardCardInfo::class),
-
-                // Employee Menu Item
-                MenuItem::resource(EmployeeVehicalCard::class),
-
-                // Employee Menu Item
-                MenuItem::resource(GunCard::class),
-
-                // Employee Check out Page
-                MenuItem::externalLink(__("Employee Check Card"), route("employee.check.card"))
-                ->canSee(fn() => \Illuminate\Support\Facades\Gate::allows('gateChecker', \App\Models\Gate::class)),
-
-                // Self Employee Attendance
-                MenuItem::externalLink(
-                    __("Employee Attendance Check Self Department"),
-                    route(
-                        "department.employee.attendance.check",
-                        ['department' => auth()->user()?->department]
-                    )
-                )->canSee(fn() => auth()->user()->hasPermissionTo('check own department attendance')),
-
-                // Check Attendance of Department
-                MenuItem::externalLink(__("Employee Attendance Check Department"), route("employee.attendance.check"))
-                    ->canSee(fn() => auth()->user()->hasRole('super-admin')),
-
-                // Report Generator of Attendance
-                MenuItem::link(__("ATTENDANCE EMPLOYEE Report Generator"), 'price-tracker')->canSee(fn() => auth()->user()->hasRole('super-admin')),
-
-                // Frame of Printable Card Menu Item
-                MenuItem::resource(\Sq\Card\Nova\PrintCardFrame::class),
-
-
-            ])->collapsable()->collapsedByDefault()->icon("fas fa-users-rectangle fa-2x"),
-            MenuSection::make(__('Oil Disterbution'), [
-                MenuItem::dashboard(\Sq\Oil\Nova\Dashboards\OilDistribution::class),
-                MenuItem::resource(\Sq\Oil\Nova\Oil::class),
-                MenuItem::resource(\Sq\Oil\Nova\OilDisterbution::class),
-                MenuItem::externalLink(trans("Oil Disterbution"), route('oil'))
-                    ->canSee(fn() => auth()->user()->hasPermissionTo('access_to_disterbuted_oil_page'))
-                    ->openInNewTab(),
-
-                MenuItem::link(__('Oil Report'), '/oil-report')
-                    ->canSee(fn() => auth()->user()->hasRole('super-admin')),
-            ])->collapsable()->collapsedByDefault()->icon("fas fa-oil-well fa-2x"),
-
-            // Location Menu Section
-            MenuSection::make(__('Location'), [
-                MenuItem::resource(Province::class),
-                MenuItem::resource(District::class),
-                MenuItem::resource(Village::class),
-            ])->icon('fas fa-globe fa-2x')->collapsable()->collapsedByDefault(),
-
+            //Location Menu
+            \Sq\Location\LocationServiceProvider::registerMenu(),
 
             MenuSection::make(__('Administration'), [
-                MenuItem::resource(GuestOption::class),
                 MenuItem::resource(Permission::class),
                 MenuItem::resource(Role::class),
                 MenuItem::resource(User::class),
-
-
                 MenuItem::externalLink(__("See Other Website Data"), route("check.other-website-employee"))
                     ->canSee(fn() => auth()->user()->hasPermissionTo('see-other-website-data'))
                     ->openInNewTab(),
@@ -156,7 +89,6 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
             MenuSection::make(__("System"), [
                 MenuItem::resource(Activitylog::class)->canSee(fn() => auth()->user()->hasRole('super-admin')),
-                MenuItem::resource(Website::class)->canSee(fn() => auth()->user()->hasRole('super-admin')),
                 MenuItem::make(__('Backups'))
                     ->path('/backups')
                     ->canSee(fn() => auth()->user()->hasRole('super-admin'))->openInNewTab(),

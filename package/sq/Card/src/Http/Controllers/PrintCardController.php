@@ -3,8 +3,8 @@
 namespace Sq\Card\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Models\Card\CardInfo;
-use App\Models\Card\EmployeeVehicalCard;
+use Sq\Employee\Models\CardInfo;
+use Sq\Employee\Models\EmployeeVehicalCard;
 use Sq\Card\Models\PrintCardFrame;
 use App\Support\Defense\Print\PrintTypeEnum;
 use Illuminate\Http\Request;

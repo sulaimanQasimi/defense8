@@ -43,6 +43,9 @@
         "sq/query": "@dev",
         "sq/card": "@dev",
         "sq/oil": "@dev",
+        "sq/location": "@dev",
+        "sq/employee": "@dev",
+        "sq/guest": "@dev",
         "tightenco/ziggy": "^1.0"
     },
     "repositories": [
@@ -73,6 +76,18 @@
         {
             "type": "path",
             "url": "./package/sq/oil"
+        },
+        {
+            "type": "path",
+            "url": "./package/sq/location"
+        },
+        {
+            "type": "path",
+            "url": "./package/sq/employee"
+        },
+        {
+            "type": "path",
+            "url": "./package/sq/guest"
         }
     ],
     "autoload": {

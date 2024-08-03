@@ -1,7 +1,7 @@
 <?php
 namespace Sq\Card\Support;
 
-use App\Models\Card\CardInfo as Employee;
+use Sq\Employee\Models\CardInfo as Employee;
 use Sq\Card\Models\PrintCardFrame as Frame;
 use Sq\Card\Support\GunCardField;
 use Sq\Card\Support\InfoField;
@@ -9,7 +9,6 @@ use Sq\Card\Support\MainCardField;
 use Sq\Card\Support\VehicalCardField;
 use Closure;
 use Illuminate\Support\Facades\Pipeline;
-use Illuminate\Support\Str;
 
 final class PrintCardField
 {

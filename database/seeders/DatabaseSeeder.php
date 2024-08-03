@@ -34,6 +34,7 @@ class DatabaseSeeder extends Seeder
         $this->call(Update11::class);
         $this->call(Update12::class);
         $this->call(Update13::class);
+        $this->call(Update14::class);
 
     }
 }

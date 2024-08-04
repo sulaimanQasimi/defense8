@@ -2,7 +2,7 @@
 
 namespace App\Observers;
 
-use App\Models\Department;
+use Sq\Employee\Models\Department;
 use Laravel\Nova\Notifications\NovaNotification;
 
 class DepartmentObserver

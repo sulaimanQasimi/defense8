@@ -47,9 +47,6 @@ class GunCard extends Resource
             Text::make(__("Gun Range"), "range")
                 ->required()
                 ->rules("required", "string"),
-            // PersianDate::make(__("Filled Form Date"), "filled_form_date")
-            //     ->required()
-            //     ->rules("required", "date"),
             PersianDate::make(__("Disterbute Date"), "register_date")
                 ->required()
                 ->rules('required', 'date')
@@ -61,24 +58,11 @@ class GunCard extends Resource
 
         ];
     }
-
-    /**
-     * Get the cards available for the request.
-     *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @return array
-     */
     public function cards(NovaRequest $request)
     {
         return [];
     }
 
-    /**
-     * Get the filters available for the resource.
-     *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @return array
-     */
     public function filters(NovaRequest $request)
     {
         return [

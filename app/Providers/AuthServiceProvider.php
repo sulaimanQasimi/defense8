@@ -4,7 +4,7 @@ namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
 
-use App\Models\Department;
+use Sq\Employee\Models\Department;
 use App\Models\Finance\AccountingAdministrationIncome;
 use App\Models\Finance as FinaceModel;
 use App\Policies\ActivityPolicy;

@@ -89,7 +89,8 @@ class EmployeeVehicalCard extends Resource
             BelongsTo::make(__('Driver'), 'driver', CardInfo::class)
                 ->searchable()
                 ->nullable(),
-            PersianDate::make(__("Disterbute Date"), "register_date")
+
+                PersianDate::make(__("Disterbute Date"), "register_date")
                 ->required()
                 ->rules('required', 'date')
                 ->placeholder(__("Enter Field", ['name' => __("Disterbute Date")])),

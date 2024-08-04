@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Policies;
+namespace Sq\Guest\Policies;
 
-use App\Models\GuestOption;
 use App\Models\User;
 use App\Support\Defense\PermissionTranslation;
 use Illuminate\Auth\Access\Response;
+use Sq\Guest\Models\GuestOption;
 
 class GuestOptionPolicy
 {

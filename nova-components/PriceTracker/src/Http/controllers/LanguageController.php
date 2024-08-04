@@ -1,7 +1,7 @@
 <?php
 namespace Acme\PriceTracker\Http\Controllers;
 
-use App\Models\Department;
+use Sq\Employee\Models\Department;
 
 class LanguageController
 {

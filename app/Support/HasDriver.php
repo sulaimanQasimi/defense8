@@ -1,9 +1,8 @@
 <?php
 namespace App\Support;
 
-use App\Models\Card\CardInfo;
-use App\Models\Card\Driver;
-use App\Models\Card\Vehical;
+
+use Sq\Employee\Models\CardInfo;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 

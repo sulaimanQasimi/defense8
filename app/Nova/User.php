@@ -12,6 +12,8 @@ use Laravel\Nova\Fields\MorphToMany;
 use Laravel\Nova\Fields\Password;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Sq\Employee\Nova\Department;
+use Sq\Employee\Nova\Gate;
 use Sq\Query\SqNovaSelectFilter;
 use Sq\Query\SqNovaTextFilter;
 

@@ -211,7 +211,7 @@
                                     {{ $vehical->vehical_model }}
                                 </td>
                                 <td class="px-6  border-1 border-gray-600 py-4">
-                                    <a href="{{ route('employee.check.card', ['code' => $vehical->driver->registare_no]) }}"
+                                    <a href="{{ route('sqemployee.employee.check.card', ['code' => $vehical->driver->registare_no]) }}"
                                         class="text-blue-600 text-lg"> {{ $vehical->driver->full_name }}</a>
                                 </td>
                                 <td class="px-6  border-1 border-gray-600 py-4">

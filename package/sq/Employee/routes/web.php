@@ -13,6 +13,8 @@ Route::middleware(["guestGatePassed", 'can:gateChecker,\Sq\Employee\Models\Gate'
     ->group(function () {
         // Self Website Check
         Route::get('employee', 'scan')->name('card');
+        Route::get('passemployee/{cardInfo:id}/to', 'employeeState')->name('pass');
+
         // Other Orginization
         Route::middleware(['permission:see-other-website-data'])
             ->get('other', 'scan_other_website_employee')

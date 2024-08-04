@@ -2,11 +2,10 @@
 
 namespace App\Nova\Metrics;
 
-use App\Models\Attendance;
-use App\Models\CardInfoGate;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Metrics\Value;
 use Laravel\Nova\Nova;
+use Sq\Employee\Models\Attendance;
 
 class TodayExitEmployeeMetric extends Value
 {

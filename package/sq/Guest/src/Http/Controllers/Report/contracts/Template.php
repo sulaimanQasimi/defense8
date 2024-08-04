@@ -1,7 +1,6 @@
 <?php
-namespace App\Http\Controllers\Report\Contracts;
+namespace Sq\Guest\Http\Controllers\Report\Contracts;
 
-use App\Models\Guest;
 use Elibyy\TCPDF\Facades\TCPDF;
 use Illuminate\Support\Facades\Hash;
 use TCPDF_FONTS;
@@ -71,7 +70,7 @@ trait Template
             // QRCODE,L : QR-CODE Low error correction
             $pdf->write2DBarcode("
             User:".request()->user()->email."
-            Time:".verta(now())."
+            Time:".verta()."
             Code:".Hash::make(request()->user()->email)."
 
 

@@ -156,22 +156,22 @@
         @if (auth()->user()->gate->id === $employee->gate?->id)
 
         @if (!$employee->current_gate_attendance?->enter && $employee->current_gate_attendance?->state !="U")
-                <a href="{{ route('employee.check', ['cardInfo' => $employee->id, 'state' => 'enter']) }}"
+                <a href="{{ route('sqemployee.employee.check.pass', ['cardInfo' => $employee->id, 'state' => 'enter']) }}"
                     class="px-7 rounded-lg hover:scale-95 py-1 text-white bg-gradient-to-t from-green-600 to-green-500"
                     style="">@lang('Present')</a>
             @endif
 
             @if (!is_null($employee->current_gate_attendance?->enter) && is_null($employee->current_gate_attendance?->exit) && $employee->current_gate_attendance?->state !="U")
-                <a href="{{ route('employee.check', ['cardInfo' => $employee->id, 'state' => 'exit']) }}"
+                <a href="{{ route('sqemployee.employee.check.pass', ['cardInfo' => $employee->id, 'state' => 'exit']) }}"
                     class="px-7 rounded-lg hover:scale-95 py-1 text-white bg-gradient-to-t from-red-600 to-red-500"
                     style="">@lang('Exited')</a>
             @endif
             @if ($employee->current_gate_attendance?->state !="P" && is_null( $employee->current_gate_attendance?->state))
-                <a href="{{ route('employee.check', ['cardInfo' => $employee->id, 'state' => 'upsent']) }}"
+                <a href="{{ route('sqemployee.employee.check.pass', ['cardInfo' => $employee->id, 'state' => 'upsent']) }}"
                     class="px-7 rounded-lg hover:scale-95 py-1 text-white bg-gradient-to-t from-red-600 to-red-500"
                     style="">@lang('Upsent')</a>
             @endif
         @endif
     </div>
-    @include("employee.employee_vehical")
+    @include("sqemployee::employee.employee_vehical")
 </div>

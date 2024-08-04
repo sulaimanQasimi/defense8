@@ -1,5 +1,5 @@
 <?php
-namespace App\Http\Controllers\Attendance;
+namespace Sq\Employee\Http\Controllers\Attendance;
 
 use Elibyy\TCPDF\Facades\TCPDF;
 use Hekmatinasser\Verta\Facades\Verta;

@@ -2,10 +2,10 @@
 
 namespace App\Nova\Metrics;
 
-use App\Models\GuestGate;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Metrics\Value;
 use Laravel\Nova\Nova;
+use Sq\Guest\Models\GuestGate;
 
 class TodayEnterGuestMetric extends Value
 {

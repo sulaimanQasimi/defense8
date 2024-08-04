@@ -1,10 +1,9 @@
 <?php
-
-use App\Models\Gate;
-use App\Models\Guest;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Sq\Employee\Models\Gate;
+use Sq\Guest\Models\Guest;
 
 return new class extends Migration
 {

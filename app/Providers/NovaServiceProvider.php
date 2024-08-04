@@ -78,7 +78,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 MenuItem::resource(Permission::class),
                 MenuItem::resource(Role::class),
                 MenuItem::resource(User::class),
-                MenuItem::externalLink(__("See Other Website Data"), route("check.other-website-employee"))
+                MenuItem::externalLink(__("See Other Website Data"), route("sqemployee.check.other-website-employee"))
                     ->canSee(fn() => auth()->user()->hasPermissionTo('see-other-website-data'))
                     ->openInNewTab(),
 

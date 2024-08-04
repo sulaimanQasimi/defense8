@@ -21,6 +21,7 @@ class CardCoreServiceProvider extends ServiceProvider
         Route::group($this->routeConfiguration(), function () {
             $this->loadRoutesFrom(__DIR__ . "/../routes/web.php");
         });
+        $this->loadRoutesFrom(__DIR__ . "/../routes/api.php");
 
         $this->loadViewsFrom(__DIR__ . "/../resources/views/", 'sqcard');
 

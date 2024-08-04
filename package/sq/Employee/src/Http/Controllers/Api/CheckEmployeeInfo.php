@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace Sq\Employee\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CardInfoResource;
-use App\Models\Card\CardInfo;
+use Sq\Employee\Models\CardInfo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 

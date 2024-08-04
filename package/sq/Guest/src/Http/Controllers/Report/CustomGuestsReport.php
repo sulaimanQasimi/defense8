@@ -1,20 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Report;
+namespace Sq\Guest\Http\Controllers\Report;
 
-use App\Exports\GateGuestExport;
 use App\Http\Controllers\Controller;
+use Sq\Guest\Http\Controllers\Report\Contracts\Template;
+use Sq\Guest\Models\GuestGate;
 use Sq\Query\DateFromAndToModelQuery;
-use App\Http\Controllers\Report\Contracts\Template;
-use App\Models\Guest;
-use App\Models\GuestGate;
 use Elibyy\TCPDF\Facades\TCPDF;
-use Hekmatinasser\Verta\Facades\Verta;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Str;
-use TCPDF_FONTS;
 
 class CustomGuestsReport extends Controller
 {
@@ -63,7 +56,7 @@ class CustomGuestsReport extends Controller
     }
     public function excel($query)
     {
-        return (new GateGuestExport($query))->download('guest.xlsx');
+        return (new \Sq\Guest\Exports\GateGuestExport($query))->download('guest.xlsx');
     }
 
 }

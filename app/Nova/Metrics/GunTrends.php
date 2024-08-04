@@ -2,11 +2,11 @@
 
 namespace App\Nova\Metrics;
 
-use App\Models\Card\GunCard;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Metrics\Trend;
 use Laravel\Nova\Metrics\Value;
 use Laravel\Nova\Nova;
+use Sq\Employee\Models\GunCard;
 
 class GunTrends extends Value
 {
@@ -25,7 +25,7 @@ class GunTrends extends Value
      *
      * @return array
      */
-  
+
     /**
      * Determine the amount of time the results of the metric should be cached.
      *

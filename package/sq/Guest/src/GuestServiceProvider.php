@@ -21,7 +21,7 @@ class GuestServiceProvider extends ServiceProvider
         ]);
 
         $this->loadMigrationsFrom(__DIR__ . "/../database/migrations");
-        $this->loadViewsFrom(__DIR__ . "/../resources/views/", 'sqemployee');
+        $this->loadViewsFrom(__DIR__ . "/../resources/views/", 'sqguest');
         Route::group($this->routeConfiguration(), function () {
             $this->loadRoutesFrom(__DIR__ . "/../routes/web.php");
         });

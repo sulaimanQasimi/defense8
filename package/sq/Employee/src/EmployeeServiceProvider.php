@@ -29,6 +29,8 @@ class EmployeeServiceProvider extends ServiceProvider
         Route::group($this->routeConfiguration(), function () {
             $this->loadRoutesFrom(__DIR__ . "/../routes/web.php");
         });
+        $this->loadRoutesFrom(__DIR__ . "/../routes/api.php");
+
     }
     public function register()
     {
@@ -93,7 +95,7 @@ class EmployeeServiceProvider extends ServiceProvider
         return [
             // 'domain' => config('nova.domain', null),
             'as' => 'sqemployee.',
-            // 'prefix' => 'nova-api',
+            'prefix' => 'sq/modules/employee',
             'middleware' => ['web','auth'],
 
         ];

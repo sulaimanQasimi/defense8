@@ -33,7 +33,7 @@
                         </form>
                     </div>
                     <div>
-                        <a href="{{ route('employee.check.card') }}"
+                        <a href="{{ route('sqemployee.employee.check.card') }}"
                             class="px-7 rounded-lg hover:scale-95 py-2 text-white bg-gradient-to-t from-indigo-700 to-indigo-600"
                             style="">@lang('My Orginization')</a>
 

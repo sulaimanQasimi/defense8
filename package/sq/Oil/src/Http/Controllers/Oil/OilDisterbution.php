@@ -3,7 +3,7 @@
 namespace Sq\Oil\Http\Controllers\Oil;
 
 use App\Http\Controllers\Controller;
-use App\Models\Card\CardInfo;
+use Sq\Employee\Models\CardInfo;
 use Date;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;

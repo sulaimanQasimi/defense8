@@ -3,6 +3,8 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Sq\Employee\Models\Gate;
+use Sq\Guest\Models\Host;
 
 return new class extends Migration
 {
@@ -14,8 +16,8 @@ return new class extends Migration
         Schema::create('guests', function (Blueprint $table) {
             $table->id();
             $table->string('barcode')->nullable();
-            $table->foreignIdFor(\App\Models\Host::class)->nullable();
-            $table->foreignIdFor(\App\Models\Gate::class)->nullable();
+            $table->foreignIdFor(Host::class)->nullable();
+            $table->foreignIdFor(Gate::class)->nullable();
             $table->string('name')->nullable();
             $table->string('last_name')->nullable();
             $table->string('phone')->nullable();
@@ -23,9 +25,9 @@ return new class extends Migration
             $table->longText('options')->nullable();
 
             $table->string('enter_gate')->nullable();
-            
+
             $table->dateTime('registered_at')->nullable();
-            
+
             $table->date('enter_at')->nullable();
             $table->date('exit_at')->nullable();
             $table->longText('person')->nullable();

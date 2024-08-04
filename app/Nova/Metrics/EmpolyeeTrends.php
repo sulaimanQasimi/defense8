@@ -2,11 +2,11 @@
 
 namespace App\Nova\Metrics;
 
-use App\Models\Card\CardInfo;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Metrics\Trend;
 use Laravel\Nova\Metrics\Value;
 use Laravel\Nova\Nova;
+use Sq\Employee\Models\CardInfo;
 
 class EmpolyeeTrends extends Value
 {

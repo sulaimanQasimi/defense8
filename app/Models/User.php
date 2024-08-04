@@ -15,6 +15,9 @@ use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Permission\Traits\HasPermissions;
 use Spatie\Permission\Traits\HasRoles;
+use Sq\Employee\Models\Department;
+use Sq\Employee\Models\Gate;
+use Sq\Guest\Models\Host;
 
 class User extends Authenticatable
 {

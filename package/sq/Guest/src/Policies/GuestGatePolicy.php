@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Policies;
+namespace Sq\Guest\Policies;
 
-use App\Models\GuestGate;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
+use Sq\Guest\Models\GuestGate;
 
 class GuestGatePolicy
 {

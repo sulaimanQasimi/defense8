@@ -11,6 +11,7 @@ use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Sq\Employee\Models\Department;
 use Sq\Query\SqNovaSelectFilter;
 use Sq\Query\SqNovaTextFilter;
 
@@ -40,7 +41,7 @@ class Gate extends Resource
     public function fields(NovaRequest $request)
     {
         return [
-            BelongsTo::make(__("Department/Chancellor"), 'department', Department::class)
+            BelongsTo::make(__("Department/Chancellor"), 'department', \Sq\Employee\Nova\Department::class)
                 ->filterable()
                 ->sortable()
                 ->searchable(),
@@ -57,7 +58,8 @@ class Gate extends Resource
                 ->creationRules('required', 'numeric')
                 ->creationRules('required', 'numeric')
                 ->help(__("Use 1 For Main Gate")),
-            HasMany::make(__("Users"), 'user', User::class)
+            HasMany::make(__("Employees"), 'cardInfos', CardInfo::class),
+            HasMany::make(__("Users"), 'user', \App\Nova\User::class)
         ];
     }
     public function cards(NovaRequest $request)

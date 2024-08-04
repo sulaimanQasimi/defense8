@@ -7,9 +7,7 @@ use App\Support\Defense\DepartmentTypeEnum;
 use Coroowicaksono\ChartJsIntegration\LineChart;
 use DigitalCreative\MegaFilter\MegaFilter;
 use DigitalCreative\MegaFilter\MegaFilterTrait;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Gate as FacadesGate;
 use Laravel\Nova\Actions\Action;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\HasMany;
@@ -82,7 +80,7 @@ class Department extends Resource
 
             HasMany::make(trans("Users"), 'user', User::class),
             HasMany::make(trans("Under Departments"), 'departments', Department::class),
-            HasMany::make(trans("Gates"), 'gates', \App\Nova\Gate::class),
+            HasMany::make(trans("Gates"), 'gates', Gate::class),
             HasMany::make(trans("Employee"), 'card_infos', CardInfo::class),
             HasMany::make(trans("Hosts"), 'hosts', Host::class),
 
@@ -162,28 +160,28 @@ class Department extends Resource
         return [
             Action::openInNewTab(
                 __("In this Page you can set each employee attendance"),
-                fn($department) => route('department.employee.attendance.check', ['department' => $department->id])
+                fn($department) => route('sqemployee.department.employee.attendance.check', ['department' => $department->id])
             )
                 ->sole()
-                ->canRun(fn($request, $department) => Gate::allows('admin', $department))
+                ->canRun(fn($request, $department) => FacadesGate::allows('admin', $department))
                 ->withoutConfirmation()
                 ->onlyOnDetail(),
 
             Action::openInNewTab(
                 __("Download CURRENT MONTH ATTENDANCE EMPLOYEE"),
-                fn($department) => route('employee.attendance.current.month..department.single', ['department' => $department->id])
+                fn($department) => route('sqemployee.employee.attendance.current.month..department.single', ['department' => $department->id])
             )
                 ->sole()
-                ->canRun(fn($request, $department) => Gate::allows('admin', $department))
+                ->canRun(fn($request, $department) => FacadesGate::allows('admin', $department))
                 ->withoutConfirmation()
                 ->onlyOnDetail(),
 
             Action::openInNewTab(
                 __("Download Excel"),
-                fn($department) => route('export.excel.attendance', ['department' => $department->id])
+                fn($department) => route('sqemployee.export.excel.attendance', ['department' => $department->id])
             )
                 ->sole()
-                ->canRun(fn($request, $department) => Gate::allows('admin', $department))
+                ->canRun(fn($request, $department) => FacadesGate::allows('admin', $department))
                 ->withoutConfirmation()
                 ->onlyOnDetail()
         ];

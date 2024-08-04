@@ -97,7 +97,7 @@ class User extends Resource
                 new SqNovaSelectFilter(
                     label: __("Department/Chancellor"),
                     column: 'department_id',
-                    options: \App\Models\Department::pluck('fa_name', 'id')->toArray()
+                    options: \Sq\Employee\Models\Department::pluck('fa_name', 'id')->toArray()
                 ),
                 // Name Filter
                 new SqNovaTextFilter(label: trans("Name"), column: 'name'),

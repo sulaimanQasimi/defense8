@@ -59,7 +59,6 @@ class CardInfo extends Resource
         'degree',
         'department',
         'registare_no',
-
     ];
 
     public static $tableStyle = 'tight';

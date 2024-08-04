@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Attendance\Report;
-use App\Models\Card\CardInfo;
-use App\Models\Department;
-use Elibyy\TCPDF\Facades\TCPDF;
+use Sq\Employee\Http\Controllers\Attendance\Report;
+use Sq\Employee\Models\CardInfo;
+use Sq\Employee\Models\Department;
 use Hekmatinasser\Verta\Facades\Verta;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;

@@ -2,7 +2,7 @@
 namespace Acme\GuestReport\Http\Controller;
 
 // use Sq\Query\DateFromAndToModelQuery;
-use App\Models\Department;
+use Sq\Employee\Models\Department;
 use Sq\Query\DateFromAndToModelQuery;
 
 class ApiController

@@ -18,8 +18,9 @@ class SetAttendance extends Component
     }
     public function render()
     {
-        $employees=CardInfo::where('department_id',$this->department->id)->paginate();
-        return view('livewire.department.set-attendance',[
+        $employees=CardInfo::where(
+            'department_id',$this->department->id)->paginate();
+        return view('sqemployee::livewire.department.set-attendance',[
             'employees'=>$employees
         ]);
     }

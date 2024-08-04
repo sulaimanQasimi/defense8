@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Policies;
+namespace Sq\Guest\Policies;
 
-use App\Models\Gate;
-use App\Models\Guest;
+use Sq\Employee\Models\Gate;
+use Sq\Guest\Models\Guest;
 use App\Models\User;
 use App\Support\Defense\PermissionTranslation;
 use Carbon\Carbon;
@@ -16,7 +16,7 @@ class GuestPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasPermissionTo(PermissionTranslation::viewAny("Guest")) || \Illuminate\Support\Facades\Gate::allows('gateChecker', \App\Models\Gate::class);
+        return $user->hasPermissionTo(PermissionTranslation::viewAny("Guest")) || \Illuminate\Support\Facades\Gate::allows('gateChecker', Gate::class);
     }
 
     /**
@@ -87,7 +87,7 @@ class GuestPolicy
     }
     public function generate(User $user,Guest $guest): bool
     {
-        return $user->id === $guest->host->user_id || \Illuminate\Support\Facades\Gate::allows('gateChecker', \App\Models\Gate::class);
+        return $user->id === $guest->host->user_id || \Illuminate\Support\Facades\Gate::allows('gateChecker', Gate::class);
     }
 
 }

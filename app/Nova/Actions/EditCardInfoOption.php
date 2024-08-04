@@ -1,11 +1,7 @@
 <?php
 
 namespace App\Nova\Actions;
-
-use App\Nova\EmployeeOption;
-use App\Nova\GuestOption;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Collection;
 use Laravel\Nova\Actions\Action;
@@ -14,6 +10,7 @@ use Laravel\Nova\Fields\MultiSelect;
 use Laravel\Nova\Fields\Tag;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Log;
+use Sq\Guest\Models\GuestOption;
 
 class EditCardInfoOption extends Action
 {
@@ -33,7 +30,7 @@ class EditCardInfoOption extends Action
         if (empty($options)) {
             return Action::danger("Option is Empty");
         }
-        $selectedOptions = \App\Models\GuestOption::query()->whereIn('id', $options)->get();
+        $selectedOptions = GuestOption::query()->whereIn('id', $options)->get();
         foreach ($models as $model) {
             $model->employeeOptions()->sync($selectedOptions);
         }
@@ -52,12 +49,10 @@ class EditCardInfoOption extends Action
     {
         return [
             MultiSelect::make(__('Condition'), 'employeeOptions')
-                ->options(\App\Models\GuestOption::all()->pluck('name', 'id'))
+                ->options(GuestOption::all()->pluck('name', 'id'))
                 ->displayUsingLabels()
                 ->sortable(),
-
-
-        ];
+            ];
     }
     public function name(){
         return trans("Employee Options");

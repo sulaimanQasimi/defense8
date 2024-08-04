@@ -58,7 +58,7 @@ class Guest extends Resource
     {
         return [
 
-            URL::make(__("Print"), fn() => route('guest.generate', $this)),
+            URL::make(__("Print"), fn() => route('sqguest.guest.generate', $this)),
 
             // Guest Name
             Text::make(__("Name"), 'name')

@@ -1,7 +1,7 @@
 <?php
 
 use Acme\GuestReport\Http\Controller\ApiController;
-use App\Models\Department;
+use Sq\Employee\Models\Department;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 

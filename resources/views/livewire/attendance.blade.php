@@ -49,7 +49,7 @@
                             class="block mb-2 text-sm font-medium text-sky-900 dark:text-white">@lang('Department')</label>
                         <select wire:model="department" class="department select2 select2-bootstrap-theme "
                             style="width: 100%;padding: 0.625rem" name="states[]">
-                            @foreach (\App\Models\Department::all() as $org)
+                            @foreach (\Sq\Employee\Models\Department::all() as $org)
                                 <option value="{{ $org->id }}">{{ $org->fa_name }}</option>
                             @endforeach
                             =

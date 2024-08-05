@@ -16,7 +16,7 @@
 
 
     <div class="grid grid-cols-5 px-5 py-3 gap-x-12">
-        <div class="grid grid-cols-2 bg-white px-2 py-2 rounded-2xl border-blue-200 border drop-shadow-xl">
+        <div class="grid grid-cols-2 bg-sulaimain-50 px-2 py-2 rounded-2xl border-blue-200 border drop-shadow-xl">
             <div>
                 <div class="font-medium text-orange-500 ml-4">@lang('Diesel')</div>
                 <div class="font-medium text-orange-500 ml-4">@lang('Remain'): @lang('Liter', ['value' => \Vehical\Vehical::remain_diesel_oil()])</div>

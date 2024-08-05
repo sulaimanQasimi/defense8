@@ -6,10 +6,8 @@ use Sq\Employee\Nova\CardInfo;
 use App\Nova\Resource;
 use DigitalCreative\MegaFilter\MegaFilter;
 use DigitalCreative\MegaFilter\MegaFilterTrait;
-use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -18,7 +16,6 @@ use Sq\Query\SqNovaDateFilter;
 use Sq\Query\SqNovaNumberFilter;
 use Sq\Query\SqNovaSelectFilter;
 use Vehical\OilType;
-use Vehical\Vehical;
 
 class OilDisterbution extends Resource
 {
@@ -44,6 +41,7 @@ class OilDisterbution extends Resource
         return [
 
             BelongsTo::make(__('Employee'), 'card_info', CardInfo::class)->sortable(),
+
             Select::make(trans("Oil Type"), 'oil_type')
                 ->options([
                     OilType::Diesel => trans("Diesel"),
@@ -53,10 +51,10 @@ class OilDisterbution extends Resource
                 ->filterable()
                 ->displayUsingLabels()
                 ->sortable(),
-            // $table->string('oil_type')->nullable();
 
             Number::make(trans("Oil Amount"), "oil_amount")
-                ->displayUsing(fn($oil_amount) => trans("Liter", ["value" => $oil_amount]))->rules("required", 'numeric'),
+                ->displayUsing(fn($oil_amount) => trans("Liter", ["value" => $oil_amount]))
+                ->rules("required", 'numeric'),
             PersianDate::make(trans("Date"), 'filled_date')
         ];
     }
@@ -70,13 +68,17 @@ class OilDisterbution extends Resource
         return [
 
             MegaFilter::make([
+
                 new SqNovaSelectFilter(label: trans("Oil Type"), column: 'oil_type', options: [
                     OilType::Diesel => trans("Diesel"),
                     OilType::Petrole => trans("Petrole"),
                 ]),
+
                 new SqNovaNumberFilter(label: trans("Oil Amount"), column: "oil_amount"),
+
                 new SqNovaDateFilter(label: trans("Date"), column: 'filled_date'),
-            ])->columns(3)
+
+                ])->columns(3)
         ];
     }
 

@@ -15,9 +15,12 @@
     @stack('css')
     <link type="text/css" href="{{ asset('single.css') }}" rel="stylesheet" />
     <link type="text/css" href="{{ asset('sweetalert2/sweetalert2.min.css') }}" rel="stylesheet" />
+    <style>
+        --card:#f5f5fd
+    </style>
 </head>
 
-<body class="persian-font antialiased bg-gray-100" dir="rtl">
+<body class="persian-font antialiased bg-indigo-255" dir="rtl">
     <div class="px-4 py-2">
         @yield('content')
     </div>

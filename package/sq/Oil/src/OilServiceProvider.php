@@ -20,10 +20,7 @@ class OilServiceProvider extends ServiceProvider
 
         $this->loadViewsFrom(__DIR__ . "/../resources/views/", 'sqoil');
 
-        Route::group($this->routeConfiguration(), function () {
-            $this->loadRoutesFrom(__DIR__ . "/../routes/web.php");
-        });
-
+        $this->routes();
     }
     public function register()
     {
@@ -31,7 +28,9 @@ class OilServiceProvider extends ServiceProvider
     }
     public function routes()
     {
-
+        Route::group($this->routeConfiguration(), function () {
+            $this->loadRoutesFrom(__DIR__ . "/../routes/web.php");
+        });
     }
     protected function routeConfiguration()
     {

@@ -7,11 +7,6 @@ use Vehical\OilType;
 class OilStatistics
 {
     public $data = [];
-
-    public function __construct()
-    {
-    }
-
     public function __get($name)
     {
         return $this->$name();

@@ -46,6 +46,6 @@ class RemainDiesel extends Value
     }
     public function name()
     {
-        return trans("Remain Diesel");
+        return trans("Total Remain Diesel");
     }
 }

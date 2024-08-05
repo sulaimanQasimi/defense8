@@ -45,6 +45,6 @@ class ExpendDiesel extends Value
     }
     public function name()
     {
-        return trans("Expend Diesel");
+        return trans("Total Expend Diesel");
     }
 }

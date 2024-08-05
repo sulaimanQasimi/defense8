@@ -43,7 +43,7 @@ class OilDisterbution extends Resource
     {
         return [
 
-            BelongsTo::make(__('Employee'), 'card_info', CardInfo::class),
+            BelongsTo::make(__('Employee'), 'card_info', CardInfo::class)->sortable(),
             Select::make(trans("Oil Type"), 'oil_type')
                 ->options([
                     OilType::Diesel => trans("Diesel"),
@@ -51,7 +51,8 @@ class OilDisterbution extends Resource
                 ])
                 ->rules('required', Rule::in([OilType::Diesel, OilType::Petrole]))
                 ->filterable()
-                ->displayUsingLabels(),
+                ->displayUsingLabels()
+                ->sortable(),
             // $table->string('oil_type')->nullable();
 
             Number::make(trans("Oil Amount"), "oil_amount")

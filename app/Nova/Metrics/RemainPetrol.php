@@ -35,6 +35,6 @@ class RemainPetrol extends Value
     }
     public function name()
     {
-        return trans("Remain Petrol");
+        return trans("Total Remain Petrol");
     }
 }

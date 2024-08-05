@@ -3,6 +3,7 @@ namespace Sq\Oil;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Nova\Events\ServingNova;
 use Laravel\Nova\Menu\MenuItem;
 use Laravel\Nova\Menu\MenuSection;
 use Laravel\Nova\Nova;
@@ -22,8 +23,6 @@ class OilServiceProvider extends ServiceProvider
         Route::group($this->routeConfiguration(), function () {
             $this->loadRoutesFrom(__DIR__ . "/../routes/web.php");
         });
-
-        $this->loadMigrationsFrom(__DIR__ . "/../database/migrations");
 
     }
     public function register()
@@ -51,7 +50,7 @@ class OilServiceProvider extends ServiceProvider
                 MenuItem::dashboard(\Sq\Oil\Nova\Dashboards\OilDistribution::class),
                 MenuItem::resource(\Sq\Oil\Nova\Oil::class),
                 MenuItem::resource(\Sq\Oil\Nova\OilDisterbution::class),
-                MenuItem::externalLink(trans("Oil Disterbution"), route('sq.oil.oil'))
+                MenuItem::externalLink(trans("Oil Disterbution Page"), route('sq.oil.oil'))
                     ->canSee(fn() => auth()->user()->hasPermissionTo('access_to_disterbuted_oil_page'))
                     ->openInNewTab(),
 

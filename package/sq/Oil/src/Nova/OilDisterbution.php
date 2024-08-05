@@ -2,7 +2,7 @@
 
 namespace Sq\Oil\Nova;
 
-use App\Nova\Card\CardInfo;
+use Sq\Employee\Nova\CardInfo;
 use App\Nova\Resource;
 use DigitalCreative\MegaFilter\MegaFilter;
 use DigitalCreative\MegaFilter\MegaFilterTrait;

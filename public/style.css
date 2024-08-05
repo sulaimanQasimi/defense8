@@ -21,16 +21,12 @@ font-family: "persian-font",sans-serif;
 } */
 
 /* .bg-white{
-
+f5f5f9
     background-color: rgb(255, 255,255, 0.9);
 } */
 
 body{
-    background-image: url('/logo.png');
-    background-size: contain;
-    background-position: center;
-    background-attachment: fixed;
-    background-repeat: no-repeat;
+    background-color: #fcfdfd;
 }
 
 ::-webkit-scrollbar{

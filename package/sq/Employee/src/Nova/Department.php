@@ -8,6 +8,7 @@ use App\Support\Defense\DepartmentTypeEnum;
 use DigitalCreative\MegaFilter\MegaFilter;
 use DigitalCreative\MegaFilter\MegaFilterTrait;
 use Illuminate\Support\Facades\Gate;
+use Sq\Employee\Nova\Gate as NovaGate;
 use Laravel\Nova\Actions\Action;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\HasMany;
@@ -78,7 +79,7 @@ class Department extends Resource
 
             HasMany::make(trans("Users"), 'user', User::class),
             HasMany::make(trans("Under Departments"), 'departments', Department::class),
-            HasMany::make(trans("Gates"), 'gates',Gate::class),
+            HasMany::make(trans("Gates"), 'gates',NovaGate::class),
             HasMany::make(trans("Employee"), 'card_infos', CardInfo::class),
             HasMany::make(trans("Hosts"), 'hosts', \Sq\Guest\Nova\Host::class),
 
@@ -132,13 +133,6 @@ class Department extends Resource
     {
         return [];
     }
-
-    /**
-     * Get the actions available for the resource.
-     *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @return array
-     */
     public function actions(NovaRequest $request)
     {
         return [

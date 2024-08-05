@@ -19,7 +19,7 @@ class ApiController
             $department = null;
         }
 
-        $createGuestQuery = new DateFromAndToModelQuery(\App\Models\GuestGate::class, 'entered_at');
+        $createGuestQuery = new DateFromAndToModelQuery(\Sq\Guest\Models\GuestGate::class, 'entered_at');
 
         $guests = \App\Http\Resources\GuestResource::collection(
             $createGuestQuery->query()

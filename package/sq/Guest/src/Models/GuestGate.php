@@ -14,7 +14,7 @@ class GuestGate extends Model
     use SoftDeletes;
     protected $casts = [
         "entered_at"=> "datetime",
-        "exit_at"=> "datetime",
+        "exit_at"=> "datetime"  ,
     ];
     protected $guarded =[];
     public function guest(): BelongsTo

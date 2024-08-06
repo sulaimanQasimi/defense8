@@ -47,7 +47,8 @@ class LoginController extends Controller
             return Inertia::location($loginPath);
         }
 
-        return Inertia::render('Nova.Login', []);
+        // return Inertia::render('Nova.Login', []);
+        return view('vendor.nova.login');
     }
 
     /**

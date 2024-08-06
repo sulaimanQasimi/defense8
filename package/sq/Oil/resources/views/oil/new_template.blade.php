@@ -266,6 +266,15 @@
                 </table>
             </div>
         </div>
+@lang("Date")
+@lang("Amount")
+        @foreach ($employee->current_month_oil_disterbutions as $oil )
+            {{-- @dd($oil) --}}
+        <tr>
+            <td>{{$oil->oil_amount}}</td>
+            <td>{{($oil->filled_date)?verta($oil->filled_date)->format("Y/m/d"):''}}</td>
+        </tr>
+            @endforeach
     @endif
     </div>
     <!--the owner checkbar-->

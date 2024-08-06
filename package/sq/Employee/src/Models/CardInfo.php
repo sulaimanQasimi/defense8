@@ -2,6 +2,8 @@
 
 namespace Sq\Employee\Models;
 
+use Carbon\Carbon;
+use Hekmatinasser\Verta\Facades\Verta;
 use Sq\Guest\Models\GuestOption;
 use Sq\Card\Models\PrintCardFrame;
 use Sq\Employee\Models\Contracts\CardInfoAttributes;
@@ -119,6 +121,16 @@ class CardInfo extends Model
     public function oil_disterbutions(): HasMany
     {
         return $this->hasMany(\Sq\Oil\Models\OilDisterbution::class);
+    }
+    public function current_month_oil_disterbutions(): HasMany
+    {
+        return $this->hasMany(\Sq\Oil\Models\OilDisterbution::class)
+        ->whereBetween('filled_date',[
+            // Verta::->toCarbon()
+            Carbon::parse(Verta::parse(Verta::startMonth())->toCarbon())->startOfDay(),
+            Carbon::parse(Verta::parse(Verta::endMonth())->toCarbon())->endOfDay(),
+
+        ]);
     }
 
 }

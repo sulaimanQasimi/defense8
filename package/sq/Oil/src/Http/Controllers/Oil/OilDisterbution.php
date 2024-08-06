@@ -18,7 +18,7 @@ class OilDisterbution extends Controller
         $code = $request->input("code");
 
         $employee = CardInfo::query()->where('registare_no', "=", $code)->first();
-        return view('sqoil::oil.oil_disterbution', compact('employee'));
+        return view('sqoil::oil.new_template', compact('employee'));
     }
     public function store(Request $request, CardInfo $cardInfo)
     {
@@ -92,6 +92,6 @@ class OilDisterbution extends Controller
             'filled_date' => now()
         ]);
 
-        return redirect()->route('sq.oil.oil.oil')->with('success', trans('Oil recieved successfully'));
+        return redirect()->route('sq.oil.oil')->with('success', trans('Oil recieved successfully'));
     }
 }

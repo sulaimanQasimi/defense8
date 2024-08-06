@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>fuel chart</title>
+    <title>@lang("Oil Disterbution Page")</title>
     @livewireStyles
     <link rel="stylesheet" href="{{ asset('select2/css/select2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('fontawesom/all.min.css') }}">
@@ -32,7 +32,7 @@
     </div>
     <div class="container grid md:grid-cols-5 sm:grid-cols-1 mt-5 w-full shadow-gray-200 shadow-lg  gap-2 p-2">
         <div
-            class="block rounded-lg transition duration-500 ease-out hover:bg-orange-300 bg-white border border-red-700 p-6 text-surface shadow-secondary-1 dark:bg-surface-dark dark:text-white">
+            class="block rounded-lg transition duration-500 ease-out hover:bg-orange-300 bg-white border border-red-700 p-6 text-surface shadow-secondary-1">
             <div class="mb-2 text-xl font-medium leading-tight flex justify-between items-center">
                 <i class="fa-solid fa-gas-pump text-4xl text-red-600"></i>@lang('Remain')
             </div>
@@ -41,7 +41,7 @@
             </p>
         </div>
         <div
-            class="block rounded-lg transition duration-500 ease-out hover:bg-green-300 bg-white border border-green-700 p-6 text-surface shadow-secondary-1 dark:bg-surface-dark dark:text-white">
+            class="block rounded-lg transition duration-500 ease-out hover:bg-green-300 bg-white border border-green-700 p-6 text-surface shadow-secondary-1">
             <div class="mb-2 text-xl font-medium leading-tight flex justify-between items-center"><i
                     class="fa-solid fa-gas-pump text-4xl text-green-700"></i>@lang('Remain')</div>
             <p class="mb-4 text-base text-right">
@@ -49,7 +49,7 @@
             </p>
         </div>
         <div
-            class="block rounded-lg transition duration-500 ease-out hover:bg-orange-300 bg-white border border-red-700 p-6 text-surface shadow-secondary-1 dark:bg-surface-dark dark:text-white">
+            class="block rounded-lg transition duration-500 ease-out hover:bg-orange-300 bg-white border border-red-700 p-6 text-surface shadow-secondary-1">
             <div class="mb-2 text-xl font-medium leading-tight flex justify-between items-center"><i
                     class="fa-solid fa-gas-pump text-4xl text-red-600"></i>@lang('Expend')</div>
             <p class="mb-4 text-base text-right">
@@ -57,7 +57,7 @@
             </p>
         </div>
         <div
-            class="block rounded-lg transition duration-500 ease-out hover:bg-green-300 bg-white border border-green-700 p-6 text-surface shadow-secondary-1 dark:bg-surface-dark dark:text-white">
+            class="block rounded-lg transition duration-500 ease-out hover:bg-green-300 bg-white border border-green-700 p-6 text-surface shadow-secondary-1">
             <div class="mb-2 text-xl font-medium leading-tight flex justify-between items-center"><i
                     class="fa-solid fa-gas-pump text-4xl text-green-700"></i>@lang('Expend')</div>
             <p class="mb-4 text-base text-right">

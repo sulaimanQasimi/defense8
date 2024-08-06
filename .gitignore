@@ -9,6 +9,7 @@
 e/*.key
 /vendor
 /storage/app/public/*
+/config/*
 
 .env
 .env.backup

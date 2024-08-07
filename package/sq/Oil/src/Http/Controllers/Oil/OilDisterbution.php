@@ -85,13 +85,13 @@ class OilDisterbution extends Controller
             }
         }
 
-        \Sq\Oil\Models\OilDisterbution::create([
+        $oil = \Sq\Oil\Models\OilDisterbution::create([
             "card_info_id" => $cardInfo->id,
             "oil_type" => $cardInfo->oil_type,
             "oil_amount" => $request->input('amount'),
             'filled_date' => now()
         ]);
 
-        return redirect()->route('sq.oil.oil')->with('success', trans('Oil recieved successfully'));
+        return redirect()->route('sq.oil.print.slip', ['oilDisterbution'=> $oil]);
     }
 }

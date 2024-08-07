@@ -1,5 +1,7 @@
 
 {
+    "Quota Oil":"سهمیه تیل کارمندان",
+    "Recieved Oil":"مقدار گرفته شده تیل",
     "Month Action":" مقدار تیل :type :action :name ",
     "Current Month":"این ماه",
     "Past Month":"ماه گذشته",

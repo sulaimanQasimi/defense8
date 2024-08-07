@@ -84,6 +84,7 @@ abstract class Resource implements ArrayAccess, JsonSerializable, UrlRoutable
      */
     public static $title = 'id';
 
+
     /**
      * The relationships that should be eager loaded when performing an index query.
      *
@@ -292,7 +293,6 @@ abstract class Resource implements ArrayAccess, JsonSerializable, UrlRoutable
         if (isset(static::$softDeletes[static::$model])) {
             return static::$softDeletes[static::$model];
         }
-
         return static::$softDeletes[static::$model] = in_array(
             SoftDeletes::class,
             class_uses_recursive(static::newModel())

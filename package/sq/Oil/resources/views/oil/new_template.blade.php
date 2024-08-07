@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@lang("Oil Disterbution Page")</title>
+    <title>@lang('Oil Disterbution Page')</title>
     @livewireStyles
     <link rel="stylesheet" href="{{ asset('select2/css/select2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('fontawesom/all.min.css') }}">
@@ -266,15 +266,25 @@
                 </table>
             </div>
         </div>
-@lang("Date")
-@lang("Amount")
-        @foreach ($employee->current_month_oil_disterbutions as $oil )
-            {{-- @dd($oil) --}}
-        <tr>
-            <td>{{$oil->oil_amount}}</td>
-            <td>{{($oil->filled_date)?verta($oil->filled_date)->format("Y/m/d"):''}}</td>
-        </tr>
+        <table class="w-full text-sm text-left rtl:text-right border-b border-b-gray-700 text-gray-500 dark:text-gray-400 ">
+
+            <tr class="border-b-2 border-gray-700" >
+                <th  scope="col" class="px-6  border-1 border-gray-600 py-3">
+                    @lang('Date')
+                </th>
+                <th  scope="col" class="px-6  border-1 border-gray-600 py-3"> @lang('Amount')</th>
+            </tr>
+
+            @foreach ($employee->current_month_oil_disterbutions as $oil)
+                {{-- @dd($oil) --}}
+                <tr class="border-b-2 border-gray-700">
+                    <td  scope="col" class="px-6  border-1 border-gray-600 py-3">
+                        {{ $oil->filled_date ? verta($oil->filled_date)->format('Y/m/d') : '' }}</td>
+                    <td  scope="col" class="px-6  border-1 border-gray-600 py-3">{{ $oil->oil_amount }}</td>
+                </tr>
             @endforeach
+
+        </table>
     @endif
     </div>
     <!--the owner checkbar-->

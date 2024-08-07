@@ -258,21 +258,21 @@ class CardInfo extends Resource
                             OilType::Diesel => trans("Diesel"),
                             OilType::Petrole => trans("Petrole"),
                         ])
-                        ->rules('required', Rule::in([OilType::Diesel, OilType::Petrole]))
+                        ->exceptOnForms()
                         ->filterable()
                         ->displayUsingLabels(),
 
                     Fields\Number::make(trans("Monthly Rate"), "monthly_rate")
                         ->displayUsing(fn($monthly_rate) => trans("Liter", ["value" => $monthly_rate]))
-                        ->rules("required", 'numeric'),
+                        ->onlyOnDetail(),
 
                     Fields\Text::make(trans("Consumtion Amount"), fn() => $this->current_month_oil_consumtion)
                         ->displayUsing(fn($monthly_rate) => trans("Liter", ["value" => $monthly_rate]))
-                        ->rules("required", 'numeric'),
+                        ->onlyOnDetail(),
 
                     Fields\Text::make(trans("Remain"), fn() => $this->current_month_oil_remain)
                         ->displayUsing(fn($monthly_rate) => trans("Liter", ["value" => $monthly_rate]))
-                        ->rules("required", 'numeric')
+                        ->onlyOnDetail()
                 ]
 
             ),

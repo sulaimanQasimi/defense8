@@ -14,3 +14,11 @@ Route::middleware(['auth', 'role:super-admin'])
         Route::get("oil/report/disterbuted", \Sq\Oil\Http\Controllers\Oil\DisterbutedOil::class);
         Route::get("oil/report/imported", \Sq\Oil\Http\Controllers\Oil\ImportedOil::class);
     });
+Route::middleware(['auth', 'permission:access_to_disterbuted_oil_page'])
+    ->get('oil/slip/{oilDisterbution:id}', function (\Sq\Oil\Models\OilDisterbution $oilDisterbution) {
+
+        return view("sqoil::slip", [
+            'oil' => $oilDisterbution,
+            'employee' => $oilDisterbution->card_info
+        ]);
+    })->name("print.slip");

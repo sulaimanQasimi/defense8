@@ -92,7 +92,7 @@ class ActionController extends Controller
      * @param  \Laravel\Nova\Resource  $resource
      * @return \Laravel\Nova\Actions\ActionCollection<int, \Laravel\Nova\Actions\Action>
      */
-    protected function availableActions(NovaRequest $request, Resource $resource)
+    protected function availableActions(NovaRequest $request,  $resource)
     {
         switch ($request->display) {
             case 'index':

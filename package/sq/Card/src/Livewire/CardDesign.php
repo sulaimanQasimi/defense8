@@ -16,14 +16,17 @@ class CardDesign extends Component
 
     public $attr;
     public $details;
+    public $remark;
     public function mount(PrintCardFrame $printCardFrame): void
     {
         $this->cardFrame = $printCardFrame;
         $this->attr = $printCardFrame->attr;
         $this->details = $printCardFrame->details;
+        $this->remark = $printCardFrame->remark;
     }
     public function updatedAttr($value, $key)
-    {   switch ($key) {
+    {
+        switch ($key) {
             case "content.background":
                 $this->cardFrame->update(['attr->content->background' => Str::after($this->attr['content']['background']->store(path: 'public/background'), 'public/')]);
 
@@ -114,6 +117,10 @@ class CardDesign extends Component
     public function updatedDetails($value)
     {
         $this->cardFrame->update(['details' => $value]);
+    }
+    public function updatedRemark($value)
+    {
+        $this->cardFrame->update(['remark' => $value]);
     }
     public function render()
     {

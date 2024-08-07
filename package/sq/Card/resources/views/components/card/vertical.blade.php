@@ -38,14 +38,21 @@
         </div>
         <div class="h-4" style="background-color: {{ $card->attr['header']['backgroundColor'] }}"></div>
         <div>
-            <img src="{{ $cardInfo->image_path  }}" class="h-16 absolute"
-                style=" top: {{ $card->attr['profile']['y'] }}px;left:{{$card->attr['profile']['x']}}px;height:{{$card->attr['profile']['size']}}px " />
+            <img src="{{ $cardInfo->image_path }}" class="h-16 absolute"
+                style=" top: {{ $card->attr['profile']['y'] }}px;left:{{ $card->attr['profile']['x'] }}px;height:{{ $card->attr['profile']['size'] }}px " />
         </div>
         <div id="{{ $attributes->get('id') }}"
             style="position: absolute; top: {{ $card->attr['qrcode']['y'] }}px; left: {{ $card->attr['qrcode']['x'] }}px ;">
         </div>
     </div>
 
+    <div class=" max-h-[3.44in] h-[3.44in] w-[2.2in] block  relative bg-cover bg-center bg-local bg-no-repeat "
+        style="background-image: url('/storage/{{ $card->attr['content']['background'] }}');">
+
+        <div class="px-2 py-3">
+            <div class="text-sm font-medium">{!! $remark !!}</div>
+        </div>
+    </div>
     @push('js')
         <script type="text/javascript">
             var qrcode = new QRCode(document.getElementById("{{ $attributes->get('id') }}"), {

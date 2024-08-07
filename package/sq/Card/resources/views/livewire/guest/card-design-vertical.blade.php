@@ -9,12 +9,16 @@
                 <div class="bg-white max-h-[3.44in] h-[3.44in] w-[2.2in] block  rounded-xl relative  bg-cover bg-center bg-local bg-no-repeat"
                     :style="{ 'background-image': 'url(' + '/storage/' + attr.content.background + ')' }">
                     <div class="h-[3rem] border-t rounded-t-xl"
-                        :style="{ 'background-color': attr.header.backgroundColor,
-                        'color': attr.content.fontColor
-                      }">
-                        <div class="text-center" :style="{ 'font-size': attr.government.fontSize + 'px' }" x-text="attr.government.title">
+                        :style="{
+                            'background-color': attr.header.backgroundColor,
+                            'color': attr.content.fontColor
+                        }">
+                        <div class="text-center"
+                            :style="{ 'font-size': attr.government.fontSize + 'px', 'color': attr.content.fontColor}"
+                            x-text="attr.government.title">
                         </div>
-                        <div class="text-center" :style="{ 'font-size': attr.ministry.fontSize + 'px' }"
+                        <div class="text-center"
+                            :style="{ 'font-size': attr.ministry.fontSize + 'px', 'color': attr.content.fontColor }"
                             x-text="attr.ministry.title">
                         </div>
                         <img :src="'/storage/' + attr.government.path" class="absolute rounded-full"
@@ -45,6 +49,12 @@
                         :style="{ 'background-color': attr.header.backgroundColor }">
                     </div>
                     @include('sqcard::livewire.guest.components.contentFile')
+                </div>
+
+                <div class="bg-white max-h-[3.44in] h-[3.44in] w-[2.2in] block  rounded-xl relative  bg-cover bg-center bg-local bg-no-repeat"
+                    :style="{ 'background-image': 'url(' + '/storage/' + attr.content.background + ')' }">
+
+                    <div class="px-2" x-html="remark"></div>
                 </div>
             </div>
         </div>

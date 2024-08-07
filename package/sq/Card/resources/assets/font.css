@@ -1,0 +1,13 @@
+@font-face {
+    font-family: 'persian-font';
+    /* This is the name you will use to reference the custom font */
+    src: url("/mod_font.ttf") format('truetype');
+    /* Specify the path to your font file */
+}
+
+@font-face {
+    font-family: 'nazanin-font';
+    /* This is the name you will use to reference the custom font */
+    src: url("./fonts/B_Nazanin.ttf") format('truetype');
+    /* Specify the path to your font file */
+}

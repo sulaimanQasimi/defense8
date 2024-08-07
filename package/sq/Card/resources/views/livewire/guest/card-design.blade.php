@@ -3,9 +3,9 @@
     <div>
         @once
             @push('css')
-                <script type="text/javascript" src="{{ asset('qrcode/jquery.min.js') }}"></script>
-                <script type="text/javascript" src="{{ asset('qrcode/qrcode.js') }}"></script>
-                <script type="text/javascript" src="{{ asset('ckeditor/ckeditor.js') }}"></script>
+                <script type="text/javascript" src="{{ asset('cards/qrcode/jquery.min.js') }}"></script>
+                <script type="text/javascript" src="{{ asset('cards/qrcode/qrcode.js') }}"></script>
+                <script type="text/javascript" src="{{ asset('cards/ckeditor/ckeditor.js') }}"></script>
                 <style>
                     @media print {
                         body {
@@ -173,6 +173,7 @@
             },
             attr: @entangle('attr').live,
             details: @entangle('details').live,
+            remark: @entangle('remark').live,
         }" x-init="let qrcode =
             new QRCode(document.getElementById('qrcode'), {
                 width: attr.qrcode.size,
@@ -194,6 +195,9 @@
             // Remark Field
             CKEDITOR.replace('details').on('change', function(e) {
                 $wire.set('details', this.getData());
+            });
+            CKEDITOR.replace('remark').on('change', function(e) {
+                $wire.set('remark', this.getData());
             });
         </script>
     @endscript

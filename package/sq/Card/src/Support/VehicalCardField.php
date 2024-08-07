@@ -20,8 +20,8 @@ trait VehicalCardField
             'driver_name'=>trans("Driver Name"),
             'driver_last_name'=>trans("Driver Last Name"),
             'driver_registare_no'=>trans("Driver ID"),
-            'register_date'=>trans("Disterbute Date"),
-            'expire_date'=>trans("Expire Date"),
+            'vehical_register_date'=>'تاریخ اجرا کارت موتر',
+            'vehical_expire_date'=>'تاریخ ختم کارت موتر',
         ];
     }
     private static function vehical_translated_field($field)
@@ -52,8 +52,8 @@ trait VehicalCardField
             ->replace($this->vehical_translated_field('driver_name'), $vehical?->driver?->name)
             ->replace($this->vehical_translated_field('driver_last_name'), $vehical?->driver?->last_name)
             ->replace($this->vehical_translated_field('driver_registare_no'), $vehical?->driver?->registare_no)
-            ->replace($this->vehical_translated_field('register_date'), ($vehical?->register_date)? verta($vehical->register_date)->format("Y/m/d"):'')
-            ->replace($this->vehical_translated_field('expire_date'), ($vehical?->expire_date)? verta($vehical->expire_date)->format("Y/m/d"):'')
+            ->replace($this->vehical_translated_field('vehical_register_date'), ($vehical?->register_date)? verta($vehical->register_date)->format("Y/m/d"):'')
+            ->replace($this->vehical_translated_field('vehical_expire_date'), ($vehical?->expire_date)? verta($vehical->expire_date)->format("Y/m/d"):'')
         ;
     }
 }

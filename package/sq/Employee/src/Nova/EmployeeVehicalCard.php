@@ -90,10 +90,11 @@ class EmployeeVehicalCard extends Resource
                 ->searchable()
                 ->nullable(),
 
-                PersianDate::make(__("Disterbute Date"), "register_date")
+            PersianDate::make(__("Disterbute Date"), "register_date")
                 ->required()
                 ->rules('required', 'date')
                 ->placeholder(__("Enter Field", ['name' => __("Disterbute Date")])),
+
             PersianDate::make(__("Expire Date"), "expire_date")
                 ->required()
                 ->rules('required', 'date')
@@ -117,25 +118,25 @@ class EmployeeVehicalCard extends Resource
         return [
             MegaFilter::make([
                 //
-                new SqNovaTextFilter( label:trans("Vehical Type"), column:"vehical_type"),
+                new SqNovaTextFilter(label: trans("Vehical Type"), column: "vehical_type"),
                 //
-                new SqNovaTextFilter( label:trans("Vehical Colour"), column:"vehical_colour"),
+                new SqNovaTextFilter(label: trans("Vehical Colour"), column: "vehical_colour"),
                 //
-                new SqNovaTextFilter( label:trans("Vehical Palete"), column:"vehical_palete"),
+                new SqNovaTextFilter(label: trans("Vehical Palete"), column: "vehical_palete"),
                 //
-                new SqNovaTextFilter( label:trans("Vehical Chassis"), column:"vehical_chassis"),
+                new SqNovaTextFilter(label: trans("Vehical Chassis"), column: "vehical_chassis"),
                 //
-                new SqNovaTextFilter( label:trans("Vehical Model"), column:"vehical_model"),
+                new SqNovaTextFilter(label: trans("Vehical Model"), column: "vehical_model"),
                 //
-                new SqNovaTextFilter( label:trans("Vehical Owner"), column:"vehical_owner"),
+                new SqNovaTextFilter(label: trans("Vehical Owner"), column: "vehical_owner"),
                 //
-                new SqNovaTextFilter( label:trans("Vehical Engine NO"), column:"vehical_engine_no"),
+                new SqNovaTextFilter(label: trans("Vehical Engine NO"), column: "vehical_engine_no"),
                 //
-                new SqNovaTextFilter( label:trans("Vehical Registration NO"), column:"vehical_registration_no"),
+                new SqNovaTextFilter(label: trans("Vehical Registration NO"), column: "vehical_registration_no"),
                 //
-                new SqNovaDateFilter( label:trans("Disterbute Date"), column:"register_date"),
+                new SqNovaDateFilter(label: trans("Disterbute Date"), column: "register_date"),
                 //
-                new SqNovaDateFilter( label:trans("Expire Date"), column:"expire_date"),
+                new SqNovaDateFilter(label: trans("Expire Date"), column: "expire_date"),
             ])->columns(4)
 
         ];

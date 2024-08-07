@@ -5,14 +5,16 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>{{ config('app.name', 'Laravel') }} || @lang("Print Card Frame")</title>
+    <title>{{ config('app.name', 'Laravel') }} || @lang('Print Card Frame')</title>
     @vite(['resources/js/app.js'])
     <link type="text/css" href="{{ asset('single.css') }}" rel="stylesheet" />
+    <link type="text/css" href="{{ asset('cards/font.css') }}" rel="stylesheet" />
     <style>
-        body{
+        body {
             margin: 0;
             padding: 0;
         }
+
         @page {
             height: 3.34in;
             width: 2.13in;
@@ -32,9 +34,12 @@
     {{-- Print Context --}}
     <x-sqcard::card.horizontal :card="$card" :cardInfo="$cardInfo" :id="'guest-' . $cardInfo->id">
         {!! $details !!}
+        <x-slot:remark>
+            {{ $remark }}
+        </x-slot:remark>
     </x-sqcard::card.horizontal>
 
-    <script type="text/javascript" src="{{ asset('qrcode/qrcode.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('cards/qrcode/qrcode.js') }}"></script>
     <script type="text/javascript">
         var qrcode = new QRCode(document.getElementById("qrcode"), {
             width: 100,

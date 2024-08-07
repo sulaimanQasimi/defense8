@@ -34,6 +34,11 @@ class CardCoreServiceProvider extends ServiceProvider
 
         }
 
+        $this->publishes([
+            __DIR__.'/../resources/assets' => public_path('cards'),
+          ], 'assets');
+
+
     }
     public function register()
     {

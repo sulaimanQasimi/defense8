@@ -5,8 +5,11 @@ namespace Sq\Oil\Nova;
 use App\Nova\Resource;
 use DigitalCreative\MegaFilter\MegaFilter;
 use DigitalCreative\MegaFilter\MegaFilterTrait;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\FormData;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
@@ -50,14 +53,17 @@ class Oil extends Resource
                 ->rules('required', Rule::in([OilType::Diesel, OilType::Petrole]))
                 ->filterable()
                 ->displayUsingLabels(),
-            // $table->string('oil_type')->nullable();
-            Select::make(trans("Oil Quality"), 'oil_quality')
-                ->options(Vehical::oil_quality())
-                ->rules('required', Rule::in(Vehical::oil_quality()))
-                ->filterable()
-                ->displayUsingLabels(),
-            Number::make(trans("Oil Amount"), "oil_amount")
-                ->displayUsing(fn($oil_amount) => trans("Liter", ["value" => $oil_amount]))->rules("required", 'numeric'),
+            BelongsTo::make(trans("Oil Quality"), 'oil_quality', OilQuality::class)
+                ->showCreateRelationButton()->dependsOn(
+                    ['oil_type'],
+                    function (BelongsTo $field, NovaRequest $request, FormData $formData) {
+
+                        $field->relatableQueryUsing(function (NovaRequest $request, Builder $query) use ($formData) {
+                            $query->where('oil_type', $formData->oil_type);
+                        });
+                    }
+                ),
+            Number::make(trans("Oil Amount"), "oil_amount")->displayUsing(fn($oil_amount) => trans("Liter", ["value" => $oil_amount]))->rules("required", 'numeric'),
             PersianDate::make(trans("Date"), 'filled_date'),
         ];
     }
@@ -74,7 +80,7 @@ class Oil extends Resource
                     OilType::Diesel => trans("Diesel"),
                     OilType::Petrole => trans("Petrole"),
                 ]),
-                new SqNovaSelectFilter(label: trans("Oil Quality"), column: 'oil_quality', options: Vehical::oil_quality()),
+                // new SqNovaSelectFilter(label: trans("Oil Quality"), column: 'oil_quality', options: Vehical::oil_quality()),
                 new SqNovaNumberFilter(label: trans("Oil Amount"), column: "oil_amount"),
                 new SqNovaDateFilter(label: trans("Date"), column: 'filled_date'),
             ])->columns(3)

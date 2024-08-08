@@ -97,7 +97,7 @@ class ImportedOil
             TCPDF::Cell(55, 7, $employee->code, true, false, 'C', false);
             TCPDF::Cell(55, 7, trans(($employee->oil_type == OilType::Diesel) ? "Diesel" : "Petrole"), true, false, 'C', false);
 
-            TCPDF::Cell(55, 7, $employee->oil_quality, true, false, 'C', false);
+            TCPDF::Cell(55, 7, $employee->oil_quality->name, true, false, 'C', false);
             TCPDF::Cell(55, 7, trans("Liter", ['value' => $employee->oil_amount]), true, false, 'C', false);
             TCPDF::Cell(55, 7, verta($employee->filled_date)->format('Y/m/d'), true, true, 'C', false);
         }

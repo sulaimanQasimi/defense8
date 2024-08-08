@@ -17,11 +17,13 @@ class OilServiceProvider extends ServiceProvider
             \Sq\Oil\Nova\Oil::class,
             \Sq\Oil\Nova\OilDisterbution::class,
             \Sq\Oil\Nova\QuotaOil::class,
+            \Sq\Oil\Nova\OilQuality::class,
         ]);
 
         $this->loadViewsFrom(__DIR__ . "/../resources/views/", 'sqoil');
 
         $this->routes();
+        $this->loadMigrationsFrom(__DIR__ . "/../database/migrations");
     }
     public function register()
     {
@@ -49,6 +51,7 @@ class OilServiceProvider extends ServiceProvider
             MenuSection::make(__('Oil Disterbution'), [
                 MenuItem::dashboard(\Sq\Oil\Nova\Dashboards\OilDistribution::class),
                 MenuItem::resource(\Sq\Oil\Nova\Oil::class),
+                MenuItem::resource(\Sq\Oil\Nova\OilQuality::class),
                 MenuItem::resource(\Sq\Oil\Nova\OilDisterbution::class),
                 MenuItem::resource(\Sq\Oil\Nova\QuotaOil::class),
                 MenuItem::externalLink(trans("Oil Disterbution Page"), route('sq.oil.oil'))

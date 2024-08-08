@@ -7,6 +7,7 @@ use DigitalCreative\MegaFilter\MegaFilterTrait;
 use Illuminate\Validation\Rule;
 use Laravel\Nova\Fields;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\OilNovaResource;
 use Laravel\Nova\Panel;
 use MZiraki\PersianDateField\PersianDate;
 use Sq\Employee\Nova\Department;
@@ -17,7 +18,7 @@ use Vehical\OilType;
 
 use Illuminate\Database\Eloquent\Builder;
 
-class QuotaOil extends Resource
+class QuotaOil extends OilNovaResource
 {
     use MegaFilterTrait;
     public static $model = \Sq\Employee\Models\CardInfo::class;
@@ -167,6 +168,34 @@ class QuotaOil extends Resource
     public function actions(NovaRequest $request)
     {
         return [];
+    }
+    public static $trafficCop = false;
+    public static $showPollingToggle = true;
+
+    public static $perPageViaRelationship = 20;
+
+    public static function indexQuery(NovaRequest $request, $query)
+    {
+        return $query;
+    }
+
+    public static function scoutQuery(NovaRequest $request, $query)
+    {
+        return $query;
+    }
+    public static function detailQuery(NovaRequest $request, $query)
+    {
+        return parent::detailQuery($request, $query);
+    }
+
+    public static function relatableQuery(NovaRequest $request, $query)
+    {
+        return parent::relatableQuery($request, $query);
+    }
+
+    public static function perPageOptions()
+    {
+        return [20, 50, 75, 100, 150];
     }
 
 }

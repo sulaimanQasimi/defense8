@@ -4,6 +4,7 @@ namespace Sq\Oil\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Oil extends Model
 {
@@ -11,6 +12,7 @@ class Oil extends Model
     protected $casts = [
         'filled_date' => 'date'
     ];
+
 
     protected static function boot()
     {
@@ -23,5 +25,8 @@ class Oil extends Model
             }
         );
     }
-
+    public function oil_quality(): BelongsTo
+    {
+        return $this->belongsTo(OilQuality::class);
+    }
 }

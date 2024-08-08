@@ -42,13 +42,11 @@ class ImportedOilExcelExport implements FromQuery, WithHeadings, WithMapping, Wi
             $this->i++,
             $oil->code,
             trans(($oil->oil_type == OilType::Diesel) ? "Diesel" : "Petrole"),
-            $oil->oil_quality,
+            $oil->oil_quality->name,
             trans("Liter", ['value' => $oil->oil_amount]),
             verta($oil->filled_date)->format('Y/m/d'),
         ];
     }
-
-
     public function registerEvents(): array
     {
         return [

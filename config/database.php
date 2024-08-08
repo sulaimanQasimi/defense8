@@ -50,7 +50,7 @@ return [
             'port' =>  '3306',
             'database' => 'defense2',
             'username' =>  'root',
-            'password' => 'S11solai',
+            'password' => 'PbMDMFSSeo@On0Sh',
             'unix_socket' =>  '',
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',

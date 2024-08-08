@@ -33,7 +33,7 @@
             background: linear-gradient(
               to bottom,
               #000000,
-              rgba(11, 2, 53, 0.867)
+              rgba(21, 0, 249, 0.867)
             );
           ">
             <div class="absolute lg:hidden z-10 inset-0 bg-gray-500 bg-no-repeat bg-cover items-center"

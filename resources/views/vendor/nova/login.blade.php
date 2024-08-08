@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="{{ asset('select2/css/select2.min.css') }}">
     <link type="text/css" href="{{ asset('date/css/persian-datepicker.css') }}" rel="stylesheet" />
     @vite(['resources/js/app.js'])
+    <link rel="stylesheet" href="{{ asset('style.css') }}">
 </head>
 
 <body>
@@ -42,7 +43,7 @@
             <div class="w-full py-6 z-20">
                 <h1 class="my-6 text-3xl">Welcome to System</h1>
                 <p class="text-gray-100">Login account</p>
-                <form action="/login" method="POST" class="sm:w-2/3 w-full px-4 lg:px-0 mx-auto"> 
+                <form action="/login" method="POST" class="sm:w-2/3 w-full px-4 lg:px-0 mx-auto">
                     @csrf
                     <div class="pb-2 pt-4">
                         <input type="email" name="email" id="email" placeholder="Email"
@@ -50,7 +51,7 @@
                             @error('email')
                             <span class="text-red-500 font-semibold">{{ $message }}</span>
                         @enderror
-                      
+
                     </div>
                     <div class="pb-2 pt-4">
                         <input class="block w-full p-4 text-lg rounded-sm bg-transparent border border-white"
@@ -58,12 +59,12 @@
                             @error('password')
                             <span class="text-red-500 font-semibold">{{ $message }}</span>
                         @enderror
-                      
+
                     </div>
                     <div class="px-4 pb-2 pt-4">
                         <button
                             class="uppercase block w-full p-4 text-lg rounded-full bg-indigo-500 hover:bg-indigo-600 focus:outline-none">
-                            Sign Up
+                            Sign In
                         </button>
                     </div>
                 </form>

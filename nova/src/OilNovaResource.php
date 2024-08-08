@@ -41,9 +41,7 @@ abstract class OilNovaResource extends Resource
 
     public static function authorizeToCreate(Request $request)
     {
-        if (!request()->user()->hasPermissionTo('quota_oil_update')) {
             abort(403);
-        }
     }
 
     public static function authorizedToCreate(Request $request)
@@ -66,8 +64,7 @@ abstract class OilNovaResource extends Resource
 
     public function authorizeToReplicate(Request $request)
     {
-        return false;
-
+        abort(403);
     }
 
     public function authorizedToReplicate(Request $request)
@@ -77,7 +74,7 @@ abstract class OilNovaResource extends Resource
 
     public function authorizeToDelete(Request $request)
     {
-        return false;
+        abort(403);
     }
 
     public function authorizedToDelete(Request $request)

@@ -8,7 +8,6 @@ use Laravel\Nova\Http\Middleware\DispatchServingNovaEvent;
 use Laravel\Nova\Http\Middleware\HandleInertiaRequests;
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Nova License Key

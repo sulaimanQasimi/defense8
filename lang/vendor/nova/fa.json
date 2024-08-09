@@ -1,5 +1,8 @@
 
 {
+    "Video":"ویدیو",
+    "Videos":"ویدیوها",
+    "Poster":"پوستر",
     "Quota Oil":"سهمیه تیل کارمندان",
     "Recieved Oil":"مقدار گرفته شده تیل",
     "Month Action":" مقدار تیل :type :action :name ",

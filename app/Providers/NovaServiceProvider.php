@@ -10,6 +10,7 @@ use App\Nova\Dashboards\EducationalVideo;
 use App\Nova\Dashboards\GraphDashboard;
 use App\Nova\Dashboards\Main;
 use App\Nova\User;
+use App\Nova\Video;
 use Bolechen\NovaActivitylog\Resources\Activitylog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate as FacadesGate;
@@ -89,9 +90,10 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
                 MenuItem::externalLink(__("Change Application Language", ['lang' => trans("Arabic")]), route("app.setting.language", ['file' => 'ar']))
                     ->canSee(fn() => auth()->user()->hasPermissionTo('change_language')),
-
+                MenuItem::externalLink(__("Educational Videos of System" ), route("youtube.list")),
+                MenuSection::resource(Video::class)
             ])->icon('fas fa-toolbox fa-2x')->collapsable()->collapsedByDefault(),
-            MenuSection::dashboard(EducationalVideo::class)->icon('fab fa-youtube fa-2x'),
+            // MenuSection::dashboard(EducationalVideo::class)->icon('fab fa-youtube fa-2x'),
 
         ]);
 
@@ -119,7 +121,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         return [
             new Main,
             new GraphDashboard,
-            new EducationalVideo,
+            // new EducationalVideo,
             new \Sq\Oil\Nova\Dashboards\OilDistribution(),
         ];
     }

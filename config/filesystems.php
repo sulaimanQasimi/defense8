@@ -50,6 +50,13 @@ return [
             'visibility' => 'public',
             'throw' => false,
         ],
+        'video' => [
+            'driver' => 'local',
+            'root' => public_path('app/video'),
+            'url' => env('APP_URL').'/app/video',
+            'visibility' => 'public',
+            'throw' => false,
+        ],
         'trix' => [
             'driver' => 'local',
             'root' => public_path('trix/file'),

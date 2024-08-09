@@ -30,7 +30,10 @@ class OilQuality extends Resource
     {
         return [
             Fields\Text::make(trans("Name"), 'name')
-                ->creationRules('required', 'string')
+                ->creationRules('required', 'string', Rule::unique('oil_qualities')
+                    ->where(function ($query) use ($request) {
+                        return $query->where('oil_type', $request->oil_type);
+                    }))
                 ->updateRules('required', 'string'),
             Fields\Select::make(trans("Oil Type"), 'oil_type')
                 ->options([
@@ -40,7 +43,7 @@ class OilQuality extends Resource
                 ->rules('required', Rule::in([OilType::Diesel, OilType::Petrole]))
                 ->filterable()
                 ->displayUsingLabels(),
-                Fields\HasMany::make(trans("Oil"),'oil',Oil::class),
+            Fields\HasMany::make(trans("Oil"), 'oil', Oil::class),
         ];
     }
     public function cards(NovaRequest $request)

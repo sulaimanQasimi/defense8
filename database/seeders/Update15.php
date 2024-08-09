@@ -13,6 +13,6 @@ class Update15 extends Seeder
      */
     public function run(): void
     {
-        Permission::query()->updateOrCreate(['name' => 'quota_oil_update'],['fa_name' => 'ویرایش سهمیه تیل کارمندان', 'group' =>'تیل توزیع شده.']);
+        Permission::query()->updateOrCreate(['name' => 'quota_oil_update'],['fa_name' => 'ویرایش سهمیه تیل کارمندان', 'group' =>'تیل توزیع شده']);
     }
 }

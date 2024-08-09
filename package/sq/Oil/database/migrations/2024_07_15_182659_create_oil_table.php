@@ -15,6 +15,8 @@ return new class extends Migration {
             $table->string('code')->nullable();
             $table->string('oil_type')->nullable();
             $table->integer('oil_amount')->nullable();
+
+            $table->string('oil_quality')->nullable();
             $table->date('filled_date')->nullable();
             $table->timestamps();
         });

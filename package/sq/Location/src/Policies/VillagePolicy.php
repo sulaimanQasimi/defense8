@@ -61,6 +61,6 @@ class VillagePolicy
      */
     public function forceDelete(User $user, Village $village): bool
     {
-        return $user->hasPermissionTo(PermissionTranslation::destroy($this->resource));
+        return false;
     }
 }

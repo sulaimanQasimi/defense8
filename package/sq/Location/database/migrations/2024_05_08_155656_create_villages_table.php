@@ -20,8 +20,6 @@ return new class extends Migration
             $table->string("name")->nullable()->unique();
             $table->string("code")->nullable()->unique();
             $table->softDeletes();
-
-
             $table->timestamps();
         });
     }

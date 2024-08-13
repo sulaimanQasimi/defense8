@@ -30,7 +30,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     {
         parent::boot();
 
-        Nova::withoutThemeSwitcher();
+        // Nova::withoutThemeSwitcher();
         // Left to right Direction
         Nova::enableRTL();
 
@@ -143,6 +143,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             (new PriceTracker)->canSee(fn() => auth()->user()->hasRole('super-admin')),
             (new GuestReport)->canSee(fn() => auth()->user()->hasRole('super-admin')),
             (new OilReport())->canSee(fn() => auth()->user()->hasRole('super-admin')),
+            
         ];
     }
     public function register(): void

@@ -2,6 +2,7 @@
 /node_modules
 /public/build
 /public/video/*
+/public/php/*
 /public/app/video/*
 /public/app/vehical
 /public/hot

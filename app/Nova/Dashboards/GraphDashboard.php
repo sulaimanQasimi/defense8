@@ -95,7 +95,7 @@ class GraphDashboard extends Dashboard
                     array(
                         [
                             'barPercentage' => 0.5,
-                            'label' => trans("Card Info"),  
+                            'label' => trans("Card Info"),
                             'borderColor' => "#f7a35c",
                             'data' => $info
                         ],
@@ -249,7 +249,7 @@ class GraphDashboard extends Dashboard
                     "plotOptions" => [
                         "bar" => [
                             //   "horizontal"=> true,
-                            "isFunnel" => true,
+                            // "isFunnel" => true,
                         ],
                     ],
                     "series" => $this->apex_chart_emplyess_department()->map(fn($e) => $e['y'])->toArray(),
@@ -283,7 +283,7 @@ class GraphDashboard extends Dashboard
                     // "xaxis" => [
                     //     "type" => 'category'
                     // ]
-                ])->width('1/2'),
+                ])->width('full'),
 
 
 

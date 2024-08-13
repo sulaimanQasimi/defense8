@@ -14,4 +14,5 @@ class OilDisterbution extends Model
     protected $casts =[
         "filled_date"=> "date",
     ];
+    
 }

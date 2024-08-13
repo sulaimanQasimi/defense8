@@ -3,10 +3,13 @@ namespace Sq\Location\Nova;
 
 use App\Nova\Resource;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Validation\Rule;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\FormData;
+use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Sq\Employee\Nova\CardInfo;
 
 class Village extends Resource
 {
@@ -31,23 +34,30 @@ class Village extends Resource
             BelongsTo::make(trans("Province"), 'province', Province::class)->searchable(),
 
             BelongsTo::make(trans("District"), 'district', District::class)
-            ->dependsOn(
-                ['province'],
-                function (BelongsTo $field, NovaRequest $request, FormData $formData) {
-                    $field->relatableQueryUsing(function (NovaRequest $request, Builder $query) use ($formData) {
-                        $query->where('province_id', $formData->province);
-                    });
-                }
-            ),
+                ->dependsOn(
+                    ['province'],
+                    function (BelongsTo $field, NovaRequest $request, FormData $formData) {
+                        $field->relatableQueryUsing(function (NovaRequest $request, Builder $query) use ($formData) {
+                            $query->where('province_id', $formData->province);
+                        });
+                    }
+                ),
             Text::make(trans("Name"), 'name')
                 ->required()
-                ->creationRules('required', 'unique:districts,name')
-                ->updateRules('required', 'unique:districts,name,{{resourceId}}'),
+                ->creationRules('required', 'string', Rule::unique('villages')
+                    ->where(function ($query) use ($request) {
+                        return $query->where('district_id', $request->district)->where('deleted_at', null);
+                    }))
+                ->updateRules(
+                    'required',
+                    Rule::unique('districts')
+                        ->where(function ($query) use ($request) {
+                            return $query->where('district_id', $request->district)->where('deleted_at', null);
+                        })->ignore($this->id),
 
-            // Text::make(trans("Code"), 'code')
-            //     ->required()
-            //     ->creationRules('required', 'unique:districts,code')
-            //     ->updateRules('required', 'unique:districts,code,{{resourceId}}'),
+                ),
+                HasMany::make(trans("Main Address"), 'main_employee_address', CardInfo::class),
+                HasMany::make(trans("Current Address"), 'current_employee_address', CardInfo::class),
 
         ];
     }

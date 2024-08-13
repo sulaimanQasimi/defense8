@@ -36,7 +36,19 @@ class DisterbutedOilExcelExport implements FromQuery, WithHeadings, WithMapping,
     }
     public function query()
     {
-        return (new DateFromAndToModelQuery(OilDisterbution::class, 'filled_date'))->query();
+        $department = request()->input('department', null);
+        return (new DateFromAndToModelQuery(OilDisterbution::class, 'filled_date'))->query()
+            ->when(
+                $department,
+                function ($query) use ($department) {
+                    return $query->whereHas('card_info', function ($query) use ($department) {
+                        return $query->where("department_id", $department);
+                    });
+                }
+            )
+            ->when(request()->input('employee'), function ($query) use ($department) {
+                return $query->where('card_info_id', request()->input('employee'));
+            });
     }
     public function map($d_oil): array
     {

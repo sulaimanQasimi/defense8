@@ -4,17 +4,21 @@ namespace Sq\Location\Nova;
 
 use App\Nova\Resource;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Sq\Employee\Nova\CardInfo;
 
 class District extends Resource
 {
     public static $model = \Sq\Location\Models\District::class;
     public static $title = 'name';
     public static $search = [
-        'name','code'
+        'name',
+        'code'
     ];
     public static function label()
     {
@@ -28,11 +32,28 @@ class District extends Resource
     public function fields(NovaRequest $request)
     {
         return [
-            BelongsTo::make(trans("Province"),'province',Province::class)->searchable(),
+            BelongsTo::make(trans("Province"), 'province', Province::class)->searchable(),
             Text::make(trans("Name"), 'name')
                 ->required()
-                ->creationRules('required', 'unique:districts,name')
-                ->updateRules('required', 'unique:districts,name,{{resourceId}}'),
+                ->creationRules('required', 'string', Rule::unique('districts')
+                    ->where(function ($query) use ($request) {
+                        return $query->where('province_id', $request->province)->where('deleted_at', null);
+                    }))
+                ->updateRules(
+                    'required',
+                    Rule::unique('districts')
+                        ->where(function ($query) use ($request) {
+                            return $query->where('province_id', $request->province)->where('deleted_at', null);
+                        })->ignore($this->id)
+                ),
+
+            HasMany::make(trans("Villages"), 'villages', Village::class),
+
+            HasMany::make(trans("Main Address"), 'main_employee_address', CardInfo::class),
+            HasMany::make(trans("Current Address"), 'current_employee_address', CardInfo::class),
+
+
+
         ];
     }
 

@@ -23,8 +23,21 @@ class DisterbutedOil
     {
 
         $createQuery = new DateFromAndToModelQuery(OilDisterbution::class, 'filled_date');
+        $department = request()->input('department', null);
+        $d_oil = $createQuery->query()
+            ->when(
+                $department,
+                function ($query) use ($department) {
+                    return $query->whereHas('card_info', function ($query) use ($department) {
+                        return $query->where("department_id", $department);
+                    });
+                }
+            )
+            ->when(request()->input('employee'), function ($query) use ($department) {
+                return $query->where('card_info_id', request()->input('employee'));
+            })
 
-        $d_oil = $createQuery->query()->get();
+            ->get();
 
         TCPDF_FONTS::addTTFfont(public_path('mod_font.ttf'), 'TrueTypeUnicode', '', 96);
         TCPDF::SetFont('mod_font', '', 11);
@@ -38,7 +51,8 @@ class DisterbutedOil
             $pdf->SetFont('mod_font', '', 11);
             $pdf->Cell(297, 10, config("app.name"), false, true, 'C');
             $pdf->Cell(297, 10, trans("Oil Disterbution"), false, true, 'C');
-            $pdf->Cell(297, 10, verta($createQuery->start)->format("Y/m/d") . '-' . verta($createQuery->end)->format("Y/m/d"), false, true, 'C');
+            $end = $createQuery->end ? '-' . verta($createQuery->end)->format("Y/m/d") : '';
+            $pdf->Cell(297, 10, verta($createQuery->start)->format("Y/m/d") . $end, false, true, 'C');
             $pdf->SetFont('helvetica', '', 10);
             $pdf->Cell(107, 0, '');
             $style = [
@@ -82,28 +96,30 @@ class DisterbutedOil
             $pdf->SetTextColor(255, 255, 255);
             $pdf->Ln(18);
             $pdf->Cell(9, 7, '#', true, false, 'C', true);
-            $pdf->Cell(45, 7, trans('Register No'), true, false, 'C', true);
-            $pdf->Cell(45, 7, trans('Name'), true, false, 'C', true);
-            $pdf->Cell(45, 7, trans('Father Name'), true, false, 'C', true);
-            $pdf->Cell(30, 7, trans("Oil Type"), true, false, 'C', true);
-            $pdf->Cell(30, 7, trans("Monthly Rate"), true, false, 'C', true);
-            $pdf->Cell(30, 7, trans("Oil Amount"), true, false, 'C', true);
-            $pdf->Cell(50, 7, trans("Date"), true, true, 'C', true);
+            $pdf->Cell(40, 7, trans('Department'), true, false, 'C', true);
+            $pdf->Cell(40, 7, trans('Register No'), true, false, 'C', true);
+            $pdf->Cell(40, 7, trans('Name'), true, false, 'C', true);
+            $pdf->Cell(40, 7, trans('Father Name'), true, false, 'C', true);
+            $pdf->Cell(25, 7, trans("Oil Type"), true, false, 'C', true);
+            $pdf->Cell(25, 7, trans("Monthly Rate"), true, false, 'C', true);
+            $pdf->Cell(25, 7, trans("Oil Amount"), true, false, 'C', true);
+            $pdf->Cell(25, 7, trans("Date"), true, true, 'C', true);
             $pdf->SetTextColor(0, 0, 0);
         });
 
         TCPDF::AddPage();
-        TCPDF::SetFont('mod_font', '', 11);
+        TCPDF::SetFont('mod_font', '', 10);
         $i = 1;
         foreach ($d_oil as $employee) {
             TCPDF::Cell(9, 7, $i++, true, false, 'C', false);
-            TCPDF::Cell(45, 7, $employee->card_info->registare_no, true, false, 'C', false);
-            TCPDF::Cell(45, 7, $employee->card_info->full_name, true, false, 'C', false);
-            TCPDF::Cell(45, 7, $employee->card_info->father_name, true, false, 'C', false);
-            TCPDF::Cell(30, 7, trans(($employee->card_info->oil_type == OilType::Diesel) ? "Diesel" : "Petrole"), true, false, 'C', false);
-            TCPDF::Cell(30, 7, trans("Liter", ['value' => $employee->card_info->monthly_rate]), true, false, 'C', false);
-            TCPDF::Cell(30, 7, trans("Liter", ['value' => $employee->oil_amount]), true, false, 'C', false);
-            TCPDF::Cell(50, 7, verta($employee->filled_date)->format('Y/m/d'), true, true, 'C', false);
+            TCPDF::Cell(40, 7, $employee->card_info->orginization?->fa_name, true, false, 'C', false);
+            TCPDF::Cell(40, 7, $employee->card_info->registare_no, true, false, 'C', false);
+            TCPDF::Cell(40, 7, $employee->card_info->full_name, true, false, 'C', false);
+            TCPDF::Cell(40, 7, $employee->card_info->father_name, true, false, 'C', false);
+            TCPDF::Cell(25, 7, trans(($employee->card_info->oil_type == OilType::Diesel) ? "Diesel" : "Petrole"), true, false, 'C', false);
+            TCPDF::Cell(25, 7, trans("Liter", ['value' => $employee->card_info->monthly_rate]), true, false, 'C', false);
+            TCPDF::Cell(25, 7, trans("Liter", ['value' => $employee->oil_amount]), true, false, 'C', false);
+            TCPDF::Cell(25, 7, verta($employee->filled_date)->format('Y/m/d'), true, true, 'C', false);
         }
         return TCPDF::Output("54.pdf", 'i');
     }

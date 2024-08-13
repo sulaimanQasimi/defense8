@@ -62,6 +62,6 @@ class DistrictPolicy
      */
     public function forceDelete(User $user, District $district): bool
     {
-        return $user->hasPermissionTo(PermissionTranslation::destroy($this->resource));
+        return false;
     }
 }

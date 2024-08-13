@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white px-3 py-4 rounded-2xl">
+  <div class="bg-white px-3 py-4 rounded-2xl dark:rounded-2xl dark:bg-gray-800">
     <div
       class="text-center font-medium text-2xl text-blue-500"
       v-html="__('Oil Report')"

@@ -4,9 +4,11 @@ namespace Sq\Location\Nova;
 
 use App\Nova\Resource;
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Sq\Employee\Nova\CardInfo;
 
 class Province extends Resource
 {
@@ -33,6 +35,11 @@ class Province extends Resource
                 ->required()
                 ->creationRules('required', 'unique:provinces,name')
                 ->updateRules('required', 'unique:provinces,name,{{resourceId}}'),
+            HasMany::make(trans("District"), 'districts', District::class),
+            HasMany::make(trans("Villages"), 'villages', Village::class),
+            HasMany::make(trans("Main Address"), 'main_employee_address', CardInfo::class),
+            HasMany::make(trans("Current Address"), 'current_employee_address', CardInfo::class),
+
         ];
     }
 

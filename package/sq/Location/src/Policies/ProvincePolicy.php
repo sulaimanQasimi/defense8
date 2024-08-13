@@ -61,6 +61,6 @@ class ProvincePolicy
      */
     public function forceDelete(User $user, Province $province): bool
     {
-        return $user->hasPermissionTo(PermissionTranslation::destroy($this->resource));
+        return false;
     }
 }

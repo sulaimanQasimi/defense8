@@ -20,6 +20,7 @@ class DisterbutedOilResource extends JsonResource
             'registare_no'=>$this->card_info->registare_no,
             'full_name'=>$this->card_info->full_name,
             'father_name'=>$this->card_info->father_name,
+            'department'=>$this->card_info->orginization?->fa_name,
             'oil_type'=>trans(($this->card_info->oil_type == OilType::Diesel) ? "Diesel" : "Petrole"),
             'monthly_rate'=>trans("Liter", ['value' => $this->card_info->monthly_rate]),
             'oil_amount'=>trans("Liter", ['value' => $this->oil_amount]),

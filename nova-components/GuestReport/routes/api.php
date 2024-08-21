@@ -16,5 +16,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/departments', [ApiController::class,'departments']);
-Route::get('/guests', [ApiController::class,'guests']);
+Route::get('/departments', [ApiController::class, 'departments']);
+Route::get('/guests', [ApiController::class, 'guests']);
+Route::get('requirement', function () {
+    return [
+        "fields" => [
+            ['key' => "name", 'label' => __('Name'),],
+            ['key' => "last_name", 'label' => __('Last Name'),],
+            ['key' => "career", 'label' => __('Job'),],
+            ['key' => "address", 'label' => __('Address'),],
+            ['key' => "head_name", 'label' => __('Host'),],
+            ['key' => "department", 'label' => __('Department'),],
+            ['key' => "job", 'label' => __('Job'),],
+            ['key' => "hostAddress", 'label' => __('Address'),],
+            ['key' => "phone", 'label' => __('Phone'),],
+            ['key' => "registered_at", 'label' => __('Enter'),],
+        ],
+    ];
+});

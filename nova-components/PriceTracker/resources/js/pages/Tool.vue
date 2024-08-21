@@ -146,7 +146,6 @@ export default {
         this.year = currentYear;
       })
       .catch((e) => {});
-    console.log(this.request);
   },
   computed: {},
   methods: {

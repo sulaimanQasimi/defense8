@@ -1,10 +1,10 @@
 <template>
-  <LoadingView :loading="initialLoading">
+  <LoadingView :loading="false">
     <div>
       <Head :title="__('Oil Report')" />
       <report-header />
       <div class="mt-6 bg-white px-3 py-4 rounded-2xl">
-        <div class="grid md:grid-cols-3 sm:grid-cols-1 gap-3">
+        <div class="grid grid-cols-3 gap-2">
           <date-picker
             range
             clearable
@@ -15,59 +15,46 @@
           <searchable-input
             url="/nova-api/card-infos/associatable/orginization"
             @fire-value="getDepartment"
+            :resourceId="department"
           />
-          <employee-searchable-input :department="department"   @fire-value="getEmployee" />
+          <employee-searchable-input
+            :department="department"
+            @fire-value="getEmployee"
+            :resourceId="employee"
+          />
         </div>
       </div>
     </div>
     <div class="mb-2">
       <a
-        class="border text-left dark:text-white appearance-none cursor-pointer rounded text-sm font-bold focus:outline-none focus:ring ring-primary-200 dark:ring-gray-600 disabled:cursor-not-allowed inline-flex items-center justify-center shadow h-9 px-3 bg-primary-500 border-primary-500 hover:[&:not(:disabled)]:bg-primary-400 hover:[&:not(:disabled)]:border-primary-400 text-white dark:text-gray-900 mt-2 mx-2"
-        v-bind:href="
-          disterbute +
-          '?file=excel&date=' +
-          from +
-          '&department=' +
-          department +
-          '&employee=' +
-          employee
-        "
-        href="#"
+        class="border text-left  appearance-none cursor-pointer rounded text-sm font-bold focus:outline-none focus:ring ring-primary-200 dark:ring-gray-600 disabled:cursor-not-allowed inline-flex items-center justify-center shadow h-9 px-3 bg-primary-500 border-primary-500 hover:[&:not(:disabled)]:bg-primary-400 hover:[&:not(:disabled)]:border-primary-400 text-white dark:text-gray-900 mt-2 mx-2"
+        v-bind:href="`${disterbute}?file=excel&date=${from}&department=${department}&employee=${employee}`"
         target="_blank"
       >
-        <span class="dark:text-white fas fa-file-excel mx-2"></span>
+        <span class=" fas fa-file-excel mx-2"></span>
         {{ __("Create Disterbuted Oil Report") }}
       </a>
       <a
-        class="border text-left dark:text-white appearance-none cursor-pointer rounded text-sm font-bold focus:outline-none focus:ring ring-primary-200 dark:ring-gray-600 disabled:cursor-not-allowed inline-flex items-center justify-center shadow h-9 px-3 bg-primary-500 border-primary-500 hover:[&:not(:disabled)]:bg-primary-400 hover:[&:not(:disabled)]:border-primary-400 text-white dark:text-gray-900 mt-2 mx-2"
-        v-bind:href="importOil + '?file=excel&date=' + from"
+        class="border text-left  appearance-none cursor-pointer rounded text-sm font-bold focus:outline-none focus:ring ring-primary-200 dark:ring-gray-600 disabled:cursor-not-allowed inline-flex items-center justify-center shadow h-9 px-3 bg-primary-500 border-primary-500 hover:[&:not(:disabled)]:bg-primary-400 hover:[&:not(:disabled)]:border-primary-400 text-white dark:text-gray-900 mt-2 mx-2"
+        v-bind:href="`${importOil}?file=excel&date=${from}`"
         href="#"
         target="_blank"
       >
-        <span class="dark:text-white fas fa-file-excel mx-2"></span>
+        <span class=" fas fa-file-excel mx-2"></span>
         {{ __("Create Imported Oil Report") }}
       </a>
       <a
-        class="border text-left dark:text-white appearance-none cursor-pointer rounded text-sm font-bold focus:outline-none focus:ring ring-primary-200 dark:ring-gray-600 disabled:cursor-not-allowed inline-flex items-center justify-center shadow h-9 px-3 bg-primary-500 border-primary-500 hover:[&:not(:disabled)]:bg-primary-400 hover:[&:not(:disabled)]:border-primary-400 text-white dark:text-gray-900 mt-2 mx-2"
-        v-bind:href="
-          disterbute +
-          '?&date=' +
-          from +
-          '&department=' +
-          department +
-          '&employee=' +
-          employee
-        "
+        class="border text-left  appearance-none cursor-pointer rounded text-sm font-bold focus:outline-none focus:ring ring-primary-200 dark:ring-gray-600 disabled:cursor-not-allowed inline-flex items-center justify-center shadow h-9 px-3 bg-primary-500 border-primary-500 hover:[&:not(:disabled)]:bg-primary-400 hover:[&:not(:disabled)]:border-primary-400 text-white dark:text-gray-900 mt-2 mx-2"
+        v-bind:href="`${disterbute}?&date=${from}&department=${department}&employee=${employee}`"
         href="#"
         target="_blank"
       >
-        <span class="dark:text-white fas fa-file-pdf mx-2"></span>
+        <span class=" fas fa-file-pdf mx-2"></span>
         {{ __("Create Disterbuted Oil Report") }}
       </a>
       <a
         class="border text-left dark:text-white appearance-none cursor-pointer rounded text-sm font-bold focus:outline-none focus:ring ring-primary-200 dark:ring-gray-600 disabled:cursor-not-allowed inline-flex items-center justify-center shadow h-9 px-3 bg-primary-500 border-primary-500 hover:[&:not(:disabled)]:bg-primary-400 hover:[&:not(:disabled)]:border-primary-400 text-white dark:text-gray-900 mt-2 mx-2"
-        v-bind:href="importOil + '?&date=' + from"
-        href="#"
+        v-bind:href="`${importOil}?&date=${from}`"
         target="_blank"
       >
         <span class="dark:text-white fas fa-file-pdf mx-2"></span>
@@ -221,7 +208,6 @@
           </tr>
         </tbody>
       </table>
-
       <div class="border-t border-gray-200 dark:border-gray-700">
         <nav class="rounded-b-lg font-bold flex items-center">
           <div class="flex text-sm">
@@ -252,7 +238,6 @@
 <script>
 import Vue3PersianDatetimePicker from "vue3-persian-datetime-picker";
 export default {
-  emits: ["get_date"],
   props: {
     selectedDepartment: String,
     disterbutes: Object,
@@ -263,7 +248,7 @@ export default {
   data() {
     return {
       path: Nova.config("path"),
-      from: this.date,
+      from: this.date || "",
       importOil: Nova.config("import"),
       disterbute: Nova.config("disterbute"),
       initialLoading: false,
@@ -331,9 +316,9 @@ export default {
     getDepartment(value) {
       this.department = value;
     },
-    getEmployee(value){
-        this.employee=value
-    }
+    getEmployee(value) {
+      this.employee = value;
+    },
   },
   computed: {},
 };
@@ -344,7 +329,7 @@ export default {
 .grid {
   display: grid;
 }
-.grid-cols-4 {
+.grid-cols-3 {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 </style>

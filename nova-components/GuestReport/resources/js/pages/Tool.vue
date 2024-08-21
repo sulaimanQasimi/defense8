@@ -1,5 +1,5 @@
 <template>
-  <LoadingView :loading="initialLoading">
+  <LoadingView :loading="false">
     <Head :title="__('Guest Report')" />
     <div class="px-3 py-4 rounded-2xl">
       <g-card
@@ -7,42 +7,21 @@
         :repo="__('Here you can generate guest report')"
       >
         <div class="mt-6 bg-white px-3 py-4 rounded-2xl">
-          <div class="grid md:grid-cols-3 sm:grid-cols-1 gap-3">
+          <div class="grid grid-cols-2 gap-3">
             <div>
-              <div
-                class="space-y-2 md:flex @md/modal:flex md:flex-row @md/modal:flex-row md:space-y-0 @md/modal:space-y-0 py-5"
-                index="5"
-              >
-                <div
-                  class="w-full px-6 md:mt-2 @md/modal:mt-2 md:px-8 @md/modal:px-8 md:w-1/5 @md/modal:w-1/5"
-                >
-                  <label
-                    for="enter_gate-aygad-mhman-select-field"
-                    class="inline-block leading-tight space-x-1"
-                    ><span v-html="__('Date')"></span
-                    ><span class="text-red-500 text-sm">*</span></label
-                  >
-                </div>
-                <div
-                  class="w-full space-y-2 px-6 md:px-8 @md/modal:px-8 md:w-3/5 @md/modal:w-3/5"
-                >
-                  <!-- Search Input --><!-- Select Input Field -->
-                  <div class="flex relative w-full">
-                    <date-picker range color="#e91e63" v-model="from" />
-                  </div>
-                </div>
-              </div>
+              <date-picker range color="#e91e63" v-model="from" clearable />
             </div>
             <searchable-input
               url="/nova-api/card-infos/associatable/orginization"
               @fire-value="getDepartment"
+              :resourceId="department"
             />
           </div>
         </div>
       </g-card>
       <div class="flex">
         <a
-          v-bind:href="reportUrl + '?file=excel&date=' + this.date + '&department=' + this.department"
+          v-bind:href="generateLink('excel')"
           target="_blank"
           class="border text-left appearance-none cursor-pointer rounded text-sm font-bold focus:outline-none focus:ring ring-primary-200 dark:ring-gray-600 disabled:cursor-not-allowed inline-flex items-center justify-center shadow h-9 px-3 bg-primary-500 border-primary-500 hover:[&:not(:disabled)]:bg-primary-400 hover:[&:not(:disabled)]:border-primary-400 text-white dark:text-gray-900 mt-2 mx-2"
         >
@@ -50,9 +29,7 @@
           <span>{{ __("Excel") }}</span>
         </a>
         <a
-          v-bind:href="
-            reportUrl + '?file=pdf&date=' + this.date + '&department=' + this.department
-          "
+          v-bind:href="generateLink('pdf')"
           target="_blank"
           class="border text-left appearance-none cursor-pointer rounded text-sm font-bold focus:outline-none focus:ring ring-primary-200 dark:ring-gray-600 disabled:cursor-not-allowed inline-flex items-center justify-center shadow h-9 px-3 bg-primary-500 border-primary-500 hover:[&:not(:disabled)]:bg-primary-400 hover:[&:not(:disabled)]:border-primary-400 text-white dark:text-gray-900 mt-2 mx-2"
         >
@@ -61,7 +38,7 @@
         </a>
       </div>
     </div>
-    <guest-details :pdfUrl="pdfUrl" :excelUrl="excelUrl" :guests="guests" />
+    <guest-details :guests="guests" />
   </LoadingView>
 </template>
 
@@ -69,10 +46,9 @@
 import Vue3PersianDatetimePicker from "vue3-persian-datetime-picker";
 export default {
   props: {
-    selectedDepartment: String,
+    request: Object,
     guests: Object,
-    url: String,
-    date: String,
+    now: String,
   },
   components: {
     DatePicker: Vue3PersianDatetimePicker,
@@ -80,46 +56,40 @@ export default {
 
   data() {
     return {
-      reportUrl: Nova.config("report"),
-      departments: null,
-      department: this.selectedDepartment,
-      initialLoading: false,
-      from: this.date,
+      department: this.request.department || '',
+      from: this.request.date || this.now,
     };
   },
   watch: {
     from(newValue, oldValue) {
-      Nova.visit(
-        "/guest-report?page=1&date=" + newValue + "&department=" + this.department,
-        {
-          onFinish: () => Nova.success(`Filter Applied`),
-        }
-      );
+      Nova.visit(`/guest-report?page=1&date=${newValue}&department=${this.department}`);
     },
     department(newValue, oldValue) {
-      Nova.visit("/guest-report?page=1&date=" + this.from + "&department=" + newValue, {
-        onFinish: () => Nova.success(`Filter Applied`),
-      });
+      Nova.visit(`/guest-report?page=1&date=${this.from}&department=${newValue}`);
     },
   },
 
-  created() {},
+  created() {
+    Nova.request()
+      .get(`nova-vendor/guest-report/requirement`)
+      .then(({ data: { fields,now } }) => {
+        this.headers = fields;
+      })
+      .catch((e) => {});
+  },
   mounted() {
     Nova.addShortcut("ctrl+shift", (event) => {
-      Nova.visit("/guest-report", {
-        onFinish: () => Nova.success(`Page Reloaded`),
-      });
+      Nova.visit("/guest-report");
     });
-    Nova.request()
-      .get("/nova-vendor/guest-report/departments")
-      .then((response) => {
-        this.departments = response.data;
-        Nova.success("It worked!");
-      });
   },
+
   methods: {
     getDepartment(value) {
       this.department = value;
+    },
+    generateLink(type) {
+      let reportUrl = Nova.config("report");
+      return `${reportUrl}?file=${type}&date=${this.from}&department=${this.department}`;
     },
   },
   computed: {},

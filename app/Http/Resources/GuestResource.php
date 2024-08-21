@@ -16,19 +16,18 @@ class GuestResource extends JsonResource
     {
         // dd();
         return [
-            'id'=>$this->id,
+            'id' => $this->id,
             'name' => $this->guest->name,
             'last_name' => $this->guest->last_name,
             'career' => $this->guest->career,
             'address' => $this->guest->address,
-            'host' => [
-                'department' => $this->guest->host->department->fa_name,
-                'head_name' => $this->guest->host->head_name,
-                'job' => $this->guest->host->job,
-                'phone' => $this->guest->host->phone,
-                'address' => $this->guest->host->address,
-            ],
-            'registered_at' =>verta($this->entered_at)->format("Y/m/d h:i a")
+
+            'department' => $this->guest->host->department->fa_name,
+            'head_name' => $this->guest->host->head_name,
+            'job' => $this->guest->host->job,
+            'phone' => $this->guest->host->phone,
+            'hostAddress' => $this->guest->host->address,
+            'registered_at' => verta($this->entered_at)->format("Y/m/d h:i a")
         ];
     }
 }

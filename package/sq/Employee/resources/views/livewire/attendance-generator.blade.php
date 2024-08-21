@@ -82,21 +82,18 @@
                 </div>
             </div>
         </Section>
-        @if ( $route != '#')
-        <a wire:loading.attr="disabled" href="{{ $route }}"
-        target="_blank"
-            @class([
-                'bg-green-300' => $route != '#',
-                'mt-8 block w-full rounded-md border border-transparent bg-blue-300 px-8 py-3 text-base font-medium text-gray-900  sm:w-auto',
-            ])>@lang('Download')</a>
-
-@else
-<button type="button" wire:click="save" wire:loading.attr="disabled" href="{{ $route }}"
-    @class([
-        'mt-8 block w-full rounded-md border border-transparent bg-blue-300 px-8 py-3 text-base font-medium text-gray-900  sm:w-auto',
-    ])>@lang('Save')</button>
-
-@endif
+        @if ($route != '#')
+            <a wire:loading.attr="disabled" href="{{ $route }}" target="_blank"
+                @class([
+                    'bg-green-300' => $route != '#',
+                    'mt-8 block w-full rounded-md border border-transparent bg-blue-300 px-8 py-3 text-base font-medium text-gray-900  sm:w-auto',
+                ])>@lang('Download')</a>
+        @else
+            <button type="button" wire:click="save" wire:loading.attr="disabled" href="{{ $route }}"
+                @class([
+                    'mt-8 block w-full rounded-md border border-transparent bg-blue-300 px-8 py-3 text-base font-medium text-gray-900  sm:w-auto',
+                ])>@lang('Save')</button>
+        @endif
 
     </div>
 

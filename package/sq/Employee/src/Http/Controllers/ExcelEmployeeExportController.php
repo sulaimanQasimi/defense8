@@ -32,7 +32,6 @@ class ExcelEmployeeExportController extends Controller
 
     public function attendance(Department $department)
     {
-        $this->authorize('admin',$department);
-        return Excel::download(new EmployeeCurrentMonthExport($department->id,$this->start,$this->end), 'current-month-employee.xlsx');
+        return Excel::download(new EmployeeCurrentMonthExport($department->id, $this->start, $this->end), 'current-month-employee.xlsx');
     }
 }

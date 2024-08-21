@@ -3,32 +3,21 @@
     <div>
       <Head :title="__('Oil Report')" />
       <report-header />
-      <div class="flex">
-        <date-picker range clearable color="#e91e63" v-model="from" style="margin: 5px" />
-        <select
-          v-model="department"
-          class="w-full block form-control form-control-bordered form-input"
-          style="margin: 5px"
-        >
-          <option value="" selected>{{ __("Department") }}</option>
-          <option
-            :value="department.id"
-            :key="department.id"
-            v-for="department in departments"
-          >
-            {{ department.name }}
-          </option>
-        </select>
-        <select
-          v-model="employee"
-          class="w-full block form-control form-control-bordered form-input"
-          style="margin: 5px"
-        >
-          <option value="" selected>{{ __("Employee") }}</option>
-          <option :value="employee.id" :key="employee.id" v-for="employee in employees">
-            {{ employee.name }}
-          </option>
-        </select>
+      <div class="mt-6 bg-white px-3 py-4 rounded-2xl">
+        <div class="grid md:grid-cols-3 sm:grid-cols-1 gap-3">
+          <date-picker
+            range
+            clearable
+            color="#e91e63"
+            v-model="from"
+            style="margin: 5px"
+          />
+          <searchable-input
+            url="/nova-api/card-infos/associatable/orginization"
+            @fire-value="getDepartment"
+          />
+          <employee-searchable-input :department="department"   @fire-value="getEmployee" />
+        </div>
       </div>
     </div>
     <div class="mb-2">
@@ -144,13 +133,13 @@
           </tr>
         </thead>
         <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
-          <tr class="group" v-for="(oil,index) in disterbutes.data">
+          <tr class="group" v-for="(oil, index) in disterbutes.data">
             <td
               style="border: 1px solid #18a2f3"
               class="px-2 py-2 whitespace-nowrap cursor-pointer dark:bg-gray-800 group-hover:bg-gray-50 dark:group-hover:bg-gray-900"
             >
               <div class="items-center justify-center flex text-center">
-                <p class="text-center" v-text="index+1" />
+                <p class="text-center" v-text="index + 1" />
               </div>
             </td>
             <td
@@ -289,9 +278,15 @@ export default {
   watch: {
     from(newValue, oldValue) {
       Nova.visit(
-        this.path +"?page=1&date=" +newValue +"&department=" +this.department +"&employee=" +this.employee,
+        this.path +
+          "?page=1&date=" +
+          newValue +
+          "&department=" +
+          this.department +
+          "&employee=" +
+          this.employee,
         {
-            onFinish: () => Nova.success(this.__('Filter Applied')),
+          onFinish: () => Nova.success(this.__("Filter Applied")),
         }
       );
     },
@@ -299,7 +294,7 @@ export default {
       Nova.visit(
         this.path + "?page=1&date=" + this.from + "&department=" + this.department,
         {
-            onFinish: () => Nova.success(this.__('Filter Applied')),
+          onFinish: () => Nova.success(this.__("Filter Applied")),
         }
       );
     },
@@ -313,16 +308,15 @@ export default {
           "&employee=" +
           this.employee,
         {
-          onFinish: () => Nova.success(this.__('Filter Applied')),
+          onFinish: () => Nova.success(this.__("Filter Applied")),
         }
       );
     },
   },
   mounted() {
-
     Nova.addShortcut("ctrl+shift", (event) => {
       Nova.visit(this.path, {
-        onFinish: () => Nova.success(this.__('Page Reloaded')),
+        onFinish: () => Nova.success(this.__("Page Reloaded")),
       });
     });
 
@@ -330,10 +324,17 @@ export default {
       .get("/nova-vendor/guest-report/departments")
       .then((response) => {
         this.departments = response.data;
-        Nova.success(this.__('Data Recieved'))
+        Nova.success(this.__("Data Recieved"));
       });
   },
-  methods: {},
+  methods: {
+    getDepartment(value) {
+      this.department = value;
+    },
+    getEmployee(value){
+        this.employee=value
+    }
+  },
   computed: {},
 };
 </script>

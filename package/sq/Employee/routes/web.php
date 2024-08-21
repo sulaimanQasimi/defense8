@@ -44,8 +44,18 @@ Route::middleware(['role:super-admin'])
     ->name("employee.attendance.current.month.single");
 
 Route::middleware(['role:super-admin'])
-    ->get('employee/attendance/current/month/department/{department:id}', [CurrentMonthEmployeeAttendance::class, 'single_department'])
+    ->get(
+        'employee/attendance/current/month/department/{department:id}',
+        [CurrentMonthEmployeeAttendance::class, 'single_department']
+    )
     ->name("employee.attendance.current.month.department.single");
+
+
+Route::middleware(['role:super-admin'])
+    ->get('employee/attendance/current/month/department/{department:id}/excel',
+        [ExcelEmployeeExportController::class, 'attendance']
+    )
+    ->name("employee.attendance.current.month.department.single.excel");
 
 Route::prefix('export/')
     ->name('export.excel.')

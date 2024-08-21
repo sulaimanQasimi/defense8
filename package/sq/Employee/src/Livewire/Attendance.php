@@ -13,16 +13,10 @@ class Attendance extends Component
 
     #[Url]
     public $department;
-
-
-
     #[Url]
     public $employee;
-
     #[Url]
     public $date;
-
-
     public function mount()
     {
 

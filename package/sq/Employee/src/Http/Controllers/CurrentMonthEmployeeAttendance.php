@@ -2,7 +2,7 @@
 
 namespace Sq\Employee\Http\Controllers;
 
-use App\Http\Controllers\Attendance\Report;
+use Sq\Employee\Http\Controllers\Attendance\Report;
 use Sq\Employee\Models\CardInfo;
 use Sq\Employee\Models\Department;
 use Hekmatinasser\Verta\Facades\Verta;
@@ -29,7 +29,7 @@ class CurrentMonthEmployeeAttendance
         $date = $this->date = Verta::setDateJalali($year, $month, 25);
         $this->start = Verta::parse($date->startMonth()->format("Y-m-d"))->toCarbon();
         $this->end = Verta::parse($date->endMonth()->format("Y-m-d"))->toCarbon();
-    }   
+    }
 
     public function __invoke()
     {
@@ -45,7 +45,7 @@ class CurrentMonthEmployeeAttendance
     }
     public function single_department(Department $department)
     {
-        $query = CardInfo::where('department_id', $department->id);
+        $query = CardInfo::where('department_id', $department->id)->orderBy('name');
         return (new Report(employee: fn() => $query, date: $this->date, start: $this->start, end: $this->end, year: $this->year, month: $this->month))->maker()->download();
     }
 }

@@ -374,7 +374,7 @@ class CardInfo extends Resource
 
             Action::openInNewTab(
                 __("Download CURRENT MONTH ATTENDANCE EMPLOYEE"),
-                fn($employee) => route('employee.attendance.current.month.single', ['cardInfo' => $employee->id])
+                fn($employee) => route('sqemployee.employee.attendance.current.month.single', ['cardInfo' => $employee->id])
             )
                 ->sole()
                 //  ->canRun(fn($request, $employee) => auth()->user()->department?->id === $employee->orginization?->id)

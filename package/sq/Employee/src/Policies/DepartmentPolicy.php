@@ -79,6 +79,5 @@ class DepartmentPolicy
     public function admin(User $user, department $department): bool
     {
         return ($user->department)?$user->department->id===$department->id:false;
-
     }
 }

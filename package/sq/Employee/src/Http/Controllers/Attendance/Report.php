@@ -74,11 +74,11 @@ class Report
             for ($j = 1; $j <= 31; $j++) {
                 if ($day[$j] == "ح") {
                     TCPDF::SetFillColor(0, 255, 0);
-                    TCPDF::SetTextColor(255, 255, 255);
+                    TCPDF::SetTextColor(0, 0, 0);
                 }
                 if ($day[$j] == "غ") {
                     TCPDF::SetFillColor( 255,0, 0);
-                    TCPDF::SetTextColor(255, 255, 255);
+                    TCPDF::SetTextColor(0, 0, 0);
                 }
 
 

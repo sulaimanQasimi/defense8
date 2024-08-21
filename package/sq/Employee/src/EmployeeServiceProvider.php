@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use Laravel\Nova\Menu\MenuItem;
 use Laravel\Nova\Menu\MenuSection;
 use Laravel\Nova\Nova;
+use Livewire\Livewire;
 use Sq\Employee\Nova as NovaResource;
 
 class EmployeeServiceProvider extends ServiceProvider
@@ -13,6 +14,9 @@ class EmployeeServiceProvider extends ServiceProvider
 
     public function boot()
     {
+        Livewire::component('sq.employee.livewire.attendance',\Sq\Employee\Livewire\Attendance::class);
+        Livewire::component('sq-employee-set-employee-attendance',\Sq\Employee\Livewire\Department\SetEmployeeAttendanceState::class);
+
         Nova::resources([
             NovaResource\Attendance::class,
             NovaResource\CardInfo::class,

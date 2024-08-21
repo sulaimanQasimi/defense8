@@ -7,12 +7,8 @@ class LanguageController
 {
     public function index()
     {
-        $years = [];
-        $departments = Department::all();
-        for ($i = 1388; $i <= verta()->year; $i++) {
-            $years[] = $i;
-        }
-        return inertia('PriceTracker', compact('departments','years'));
+        $request=request()->all();
+        return inertia('PriceTracker',compact('request'));
     }
 
 }

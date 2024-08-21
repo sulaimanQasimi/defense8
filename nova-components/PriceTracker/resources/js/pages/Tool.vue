@@ -32,12 +32,32 @@
 
     <div class="mt-6 bg-white px-3 py-4 rounded-2xl">
       <div class="grid md:grid-cols-3 sm:grid-cols-1 gap-3">
-        <div>
+
+        <div
+          class="space-y-2 md:flex @md/modal:flex md:flex-row @md/modal:flex-row md:space-y-0 @md/modal:space-y-0 py-5"
+          index="5"
+        >
+          <div
+            class="w-full px-6 md:mt-2 @md/modal:mt-2 md:px-8 @md/modal:px-8 md:w-1/5 @md/modal:w-1/5"
+          >
+            <FormLabel label-for="year" class="space-x-1">
+              <span>
+                {{ __("Year") }}
+              </span>
+            </FormLabel>
+          </div>
+          <div
+            class="w-full space-y-2 px-6 md:px-8 @md/modal:px-8 md:w-3/5 @md/modal:w-3/5"
+          >
           <searchable-input
             url="/nova-api/card-infos/associatable/orginization"
             @fire-value="getDepartment"
+            :resourceId="department"
           />
         </div>
+        </div>
+
+
         <div
           class="space-y-2 md:flex @md/modal:flex md:flex-row @md/modal:flex-row md:space-y-0 @md/modal:space-y-0 py-5"
           index="5"
@@ -45,41 +65,27 @@
           <div
             class="w-full px-6 md:mt-2 @md/modal:mt-2 md:px-8 @md/modal:px-8 md:w-1/5 @md/modal:w-1/5"
           >
-            <label
-              for="enter_gate-aygad-mhman-select-field"
-              class="inline-block leading-tight space-x-1"
-              ><span v-html="__('Year')"></span
-              ><span class="text-red-500 text-sm">*</span></label
-            >
+
+            <FormLabel label-for="year" class="space-x-1">
+              <span>
+                {{ __("Year") }}
+              </span>
+            </FormLabel>
           </div>
           <div
             class="w-full space-y-2 px-6 md:px-8 @md/modal:px-8 md:w-3/5 @md/modal:w-3/5"
           >
-            <!-- Search Input --><!-- Select Input Field -->
-            <div class="flex relative w-full">
-              <select
-                v-model="year"
-                id="enter_gate"
-                dusk="enter_gate"
-                class="w-full block form-control form-control-bordered form-input"
-              >
-                <option disabled="" value="">یک گزینه را انتخاب کنید</option>
-                <option v-for="year in years" v-html="year" v-bind:value="year" />
-              </select>
-              <svg
-                class="shrink-0 text-gray-700 pointer-events-none absolute right-[11px] top-[15px]"
-                xmlns="http://www.w3.org/2000/svg"
-                width="10"
-                height="6"
-                viewBox="0 0 10 6"
-              >
-                <path
-                  class="fill-current"
-                  d="M8.292893.292893c.390525-.390524 1.023689-.390524 1.414214 0 .390524.390525.390524 1.023689 0 1.414214l-4 4c-.390525.390524-1.023689.390524-1.414214 0l-4-4c-.390524-.390525-.390524-1.023689 0-1.414214.390525-.390524 1.023689-.390524 1.414214 0L5 3.585786 8.292893.292893z"
-                ></path>
-              </svg>
-            </div>
-            <!--v-if--><!--v-if-->
+            <SelectControl
+              class="w-full"
+              :options="years"
+              v-model:selected="year"
+              @change="yearRequest"
+              label="display"
+            >
+              <option value="" selected :disabled="true">
+                {{ __("Choose an option") }}
+              </option>
+            </SelectControl>
           </div>
         </div>
         <div
@@ -89,53 +95,26 @@
           <div
             class="w-full px-6 md:mt-2 @md/modal:mt-2 md:px-8 @md/modal:px-8 md:w-1/5 @md/modal:w-1/5"
           >
-            <label
-              for="enter_gate-aygad-mhman-select-field"
-              class="inline-block leading-tight space-x-1"
-              ><span v-html="__('Month')"></span
-              ><span class="text-red-500 text-sm">*</span></label
-            >
+            <FormLabel label-for="month" class="space-x-1">
+              <span>
+                {{ __("Month") }}
+              </span>
+            </FormLabel>
           </div>
           <div
             class="w-full space-y-2 px-6 md:px-8 @md/modal:px-8 md:w-3/5 @md/modal:w-3/5"
           >
-            <!-- Search Input --><!-- Select Input Field -->
-            <div class="flex relative w-full">
-              <select
-                v-model="month"
-                id="enter_gate"
-                dusk="enter_gate"
-                class="w-full block form-control form-control-bordered form-input"
-              >
-                <option disabled="" value="">یک گزینه را انتخاب کنید</option>
-
-                <option value="1" v-html="__('Hamal')"></option>
-                <option value="2" v-html="__('Thour')"></option>
-                <option value="3" v-html="__('Jawza')"></option>
-                <option value="4" v-html="__('Sarathan')"></option>
-                <option value="5" v-html="__('Asad')"></option>
-                <option value="6" v-html="__('Sunbulah')"></option>
-                <option value="7" v-html="__('Mizan')"></option>
-                <option value="8" v-html="__('Aqrab')"></option>
-                <option value="9" v-html="__('Qous')"></option>
-                <option value="10" v-html="__('Jadi')"></option>
-                <option value="11" v-html="__('Dalwa')"></option>
-                <option value="12" v-html="__('Hod')"></option>
-              </select>
-              <svg
-                class="shrink-0 text-gray-700 pointer-events-none absolute right-[11px] top-[15px]"
-                xmlns="http://www.w3.org/2000/svg"
-                width="10"
-                height="6"
-                viewBox="0 0 10 6"
-              >
-                <path
-                  class="fill-current"
-                  d="M8.292893.292893c.390525-.390524 1.023689-.390524 1.414214 0 .390524.390525.390524 1.023689 0 1.414214l-4 4c-.390525.390524-1.023689.390524-1.414214 0l-4-4c-.390524-.390525-.390524-1.023689 0-1.414214.390525-.390524 1.023689-.390524 1.414214 0L5 3.585786 8.292893.292893z"
-                ></path>
-              </svg>
-            </div>
-            <!--v-if--><!--v-if-->
+            <SelectControl
+              class="w-full"
+              :options="months"
+              v-model:selected="month"
+              @change="monthRequest"
+              label="display"
+            >
+              <option value="" selected :disabled="true">
+                {{ __("Choose an option") }}
+              </option>
+            </SelectControl>
           </div>
         </div>
       </div>
@@ -146,30 +125,30 @@
 <script>
 export default {
   props: {
-    cards: Number,
-    departments: Object,
-    years: Object,
+    request: Object,
   },
   data() {
     return {
       i: null,
       month: 1,
-      year: 1399,
-      department: 1,
+      year: 0,
+      department: this.request.department,
+      months: [],
+      years: [],
     };
   },
-  computed: {
-    link() {
-      return (
-        "/employee/attendance/current/month/department/" +
-        this.department +
-        "?month=" +
-        this.month +
-        "&year=" +
-        this.year
-      );
-    },
+  mounted() {
+    Nova.request()
+      .get(` nova-vendor/price-tracker/requirement`)
+      .then(({ data: { months, years, currentYear } }) => {
+        this.months = months;
+        this.years = years;
+        this.year = currentYear;
+      })
+      .catch((e) => {});
+    console.log(this.request);
   },
+  computed: {},
   methods: {
     getDepartment(value) {
       this.department = value;
@@ -180,6 +159,12 @@ export default {
       } else {
         return `/sq/modules/employee/employee/attendance/current/month/department/${this.department}/excel?month=${this.month}&year=${this.year}`;
       }
+    },
+    yearRequest(e) {
+        this.year=e
+    },
+    monthRequest(e) {
+        this.month=e
     },
   },
 };

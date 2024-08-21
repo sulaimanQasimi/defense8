@@ -1,50 +1,29 @@
 <template>
   <div>
-    <div
-      class="space-y-2 md:flex @md/modal:flex md:flex-row @md/modal:flex-row md:space-y-0 @md/modal:space-y-0 py-5"
-      index="5"
+    <SearchInput
+      :dusk="`departments-search-input`"
+      :disabled="currentlyIsReadonly"
+      @input="performResourceSearch"
+      @clear="clearResourceSelection"
+      @selected="selectResource"
+      :value="selectedResource"
+      :data="filteredResources"
+      trackBy="value"
+      class="w-full"
+      :mode="mode"
     >
-      <div
-        class="w-full px-6 md:mt-2 @md/modal:mt-2 md:px-8 @md/modal:px-8 md:w-1/5 @md/modal:w-1/5"
-      >
-        <label
-          for="enter_gate-aygad-mhman-select-field"
-          class="inline-block leading-tight space-x-1"
-          ><span v-html="__('Department')"></span
-          ><span class="text-red-500 text-sm">*</span></label
-        >
+      <div v-if="selectedResource" class="flex items-center">
+        {{ selectedResource.display }}
       </div>
-      <div class="w-full space-y-2 px-6 md:px-8 @md/modal:px-8 md:w-3/5 @md/modal:w-3/5">
-        <!-- Search Input --><!-- Select Input Field -->
-        <div class="flex relative w-full">
-          <SearchInput
-            :dusk="`departments-search-input`"
-            :disabled="currentlyIsReadonly"
-            @input="performResourceSearch"
-            @clear="clearResourceSelection"
-            @selected="selectResource"
-            :value="selectedResource"
-            :data="filteredResources"
-            trackBy="value"
-            class="w-full"
-            :mode="mode"
-          >
-            <div v-if="selectedResource" class="flex items-center">
-              {{ selectedResource.display }}
-            </div>
 
-            <template #option="{ selected, option }">
-              <SearchInputResult
-                :option="option"
-                :selected="selected"
-                :with-subtitles="false"
-              />
-            </template>
-          </SearchInput>
-        </div>
-        <!--v-if--><!--v-if-->
-      </div>
-    </div>
+      <template #option="{ selected, option }">
+        <SearchInputResult
+          :option="option"
+          :selected="selected"
+          :with-subtitles="false"
+        />
+      </template>
+    </SearchInput>
 
     <!--  -->
   </div>
@@ -58,6 +37,7 @@ export default {
   emits: ["fire-value"],
   props: {
     url: String,
+    resourceId: Number,
   },
   data() {
     return {
@@ -72,7 +52,6 @@ export default {
     this.initializeComponent();
   },
   methods: {
-
     selectResource(resource) {
       this.selectedResource = resource;
       this.selectedResourceId = resource.value;
@@ -109,7 +88,6 @@ export default {
       if (trimmedSearch == "") {
         return;
       }
-      console.log(search);
 
       this.searchDebouncer(() => {
         this.getAvailableResources(trimmedSearch);
@@ -123,7 +101,7 @@ export default {
 
     //
     initializeComponent() {
-      this.selectedResourceId = 1;
+      this.selectedResourceId = this.resourceId;
       //   this.getAvailableResources();
 
       if (this.useSearchInput) {
@@ -189,9 +167,6 @@ export default {
       this.selectedResource = find(this.availableResources, (r) =>
         this.isSelectedResourceId(r.value)
       );
-      //   this.$emit("out-input", this.selectedResource);
-      //   console.log(this.selectedResource);
-      //   console.log("Handle")
     },
 
     /**

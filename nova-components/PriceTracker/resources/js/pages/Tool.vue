@@ -1,7 +1,7 @@
 <template>
   <div>
     <Head :title="__('Attendance Employee Info')" />
-    <div class="bg-white px-3 py-4 rounded-2xl">
+    <Card>
       <div
         class="text-center font-medium text-2xl text-blue-500"
         v-html="__('Attendance Employee Info')"
@@ -11,7 +11,7 @@
         v-html="__('Through this forms find your information')"
         class="text-sm text-blue-300 text-center"
       ></div>
-    </div>
+    </Card>
 
     <div class="mb-2">
       <a
@@ -30,7 +30,7 @@
       </a>
     </div>
 
-    <div class="mt-6 bg-white px-3 py-4 rounded-2xl">
+    <Card>
       <div class="grid md:grid-cols-3 sm:grid-cols-1 gap-3">
 
         <div
@@ -118,7 +118,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </Card>
   </div>
 </template>
 

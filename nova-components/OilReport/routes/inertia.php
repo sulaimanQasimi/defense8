@@ -23,15 +23,13 @@ Route::get('/', function (NovaRequest $request) {
     $createDisterbutedOilQuery = new DateFromAndToModelQuery(OilDisterbution::class, 'filled_date');
 
     $department = request()->input('department', '');
-    $selectedEmployee= $request->input('employee', '');
     $employee = [];
     if ($request->input('department', '') != '') {
         $employee = CardInfo::where('department_id', $request->input('department'))->get();
     }
-
-// dd($employee);
     return inertia('OilReport', [
         'disterbutes' => DisterbutedOilResource::collection($createDisterbutedOilQuery->query()
+        ->orderByDesc('filled_date')
             ->when(
                 $department,
                 function ($query) use ($department) {
@@ -40,10 +38,11 @@ Route::get('/', function (NovaRequest $request) {
                     });
                 }
             )
-            ->when($request->input('employee'),function ($query) use ($department) {
-                return $query->where('card_info_id',request()->input('employee'));
+            ->when($request->input('employee'), function ($query) use ($department) {
+                return $query->where('card_info_id', request()->input('employee'));
             })
             ->paginate(25)),
+        'request' => request()->all(),
         'date' => $request->input('date', verta()->format("Y/m/d")),
         'selectedDepartment' => $request->input('department', ''),
         'selectedEmployee' => $request->input('employee', ''),

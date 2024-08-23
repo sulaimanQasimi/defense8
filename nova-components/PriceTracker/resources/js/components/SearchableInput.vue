@@ -202,7 +202,6 @@ export default {
     },
 
     isSelectedResourceId(value) {
-      console.log(value);
       return !isNil(value) && value?.toString() === this.selectedResourceId?.toString();
     },
   },

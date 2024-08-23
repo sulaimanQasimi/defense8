@@ -17,3 +17,23 @@ use Illuminate\Support\Facades\Route;
 // Route::get('/', function (Request $request) {
 //     //
 // });
+
+Route::get('requirement', function () {
+    return [
+        "fields" => [
+            ['key' => "registare_no", 'label' => __('Register No'),],
+            ['key' => "full_name", 'label' => __('Name'),],
+            ['key' => "father_name", 'label' => __('Father Name'),],
+            ['key' => "department", 'label' => __('Department'),],
+            ['key' => "oil_type", 'label' => __('Oil Type'),],
+            ['key' => "monthly_rate", 'label' => __('Monthly Rate'),],
+            ['key' => "oil_amount", 'label' => __('Oil Amount'),],
+            ['key' => "date", 'label' => __('Date'),],
+        ],
+        "now" => verta()->format("Y/m/d"),
+        "path" => config("Oil-report.path"),
+        "importOil" => config("Oil-report.import"),
+        "disterbute" => config("Oil-report.disterbute"),
+
+    ];
+});

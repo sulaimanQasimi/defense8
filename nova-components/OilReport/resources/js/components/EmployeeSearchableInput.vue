@@ -61,8 +61,7 @@ export default {
     selectResource(resource) {
       this.selectedResource = resource;
       this.selectedResourceId = resource.id.value;
-      console.log(resource.id.value);
-      //
+
       this.$emit("fire-value", resource.id.value);
     },
 
@@ -95,8 +94,6 @@ export default {
       if (trimmedSearch == "") {
         return;
       }
-      console.log(search);
-
       this.searchDebouncer(() => {
         this.getAvailableResources(trimmedSearch);
       }, 500);
@@ -274,16 +271,6 @@ export default {
     useSearchInput() {
       return this.isSearchable || this.viaRelatedResource;
     },
-  },
-  queryParams() {
-    return {
-      search: this.search,
-      relationshipType: "hasMany",
-      trashed: null,
-      viaRelationship: "card_infos",
-      viaResource: "departments",
-      viaResourceId: this.department,
-    };
   },
 };
 </script>

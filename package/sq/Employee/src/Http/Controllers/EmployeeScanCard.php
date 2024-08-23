@@ -16,18 +16,17 @@ class EmployeeScanCard extends Controller
 {
     public function scan(Request $request)
     {
+        //
         $guest = null;
-
+        //
         $code = $request->input("code");
-
+        //
         if (\Illuminate\Support\Str::startsWith($code, 'Guest-')) {
             $guest = Guest::query()->where('barcode', $code)->first();
         }
-
+        //
         $employee = CardInfo::query()->where('registare_no', "=", $code)->first();
-        if ($employee) {
-            // dd($employee->gateEnteredToday);
-        }
+        //
         return view("sqemployee::employee.scan", compact("employee", "code", 'guest'));
     }
 

@@ -49,6 +49,6 @@ class SetEmployeeAttendanceState extends Component
             $today_attendance->state = "U";
         }
         $today_attendance->save();
-        $this->redirect(route("sqemployee.department.employee.attendance.check", ['department' => $this->employee->orginization->id]), true);
+        // $this->redirect(route("sqemployee.department.employee.attendance.check", ['department' => $this->employee->orginization->id]), true);
     }
 }

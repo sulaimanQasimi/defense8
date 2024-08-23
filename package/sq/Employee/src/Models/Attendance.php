@@ -36,6 +36,12 @@ class Attendance extends Model
     }
     public function getLabelAttribute($value)
     {
-        return ($this->state == "U") ? "غ" : "ح";
+        if ($this->state == "U") {
+            return "غ";
+        } else if ($this->state == "P") {
+            return "ح";
+        }else {
+            return null;
+        }
     }
 }

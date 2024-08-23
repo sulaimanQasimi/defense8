@@ -42,7 +42,7 @@
           >
             <FormLabel label-for="year" class="space-x-1">
               <span>
-                {{ __("Year") }}
+                {{ __("Department") }}
               </span>
             </FormLabel>
           </div>

@@ -55,9 +55,9 @@ class EmployeeVehicalCard extends Resource
                 ->placeholder(__("Enter Field", ['name' => __("Vehical Colour")])),
 
             Text::make(__("Vehical Palete"), "vehical_palete")
-                ->required()
-                ->creationRules('required', 'string', 'unique:employee_vehical_cards,vehical_palete')
-                ->updateRules('required', 'string', 'unique:employee_vehical_cards,vehical_palete,{{resourceId}}')
+                ->nullable()
+                ->creationRules('nullable', 'string', 'unique:employee_vehical_cards,vehical_palete')
+                ->updateRules('nullable', 'string', 'unique:employee_vehical_cards,vehical_palete,{{resourceId}}')
                 ->placeholder(__("Enter Field", ['name' => __("Vehical Palete")])),
 
             Text::make(__("Vehical Chassis"), "vehical_chassis")

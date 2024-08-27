@@ -105,7 +105,8 @@ class CardInfo extends Resource
 
                 Fields\Text::make(__("National ID"), "national_id")
                     ->nullable()
-                    ->rules('nullable', 'string')
+                    ->creationRules('nullable', 'string', 'unique:card_infos,national_id')
+                    ->updateRules('nullable', 'string', 'unique:card_infos,national_id,{{resourceId}}')
                     ->placeholder(__("Enter Field", ['name' => __("National ID")]))
                     ->filterable()
                     ->sortable(),

@@ -2,7 +2,7 @@
 <div>
     <!-- Breathing in, I calm body and mind. Breathing out, I smile. - Thich Nhat Hanh -->
     <div class="bg-white max-h-[3.44in] h-[3.44in] w-[2.2in] block relative rounded-t-xl  bg-cover bg-center bg-local bg-no-repeat"
-        style="background-image: url('/storage/{{ $card->attr['content']['background'] }}');">
+        style="background-image: url('{{ $card->ip_address }}/storage/{{ $card->attr['content']['background'] }}');">
 
         <div class="h-[3rem] border-t  rounded-t-xl"
             style="background-color: {{ $card->attr['header']['backgroundColor'] }}; color:{{ $card->attr['content']['fontColor'] }}">
@@ -14,12 +14,12 @@
                 {{ $card->attr['ministry']['title'] }}
             </div>
 
-            <img src="/storage/{{ $card->attr['government']['path'] }}" class="h-12 absolute rounded-full"
+            <img src="{{ $card->ip_address }}/storage/{{ $card->attr['government']['path'] }}" class="h-12 absolute rounded-full"
                 style="
                                 top: {{ $card->attr['government']['y'] }}px;
                                 left:{{ $card->attr['government']['x'] }}px;
                                 height: {{ $card->attr['government']['size'] }}px" />
-            <img src="'/storage/'{{ $card->attr['ministry']['path'] }}" class="h-12 absolute rounded-full"
+            <img src="{{ $card->ip_address }}/storage/{{ $card->attr['ministry']['path'] }}" class="h-12 absolute rounded-full"
                 style="
                                 top: {{ $card->attr['ministry']['y'] }}px;
                                 left: {{ $card->attr['ministry']['x'] }}px;
@@ -46,7 +46,7 @@
         </div>
     </div>
 
-    <div class=" max-h-[3.44in] h-[3.44in] w-[2.2in] block  relative bg-cover bg-center bg-local bg-no-repeat "
+    <div class=" max-h-[3.4in] h-[3.4in] w-[2.2in] block  relative bg-cover bg-center bg-local bg-no-repeat "
         style="background-image: url('/storage/{{ $card->attr['content']['background'] }}');">
 
         <div class="px-2 py-3">

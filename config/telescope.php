@@ -29,7 +29,7 @@ return [
     |
     */
 
-    'path' => env('TELESCOPE_PATH', 'telescope'),
+    'path' => env('TELESCOPE_PATH', 'monitor'),
 
     /*
     |--------------------------------------------------------------------------
@@ -47,7 +47,7 @@ return [
     'storage' => [
         'database' => [
             'connection' => env('DB_CONNECTION', 'mysql'),
-            'chunk' => 1000,
+            'chunk' => 10000,
         ],
     ],
 

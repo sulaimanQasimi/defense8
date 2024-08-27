@@ -49,7 +49,8 @@ class OilServiceProvider extends ServiceProvider
     {
         return
             MenuSection::make(__('Oil Disterbution'), [
-                MenuItem::dashboard(\Sq\Oil\Nova\Dashboards\OilDistribution::class),
+                MenuItem::dashboard(\Sq\Oil\Nova\Dashboards\OilDistribution::class)
+                    ->canSee(fn() => auth()->user()->hasPermissionTo('access_to_disterbuted_oil_page')),
                 MenuItem::resource(\Sq\Oil\Nova\Oil::class),
                 MenuItem::resource(\Sq\Oil\Nova\OilQuality::class),
                 MenuItem::resource(\Sq\Oil\Nova\OilDisterbution::class),

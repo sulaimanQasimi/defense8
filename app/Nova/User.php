@@ -68,8 +68,8 @@ class User extends Resource
                 ->onlyOnForms()
                 ->creationRules('required', Rules\Password::defaults())
                 ->updateRules('nullable', Rules\Password::defaults()),
-            MorphToMany::make('Roles', 'roles', \Sereny\NovaPermissions\Nova\Role::class),
-            MorphToMany::make('Permissions', 'permissions', \Sereny\NovaPermissions\Nova\Permission::class),
+            MorphToMany::make('Roles', 'roles', \App\Nova\Role::class),
+            MorphToMany::make('Permissions', 'permissions', \App\Nova\Permission::class),
 
         ];
     }

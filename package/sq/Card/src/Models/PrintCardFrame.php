@@ -22,52 +22,55 @@ class PrintCardFrame extends Model
 
         static::created(
             function ($card) {
-                $card->attr = [
-                    'ministry' => [
-                        'fontSize'=>null,
-                        'fontFamily'=>null,
-                        'title' => null,
-                        'path' => null,
-                        'x' => null,
-                        'y' => null,
-                        'size' => null,
-                    ],
-                    'government' => [
-                        'fontFamily'=>null,
-                        'fontSize'=>null,
-                        'title' => null,
-                        'path' => null,
-                        'x' => null,
-                        'y' => null,
-                        'size' => null,
-                    ],
-                    'profile' => [
-                        'path' => 'logo.png',
-                        'size' => null,
-                        'x' => null,
-                        'y' => null,
+                if (is_null($card->attr)) {
+                    $card->attr = [
+                        'ministry' => [
+                            'fontSize' => null,
+                            'fontFamily' => null,
+                            'title' => null,
+                            'path' => null,
+                            'x' => null,
+                            'y' => null,
+                            'size' => null,
+                        ],
+                        'government' => [
+                            'fontFamily' => null,
+                            'fontSize' => null,
+                            'title' => null,
+                            'path' => null,
+                            'x' => null,
+                            'y' => null,
+                            'size' => null,
+                        ],
+                        'profile' => [
+                            'path' => 'logo.png',
+                            'size' => null,
+                            'x' => null,
+                            'y' => null,
 
-                    ],
-                    "header" => [
-                        'backgroundColor'=>null
-                    ],
-                    'content' => [
-                        'background' => null,
-                        'fontColor' => null,
-                        'fontSize' => null,
-                    ],
-                    'qrcode' => [
-                        'x' => null,
-                        'y' => null,
-                        'size' => null,
-                        "width" => 128,
-                        "height" => 128,
-                        "colorDark" => "#000000",
-                        "colorLight" => "#ffffff",
-                        "correctLevel" => "QRCode.CorrectLevel.H",
-                    ],
-                ];
-                $card->save();
+                        ],
+                        "header" => [
+                            'backgroundColor' => null
+                        ],
+                        'content' => [
+                            'background' => null,
+                            'fontColor' => null,
+                            'fontSize' => null,
+                        ],
+                        'qrcode' => [
+                            'x' => null,
+                            'y' => null,
+                            'size' => null,
+                            "width" => 128,
+                            "height" => 128,
+                            "colorDark" => "#000000",
+                            "colorLight" => "#ffffff",
+                            "correctLevel" => "QRCode.CorrectLevel.H",
+                        ],
+                    ];
+                    $card->ip_address = config('app.url');
+                    $card->save();
+                }
             }
         );
     }

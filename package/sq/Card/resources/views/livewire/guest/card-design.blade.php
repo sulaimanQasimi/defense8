@@ -166,22 +166,23 @@
             {{-- File Upload Component --}}
             @include('sqcard::livewire.guest.components.fileUpload')
         </div>
-        <div id="printable" class="pt-6 pb-3" wire:ignore x-data="{
+        <div id="printable" class="pt-6 pb-3" wire:ignore
+        x-data="{
 
             state: {
                 show: true
             },
+            card: @entangle('cardFrame').live,
             attr: @entangle('attr').live,
             details: @entangle('details').live,
             remark: @entangle('remark').live,
-        }" x-init="let qrcode =
+        }"
+        x-init="let qrcode =
             new QRCode(document.getElementById('qrcode'), {
                 width: attr.qrcode.size,
                 height: attr.qrcode.size
             });
-        qrcode.clear();
-
-        qrcode.makeCode('123');" x-show="state.show"
+        qrcode.clear();qrcode.makeCode('123');" x-show="state.show"
             x-cloak>
             @includeWhen($cardFrame->dim === 'horizontal', 'sqcard::livewire.guest.card-design-horizontal')
             @includeWhen($cardFrame->dim == 'vertical', 'sqcard::livewire.guest.card-design-vertical')

@@ -9,6 +9,7 @@
     @vite(['resources/js/app.js'])
     <link type="text/css" href="{{ asset('single.css') }}" rel="stylesheet" />
     <link type="text/css" href="{{ asset('cards/font.css') }}" rel="stylesheet" />
+    <script type="text/javascript" src="{{ asset('cards/qrcode/qrcode.js') }}"></script>
     <style>
         body {
             margin: 0;
@@ -35,18 +36,12 @@
     <x-sqcard::card.horizontal :card="$card" :cardInfo="$cardInfo" :id="'guest-' . $cardInfo->id">
         {!! $details !!}
         <x-slot:remark>
-            {{ $remark }}
+            {!! $remark !!}
         </x-slot:remark>
     </x-sqcard::card.horizontal>
 
     <script type="text/javascript" src="{{ asset('cards/qrcode/qrcode.js') }}"></script>
-    <script type="text/javascript">
-        var qrcode = new QRCode(document.getElementById("qrcode"), {
-            width: 100,
-            height: 100
-        });
-        qrcode.makeCode("{{ $cardInfo->registare_no }}");
-    </script>
+    @stack('js')
 </body>
 
 </html>

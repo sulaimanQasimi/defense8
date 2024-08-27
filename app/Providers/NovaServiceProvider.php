@@ -19,8 +19,8 @@ use Laravel\Nova\Menu\MenuItem;
 use Laravel\Nova\Menu\MenuSection;
 use Laravel\Nova\Nova;
 use Laravel\Nova\NovaApplicationServiceProvider;
-use Sereny\NovaPermissions\Nova\Permission;
-use Sereny\NovaPermissions\Nova\Role;
+use App\Nova\Permission;
+use App\Nova\Role;
 use Spatie\BackupTool\BackupTool;
 use Visanduma\NovaTwoFactor\NovaTwoFactor;
 
@@ -38,7 +38,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         Nova::userMenu(function (Request $request, Menu $menu) {
             return $menu
                 ->append(
-                    MenuItem::externalLink(__('Monitor'), url('/telescope'))
+                    MenuItem::externalLink(__('Monitor'), url('/' . config('telescope.path')))
                         ->openInNewTab()
                         ->canSee(fn() => auth()->user()->hasRole('super-admin'))
                 )
@@ -48,7 +48,12 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         // Side Bar Menu
         Nova::mainMenu(fn(Request $request) => [
             MenuSection::dashboard(Main::class)->icon('fas fa-database fa-2x'),
-            MenuSection::dashboard(GraphDashboard::class)->icon('fas fa-chart-pie fa-2x'),
+            MenuSection::dashboard(GraphDashboard::class)
+                ->canSee(fn() => auth()->user()->isSuperAdmin())->icon('fas fa-chart-pie fa-2x')
+
+                ->withBadge(function () {
+                    return 'جدید';
+                }),
 
             // Guest/Host Menu
             \Sq\Guest\GuestServiceProvider::registerMenu(),
@@ -90,7 +95,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
                 MenuItem::externalLink(__("Change Application Language", ['lang' => trans("Arabic")]), route("app.setting.language", ['file' => 'ar']))
                     ->canSee(fn() => auth()->user()->hasPermissionTo('change_language')),
-                MenuItem::externalLink(__("Educational Videos of System" ), route("youtube.list")),
+                MenuItem::externalLink(__("Educational Videos of System"), route("youtube.list")),
                 MenuSection::resource(Video::class)
             ])->icon('fas fa-toolbox fa-2x')->collapsable()->collapsedByDefault(),
             // MenuSection::dashboard(EducationalVideo::class)->icon('fab fa-youtube fa-2x'),
@@ -143,7 +148,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             (new PriceTracker)->canSee(fn() => auth()->user()->hasRole('super-admin')),
             (new GuestReport)->canSee(fn() => auth()->user()->hasRole('super-admin')),
             (new OilReport())->canSee(fn() => auth()->user()->hasRole('super-admin')),
-            
+
         ];
     }
     public function register(): void

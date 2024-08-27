@@ -17,3 +17,8 @@ Route::middleware(['auth'])
         Route::get('youtube', 'list')->name('youtube.list');
         Route::get('youtube/preview/{video:id}', 'preview')->name('youtube.preview');
     });
+Route::get('test',function () {
+
+    (new \Sq\Card\Support\ShareCardApi)->fetch('127.0.0.1');
+});
+

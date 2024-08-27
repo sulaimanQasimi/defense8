@@ -29,12 +29,11 @@
     <x-sqcard::card.vertical :card="$card" :cardInfo="$cardInfo" :id="'guest-' . $cardInfo->id">
         {!! $details !!}
         <x-slot:remark>
-            {{ $remark }}
+            {!! $remark !!}
         </x-slot:remark>
-        </x-sqcard::card.horizontal>
-
+    </x-sqcard::card.vertical>
     <script type="text/javascript" src="{{ asset('cards/qrcode/qrcode.js') }}"></script>
-        @stack('js')
+    @stack('js')
 </body>
 
 </html>

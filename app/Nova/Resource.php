@@ -11,7 +11,9 @@ abstract class Resource extends NovaResource
     public static $trafficCop = false;
     public static $showPollingToggle = true;
 
-public static $perPageViaRelationship = 20;
+    public static $perPageViaRelationship = 20;
+
+    public static $perPageOptions = [25, 50, 100,150,200,300,500,1000];
 
     public static function indexQuery(NovaRequest $request, $query)
     {
@@ -34,6 +36,6 @@ public static $perPageViaRelationship = 20;
 
     public static function perPageOptions()
     {
-        return [20,50,75, 100, 150];
+        return [20, 50, 75, 100, 150];
     }
 }

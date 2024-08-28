@@ -11,7 +11,13 @@
         "build-guest-report": "cd nova-components/GuestReport && npm run dev",
         "build-guest-report-prod": "cd nova-components/GuestReport && npm run prod",
         "build-employeeChecker": "cd nova-components/EmployeeChecker && npm run dev",
-        "build-employeeChecker-prod": "cd nova-components/EmployeeChecker && npm run prod"
+        "build-employeeChecker-prod": "cd nova-components/EmployeeChecker && npm run prod",
+        "build-stripe-inspector": "cd nova-components/StripeInspector && npm run dev",
+        "build-stripe-inspector-prod": "cd nova-components/StripeInspector && npm run prod",
+        "build-employee-attendance": "cd nova-components/EmployeeAttendance && npm run dev",
+        "build-employee-attendance-prod": "cd nova-components/EmployeeAttendance && npm run prod",
+        "build-employee-attendance-statistic": "cd nova-components/EmployeeAttendanceStatistic && npm run dev",
+        "build-employee-attendance-statistic-prod": "cd nova-components/EmployeeAttendanceStatistic && npm run prod"
     },
     "devDependencies": {
         "@inertiajs/vue3": "^1.0.0",

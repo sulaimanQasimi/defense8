@@ -9,7 +9,7 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Website extends Resource
 {
-        public static $model = \Sq\Employee\Models\Website::class;
+    public static $model = \Sq\Employee\Models\Website::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -50,7 +50,7 @@ class Website extends Resource
         return [
             ID::make()->sortable(),
             Text::make(trans("Website Name"), 'name')->sortable()->required()->creationRules("required", "string", "unique:websites,name")
-            ->updateRules("required", "string", "unique:websites,name,{{resourceId}}"),
+                ->updateRules("required", "string", "unique:websites,name,{{resourceId}}"),
             Text::make(trans("IP Address"), 'ip')->rules("required", "ipv4"),
             Textarea::make(trans("Token"), 'token')->rules("required", "string")
         ];

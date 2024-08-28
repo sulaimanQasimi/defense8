@@ -5,7 +5,8 @@ namespace App\Policies;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Database\Eloquent\Model;
 
-class BasePolicy {
+class BasePolicy
+{
 
     use HandlesAuthorization;
 
@@ -94,26 +95,12 @@ class BasePolicy {
     {
         return $this->hasPermissionTo($user, 'viewAny');
     }
-
-    /**
-     * Build permission name
-     *
-     * @param string $name
-     * @return string
-     */
     protected function buildPermission(string $name)
     {
-        return $name ." ". ucfirst($this->key);
+        return $name . " " . ucfirst($this->key);
     }
-
-    /**
-     * Checks if user has permission
-     *
-     * @param \Illuminate\Database\Eloquent\Model $user
-     * @return bool
-     */
     protected function hasPermissionTo($user, $permission)
     {
-        return (method_exists($user, 'isSuperAdmin') && $user->isSuperAdmin());
+        return $user->isSuperAdmin();
     }
 }

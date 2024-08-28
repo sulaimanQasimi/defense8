@@ -44,7 +44,7 @@
         </div>
     </div>
     <div class=" h-[2.1in] w-[3.44in] max-h-[2.13in] max-w-[3.44in]  block  relative bg-cover bg-center bg-local bg-no-repeat "
-        style="background-image: url('/storage/{{ $card->attr['content']['background'] }}');">
+        style="background-image: url('{{ $card->ip_address }}/storage/{{ $card->attr['content']['background'] }}');">
         <div class="px-2 py-3">
             <div class="text-sm font-medium">{!! $remark !!}</div>
         </div>

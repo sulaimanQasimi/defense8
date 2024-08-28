@@ -9,9 +9,13 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "acme/employee-attendance": "@dev",
+        "acme/employee-attendance-statistic": "@dev",
         "acme/guest-report": "@dev",
         "acme/oil-report": "@dev",
         "acme/price-tracker": "@dev",
+        "acme/stripe-inspector": "@dev",
+        "ayvazyan10/nova-imagic": "^1.3",
         "badinansoft/nova-language-switch": "^1.2",
         "barryvdh/laravel-dompdf": "*",
         "bolechen/nova-activitylog": "^0.4.3",
@@ -40,12 +44,12 @@
         "sereny/nova-permissions": "^1.4",
         "spatie/laravel-settings": "^3.3",
         "spatie/nova-backup-tool": "^5.0",
-        "sq/query": "@dev",
         "sq/card": "@dev",
-        "sq/oil": "@dev",
-        "sq/location": "@dev",
         "sq/employee": "@dev",
         "sq/guest": "@dev",
+        "sq/location": "@dev",
+        "sq/oil": "@dev",
+        "sq/query": "@dev",
         "tightenco/ziggy": "^1.0"
     },
     "repositories": [
@@ -88,6 +92,22 @@
         {
             "type": "path",
             "url": "./package/sq/guest"
+        },
+        {
+            "type": "path",
+            "url": "./nova-components/StripeInspector"
+        },
+        {
+            "type": "path",
+            "url": "./nova-components/StripeInspector"
+        },
+        {
+            "type": "path",
+            "url": "./nova-components/EmployeeAttendance"
+        },
+        {
+            "type": "path",
+            "url": "./nova-components/EmployeeAttendanceStatistic"
         }
     ],
     "autoload": {

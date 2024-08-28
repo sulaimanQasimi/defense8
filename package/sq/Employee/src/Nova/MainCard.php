@@ -32,7 +32,7 @@ class MainCard extends Resource
     public function fields(NovaRequest $request)
     {
         return [
-            BelongsTo::make(__('info'),'card_info',CardInfo::class),
+            BelongsTo::make(__('Employee'),'card_info',CardInfo::class),
             PersianDate::make(__("Disterbute Date"),"card_perform"),
             PersianDate::make(__("Expire Date"),"card_expired_date"),
         ];

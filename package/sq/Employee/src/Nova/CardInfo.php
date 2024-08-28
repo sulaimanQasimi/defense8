@@ -2,6 +2,7 @@
 
 namespace Sq\Employee\Nova;
 
+use Acme\StripeInspector\StripeInspector;
 use App\Nova\Actions\EditCardInfoOption;
 use App\Nova\Actions\EditCardInfoRemark;
 use App\Nova\Actions\ExportCardInfo;
@@ -279,6 +280,7 @@ class CardInfo extends Resource
             ),
             Fields\HasMany::make(__("Oil Report"), 'oil_disterbutions', \Sq\Oil\Nova\OilDisterbution::class),
             Fields\HasMany::make(__("Attendance"), 'attendance', Attendance::class),
+            StripeInspector::make(),
         ];
     }
     public function cards(NovaRequest $request)

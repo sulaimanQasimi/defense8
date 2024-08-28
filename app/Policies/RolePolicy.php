@@ -18,5 +18,4 @@ class RolePolicy extends BasePolicy {
     {
         return false;
     }
-
 }

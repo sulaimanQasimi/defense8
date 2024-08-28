@@ -36,7 +36,7 @@ class GunCard extends Resource
     public function fields(NovaRequest $request)
     {
         return [
-            BelongsTo::make(__('Employee'), 'card_info', CardInfo::class),
+            BelongsTo::make(__('Employee'), 'card_info', CardInfo::class)->searchable(),
             Text::make(__("Gun Type"), "gun_type")
                 ->required()
                 ->rules("required", "string"),

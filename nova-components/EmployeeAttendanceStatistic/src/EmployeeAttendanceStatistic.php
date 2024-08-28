@@ -11,7 +11,7 @@ class EmployeeAttendanceStatistic extends Card
      *
      * @var string
      */
-    public $width = '1/3';
+    public $width = '1/2';
 
     /**
      * Get the component name for the element.
@@ -21,5 +21,11 @@ class EmployeeAttendanceStatistic extends Card
     public function component()
     {
         return 'employee-attendance-statistic';
+    }
+
+
+    public function attentenceLabel(string $label,bool $present)
+    {
+        return $this->withMeta(['attentenceLabel' => $label,'present'=>$present]);
     }
 }

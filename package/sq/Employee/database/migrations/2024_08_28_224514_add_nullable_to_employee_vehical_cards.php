@@ -13,8 +13,7 @@ return new class extends Migration
     {
         Schema::table('employee_vehical_cards', function (Blueprint $table) {
 
-            $table->foreignId("driver_id")->nullable();
-            $table->foreign('driver_id')->references('id')->on("card_infos")->cascadeOnDelete();
+            $table->foreignId("driver_id")->nullable()->change();
         });
     }
 

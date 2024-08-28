@@ -2,6 +2,7 @@
 
 namespace Sq\Employee\Nova;
 
+use Acme\EmployeeAttendanceStatistic\EmployeeAttendanceStatistic;
 use Acme\StripeInspector\StripeInspector;
 use App\Nova\Actions\EditCardInfoOption;
 use App\Nova\Actions\EditCardInfoRemark;
@@ -308,6 +309,12 @@ class CardInfo extends Resource
                 ->options([
                     'xaxis' => collect($info)->keys()
                 ]),
+                (new EmployeeAttendanceStatistic())
+                ->onlyOnDetail()
+                ->attentenceLabel(__("Present"),true),
+                (new EmployeeAttendanceStatistic())
+                ->onlyOnDetail()
+                ->attentenceLabel(__("Upsent"),false)
         ];
     }
     public function filters(NovaRequest $request)

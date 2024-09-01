@@ -2,11 +2,10 @@
 
 namespace App\Providers;
 
-use Acme\EmployeeChecker\EmployeeChecker;
+use Acme\AppSetting\AppSetting;
 use Acme\GuestReport\GuestReport;
 use Acme\OilReport\OilReport;
 use Acme\PriceTracker\PriceTracker;
-use App\Nova\Dashboards\EducationalVideo;
 use App\Nova\Dashboards\GraphDashboard;
 use App\Nova\Dashboards\Main;
 use App\Nova\User;
@@ -84,6 +83,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 MenuItem::make(__('Backups'))
                     ->path('/backups')
                     ->canSee(fn() => auth()->user()->hasRole('super-admin'))->openInNewTab(),
+                MenuItem::make(__('App Setting'))
+                    ->path('/app-setting')
+                    ->canSee(fn() => auth()->user()->hasRole('super-admin'))->openInNewTab(),
 
 
                 MenuItem::externalLink(__("Change Application Language", ['lang' => trans("Dari")]), route("app.setting.language", ['file' => 'fa']))
@@ -148,7 +150,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             (new PriceTracker)->canSee(fn() => auth()->user()->hasRole('super-admin')),
             (new GuestReport)->canSee(fn() => auth()->user()->hasRole('super-admin')),
             (new OilReport())->canSee(fn() => auth()->user()->hasRole('super-admin')),
-
+            (new AppSetting())->canSee(fn() => auth()->user()->hasRole('super-admin')),
         ];
     }
     public function register(): void

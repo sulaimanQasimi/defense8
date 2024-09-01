@@ -29,7 +29,7 @@ class AttendanceGenerator extends Component
             ]
         );
 
-        $this->route = route('employee.attendance.current.month..department.single', ['department' => $this->department, 'month' => $this->month, 'year' => $this->year]);
+        $this->route = route('employee.attendance.current.month.department.single', ['department' => $this->department, 'month' => $this->month, 'year' => $this->year]);
     }
 
 }

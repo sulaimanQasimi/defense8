@@ -125,7 +125,8 @@ class OilDistribution extends Dashboard
             (new SqNovaValueMetric(trans("Month Action", ['name' => __("Past Month"), 'type' => __(OilType::Petrole), 'action' => trans("Remain")]), $statistic['past_month']['remain'][OilType::Petrole]))
                 ->icon('fas fa-gas-pump fa-2x')
                 ->width('1/2'),
-            (new SqNovaValueMetric(trans("Month Action", ['name' => __("Past Month"), 'type' => __(OilType::Diesel), 'action' => trans("Remain")]), $statistic['past_month']['remain'][OilType::Diesel]))
+            (new SqNovaValueMetric(trans("Month Action", ['name' => __("Past Month"), 'type' => __(OilType::Diesel), 'action' => trans("Remain")]),
+            $statistic['past_month']['remain'][OilType::Diesel]))
                 ->icon('fas fa-gas-pump fa-2x')
                 ->width('1/2'),
 

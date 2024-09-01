@@ -23,9 +23,8 @@
             <div class="absolute bg-black opacity-60 inset-0 z-0"></div>
             <div class="w-full px-24 z-10">
                 <h1 class="text-3xl font-bold text-center tracking-wide">
-                    د افغانستان اسلامی امارت
-                </h1>
-                <p class="text-center text-2xl mt-2">د ملی دفاع وزارت</p>
+                    {{ app(\App\Settings\Login::class)->title }} </h1>
+                <p class="text-center text-2xl mt-2">{{ app(\App\Settings\Login::class)->subtitle }}</p>
             </div>
         </div>
         <div class="lg:w-1/2 w-full flex items-center justify-center text-center md:px-16 px-0 z-0"
@@ -48,7 +47,7 @@
                     <div class="pb-2 pt-4">
                         <input type="email" name="email" id="email" placeholder="Email"
                             class="block w-full p-4 text-lg rounded-sm bg-transparent border border-white" />
-                            @error('email')
+                        @error('email')
                             <span class="text-red-500 font-semibold">{{ $message }}</span>
                         @enderror
 
@@ -56,7 +55,7 @@
                     <div class="pb-2 pt-4">
                         <input class="block w-full p-4 text-lg rounded-sm bg-transparent border border-white"
                             type="password" name="password" id="password" placeholder="Password" />
-                            @error('password')
+                        @error('password')
                             <span class="text-red-500 font-semibold">{{ $message }}</span>
                         @enderror
 

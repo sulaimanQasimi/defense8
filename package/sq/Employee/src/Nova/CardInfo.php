@@ -7,6 +7,7 @@ use Acme\StripeInspector\StripeInspector;
 use App\Nova\Actions\EditCardInfoOption;
 use App\Nova\Actions\EditCardInfoRemark;
 use App\Nova\Actions\ExportCardInfo;
+use Laravel\Nova\Metrics\ApexLineChart;
 use Sq\Location\Nova as Location;
 use App\Nova\Resource;
 use App\Support\Defense\EditAditionalCardInfoEnum;
@@ -24,6 +25,7 @@ use MZiraki\PersianDateField\PersianDate;
 use Sq\Query\SqNovaDateFilter;
 use Sq\Query\SqNovaSelectFilter;
 use Sq\Query\SqNovaTextFilter;
+use Sq\Query\SqNovaValueMetric;
 use Vehical\OilType;
 
 class CardInfo extends Resource
@@ -288,33 +290,25 @@ class CardInfo extends Resource
     {
         //
         $info = DB::table('card_infos')
-            ->select(DB::raw('count(id) as num,year(created_at) as year'))
-            ->groupByRaw("year(created_at)")
+            ->select(DB::raw('count(id) as num,date(created_at) as year'))
+            ->groupByRaw("date(created_at)")
             ->orderBy('year')
-            ->pluck('num', 'year');
+            ->get(['num', 'year'])
+            ->map(
+                function ($employee) {
+                    return [
+                        "x" => verta($employee->year)->format("Y/m/d"),
+                        "y" => $employee->num
+                    ];
+                }
+            );
         return [
-            (new LineChart)
-                ->title("")
-
-                ->series(
-                    array(
-                        [
-                            'barPercentage' => 0.5,
-                            'label' => trans("Employees"),
-                            'borderColor' => "#f7a35c",
-                            'data' => $info
-                        ]
-                    )
-                )
-                ->options([
-                    'xaxis' => collect($info)->keys()
-                ]),
-                (new EmployeeAttendanceStatistic())
+            (new EmployeeAttendanceStatistic())
                 ->onlyOnDetail()
-                ->attentenceLabel(__("Present"),true),
-                (new EmployeeAttendanceStatistic())
+                ->attentenceLabel(__("Present"), true),
+            (new EmployeeAttendanceStatistic())
                 ->onlyOnDetail()
-                ->attentenceLabel(__("Upsent"),false)
+                ->attentenceLabel(__("Upsent"), false)
         ];
     }
     public function filters(NovaRequest $request)

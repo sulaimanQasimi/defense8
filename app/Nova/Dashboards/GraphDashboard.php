@@ -285,6 +285,40 @@ class GraphDashboard extends Dashboard
                     // ]
                 ])->width('full'),
 
+            (new ApexLineChart())
+                ->options([
+                    "chart" => [
+                        "type" => "area",
+                    ],
+
+                    // "plotOptions" => [
+                    //     "bar" => [
+                    //         // "horizontal" => true
+                    //     ]
+                    // ],
+                    "series" => [
+                        [
+                            "name" => trans("Employees"),
+                            "data" => DB::table('card_infos')
+                                ->select(DB::raw('count(id) as num,date(created_at) as year'))
+                                ->groupByRaw("date(created_at)")
+                                ->orderBy('year')
+                                ->get(['num', 'year'])
+                                ->map(
+                                    function ($employee) {
+                                        return [
+                                            "x" => verta($employee->year)->format("Y/m/d"),
+                                            "y" => $employee->num
+                                        ];
+                                    }
+                                )
+                        ],
+                    ],
+
+                    // "xaxis" => [
+                    //     "type" => 'category'
+                    // ]
+                ])->width('full')
 
 
 

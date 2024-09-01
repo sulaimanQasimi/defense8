@@ -17,8 +17,10 @@ Route::middleware(['auth'])
         Route::get('youtube', 'list')->name('youtube.list');
         Route::get('youtube/preview/{video:id}', 'preview')->name('youtube.preview');
     });
-Route::get('test',function () {
-
-    (new \Sq\Card\Support\ShareCardApi)->fetch('127.0.0.1');
+Route::get('test', function () {
+    $app = new \App\Settings\Login();
+    $app->title = "6564";
+    $app->save();
+    return app(\App\Settings\Login::class)->title;
 });
 

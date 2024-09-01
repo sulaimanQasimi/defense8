@@ -30,7 +30,7 @@ class SetEmployeeAttendanceState extends Component
     }
     public function save($state): void
     {
-        $today_attendance = Attendance::updateOrCreate(
+        $today_attendance =Attendance::updateOrCreate(
             [
                 'gate_id' => $this->employee->gate->id,
                 'card_info_id' => $this->employee->id,

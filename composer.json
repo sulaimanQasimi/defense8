@@ -50,7 +50,8 @@
         "sq/location": "@dev",
         "sq/oil": "@dev",
         "sq/query": "@dev",
-        "tightenco/ziggy": "^1.0"
+        "tightenco/ziggy": "^1.0",
+        "acme/app-setting": "@dev"
     },
     "repositories": [
         {
@@ -108,6 +109,10 @@
         {
             "type": "path",
             "url": "./nova-components/EmployeeAttendanceStatistic"
+        },
+        {
+            "type": "path",
+            "url": "./nova-components/AppSetting"
         }
     ],
     "autoload": {

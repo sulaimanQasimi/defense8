@@ -163,7 +163,6 @@ class Nova {
    * the underlying Vue instance.
    */
   liftOff() {
-
     this.boot()
 
     if (this.config('notificationCenterEnabled')) {
@@ -182,14 +181,12 @@ class Nova {
 
     document.addEventListener('inertia:before', () => {
       ;(async () => {
-        this.log('Syncing Inertia props to the store...')
         await this.store.dispatch('assignPropsFromInertia')
       })()
     })
 
     document.addEventListener('inertia:navigate', () => {
       ;(async () => {
-        this.log('Syncing Inertia props to the store...')
         await this.store.dispatch('assignPropsFromInertia')
       })()
     })
@@ -223,7 +220,6 @@ class Nova {
 
     this.applyTheme()
 
-    this.log('All systems go...')
   }
 
   config(key) {

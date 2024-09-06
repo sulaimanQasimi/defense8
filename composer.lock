@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "11f3299cf2eec9ef25f30385d7dd3fb2",
+    "content-hash": "867285333c362c8a694513776dff0745",
     "packages": [
         {
             "name": "acme/app-setting",
@@ -106,6 +106,42 @@
                 "MIT"
             ],
             "description": "A Laravel Nova card.",
+            "keywords": [
+                "laravel",
+                "nova"
+            ],
+            "transport-options": {
+                "relative": true
+            }
+        },
+        {
+            "name": "acme/forum",
+            "version": "dev-version-15",
+            "dist": {
+                "type": "path",
+                "url": "./nova-components/Forum",
+                "reference": "4ad03a3ffbaef84db91a7602b3e15206829a8c61"
+            },
+            "require": {
+                "php": "^7.3|^8.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Acme\\Forum\\ToolServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Acme\\Forum\\": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "A Laravel Nova tool.",
             "keywords": [
                 "laravel",
                 "nova"
@@ -2964,6 +3000,69 @@
                 }
             ],
             "time": "2022-05-21T17:30:32+00:00"
+        },
+        {
+            "name": "kalnoy/nestedset",
+            "version": "v6.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/lazychaser/laravel-nestedset.git",
+                "reference": "d81102c980b9962516c0fd8fda21dd916a23a3d7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/lazychaser/laravel-nestedset/zipball/d81102c980b9962516c0fd8fda21dd916a23a3d7",
+                "reference": "d81102c980b9962516c0fd8fda21dd916a23a3d7",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/database": "^7.0|^8.0|^9.0|^10.0|^11.0",
+                "illuminate/events": "^7.0|^8.0|^9.0|^10.0|^11.0",
+                "illuminate/support": "^7.0|^8.0|^9.0|^10.0|^11.0",
+                "php": "^7.2.5|^8.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "7.*|8.*|9.*|^10.5"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "v5.0.x-dev"
+                },
+                "laravel": {
+                    "providers": [
+                        "Kalnoy\\Nestedset\\NestedSetServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Kalnoy\\Nestedset\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Alexander Kalnoy",
+                    "email": "lazychaser@gmail.com"
+                }
+            ],
+            "description": "Nested Set Model for Laravel 5.7 and up",
+            "keywords": [
+                "database",
+                "hierarchy",
+                "laravel",
+                "nested sets",
+                "nsm"
+            ],
+            "support": {
+                "issues": "https://github.com/lazychaser/laravel-nestedset/issues",
+                "source": "https://github.com/lazychaser/laravel-nestedset/tree/v6.0.4"
+            },
+            "time": "2024-04-08T06:10:42+00:00"
         },
         {
             "name": "laravel/fortify",
@@ -6996,6 +7095,73 @@
             "time": "2024-06-03T08:00:43+00:00"
         },
         {
+            "name": "riari/laravel-forum",
+            "version": "5.6.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Team-Tea-Time/laravel-forum.git",
+                "reference": "e09eaa1882a62cc8d9e1ebe04aba80cd1e5a4a64"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Team-Tea-Time/laravel-forum/zipball/e09eaa1882a62cc8d9e1ebe04aba80cd1e5a4a64",
+                "reference": "e09eaa1882a62cc8d9e1ebe04aba80cd1e5a4a64",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/dbal": "^3.5",
+                "kalnoy/nestedset": "^6.0",
+                "laravel/framework": "^10.0",
+                "php": "^8.1"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^8.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "TeamTeaTime\\Forum\\ForumServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "TeamTeaTime\\Forum\\": "src",
+                    "TeamTeaTime\\Forum\\Database\\Seeders\\": "database/seeders",
+                    "TeamTeaTime\\Forum\\Database\\Factories\\": "database/factories"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Riari",
+                    "email": "riari@teamteatime.net"
+                },
+                {
+                    "name": "NeeHi",
+                    "email": "neehi@teamteatime.net"
+                }
+            ],
+            "description": "A Laravel 6/7/8/9 package providing a solid foundation for building discussion forums",
+            "keywords": [
+                "discuss",
+                "forum",
+                "laravel",
+                "laravel-6",
+                "laravel-7",
+                "laravel-8"
+            ],
+            "support": {
+                "issues": "https://github.com/Team-Tea-Time/laravel-forum/issues",
+                "source": "https://github.com/Team-Tea-Time/laravel-forum/tree/5.6.4"
+            },
+            "time": "2024-09-03T20:40:28+00:00"
+        },
+        {
             "name": "sabberworm/php-css-parser",
             "version": "v8.6.0",
             "source": {
@@ -10857,6 +11023,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "acme/app-setting": 20,
         "acme/employee-attendance": 20,
         "acme/employee-attendance-statistic": 20,
         "acme/guest-report": 20,
@@ -10869,7 +11036,7 @@
         "sq/location": 20,
         "sq/oil": 20,
         "sq/query": 20,
-        "acme/app-setting": 20
+        "acme/forum": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

@@ -5,7 +5,7 @@
     <!-- Content -->
     <div dusk="content">
       <div
-        class="hidden lg:block lg:absolute left-0 bottom-0 lg:top-[56px] lg:bottom-auto w-60 px-3 mx-2 my-6 py-8 h-auto dark:bg-gray-900 bg-white  ltr:border-r rtl:border-l rounded-md border-blue-300"
+        class="hidden lg:block lg:absolute left-0 bottom-0 lg:top-[57px] lg:bottom-auto w-60 px-3 mx-0  py-8 h-auto dark:bg-gray-900 bg-white"
       >
         <!-- The Main Menu on desktop gets extra padding to keep the bottom of the sidebar from feeling crowded -->
         <MainMenu class="pb-24" data-screen="desktop" />

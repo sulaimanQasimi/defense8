@@ -126,15 +126,35 @@
                                 </td>
                             </tr>
                             <tr class="border border-gray-600">
-                                <th  scope="col" class="px-4 py-1 text-2xl">
+                                <th scope="col" class="px-4 py-1 text-2xl">
                                     @lang('Oil Type')
                                 </th>
                                 <td class="px-4 py-1  text-2xl">
-                                    @lang($employee->oil_type && $employee->oil_type == \Vehical\OilType::Diesel ? 'Diesel' : 'Petrole')
+                                    @if ($employee->oil_type && $employee->oil_type == \Vehical\OilType::Diesel)
+                                        @lang('Diesel')
+                                    @endif
+
+                                    @if ($employee->oil_type && $employee->oil_type == \Vehical\OilType::Petrole)
+                                        @lang('Petrole')
+                                    @endif
                                 </td>
                             </tr>
                             <tr class="border border-gray-600">
-                                <th  scope="col" class="px-4 py-1 text-2xl">
+                                <th scope="col" class="px-4 py-1 text-2xl">
+                                    @lang('Type')
+                                </th>
+                                <td class="px-4 py-1  text-2xl">
+                                    @if ($employee->employee_type && $employee->employee_type == 'grade')
+                                        @lang('Grade Rate')
+                                    @endif
+
+                                    @if ($employee->employee_type && $employee->employee_type == 'duty')
+                                        @lang('Duty Response')
+                                    @endif
+                                </td>
+                            </tr>
+                            <tr class="border border-gray-600">
+                                <th scope="col" class="px-4 py-1 text-2xl">
                                     @lang('Monthly Rate')
                                 </th>
                                 <td class="px-4 py-1  text-2xl">
@@ -142,7 +162,7 @@
                                 </td>
                             </tr>
                             <tr class="border border-gray-600">
-                                <th  scope="col" class="px-4 py-1 text-2xl">
+                                <th scope="col" class="px-4 py-1 text-2xl">
                                     @lang('Consumtion Amount')
                                 </th>
                                 <td class="px-4 py-1  text-2xl">
@@ -150,7 +170,7 @@
                                 </td>
                             </tr>
                             <tr class="border border-gray-600">
-                                <th  scope="col" class="px-4 py-1 text-2xl">
+                                <th scope="col" class="px-4 py-1 text-2xl">
                                     @lang('Remain')
                                 </th>
                                 <td class="px-4 py-1  text-2xl">
@@ -159,7 +179,8 @@
                             </tr>
                         </thead>
                     </table>
-                @endif            </div>
+                @endif
+            </div>
         </div>
 
         <div class="mt-7 overflow-x-auto" dir="rtl">

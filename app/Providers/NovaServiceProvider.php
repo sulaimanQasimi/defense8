@@ -21,7 +21,6 @@ use Laravel\Nova\NovaApplicationServiceProvider;
 use App\Nova\Permission;
 use App\Nova\Role;
 use Spatie\BackupTool\BackupTool;
-use Visanduma\NovaTwoFactor\NovaTwoFactor;
 
 class NovaServiceProvider extends NovaApplicationServiceProvider
 {
@@ -151,6 +150,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             (new GuestReport)->canSee(fn() => auth()->user()->hasRole('super-admin')),
             (new OilReport())->canSee(fn() => auth()->user()->hasRole('super-admin')),
             (new AppSetting())->canSee(fn() => auth()->user()->hasRole('super-admin')),
+            new \Acme\Forum\Forum()
         ];
     }
     public function register(): void

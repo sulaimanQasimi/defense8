@@ -21,7 +21,8 @@ mix
   .sourceMaps()
   .extract()
   .setPublicPath('public')
-  .postCss('resources/css/app.css', 'public', [
+  .postCss('resources/css/app.css', 'public',
+    [
     postcssImport(),
     tailwindcss('tailwind.config.js'),
     postcssRtlcss(),

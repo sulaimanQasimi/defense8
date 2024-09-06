@@ -22,7 +22,10 @@ class QuotaOil extends OilNovaResource
 {
     use MegaFilterTrait;
     public static $model = \Sq\Employee\Models\CardInfo::class;
+
     public static $title = 'registare_no';
+
+    public static $clickAction = 'edit';
     public static $search = [
         'registare_no',
     ];
@@ -93,6 +96,16 @@ class QuotaOil extends OilNovaResource
                         ->rules('required', Rule::in([OilType::Diesel, OilType::Petrole]))
                         ->filterable()
                         ->displayUsingLabels(),
+
+                        Fields\Select::make(trans("Type"), 'employee_type')
+                        ->options([
+                            "grade" => trans("Grade Rate"),
+                            "duty" => trans("Duty Response"),
+                        ])
+                        ->rules('required', Rule::in(['grade', "duty"]))
+                        ->filterable()
+                        ->displayUsingLabels()
+                        ->sortable(),
 
                     Fields\Number::make(trans("Monthly Rate"), "monthly_rate")
                         ->displayUsing(fn($monthly_rate) => trans("Liter", ["value" => $monthly_rate]))
@@ -165,6 +178,14 @@ class QuotaOil extends OilNovaResource
         ];
     }
 
+    public static function redirectAfterCreate(NovaRequest $request, $resource)
+    {
+        return '/resources/'.static::uriKey();
+    }
+    public static function redirectAfterUpdate(NovaRequest $request, $resource)
+    {
+        return '/resources/'.static::uriKey();
+    }
     public function actions(NovaRequest $request)
     {
         return [];

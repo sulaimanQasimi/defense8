@@ -1,7 +1,7 @@
 <template>
   <div>
     <header
-      class="bg-white dark:bg-gray-800 flex items-center h-14 shadow-b dark:border-b dark:border-gray-700"
+      class="bg-white dark:bg-gray-800 flex items-center h-14 shadow-b dark:border-b dark:border-gray-700 "
     >
       <Button
         icon="bars-3"

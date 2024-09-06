@@ -51,7 +51,6 @@ class OilDisterbution extends Resource
                 ->filterable()
                 ->displayUsingLabels()
                 ->sortable(),
-
             Number::make(trans("Oil Amount"), "oil_amount")
                 ->displayUsing(fn($oil_amount) => trans("Liter", ["value" => $oil_amount]))
                 ->rules("required", 'numeric'),

@@ -9,7 +9,8 @@ module.exports = {
     './resources/**/*{js,vue,blade.php}',
     './node_modules/laravel-nova-ui/**/*{js,ts,vue}',
   ],
-  darkMode: 'class', // or 'media' or 'class'
+  darkMode: 'class',
+  // or 'media' or 'class'
   // safelist: [
   // {
   // pattern: /^grid-cols-(?:\d)+/,

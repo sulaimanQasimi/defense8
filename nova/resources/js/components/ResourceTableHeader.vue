@@ -1,5 +1,5 @@
 <template>
-  <thead class="bg-gray-50 dark:bg-gray-800">
+  <thead class="bg-primary-50 dark:bg-gray-800">
     <tr>
       <!-- Select Checkbox -->
       <th
@@ -25,7 +25,7 @@
           'px-2': index != 0 || shouldShowCheckboxes,
           'whitespace-nowrap': !field.wrapping,
         }"
-        class="uppercase text-gray-500 text-xxs tracking-wide py-2"
+        class="uppercase text-gray-500 text-xs tracking-wide py-2"
       >
         <SortableIcon
           @sort="requestOrderByChange(field)"

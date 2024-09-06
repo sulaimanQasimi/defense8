@@ -75,6 +75,7 @@
     "uid": "^2.0.0",
     "videojs-contrib-quality-levels": "^4.1.0",
     "vue": "^3.2.29",
+    "vue-apexcharts": "^1.6.2",
     "vuex": "^4.0.2"
   }
 }

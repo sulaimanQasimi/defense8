@@ -9,6 +9,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "acme/app-setting": "@dev",
         "acme/employee-attendance": "@dev",
         "acme/employee-attendance-statistic": "@dev",
         "acme/guest-report": "@dev",
@@ -40,6 +41,7 @@
         "outl1ne/nova-multiselect-filter": "^4.0",
         "pragmarx/artisan-tool": "^0.4.0",
         "radwanic/resource-listing": "^1.0",
+        "riari/laravel-forum": "^5.6",
         "seoegypt/value-filter": "^1.0",
         "sereny/nova-permissions": "^1.4",
         "spatie/laravel-settings": "^3.3",
@@ -51,7 +53,7 @@
         "sq/oil": "@dev",
         "sq/query": "@dev",
         "tightenco/ziggy": "^1.0",
-        "acme/app-setting": "@dev"
+        "acme/forum": "@dev"
     },
     "repositories": [
         {
@@ -113,6 +115,10 @@
         {
             "type": "path",
             "url": "./nova-components/AppSetting"
+        },
+        {
+            "type": "path",
+            "url": "./nova-components/Forum"
         }
     ],
     "autoload": {

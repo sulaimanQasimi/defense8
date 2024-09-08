@@ -14,6 +14,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get('/', function (Request $request) {
-//     //
-// });
+Route::get('/is_admin', function (Request $request) {
+    return auth()->user()->hasRole('super-admin');
+});

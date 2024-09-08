@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "867285333c362c8a694513776dff0745",
+    "content-hash": "62e41d7cd72bdcd028b37059a0a75de1",
     "packages": [
         {
             "name": "acme/app-setting",
@@ -120,10 +120,12 @@
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Forum",
-                "reference": "4ad03a3ffbaef84db91a7602b3e15206829a8c61"
+                "reference": "75e0238cc98191fe757738f27fddd1f8e0f85e31"
             },
             "require": {
-                "php": "^7.3|^8.0"
+                "laravel/nova": "^4.0",
+                "php": "^7.3|^8.0",
+                "riari/laravel-forum": "^5.6"
             },
             "type": "library",
             "extra": {

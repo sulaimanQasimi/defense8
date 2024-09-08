@@ -19,11 +19,21 @@ export default {
                 .catch((e) => { });
 
             Nova.request()
-                .get(`/forum/api/category/${this.request.id}/thread`)
-                .then(({ data: { data } }) => {
+                .get(`/forum/api/category/${this.request.id}/thread?page=${this.page}`)
+                .then(({ data: { data, meta, links } }) => {
                     this.threads = data;
+                    this.links = links;
+                    this.meta = meta
                 })
                 .catch((e) => { });
+        },
+        changePage(page) {
+            this.page = page
+            this.initialize()
+        },
+        visit(id) {
+            console.log(id)
+            window.location = `/forum/thread?id=${id}`
         },
         createResource() {
             Nova.request()

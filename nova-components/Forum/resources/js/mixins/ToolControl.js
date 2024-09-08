@@ -109,8 +109,11 @@ export default {
                     console.log(e);
                 });
         },
-        private(category) {
+        visit(id) {
 
+            window.location = `/forum/category?id=${id}`
+        },
+        private(category) {
             this.loading = true;
             Nova.request()
                 .patch(`/forum/api/category/${category.id}`, {

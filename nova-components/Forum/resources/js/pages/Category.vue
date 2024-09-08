@@ -57,8 +57,9 @@
       </ModalFooter>
     </div>
   </Modal>
-  <div class="flex gap-2 mb-6">
+  <div class="flex gap-2 mb-6" v-if="category">
     <button
+      v-if="category.accepts_threads"
       type="button"
       class="bg-yellow-300 dark:bg-gray-900 shrink-0 h-9 px-4 focus:outline-none ring-primary-200 dark:ring-gray-600 focus:ring text-white dark:text-gray-800 inline-flex items-center font-bold"
       @click="open()"
@@ -66,98 +67,61 @@
       {{ __(!editable ? "Create" : "Edit") }}
     </button>
   </div>
-
-  <Card>
-    <LoadingView :loading="loading">
+  <LoadingView :loading="loading">
+    <ForumTitle :title="__('Create your issue here')" />
+    <Card>
       <div v-if="category">
         <h1 class="text-center">{{ category.title }}</h1>
         <p class="text-center">{{ category.description }}</p>
       </div>
-      <table
-        class="w-full divide-y divide-gray-100 dark:divide-gray-700"
-        dusk="resource-table"
+    </Card>
+
+    <div class="grid md:grid-cols-4 sm:grid-cols-1 gap-3" style="margin-top: 20px">
+      <ForumPostCard
+        :resource="thread"
+        v-for="(thread, index) in threads"
+        :user="thread.author_name"
+        :content="thread.title"
+        @visit="visit"
       >
-        <thead class="bg-gray-50 dark:bg-gray-800">
-          <tr>
-            <td v-text="__('Title')" class="header border border-gray-200" />
-            <td v-text="__('User')" class="header border border-gray-200" />
-            <td v-text="__('Reply')" class="header border border-gray-200" />
-          </tr>
-          <tr v-for="(thread, index) in threads">
-            <td class="header border border-gray-200" v-text="thread.title" />
-            <td class="header border border-gray-200" v-text="thread.author_name" />
-            <td class="header border border-gray-200" v-text="thread.reply_count" />
-            <td
-              class="cursor-pointer px-2 w-[1%] white-space-nowrap text-right align-middle dark:bg-gray-800 group-hover:bg-gray-50 dark:group-hover:bg-gray-900"
-            >
-              <div class="flex items-center justify-end space-x-0 text-gray-400">
-                <a
-                  dusk="448-view-button"
-                  class="inline-flex items-center justify-center h-9 w-9 hover:text-primary-500 dark:hover:text-primary-500 v-popper--has-tooltip"
-                  disabled="false"
-                  :href="`/forum/category?id=${thread.id}`"
-                  ><span class="flex items-center gap-1"
-                    ><span class="fas fa-eye"></span></span></a
-                ><a
-                  aria-label="ویرایش"
-                  dusk="448-edit-button"
-                  class="inline-flex items-center justify-center h-9 w-9 hover:text-primary-500 dark:hover:text-primary-500 v-popper--has-tooltip"
-                  disabled="false"
-                  @click="editResource(thread.id)"
-                  ><span class="flex items-center gap-1"
-                    ><span class="fas fa-marker"></span
-                  ></span>
-                </a>
-                <button
-                  type="button"
-                  class="border text-left appearance-none cursor-pointer rounded text-sm font-bold focus:outline-none focus:ring ring-primary-200 dark:ring-gray-600 disabled:cursor-not-allowed inline-flex items-center justify-center bg-transparent border-transparent text-gray-500 dark:text-gray-400 hover:[&amp;:not(:disabled)]:text-primary-500 h-9 w-9 v-popper--has-tooltip"
-                  @click="private(category)"
-                >
-                  <span class="flex items-center gap-1">
-                    <span
-                      :class="{
-                        'fas fa-user-lock text-green-300': thread.is_private,
-                        'fas fa-users': !thread.is_private,
-                      }"
-                    ></span
-                  ></span>
-                </button>
-                <button
-                  type="button"
-                  class="border text-left appearance-none cursor-pointer rounded text-sm font-bold focus:outline-none focus:ring ring-primary-200 dark:ring-gray-600 disabled:cursor-not-allowed inline-flex items-center justify-center bg-transparent border-transparent text-gray-500 dark:text-gray-400 hover:[&amp;:not(:disabled)]:text-primary-500 h-9 w-9 v-popper--has-tooltip"
-                  @click="thread.locked ? unlock(thread.id) : lock(thread.id)"
-                >
-                  <span class="flex items-center gap-1">
-                    <span
-                      :class="{
-                        'fas fa-lock-open': !thread.locked,
-                        'fas fa-lock text-green-300': thread.locked,
-                      }"
-                    ></span
-                  ></span>
-                </button>
-                <button
-                  type="button"
-                  class="border text-left appearance-none cursor-pointer rounded text-sm font-bold focus:outline-none focus:ring ring-primary-200 dark:ring-gray-600 disabled:cursor-not-allowed inline-flex items-center justify-center bg-transparent border-transparent text-gray-500 dark:text-gray-400 hover:[&amp;:not(:disabled)]:text-primary-500 h-9 w-9 v-popper--has-tooltip"
-                  @click="deleteResource(thread.id)"
-                >
-                  <span class="flex items-center gap-1"
-                    ><span class="fas fa-trash-can"></span
-                  ></span>
-                </button>
-              </div>
-            </td>
-          </tr>
-        </thead>
-      </table>
-    </LoadingView>
-  </Card>
+        <ForumThreadAction
+          v-if="isAdmin"
+          @visit="visit"
+          :resource="thread"
+          @edit="editResource"
+          @delete="deleteResource"
+          @lock="lock"
+          @unlock="unlock"
+        />
+      </ForumPostCard>
+    </div>
+    <ForumPagination
+      v-if="threads"
+      @page="changePage"
+      :currentResourceCount="meta.total"
+      :allMatchingResourceCount="1"
+      :resourceCountLabel="null"
+      :page="meta.current_page"
+      :pages="meta.links"
+      :next="links.next ? true : false"
+      :previous="links.prev ? true : false"
+      :linksDisabled="false"
+    />
+  </LoadingView>
 </template>
 
 <script>
-import { PanelControl, VistitCategory, ThreadAction } from "../mixins";
+import ForumPagination from "../components/ForumPagination";
+import {
+  PanelControl,
+  VistitCategory,
+  ThreadAction,
+  Pagination,
+  Authorize,
+} from "../mixins";
 export default {
-  mixins: [VistitCategory, PanelControl, ThreadAction],
+  mixins: [VistitCategory, PanelControl, ThreadAction, Pagination, Authorize],
+
   props: {
     request: null,
   },

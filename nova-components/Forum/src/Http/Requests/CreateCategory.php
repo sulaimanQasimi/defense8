@@ -17,7 +17,7 @@ class CreateCategory extends FormRequest implements FulfillableRequest
     public function rules(): array
     {
         return [
-            'title' => ['required', 'string', 'min:'.config('forum.general.validation.title_min')],
+            'title' => ['required', 'string', 'min:3'],
             'description' => ['nullable', 'string'],
             'color' => ['string'],
             'accepts_threads' => ['boolean'],
@@ -32,7 +32,7 @@ class CreateCategory extends FormRequest implements FulfillableRequest
         $action = new Action(
             $input['title'],
             isset($input['description']) ? $input['description'] : '',
-            isset($input['color']) ? $input['color'] : config('forum.web.default_category_color'),
+            isset($input['color']) ? $input['color'] : '#007bff',
             isset($input['accepts_threads']) && $input['accepts_threads'],
             isset($input['is_private']) && $input['is_private']
         );

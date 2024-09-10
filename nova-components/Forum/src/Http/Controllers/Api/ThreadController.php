@@ -22,11 +22,15 @@ use Acme\Forum\Models\Thread;
 
 class ThreadController extends BaseController
 {
+    /**
+     * Summary of resourceClass
+     * @var \Acme\Forum\Http\Resources\ThreadResource
+     */
     protected $resourceClass = null;
 
     public function __construct()
     {
-        $this->resourceClass = config('forum.api.resources.thread', ThreadResource::class);
+        $this->resourceClass = ThreadResource::class;
     }
 
     public function recent(Request $request, bool $unreadOnly = false): AnonymousResourceCollection

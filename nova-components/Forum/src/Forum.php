@@ -28,8 +28,6 @@ class Forum extends Tool
      */
     public function menu(Request $request)
     {
-        return MenuSection::make('Forum')
-            ->path('/forum')
-            ->icon('server');
+        return null;
     }
 }

@@ -19,7 +19,7 @@ class RenameThread extends FormRequest implements FulfillableRequest
     public function rules(): array
     {
         return [
-            'title' => ['required', 'string', 'min:'.config('forum.general.validation.title_min')],
+            'title' => ['required', 'string', 'min:3'],
         ];
     }
 

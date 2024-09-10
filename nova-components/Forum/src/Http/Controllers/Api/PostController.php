@@ -16,11 +16,15 @@ use Acme\Forum\Models\Post;
 
 class PostController extends BaseController
 {
+    /**
+     * Summary of resourceClass
+     * @var \Acme\Forum\Http\Resources\PostResource
+     */
     protected $resourceClass = null;
 
     public function __construct()
     {
-        $this->resourceClass = config('forum.api.resources.post', PostResource::class);
+        $this->resourceClass = PostResource::class;
     }
 
     public function indexByThread(Request $request): AnonymousResourceCollection|Response

@@ -19,8 +19,8 @@ class CreateThread extends FormRequest implements FulfillableRequest
     public function rules(): array
     {
         return [
-            'title' => ['required', 'string', 'min:'.config('forum.general.validation.title_min')],
-            'content' => ['required', 'string', 'min:'.config('forum.general.validation.content_min')],
+            'title' => ['required', 'string', 'min:3'],
+            'content' => ['required', 'string', 'min:3'],
         ];
     }
 

@@ -15,11 +15,15 @@ use Acme\Forum\Support\CategoryPrivacy;
 
 class CategoryController extends BaseController
 {
+    /**
+     * Summary of resourceClass
+     * @var \Acme\Forum\Http\Resources\CategoryResource
+     */
     protected $resourceClass = null;
 
     public function __construct()
     {
-        $this->resourceClass = config('forum.api.resources.category', CategoryResource::class);
+        $this->resourceClass = CategoryResource::class;
     }
 
     public function index(Request $request): AnonymousResourceCollection

@@ -2,6 +2,7 @@
 
 namespace Acme\Forum;
 
+use Acme\Forum\Http\Middleware\ResolveApiParameters;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Nova\Events\ServingNova;
@@ -46,7 +47,7 @@ class ToolServiceProvider extends ServiceProvider
             ->group(__DIR__ . '/../routes/api.php');
 
         // forum Api
-        Route::middleware(['nova', Authorize::class])
+        Route::middleware(['nova', Authorize::class,ResolveApiParameters::class])
             ->prefix('/forum/api')
             ->name('forum.api.')
             ->namespace('\Acme\Forum\Http\Controllers\Api')

@@ -17,7 +17,7 @@ class CreatePost extends FormRequest implements FulfillableRequest
     public function rules(): array
     {
         return [
-            'content' => ['required', 'string', 'min:'.config('forum.general.validation.content_min')],
+            'content' => ['required', 'string', 'min:3'],
         ];
     }
 

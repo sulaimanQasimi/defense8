@@ -22,14 +22,6 @@ class ForumServiceProvider extends ServiceProvider
 
         $loader = AliasLoader::getInstance();
         $loader->alias('Forum', config('forum.web.utility_class'));
-
-        if ($this->app->runningInConsole()) {
-            $this->commands([
-                InstallPreset::class,
-                Seed::class,
-                SyncStats::class,
-            ]);
-        }
     }
     private function registerPolicies(GateContract $gate)
     {

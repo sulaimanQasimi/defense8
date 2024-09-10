@@ -3,7 +3,7 @@
 namespace Acme\Forum\Support;
 
 use Illuminate\Foundation\Auth\User;
-use Kalnoy\Nestedset\Collection as NestedCollection;
+use Acme\Forum\Nestedset\Collection as NestedCollection;
 use Acme\Forum\Models\Category;
 
 class CategoryPrivacy

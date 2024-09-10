@@ -2,11 +2,11 @@
 
 namespace Acme\Forum\Models;
 
+use Acme\Forum\Nestedset\NodeTrait;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User;
-use Kalnoy\Nestedset\NodeTrait;
 use Acme\Forum\Support\CategoryPrivacy;
 use Acme\Forum\Support\Web\Forum;
 

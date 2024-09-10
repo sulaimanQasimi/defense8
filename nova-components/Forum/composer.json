@@ -10,7 +10,6 @@
         "php": "^7.3|^8.0",
         "laravel/nova": "^4.0",
         "laravel/framework": "^10.0",
-        "kalnoy/nestedset": "^6.0",
         "doctrine/dbal": "^3.5"
     },
     "autoload": {

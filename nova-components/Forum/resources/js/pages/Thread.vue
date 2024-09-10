@@ -1,5 +1,7 @@
 <template>
   <LoadingView :loading="loading">
+
+    <Head :title="__('Thread')" />
     <Modal :show="show">
       <div class="bg-gray-100 dark:bg-gray-700 rounded-lg shadow-lg overflow-hidden p-8">
         <ModalHeader v-text="__(!editable ? 'Create Thread' : 'Edit Thread')" />

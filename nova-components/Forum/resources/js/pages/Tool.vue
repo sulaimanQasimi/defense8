@@ -92,16 +92,21 @@
               v-text="category.description"
             />
             <td
-              v-if="isAdmin"
               class="cursor-pointer px-2 w-[1%] white-space-nowrap text-right align-middle dark:bg-gray-800 group-hover:bg-gray-50 dark:group-hover:bg-gray-900"
             >
               <ForumCategoryAction
+                v-if="isAdmin"
                 :resource="category"
                 @visit="visit"
                 @edit="edit"
                 @private="private"
                 @openChat="openChat"
                 @delete="delete"
+              />
+              <ForumActionButton
+                v-else
+                @handleClick="visit(category.id)"
+                icon="fas fa-eye"
               />
             </td>
           </tr>

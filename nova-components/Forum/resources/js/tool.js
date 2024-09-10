@@ -16,10 +16,8 @@ Nova.booting((app, store) => {
         true,
         /[A-Z]\w+\.(vue)$/
     )
-
     requireComponent.keys().forEach(fileName => {
         const componentConfig = requireComponent(fileName)
-
         const componentName =
             upperFirst(
                 camelCase(

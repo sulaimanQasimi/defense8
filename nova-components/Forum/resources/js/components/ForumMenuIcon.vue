@@ -8,7 +8,7 @@
 export default {
   methods: {
     redirect() {
-      Nova.visit("/forum");
+      window.location='/forum'
     },
   },
 };

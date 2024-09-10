@@ -150,7 +150,10 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             (new GuestReport)->canSee(fn() => auth()->user()->hasRole('super-admin')),
             (new OilReport())->canSee(fn() => auth()->user()->hasRole('super-admin')),
             (new AppSetting())->canSee(fn() => auth()->user()->hasRole('super-admin')),
-            new \Acme\Forum\Forum()
+            new \Acme\Forum\Forum(),
+
+            new \Guratr\CommandRunner\CommandRunner,
+
         ];
     }
     public function register(): void

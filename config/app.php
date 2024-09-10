@@ -43,6 +43,8 @@ return [
         App\Providers\FortifyServiceProvider::class,
         App\Providers\JetstreamServiceProvider::class,
         // Sq\Card\CardCoreServiceProvider::class
+        // \Acme\Forum\ForumServiceProvider::class,
+
     ])->toArray(),
 
 

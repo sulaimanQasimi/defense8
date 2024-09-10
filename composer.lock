@@ -120,24 +120,29 @@
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Forum",
-                "reference": "75e0238cc98191fe757738f27fddd1f8e0f85e31"
+                "reference": "6ac8294b7f79fa1447ccd152334082d4def9233f"
             },
             "require": {
+                "doctrine/dbal": "^3.5",
+                "kalnoy/nestedset": "^6.0",
+                "laravel/framework": "^10.0",
                 "laravel/nova": "^4.0",
-                "php": "^7.3|^8.0",
-                "riari/laravel-forum": "^5.6"
+                "php": "^7.3|^8.0"
             },
             "type": "library",
             "extra": {
                 "laravel": {
                     "providers": [
-                        "Acme\\Forum\\ToolServiceProvider"
+                        "Acme\\Forum\\ToolServiceProvider",
+                        "Acme\\Forum\\ForumServiceProvider"
                     ]
                 }
             },
             "autoload": {
                 "psr-4": {
-                    "Acme\\Forum\\": "src/"
+                    "Acme\\Forum\\": "src/",
+                    "Acme\\Forum\\Database\\Factories\\": "database/factories",
+                    "Acme\\Forum\\Database\\Seeders\\": "database/seeders"
                 }
             },
             "license": [
@@ -1256,16 +1261,16 @@
         },
         {
             "name": "doctrine/dbal",
-            "version": "3.9.0",
+            "version": "3.9.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/dbal.git",
-                "reference": "d8f68ea6cc00912e5313237130b8c8decf4d28c6"
+                "reference": "d7dc08f98cba352b2bab5d32c5e58f7e745c11a7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/dbal/zipball/d8f68ea6cc00912e5313237130b8c8decf4d28c6",
-                "reference": "d8f68ea6cc00912e5313237130b8c8decf4d28c6",
+                "url": "https://api.github.com/repos/doctrine/dbal/zipball/d7dc08f98cba352b2bab5d32c5e58f7e745c11a7",
+                "reference": "d7dc08f98cba352b2bab5d32c5e58f7e745c11a7",
                 "shasum": ""
             },
             "require": {
@@ -1281,7 +1286,7 @@
                 "doctrine/coding-standard": "12.0.0",
                 "fig/log-test": "^1",
                 "jetbrains/phpstorm-stubs": "2023.1",
-                "phpstan/phpstan": "1.11.7",
+                "phpstan/phpstan": "1.12.0",
                 "phpstan/phpstan-strict-rules": "^1.6",
                 "phpunit/phpunit": "9.6.20",
                 "psalm/plugin-phpunit": "0.18.4",
@@ -1349,7 +1354,7 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/dbal/issues",
-                "source": "https://github.com/doctrine/dbal/tree/3.9.0"
+                "source": "https://github.com/doctrine/dbal/tree/3.9.1"
             },
             "funding": [
                 {
@@ -1365,7 +1370,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-08-15T07:34:42+00:00"
+            "time": "2024-09-01T13:49:23+00:00"
         },
         {
             "name": "doctrine/deprecations",
@@ -7095,73 +7100,6 @@
                 }
             ],
             "time": "2024-06-03T08:00:43+00:00"
-        },
-        {
-            "name": "riari/laravel-forum",
-            "version": "5.6.4",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Team-Tea-Time/laravel-forum.git",
-                "reference": "e09eaa1882a62cc8d9e1ebe04aba80cd1e5a4a64"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Team-Tea-Time/laravel-forum/zipball/e09eaa1882a62cc8d9e1ebe04aba80cd1e5a4a64",
-                "reference": "e09eaa1882a62cc8d9e1ebe04aba80cd1e5a4a64",
-                "shasum": ""
-            },
-            "require": {
-                "doctrine/dbal": "^3.5",
-                "kalnoy/nestedset": "^6.0",
-                "laravel/framework": "^10.0",
-                "php": "^8.1"
-            },
-            "require-dev": {
-                "orchestra/testbench": "^8.0"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "TeamTeaTime\\Forum\\ForumServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "TeamTeaTime\\Forum\\": "src",
-                    "TeamTeaTime\\Forum\\Database\\Seeders\\": "database/seeders",
-                    "TeamTeaTime\\Forum\\Database\\Factories\\": "database/factories"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Riari",
-                    "email": "riari@teamteatime.net"
-                },
-                {
-                    "name": "NeeHi",
-                    "email": "neehi@teamteatime.net"
-                }
-            ],
-            "description": "A Laravel 6/7/8/9 package providing a solid foundation for building discussion forums",
-            "keywords": [
-                "discuss",
-                "forum",
-                "laravel",
-                "laravel-6",
-                "laravel-7",
-                "laravel-8"
-            ],
-            "support": {
-                "issues": "https://github.com/Team-Tea-Time/laravel-forum/issues",
-                "source": "https://github.com/Team-Tea-Time/laravel-forum/tree/5.6.4"
-            },
-            "time": "2024-09-03T20:40:28+00:00"
         },
         {
             "name": "sabberworm/php-css-parser",

@@ -21,7 +21,7 @@ class ToolServiceProvider extends ServiceProvider
         $this->app->booted(function () {
             $this->routes();
         });
-
+        $this->vendors();
         Nova::serving(function (ServingNova $event) {
             //
         });
@@ -39,11 +39,20 @@ class ToolServiceProvider extends ServiceProvider
         }
 
         Nova::router(['nova', Authenticate::class, Authorize::class], 'forum')
-            ->group(__DIR__.'/../routes/inertia.php');
+            ->group(__DIR__ . '/../routes/inertia.php');
 
         Route::middleware(['nova', Authorize::class])
             ->prefix('nova-vendor/forum')
-            ->group(__DIR__.'/../routes/api.php');
+            ->group(__DIR__ . '/../routes/api.php');
+
+        // forum Api
+        Route::middleware(['nova', Authorize::class])
+            ->prefix('/forum/api')
+            ->name('forum.api.')
+            ->namespace('\Acme\Forum\Http\Controllers\Api')
+            ->group(function () {
+                $this->loadRoutesFrom(__DIR__ . '/../routes/forum.php');
+            });
     }
 
     /**
@@ -54,5 +63,27 @@ class ToolServiceProvider extends ServiceProvider
     public function register()
     {
         //
+    }
+    public function vendors()
+    {
+
+        $this->publishes([
+            __DIR__ . '/../config/api.php' => config_path('forum.api.php'),
+            __DIR__ . '/../config/web.php' => config_path('forum.web.php'),
+            __DIR__ . '/../config/general.php' => config_path('forum.general.php'),
+            __DIR__ . '/../config/integration.php' => config_path('forum.integration.php'),
+        ], 'config');
+
+        $this->publishes([
+            __DIR__ . '/../database/migrations/' => database_path('migrations'),
+        ], 'migrations');
+
+        $this->publishes([
+            __DIR__ . '/../translations/' => function_exists('lang_path') ? lang_path('vendor/forum') : resource_path('lang/vendor/forum'),
+        ], 'translations');
+
+        foreach (['api', 'web', 'general', 'integration'] as $name) {
+            $this->mergeConfigFrom(__DIR__ . "/../config/{$name}.php", "forum.{$name}");
+        }
     }
 }

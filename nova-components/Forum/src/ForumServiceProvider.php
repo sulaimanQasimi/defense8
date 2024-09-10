@@ -7,9 +7,6 @@ use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
-use Acme\Forum\Console\Commands\InstallPreset;
-use Acme\Forum\Console\Commands\Seed;
-use Acme\Forum\Console\Commands\SyncStats;
 
 class ForumServiceProvider extends ServiceProvider
 {

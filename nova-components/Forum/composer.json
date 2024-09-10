@@ -15,9 +15,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Acme\\Forum\\": "src/",
-            "Acme\\Forum\\Database\\Factories\\": "database/factories",
-            "Acme\\Forum\\Database\\Seeders\\": "database/seeders"
+            "Acme\\Forum\\": "src/"
         }
     },
     "extra": {

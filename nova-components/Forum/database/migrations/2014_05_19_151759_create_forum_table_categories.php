@@ -14,10 +14,17 @@ class CreateForumTableCategories extends Migration
     {
         Schema::create('forum_categories', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('parent_category')->unsigned();
-            $table->string('title');
-            $table->string('subtitle');
-            $table->integer('weight');
+            $table->nestedSet();
+            $table->string('title')->nullable();
+            $table->string('description')->nullable();
+            $table->boolean('accepts_threads')->default(0);
+            $table->integer('newest_thread_id')->unsigned()->nullable();
+            $table->integer('latest_active_thread_id')->unsigned()->nullable();
+            $table->integer('post_count')->default(0);
+            $table->integer('thread_count')->default(0);
+            $table->boolean('is_private')->default(0);
+            $table->string('color')->nullable();
+            $table->timestamps();
         });
     }
 

@@ -75,10 +75,12 @@ class ToolServiceProvider extends ServiceProvider
             __DIR__ . '/../config/integration.php' => config_path('forum.integration.php'),
         ], 'config');
 
-        $this->publishes([
-            __DIR__ . '/../database/migrations/' => database_path('migrations'),
-        ], 'migrations');
+        // $this->publishes([
+        //     __DIR__ . '/../database/migrations/' => database_path('migrations'),
+        // ], 'migrations');
 
+
+        $this->loadMigrationsFrom(__DIR__ . "/../database/migrations");
         $this->publishes([
             __DIR__ . '/../translations/' => function_exists('lang_path') ? lang_path('vendor/forum') : resource_path('lang/vendor/forum'),
         ], 'translations');

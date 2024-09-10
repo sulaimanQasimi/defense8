@@ -11,6 +11,7 @@ use App\Support\Defense\GateTranslationEnum;
 use App\Support\Defense\PermissionTranslation;
 use App\Support\RoleEnum;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Hash;
 use Sereny\NovaPermissions\Models\Role as ModelsRole;
 use Spatie\Permission\Models\Permission;
@@ -36,6 +37,6 @@ class DatabaseSeeder extends Seeder
         $this->call(Update13::class);
         $this->call(Update14::class);
         $this->call(Update15::class);
-
+        Artisan::call('key:generate');
     }
 }

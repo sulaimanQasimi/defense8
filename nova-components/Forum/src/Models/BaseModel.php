@@ -8,14 +8,14 @@ abstract class BaseModel extends Model
 {
     const DELETED_AT = 'deleted_at';
 
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
+    // public function __construct(array $attributes = [])
+    // {
+    //     parent::__construct($attributes);
 
-        if ($this->forceDeleting) {
-            $this->forceDeleting = ! config('forum.preferences.soft_deletes');
-        }
-    }
+    //     if ($this->forceDeleting) {
+    //         $this->forceDeleting = ! config('forum.preferences.soft_deletes');
+    //     }
+    // }
 
     public static function getTableName()
     {

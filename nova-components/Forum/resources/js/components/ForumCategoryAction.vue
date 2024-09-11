@@ -16,7 +16,6 @@
         'fas fa-lock-open': resource.accepts_threads,
       }"
     />
-    
     <ForumActionButton @click="$emit('delete',resource.id)" class="fas fa-trash-can" />
   </div>
 </template>
@@ -24,11 +23,6 @@
 export default {
   props: {
     resource: Object,
-  },
-  methods: {
-    me() {
-      console.log(656);
-    },
   },
 };
 </script>

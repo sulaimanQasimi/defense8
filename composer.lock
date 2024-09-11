@@ -120,7 +120,7 @@
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Forum",
-                "reference": "0fa59087b8908a2cce55e41325c54b1bc1594ef6"
+                "reference": "a7b4d96c38a3945f137b3f3437fdba71015d55de"
             },
             "require": {
                 "doctrine/dbal": "^3.5",
@@ -133,7 +133,8 @@
                 "laravel": {
                     "providers": [
                         "Acme\\Forum\\ToolServiceProvider",
-                        "Acme\\Forum\\ForumServiceProvider"
+                        "Acme\\Forum\\ForumServiceProvider",
+                        "Acme\\Forum\\NestedSetServiceProvider"
                     ]
                 }
             },

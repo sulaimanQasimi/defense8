@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
@@ -14,7 +15,7 @@ class CreateForumTableThreadsRead extends Migration
     {
         Schema::create('forum_threads_read', function (Blueprint $table) {
             $table->integer('thread_id')->unsigned();
-            $table->foreignIdFor(config('forum.integration.user_model'), 'user_id');
+            $table->foreignIdFor(User::class, 'user_id');
             $table->timestamps();
         });
     }

@@ -13,8 +13,8 @@ class CreateForumTableCategories extends Migration
     public function up()
     {
         Schema::create('forum_categories', function (Blueprint $table) {
-            $table->increments('id');
-            $table->nestedSet();
+            $table->id();
+            $table->nestedColumns();
             $table->string('title')->nullable();
             $table->string('description')->nullable();
             $table->boolean('accepts_threads')->default(0);
@@ -25,6 +25,7 @@ class CreateForumTableCategories extends Migration
             $table->boolean('is_private')->default(0);
             $table->string('color')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

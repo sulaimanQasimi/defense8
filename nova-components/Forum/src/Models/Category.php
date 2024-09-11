@@ -6,6 +6,7 @@ use Acme\Forum\Nestedset\NodeTrait;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User;
 use Acme\Forum\Support\CategoryPrivacy;
 use Acme\Forum\Support\Web\Forum;
@@ -13,7 +14,7 @@ use Acme\Forum\Support\Web\Forum;
 class Category extends BaseModel
 {
     use NodeTrait;
-
+    use SoftDeletes;
     protected $table = 'forum_categories';
     protected $fillable = [
         'title',

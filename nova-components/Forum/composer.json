@@ -21,7 +21,8 @@
         "laravel": {
             "providers": [
                 "Acme\\Forum\\ToolServiceProvider",
-                "Acme\\Forum\\ForumServiceProvider"
+                "Acme\\Forum\\ForumServiceProvider",
+                "Acme\\Forum\\NestedSetServiceProvider"
             ]
         }
     },

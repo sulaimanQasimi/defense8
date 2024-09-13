@@ -3,7 +3,7 @@
     <Head :title="__('Attendance Employee Info')" />
     <Card>
       <div
-        class="text-center font-medium text-2xl text-blue-500"
+        class="text-center font-medium text-2xl text-blue-600"
         v-html="__('Attendance Employee Info')"
       ></div>
 

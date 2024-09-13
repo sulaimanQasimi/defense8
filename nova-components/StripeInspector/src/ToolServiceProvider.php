@@ -22,7 +22,7 @@ class ToolServiceProvider extends ServiceProvider
 
         Nova::serving(function (ServingNova $event) {
             Nova::script('stripe-inspector', __DIR__.'/../dist/js/tool.js');
-            Nova::style('stripe-inspector', __DIR__.'/../dist/css/tool.css');
+            // Nova::style('stripe-inspector', __DIR__.'/../dist/css/tool.css');
         });
     }
 

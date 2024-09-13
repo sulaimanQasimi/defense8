@@ -17,7 +17,7 @@ class Attendance extends Tool
     public function boot()
     {
         Nova::script('attendance', __DIR__.'/../dist/js/tool.js');
-        Nova::style('attendance', __DIR__.'/../dist/css/tool.css');
+        // Nova::style('attendance', __DIR__.'/../dist/css/tool.css');
     }
 
     /**

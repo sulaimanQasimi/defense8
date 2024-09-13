@@ -17,7 +17,7 @@ class Forum extends Tool
     public function boot()
     {
         Nova::script('forum', __DIR__.'/../dist/js/tool.js');
-        Nova::style('forum', __DIR__.'/../dist/css/tool.css');
+        // Nova::style('forum', __DIR__.'/../dist/css/tool.css');
     }
 
     /**

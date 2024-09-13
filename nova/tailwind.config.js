@@ -8,6 +8,7 @@ module.exports = {
     './src/**/*.vue',
     './resources/**/*{js,vue,blade.php}',
     './node_modules/laravel-nova-ui/**/*{js,ts,vue}',
+    "./../nova-componants/**/*.vue"
   ],
   darkMode: 'class',
   // or 'media' or 'class'

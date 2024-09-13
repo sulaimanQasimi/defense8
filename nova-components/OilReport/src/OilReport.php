@@ -17,7 +17,7 @@ class OilReport extends Tool
     public function boot()
     {
         Nova::script('oil-report', __DIR__.'/../dist/js/tool.js');
-        Nova::style('oil-report', __DIR__.'/../dist/css/tool.css');
+        // Nova::style('oil-report', __DIR__.'/../dist/css/tool.css');
     }
 
     /**

@@ -17,7 +17,7 @@ class GuestReport extends Tool
     public function boot()
     {
         Nova::script('guest-report', __DIR__.'/../dist/js/tool.js');
-        Nova::style('guest-report', __DIR__.'/../dist/css/tool.css');
+        // Nova::style('guest-report', __DIR__.'/../dist/css/tool.css');
     }
 
     /**

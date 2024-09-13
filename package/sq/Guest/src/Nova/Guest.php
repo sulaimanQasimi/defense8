@@ -163,7 +163,10 @@ class Guest extends Resource
                 new SqNovaSelectFilter(
                     label: __("Host"),
                     column: 'host_id',
-                    options: \Sq\Guest\Models\Host::pluck('head_name', 'id')->toArray()
+                    options: \Sq\Guest\Models\Host::query()
+                        ->whereIn('department_id', UserDepartment::getUserDepartment())
+                        ->pluck('head_name', 'id')
+                        ->toArray()
                 ),
 
             ])->columns(3),

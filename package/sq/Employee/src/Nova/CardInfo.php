@@ -282,7 +282,9 @@ class CardInfo extends Resource
                 new SqNovaSelectFilter(
                     label: __("Department/Chancellor"),
                     column: 'department_id',
-                    options: \Sq\Employee\Models\Department::query()->whereIn('id', UserDepartment::getUserDepartment())->pluck('fa_name', 'id')->toArray()
+                    options: \Sq\Employee\Models\Department::query()
+                        ->whereIn('id', UserDepartment::getUserDepartment())
+                        ->pluck('fa_name', 'id')->toArray()
                 ),
                 //
                 new SqNovaSelectFilter(

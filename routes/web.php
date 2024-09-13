@@ -28,5 +28,11 @@ Route::middleware(['auth'])->get('test', function () {
 // ]);
 // $host=Gate::find(1);
 // $host->update([  'department_id'=>2,]);
+dd(
+    \Sq\Guest\Models\Host::query()
+    ->whereIn('department_id', UserDepartment::getUserDepartment())
+    ->pluck('head_name', 'id')
+    ->toArray()
+);
 });
 

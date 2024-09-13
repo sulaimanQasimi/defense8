@@ -17,7 +17,7 @@ class AppSetting extends Tool
     public function boot()
     {
         Nova::script('app-setting', __DIR__.'/../dist/js/tool.js');
-        Nova::style('app-setting', __DIR__.'/../dist/css/tool.css');
+        // Nova::style('app-setting', __DIR__.'/../dist/css/tool.css');
     }
 
     /**

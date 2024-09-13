@@ -46,7 +46,7 @@ class QuotaOil extends OilNovaResource
 
     public static function indexQuery(NovaRequest $request, $query)
     {
-        return $query->whereIn('department_id',auth()->user()->departments()->pluck('departments.id')->toArray());
+        return $query->whereIn('department_id', auth()->user()->departments()->pluck('departments.id')->toArray());
     }
 
     public static function scoutQuery(NovaRequest $request, $query)

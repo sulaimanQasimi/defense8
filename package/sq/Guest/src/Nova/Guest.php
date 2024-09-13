@@ -14,6 +14,7 @@ use Laravel\Nova\Fields\Trix;
 use Laravel\Nova\Fields\URL;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use MZiraki\PersianDateField\PersianDateTime;
+use Sq\Query\Policy\UserDepartment;
 use Sq\Query\SqNovaDateFilter;
 use Sq\Query\SqNovaSelectFilter;
 use Sq\Query\SqNovaTextFilter;
@@ -42,18 +43,27 @@ class Guest extends Resource
     public static function indexQuery(NovaRequest $request, $query)
     {
 
+        // IF user is host only view his/her self
         if (auth()->user()->host) {
             return $query->where('host_id', auth()->user()->host->id)->orderBy('registered_at', 'desc');
         }
 
+        // if user have gate checker view all host of his dependant department only (today)
         if (auth()->user()->can('gateChecker', 'App\\Models\Gate')) {
             return $query
                 ->whereYear('registered_at', now()->year)
                 ->whereMonth("registered_at", now()->month)
                 ->whereDay("registered_at", now()->day)
-                ->orderBy('registered_at', 'desc');
+                ->orderBy('registered_at', 'desc')
+                ->whereHas('host', function ($query) {
+                    return $query->whereIn('department_id', UserDepartment::getUserDepartment());
+                });
         }
-        return $query->orderBy('registered_at', "desc");
+
+        // Only Get Dependant Departments
+        return $query->whereHas('host', function ($query) {
+            return $query->whereIn('department_id', UserDepartment::getUserDepartment());
+        });
     }
     public function fields(NovaRequest $request)
     {
@@ -67,19 +77,15 @@ class Guest extends Resource
                 ->sortable()
                 ->rules('required', 'string')
                 ->hideWhenUpdating(fn() => $this->registered_at->isBefore(Carbon::today()))
-
                 ->placeholder(__("Enter Field", ['name' => __("Name")])),
 
             // Guest Last Name
             Text::make(__("Last Name"), 'last_name')
                 ->required()
                 ->sortable()
-
                 ->rules('required', 'string')
                 ->placeholder(__("Enter Field", ['name' => __("Last Name")]))
-                ->hideWhenUpdating(fn() => $this->registered_at->isBefore(Carbon::today()))
-
-            ,
+                ->hideWhenUpdating(fn() => $this->registered_at->isBefore(Carbon::today())),
 
             // Career
             Text::make(__("Career"), 'career')
@@ -88,16 +94,14 @@ class Guest extends Resource
                 ->rules('required', 'string')
                 ->placeholder(__("Enter Field", ['name' => __("Career")])),
 
-
             // Host
             BelongsTo::make(__("Host"), 'host', Host::class)
                 ->filterable()
                 ->showCreateRelationButton()
                 ->exceptOnForms(),
-
             //
             Text::make(__("Invited By"), fn() => $this->host->head_name),
-
+            //
             Text::make(__("Address"), 'address')
                 ->required()
                 ->sortable()
@@ -159,7 +163,7 @@ class Guest extends Resource
                 new SqNovaSelectFilter(
                     label: __("Host"),
                     column: 'host_id',
-                    options: \Sq\Guest\Models\Host::pluck('head_name','id')->toArray()
+                    options: \Sq\Guest\Models\Host::pluck('head_name', 'id')->toArray()
                 ),
 
             ])->columns(3),

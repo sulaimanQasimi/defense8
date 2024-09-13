@@ -16,7 +16,6 @@
         "acme/guest-report": "@dev",
         "acme/oil-report": "@dev",
         "acme/price-tracker": "@dev",
-        "acme/select-department": "@dev",
         "acme/stripe-inspector": "@dev",
         "ayvazyan10/nova-imagic": "^1.3",
         "badinansoft/nova-language-switch": "^1.2",

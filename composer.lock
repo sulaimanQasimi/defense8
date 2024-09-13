@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3f703d73dc383b180c9a28a6be0dcb34",
+    "content-hash": "8c23e18f1ec9a682379a7b8015800319",
     "packages": [
         {
             "name": "acme/app-setting",
@@ -255,42 +255,6 @@
                 "MIT"
             ],
             "description": "A Laravel Nova tool.",
-            "keywords": [
-                "laravel",
-                "nova"
-            ],
-            "transport-options": {
-                "relative": true
-            }
-        },
-        {
-            "name": "acme/select-department",
-            "version": "dev-version-15",
-            "dist": {
-                "type": "path",
-                "url": "./nova-components/SelectDepartment",
-                "reference": "416d94b964fe80a9f7f0d7af253a654b722bcac3"
-            },
-            "require": {
-                "php": "^7.3|^8.0"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "Acme\\SelectDepartment\\FieldServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Acme\\SelectDepartment\\": "src/"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "description": "A Laravel Nova field.",
             "keywords": [
                 "laravel",
                 "nova"
@@ -11100,7 +11064,6 @@
         "acme/guest-report": 20,
         "acme/oil-report": 20,
         "acme/price-tracker": 20,
-        "acme/select-department": 20,
         "acme/stripe-inspector": 20,
         "sq/card": 20,
         "sq/employee": 20,

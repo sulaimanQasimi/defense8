@@ -31,13 +31,17 @@ class DateFromAndToModelQuery
     private function date(): void
     {
         if (request()->has('date')) {
+
+            //
             if (request()->input('date') != null && request()->input('date') != '' && request()->input('date') != 'null') {
                 $date = explode(',', request()->input('date'));
 
+                //
                 if (Arr::hasAny($date, 0)) {
                     $this->start = Verta::parse(Str::before(request()->input('date'), ','))->toCarbon();
                 }
 
+                //
                 if (Arr::hasAny($date, 1)) {
                     $this->end = Verta::parse(Str::after(request()->input('date'), ','))->toCarbon();
                 }

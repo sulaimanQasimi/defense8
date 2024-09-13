@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Sq\Query\Policy\UserDepartment;
 
 class Gate extends Model
 {
@@ -20,6 +21,32 @@ class Gate extends Model
     use LogsActivity;
 
     protected $guarded = [];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        // Power Check while Creating
+        static::creating(
+            function ($gate) {
+                if (!in_array($gate->department_id, UserDepartment::getUserDepartment())) {
+                    return abort(403);
+                }
+            }
+        );
+
+        // Power Check while Updating
+        static::updating(
+            function ($gate) {
+                if (!in_array($gate->department_id, UserDepartment::getUserDepartment())) {
+                    return abort(403);
+                }
+            }
+        );
+
+
+
+    }
     public function user(): HasMany
     {
         return $this->hasMany(User::class);

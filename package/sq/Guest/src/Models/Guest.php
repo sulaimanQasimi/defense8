@@ -31,7 +31,6 @@ class Guest extends Model
     protected static function boot()
     {
         parent::boot();
-
         static::created(
             function ($guest) {
                 if (auth()->user()->host) {

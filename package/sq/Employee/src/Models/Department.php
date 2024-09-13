@@ -10,12 +10,39 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Sq\Query\Policy\UserDepartment;
 
 class Department extends Model
 {
     use HasFactory;
     use SoftDeletes;
     use NodeTrait;
+    protected static function boot()
+    {
+        parent::boot();
+
+        
+        // Power Check while Creating
+        static::creating(
+            function ($department) {
+                if (!in_array($department->department_id, UserDepartment::getUserDepartment())) {
+                    return abort(403);
+                }
+            }
+        );
+
+        // Power Check while Updating
+        static::updating(
+            function ($department) {
+                if (!in_array($department->department_id, UserDepartment::getUserDepartment())) {
+                    return abort(403);
+                }
+            }
+        );
+
+
+
+    }
 
     public function getParentIdName()
     {

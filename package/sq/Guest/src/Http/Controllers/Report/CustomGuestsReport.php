@@ -8,6 +8,7 @@ use Sq\Guest\Models\GuestGate;
 use Sq\Query\DateFromAndToModelQuery;
 use Elibyy\TCPDF\Facades\TCPDF;
 use Illuminate\Http\Request;
+use Sq\Query\Policy\UserDepartment;
 
 class CustomGuestsReport extends Controller
 {
@@ -31,7 +32,13 @@ class CustomGuestsReport extends Controller
                         return $query->where("department_id", $department);
                     });
                 }
-            );
+            )
+            ->whereHas('guest', function ($query) {
+                $query->whereHas('host', function ($query) {
+                    return $query->whereIn('department_id', UserDepartment::getUserDepartment());
+                });
+            });
+
 
         if ($request->input('file') == 'excel') {
             return $this->excel($query);

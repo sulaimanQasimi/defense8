@@ -119,70 +119,73 @@
 
 
 
+    @if (!in_array($guest->host->department_id, \Sq\Query\Policy\UserDepartment::getUserDepartment()))
+        <div class="text-9xl text-center text-red-500 ">مهمان مربوط این جز تام نیست</div>
+    @else
+        @if ($guest->registered_at->isToday())
+            <div class="flex justify-around mt-10">
 
-
-
-
-    @if ($guest->registered_at->isToday())
-        <div class="flex justify-around mt-10">
-
-            {{--  IF Current Gate is Main Gate And Enter Gate is empty --}}
-            @if (auth()->user()->gate->level === 1 && !$guest->EnterGate)
-                @if (!$guest->currentGate?->entered_at)
-                    <a href="{{ route('guest.check', ['guest' => $guest->id, 'state' => 'enter']) }}"
-                        class="px-7 rounded-lg hover:scale-95 py-2 text-white bg-gradient-to-t from-green-600 to-green-500"
-                        style="">@lang('Enter')</a>
+                {{--  IF Current Gate is Main Gate And Enter Gate is empty --}}
+                @if (auth()->user()->gate->level === 1 && !$guest->EnterGate)
+                    @if (!$guest->currentGate?->entered_at)
+                        <a href="{{ route('sqguest.guest.check', ['guest' => $guest->id, 'state' => 'enter']) }}"
+                            class="px-7 rounded-lg hover:scale-95 py-2 text-white bg-gradient-to-t from-green-600 to-green-500"
+                            style="">@lang('Enter')</a>
+                    @endif
                 @endif
-            @endif
 
-            @if (auth()->user()->gate->level === 1 && $guest->EnterGate)
-                <span class="text-4xl font-medium">@lang('Guest Entered To Ministry', ['name' => $guest->EnterGate->gate->pa_name])</span>
-            @endif
-
-
-
-            {{-- If The Guest is not Exited from Any Gate  And Not Gate --}}
-
-
-            @if (auth()->user()->gate->level != 1 && $guest->EnterGate && !$guest->ExitGate)
-
-                @if (!$guest->currentGate?->entered_at)
-                    <a href="{{ route('guest.check', ['guest' => $guest->id, 'state' => 'enter']) }}"
-                        class="px-7 rounded-lg hover:scale-95 py-2 text-white bg-gradient-to-t from-green-600 to-green-500"
-                        style="">@lang('Enter')</a>
+                @if (auth()->user()->gate->level === 1 && $guest->EnterGate)
+                    <span class="text-4xl font-medium">@lang('Guest Entered To Ministry', ['name' => $guest->EnterGate->gate->pa_name])</span>
                 @endif
 
 
-                @if ($guest->currentGate?->entered_at)
-                    <span class="text-4xl font-medium">@lang('Guest Entered')</span>
+
+                {{-- If The Guest is not Exited from Any Gate  And Not Gate --}}
+
+
+                @if (auth()->user()->gate->level != 1 && $guest->EnterGate && !$guest->ExitGate)
+
+                    @if (!$guest->currentGate?->entered_at)
+                        <a href="{{ route('sqguest.guest.check', ['guest' => $guest->id, 'state' => 'enter']) }}"
+                            class="px-7 rounded-lg hover:scale-95 py-2 text-white bg-gradient-to-t from-green-600 to-green-500"
+                            style="">@lang('Enter')</a>
+                    @endif
+
+
+                    @if ($guest->currentGate?->entered_at)
+                        <span class="text-4xl font-medium">@lang('Guest Entered')</span>
+                    @endif
+
+                    @if ($guest->currentGate?->entered_at && !$guest->currentGate?->exit_at)
+                        <a href="{{ route('sqguest.guest.check', ['guest' => $guest->id, 'state' => 'exit']) }}"
+                            class="px-7 rounded-lg hover:scale-95 py-2 text-white bg-gradient-to-t from-red-600 to-red-500"
+                            style="">@lang('Exited')</a>
+                    @endif
+
+                    @if ($guest->currentGate?->exit_at)
+                        <span class="text-4xl  font-medium">@lang('Guest Exited')</span>
+                    @endif
+
                 @endif
 
-                @if ($guest->currentGate?->entered_at && !$guest->currentGate?->exit_at)
-                    <a href="{{ route('guest.check', ['guest' => $guest->id, 'state' => 'exit']) }}"
-                        class="px-7 rounded-lg hover:scale-95 py-2 text-white bg-gradient-to-t from-red-600 to-red-500"
-                        style="">@lang('Exited')</a>
+
+
+                {{-- If The Guest is not Exited from Any Gate  And Not Gate --}}
+                @if (auth()->user()->gate->level == 1 && $guest->EnterGate && !$guest->ExitGate)
+                    @if (!$guest->currentGate?->exit_at)
+                        <a href="{{ route('sqguest.guest.check', ['guest' => $guest->id, 'state' => 'exit']) }}"
+                            class="px-7 rounded-lg hover:scale-95 py-2 text-white bg-gradient-to-t from-red-600 to-red-500"
+                            style="">@lang('Exited')</a>
+                    @endif
                 @endif
 
-                @if ($guest->currentGate?->exit_at)
-                    <span class="text-4xl  font-medium">@lang('Guest Exited')</span>
+                @if (auth()->user()->gate->level === 1 && $guest->ExitGate)
+                    <span class="text-4xl font-medium">@lang('Guest Exit To Ministry', ['name' => $guest->ExitGate->gate->pa_name])</span>
                 @endif
-
-            @endif
-
-
-
-            {{-- If The Guest is not Exited from Any Gate  And Not Gate --}}
-            @if (auth()->user()->gate->level == 1 && $guest->EnterGate && !$guest->ExitGate)
-                @if (!$guest->currentGate?->exit_at)
-                    <a href="{{ route('guest.check', ['guest' => $guest->id, 'state' => 'exit']) }}"
-                        class="px-7 rounded-lg hover:scale-95 py-2 text-white bg-gradient-to-t from-red-600 to-red-500"
-                        style="">@lang('Exited')</a>
-                @endif
-            @endif
-
-            @if (auth()->user()->gate->level === 1 && $guest->ExitGate)
-                <span class="text-4xl font-medium">@lang('Guest Exit To Ministry', ['name' => $guest->ExitGate->gate->pa_name])</span>
-            @endif
-        </div>
+            </div>
+        @endif
     @endif
+
+
+
 </div>

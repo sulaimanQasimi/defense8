@@ -2,14 +2,7 @@
 
 namespace Sq\Guest\Exports;
 
-use App\Models\GatePass;
-use App\Models\GuestGate;
-use Hekmatinasser\Verta\Facades\Verta;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Str;
 use Maatwebsite\Excel\Concerns\Exportable;
-use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithHeadings;

@@ -21,6 +21,7 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Sq\Query\Policy\UserDepartment;
 
 class CardInfo extends Model
 {
@@ -32,16 +33,46 @@ class CardInfo extends Model
     protected $casts = [
         'birthday' => 'date',
     ];
+
+
+
+
+
+
+
+
     protected $appends = [
         'current_month_oil_consumtion',
         'current_month_oil_remain',
     ];
     protected $fillable = ['remark'];
+    protected static function boot()
+    {
+        parent::boot();
+
+        // Power Check while Creating
+        static::creating(
+            function ($cardinfo) {
+                if (!in_array($cardinfo->department_id, UserDepartment::getUserDepartment())) {
+                    return abort(403);
+                }
+            }
+        );
+
+        // Power Check while Updating
+        static::updating(
+            function ($cardinfo) {
+                if (!in_array($cardinfo->department_id, UserDepartment::getUserDepartment())) {
+                    return abort(403);
+                }
+            }
+        );
+    }
 
     /**
      * Main Card
      */
-    public function main_card(): HasOne
+     public function main_card(): HasOne
     {
         return $this->hasOne(MainCard::class);
     }
@@ -53,7 +84,7 @@ class CardInfo extends Model
         return $this->hasMany(EmployeeVehicalCard::class);
     }
 
-    
+
     /**
      *  Gun Card
      */

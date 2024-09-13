@@ -38,7 +38,7 @@
                         </form>
                         @if ($guest)
                             <a class="mx-3 px-7  pt-2 bg-gradient-to-t from-green-600 to-green-700 text-white rounded-lg"
-                                href="{{ route('guest.generate', $guest) }}"> @lang('Print')</a>
+                                href="{{ route('sqguest.guest.generate', $guest) }}"> @lang('Print')</a>
                         @endif
                     </div>
                     <div>

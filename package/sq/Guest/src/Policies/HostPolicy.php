@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Support\Defense\PermissionTranslation;
 use Illuminate\Auth\Access\Response;
 use Sq\Guest\Models\Host;
+use Sq\Query\Policy\UserDepartment;
 
 class HostPolicy
 {
@@ -31,8 +32,7 @@ class HostPolicy
     public function view(User $user, Host $host): bool
     {
         return
-        $user->hasPermissionTo(PermissionTranslation::view("Host"))
-        && $this->owner($user,$host);
+        $user->hasPermissionTo(PermissionTranslation::view("Host")) && $this->owner($user,$host) && in_array($host->deparment_id, UserDepartment::getUserDepartment());
     }
 
     /**
@@ -49,7 +49,7 @@ class HostPolicy
     public function update(User $user, Host $host): bool
     {
         return $user->hasPermissionTo(PermissionTranslation::update("Host"))
-        && $this->owner($user,$host);
+        && $this->owner($user,$host) && in_array($host->deparment_id, UserDepartment::getUserDepartment());
     }
 
     /**
@@ -58,7 +58,7 @@ class HostPolicy
     public function delete(User $user, Host $host): bool
     {
         return $user->hasPermissionTo(PermissionTranslation::delete("Host"))
-        && $this->owner($user,$host);
+        && $this->owner($user,$host) && in_array($host->deparment_id, UserDepartment::getUserDepartment());
     }
 
     /**
@@ -67,7 +67,7 @@ class HostPolicy
     public function restore(User $user, Host $host): bool
     {
         return $user->hasPermissionTo(PermissionTranslation::restore("Host"))
-        && $this->owner($user,$host);
+        && $this->owner($user,$host) && in_array($host->deparment_id, UserDepartment::getUserDepartment());
     }
 
     /**

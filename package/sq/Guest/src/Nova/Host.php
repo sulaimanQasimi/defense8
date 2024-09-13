@@ -5,6 +5,7 @@ use App\Nova\Resource;
 use App\Nova\User;
 use DigitalCreative\MegaFilter\MegaFilter;
 use DigitalCreative\MegaFilter\MegaFilterTrait;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\HasMany;
@@ -12,6 +13,7 @@ use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Sq\Employee\Nova\Department;
+use Sq\Query\Policy\UserDepartment;
 use Sq\Query\SqNovaSelectFilter;
 use Sq\Query\SqNovaTextFilter;
 
@@ -47,7 +49,8 @@ class Host extends Resource
             return $query->where('id', auth()->user()->host->id);
         }
 
-        return $query;
+
+        return $query->whereIn('department_id', UserDepartment::getUserDepartment());
     }
 
 
@@ -57,6 +60,10 @@ class Host extends Resource
         return [
 
             BelongsTo::make(__("Department/Chancellor"), 'department', Department::class)
+                ->relatableQueryUsing(function (NovaRequest $request, Builder $query) {
+                    $query->whereIn('id', UserDepartment::getUserDepartment());
+                })
+
                 ->filterable()
                 ->sortable()
                 ->searchable(),

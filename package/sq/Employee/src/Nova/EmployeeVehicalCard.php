@@ -5,12 +5,14 @@ use App\Nova\Actions\VehicalRemarkAction;
 use App\Nova\Resource;
 use DigitalCreative\MegaFilter\MegaFilter;
 use DigitalCreative\MegaFilter\MegaFilterTrait;
+use Illuminate\Database\Eloquent\Builder;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Trix;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Fields\Image;
 use MZiraki\PersianDateField\PersianDate;
+use Sq\Query\Policy\UserDepartment;
 use Sq\Query\SqNovaDateFilter;
 use Sq\Query\SqNovaTextFilter;
 
@@ -37,12 +39,23 @@ class EmployeeVehicalCard extends Resource
         return __('Vehical Card');
     }
 
+    public static function indexQuery(NovaRequest $request, $query)
+    {
+        return $query->whereHas('card_info', function ($query) {
+            return $query->whereIn('department_id', UserDepartment::getUserDepartment());
+        });
+    }
     public function fields(NovaRequest $request)
     {
         return [
 
             Image::make(__('Photo'), 'photo')->disk('vehical'),
-            BelongsTo::make(__('Employee'), 'card_info', CardInfo::class)->nullable()->searchable(),
+            BelongsTo::make(__('Employee'), 'card_info', CardInfo::class)
+                ->relatableQueryUsing(function (NovaRequest $request, Builder $query) {
+                    $query->whereIn('department_id', UserDepartment::getUserDepartment());
+                })
+                ->nullable()
+                ->searchable(),
 
             Text::make(__("Vehical Type"), "vehical_type")
                 ->required()
@@ -149,7 +162,10 @@ class EmployeeVehicalCard extends Resource
     public function actions(NovaRequest $request)
     {
         return [
-            (new \Sq\Card\Nova\Actions\EmployeeCarPrintCardAction)->onlyOnDetail()->canRun(fn() => auth()->user()->hasRole("Print Card")),
+            (new \Sq\Card\Nova\Actions\EmployeeCarPrintCardAction)
+                ->onlyOnDetail()
+                ->canRun(fn($request, $employeeVehicalCard) => auth()->user()->hasPermissionTo("print-card")
+                    && in_array($employeeVehicalCard->card_info->orginization->id, UserDepartment::getUserDepartment())),
             (new VehicalRemarkAction)->canSee(fn() => auth()->user()->hasPermissionTo("add remark for vehical")),
 
         ];

@@ -7,6 +7,7 @@ use App\Support\Defense\PermissionTranslation;
 use Illuminate\Auth\Access\Response;
 use Sq\Employee\Models\CardInfo;
 use Sq\Employee\Models\Gate;
+use Sq\Query\Policy\UserDepartment;
 
 class CardInfoPolicy
 {
@@ -23,7 +24,7 @@ class CardInfoPolicy
      */
     public function view(User $user, CardInfo $infoCard): bool
     {
-        return $user->hasPermissionTo(PermissionTranslation::view("Card Info"));
+        return $user->hasPermissionTo(PermissionTranslation::view("Card Info")) && in_array($infoCard->orginization->id, UserDepartment::getUserDepartment());
     }
 
     /**
@@ -39,7 +40,7 @@ class CardInfoPolicy
      */
     public function update(User $user, CardInfo $infoCard): bool
     {
-        return $user->hasPermissionTo(PermissionTranslation::update("Card Info"));
+        return $user->hasPermissionTo(PermissionTranslation::update("Card Info")) && in_array($infoCard->orginization->id,  UserDepartment::getUserDepartment());
     }
 
     /**
@@ -47,7 +48,7 @@ class CardInfoPolicy
      */
     public function delete(User $user, CardInfo $infoCard): bool
     {
-        return $user->hasPermissionTo(PermissionTranslation::delete("Card Info"));
+        return $user->hasPermissionTo(PermissionTranslation::delete("Card Info")) && in_array($infoCard->orginization->id,  UserDepartment::getUserDepartment());
     }
 
     /**
@@ -55,7 +56,7 @@ class CardInfoPolicy
      */
     public function restore(User $user, CardInfo $infoCard): bool
     {
-        return $user->hasPermissionTo(PermissionTranslation::restore("Card Info"));
+        return $user->hasPermissionTo(PermissionTranslation::restore("Card Info")) && in_array($infoCard->orginization->id,  UserDepartment::getUserDepartment());
     }
 
     /**
@@ -63,7 +64,7 @@ class CardInfoPolicy
      */
     public function forceDelete(User $user, CardInfo $infoCard): bool
     {
-        return $user->hasPermissionTo(PermissionTranslation::destroy("Card Info"));
+        return $user->hasPermissionTo(PermissionTranslation::destroy("Card Info")) && in_array($infoCard->orginization->id,  UserDepartment::getUserDepartment());
     }
 
     public function attachAnyGate(): bool
@@ -77,6 +78,6 @@ class CardInfoPolicy
 
     public function gatePass(User $user, CardInfo $infoCard): bool
     {
-        return ($user->gate && $infoCard->gate )?$user?->gate->id ==$infoCard?->gate->id : false;
+        return ($user->gate && $infoCard->gate) ? $user?->gate->id == $infoCard?->gate->id : false;
     }
 }

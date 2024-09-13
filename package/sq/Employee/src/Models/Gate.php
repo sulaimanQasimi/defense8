@@ -4,7 +4,6 @@ namespace Sq\Employee\Models;
 
 use Sq\Guest\Models\Guest;
 use App\Models\User;
-use App\Support\HasUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -34,10 +33,8 @@ class Gate extends Model
     {
         return $this->belongsToMany(Guest::class, 'guest_gate_passed')->withTimestamps();
     }
-    // public function cardInfos() {
-    //     return $this->belongsToMany(CardInfo::class, 'cardinfo_gates')->withPivot('entered_at', 'exit_at')->withTimestamps();
-    // }
-    public function cardInfos() {
+    public function cardInfos()
+    {
         return $this->hasMany(CardInfo::class);
     }
     public function department(): BelongsTo

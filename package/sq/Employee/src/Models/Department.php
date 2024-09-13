@@ -2,6 +2,7 @@
 
 namespace Sq\Employee\Models;
 
+use Kalnoy\Nestedset\NodeTrait;
 use Sq\Guest\Models\Host;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -14,6 +15,13 @@ class Department extends Model
 {
     use HasFactory;
     use SoftDeletes;
+    use NodeTrait;
+
+    public function getParentIdName()
+    {
+        return 'department_id';
+    }
+
     /**
      * Parent Department of this department
      */

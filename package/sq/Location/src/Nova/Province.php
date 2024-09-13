@@ -37,8 +37,9 @@ class Province extends Resource
                 ->updateRules('required', 'unique:provinces,name,{{resourceId}}'),
             HasMany::make(trans("District"), 'districts', District::class),
             HasMany::make(trans("Villages"), 'villages', Village::class),
-            HasMany::make(trans("Main Address"), 'main_employee_address', CardInfo::class),
-            HasMany::make(trans("Current Address"), 'current_employee_address', CardInfo::class),
+
+            // HasMany::make(trans("Main Address"), 'main_employee_address', CardInfo::class),
+            // HasMany::make(trans("Current Address"), 'current_employee_address', CardInfo::class),
 
         ];
     }

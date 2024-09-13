@@ -19,9 +19,4 @@ class MainCard extends Model
         "card_perform" => 'date',
         "card_expired_date" => 'date',
     ];
-    public function card_info(): BelongsTo
-    {
-        return $this->belongsTo(CardInfo::class);
-    }
-
 }

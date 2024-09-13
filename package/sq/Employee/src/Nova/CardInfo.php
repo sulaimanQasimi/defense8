@@ -7,25 +7,21 @@ use Acme\StripeInspector\StripeInspector;
 use App\Nova\Actions\EditCardInfoOption;
 use App\Nova\Actions\EditCardInfoRemark;
 use App\Nova\Actions\ExportCardInfo;
-use Laravel\Nova\Metrics\ApexLineChart;
 use Sq\Location\Nova as Location;
 use App\Nova\Resource;
 use App\Support\Defense\EditAditionalCardInfoEnum;
-use Coroowicaksono\ChartJsIntegration\LineChart;
 use DigitalCreative\MegaFilter\MegaFilter;
 use DigitalCreative\MegaFilter\MegaFilterTrait;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Validation\Rule;
 use Laravel\Nova\Actions\Action;
 use Laravel\Nova\Fields;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
 use MZiraki\PersianDateField\PersianDate;
+use Sq\Query\Policy\UserDepartment;
 use Sq\Query\SqNovaDateFilter;
 use Sq\Query\SqNovaSelectFilter;
 use Sq\Query\SqNovaTextFilter;
-use Sq\Query\SqNovaValueMetric;
 use Vehical\OilType;
 
 class CardInfo extends Resource
@@ -54,7 +50,7 @@ class CardInfo extends Resource
     public static $trafficCop = false;
     public static function indexQuery(NovaRequest $request, $query)
     {
-        return $query;
+        return $query->whereIn('department_id', UserDepartment::getUserDepartment());
     }
     public static function label()
     {
@@ -87,8 +83,8 @@ class CardInfo extends Resource
                     ->sortable(),
 
                 Fields\Text::make(__("Last Name"), "last_name")
-                    ->required()
-                    ->rules('required', 'string')
+                    ->nullable()
+                    ->rules('nullable', 'string')
                     ->placeholder(__("Enter Field", ['name' => __("Last Name")]))
                     ->filterable()
                     ->sortable(),
@@ -113,7 +109,8 @@ class CardInfo extends Resource
                     ->updateRules('nullable', 'string', 'unique:card_infos,national_id,{{resourceId}}')
                     ->placeholder(__("Enter Field", ['name' => __("National ID")]))
                     ->filterable()
-                    ->sortable(),
+                    ->sortable()
+                    ->hideFromIndex(),
 
                 Fields\Text::make(__("Phone"), "phone")
 
@@ -121,74 +118,23 @@ class CardInfo extends Resource
                     ->rules('nullable', 'string')
                     ->placeholder(__("Enter Field", ['name' => __("Phone")]))
                     ->filterable()
-                    ->sortable(),
+                    ->sortable()
+                    ->hideFromIndex(),
 
                 PersianDate::make(__("Date of Birth"), "birthday")
                     ->nullable()
                     ->rules('nullable', 'string')
-                    ->placeholder(__("Enter Field", ['name' => __("Date of Birth")])),
+                    ->placeholder(__("Enter Field", ['name' => __("Date of Birth")]))
+                    ->hideFromIndex(),
             ]),
-            Panel::make(__("Job"), [
-
-                Fields\BelongsTo::make(__("Department/Chancellor"), 'orginization', Department::class)
-                    ->searchable()
-                    ->filterable()
-                    ->sortable(),
-                Fields\BelongsTo::make(__("Gate"), 'gate', Gate::class)
-                    ->dependsOn(
-                        ['orginization'],
-                        function (Fields\BelongsTo $field, NovaRequest $request, Fields\FormData $formData) {
-
-                            $field->relatableQueryUsing(function (NovaRequest $request, Builder $query) use ($formData) {
-                                $query->where('department_id', $formData->orginization);
-                            });
-                        }
-                    ),
-
-
-                Fields\Text::make(__("Degree"), "degree")
-                    ->nullable()
-                    ->rules('nullable', 'string')
-
-                    ->placeholder(__("Enter Field", ['name' => __("Degree")])),
-                Fields\Text::make(__("Grade"), "grade")
-                    ->nullable()
-                    ->rules('nullable', 'string')
-
-                    ->placeholder(__("Enter Field", ['name' => __("Grade")])),
-                Fields\Text::make(__("Acupation"), "acupation")
-                    ->nullable()
-                    ->rules('nullable', 'string')
-
-                    ->placeholder(__("Enter Field", ['name' => __("Acupation")])),
-
-                Fields\Text::make(__("Job Stracture Title"), "job_structure")
-                    ->nullable()
-                    ->rules('nullable', 'string')
-
-                    ->placeholder(__("Enter Field", ['name' => __("Job Stracture Title")])),
-                Fields\Text::make(__("Previous Job"), "previous_job")
-                    ->nullable()
-                    ->rules('nullable', 'string')
-
-                    ->placeholder(__("Enter Field", ['name' => __("Previous Job")])),
-                Fields\Text::make(__("Department/Chancellor"), "department")
-                    ->nullable()
-                    ->rules('nullable', 'string')
-                    ->placeholder(__("Enter Field", ['name' => __("Department/Chancellor")])),
-
-                Fields\Tag::make(__("Condition"), 'employeeOptions', \Sq\Guest\Nova\GuestOption::class)
-                    ->showCreateRelationButton()
-                    ->displayAsList()
-                    ->exceptOnForms(),
-
-            ])->limit(0),
+            Panel::make(__("Job"), $this->job_fields())->limit(0),
             Panel::make(__("Main Address"), [
 
                 //
                 Fields\BelongsTo::make(__("Province"), "main_province", Location\Province::class)
                     ->nullable()
                     ->searchable()
+                    ->hideFromIndex()
                     ->showCreateRelationButton(),
                 //
                 Fields\BelongsTo::make(__("District"), "main_district", Location\District::class)
@@ -201,6 +147,7 @@ class CardInfo extends Resource
                         }
                     )
                     ->nullable()
+                    ->hideFromIndex()
                     ->showCreateRelationButton(),
                 //
                 Fields\BelongsTo::make(__("Village"), "main_village", Location\Village::class)
@@ -213,13 +160,16 @@ class CardInfo extends Resource
                         }
                     )
                     ->nullable()
+                    ->hideFromIndex()
                     ->showCreateRelationButton(),
             ])->limit(0),
 
             Panel::make(__("Current Address"), [
                 Fields\BelongsTo::make(__("Province"), "current_province", Location\Province::class)
                     ->nullable()
-                    ->searchable(),
+                    ->searchable()
+                    ->hideFromIndex()
+                    ->showCreateRelationButton(),
 
                 Fields\BelongsTo::make(__("District"), "current_district", Location\District::class)
                     ->dependsOn(
@@ -231,7 +181,7 @@ class CardInfo extends Resource
                         }
                     )
                     ->nullable()
-
+                    ->hideFromIndex()
                     ->showCreateRelationButton(),
 
                 Fields\BelongsTo::make(__("Village"), "current_village", Location\Village::class)
@@ -244,6 +194,7 @@ class CardInfo extends Resource
                         }
                     )
                     ->nullable()
+                    ->hideFromIndex()
                     ->showCreateRelationButton(),
 
             ]),
@@ -252,7 +203,7 @@ class CardInfo extends Resource
                 ->exceptOnForms()
                 ->hideFromIndex(),
             Fields\HasOne::make(__("Main Card"), 'main_card', MainCard::class),
-            Fields\HasOne::make(__("Gun Card"), 'gun_card', GunCard::class),
+            Fields\HasOne::make(__("Gun Card"), 'gun_card', GunCard::class)->hideWhenCreating(),
             Fields\HasMany::make(__("Employee Vehical Card"), 'employee_vehical_card', EmployeeVehicalCard::class),
             Panel::make(
                 trans("Oil Disterbution"),
@@ -288,20 +239,6 @@ class CardInfo extends Resource
     }
     public function cards(NovaRequest $request)
     {
-        //
-        $info = DB::table('card_infos')
-            ->select(DB::raw('count(id) as num,date(created_at) as year'))
-            ->groupByRaw("date(created_at)")
-            ->orderBy('year')
-            ->get(['num', 'year'])
-            ->map(
-                function ($employee) {
-                    return [
-                        "x" => verta($employee->year)->format("Y/m/d"),
-                        "y" => $employee->num
-                    ];
-                }
-            );
         return [
             (new EmployeeAttendanceStatistic())
                 ->onlyOnDetail()
@@ -345,7 +282,7 @@ class CardInfo extends Resource
                 new SqNovaSelectFilter(
                     label: __("Department/Chancellor"),
                     column: 'department_id',
-                    options: \Sq\Employee\Models\Department::pluck('fa_name', 'id')->toArray()
+                    options: \Sq\Employee\Models\Department::query()->whereIn('id', UserDepartment::getUserDepartment())->pluck('fa_name', 'id')->toArray()
                 ),
                 //
                 new SqNovaSelectFilter(
@@ -373,18 +310,92 @@ class CardInfo extends Resource
                 //->askForFilename()
                 ->askForWriterType()
             ,
-            (new EditCardInfoRemark())->canSee(fn() => auth()->user()->hasPermissionTo(EditAditionalCardInfoEnum::Remark)),
-            (new EditCardInfoOption())->canSee(fn() => auth()->user()->hasPermissionTo(EditAditionalCardInfoEnum::Option)),
+            (new EditCardInfoRemark())
+                ->canSee(fn() => auth()->user()->hasPermissionTo(EditAditionalCardInfoEnum::Remark))
+                ->canRun(fn($request, $infoCard) => EditAditionalCardInfoEnum::Remark
+                    && in_array($infoCard->orginization->id, UserDepartment::getUserDepartment())),
 
+            // Edit Options
+            (new EditCardInfoOption())
+                ->canSee(fn() => auth()->user()->hasPermissionTo(EditAditionalCardInfoEnum::Option))
+                ->canRun(fn($request, $infoCard) => EditAditionalCardInfoEnum::Remark
+                    && in_array($infoCard->orginization->id, UserDepartment::getUserDepartment())),
+
+            // Download Attendance
             Action::openInNewTab(
                 __("Download CURRENT MONTH ATTENDANCE EMPLOYEE"),
                 fn($employee) => route('sqemployee.employee.attendance.current.month.single', ['cardInfo' => $employee->id])
             )
                 ->sole()
-                //  ->canRun(fn($request, $employee) => auth()->user()->department?->id === $employee->orginization?->id)
+                ->canRun(fn($request, $infoCard) => in_array($infoCard->orginization->id, UserDepartment::getUserDepartment()))
                 ->withoutConfirmation()
                 ->onlyOnDetail(),
-            (new \Sq\Card\Nova\Actions\PrintAllTypeCardEmployeeAction)->onlyOnDetail()->canRun(fn() => auth()->user()->hasRole("Print Card"))
+            (new \Sq\Card\Nova\Actions\PrintAllTypeCardEmployeeAction)->onlyOnDetail()
+                ->canRun(fn($request, $infoCard) => auth()->user()->hasPermissionTo("print-card")
+                    && in_array($infoCard->orginization->id, UserDepartment::getUserDepartment()))
+        ];
+    }
+
+    public function job_fields(): array
+    {
+        return [
+            Fields\BelongsTo::make(__("Department/Chancellor"), 'orginization', Department::class)
+                ->relatableQueryUsing(function (NovaRequest $request, Builder $query) {
+                    $query->whereIn('id', UserDepartment::getUserDepartment());
+                })
+                // ->searchable()
+                ->filterable()
+                ->sortable()
+                ->showCreateRelationButton(),
+
+            Fields\BelongsTo::make(__("Gate"), 'gate', Gate::class)
+                ->dependsOn(
+                    ['orginization'],
+                    function (Fields\BelongsTo $field, NovaRequest $request, Fields\FormData $formData) {
+
+                        $field->relatableQueryUsing(function (NovaRequest $request, Builder $query) use ($formData) {
+                            $query->where('department_id', $formData->orginization);
+                        });
+                    }
+                )->showCreateRelationButton(),
+
+
+            Fields\Text::make(__("Degree"), "degree")
+                ->nullable()
+                ->rules('nullable', 'string')
+
+                ->placeholder(__("Enter Field", ['name' => __("Degree")])),
+            Fields\Text::make(__("Grade"), "grade")
+                ->nullable()
+                ->rules('nullable', 'string')
+
+                ->placeholder(__("Enter Field", ['name' => __("Grade")])),
+            Fields\Text::make(__("Acupation"), "acupation")
+                ->nullable()
+                ->rules('nullable', 'string')
+
+                ->placeholder(__("Enter Field", ['name' => __("Acupation")])),
+
+            Fields\Text::make(__("Job Stracture Title"), "job_structure")
+                ->nullable()
+                ->rules('nullable', 'string')
+
+                ->placeholder(__("Enter Field", ['name' => __("Job Stracture Title")])),
+            Fields\Text::make(__("Previous Job"), "previous_job")
+                ->nullable()
+                ->rules('nullable', 'string')
+
+                ->placeholder(__("Enter Field", ['name' => __("Previous Job")])),
+            Fields\Text::make(__("Department/Chancellor"), "department")
+                ->nullable()
+                ->rules('nullable', 'string')
+                ->placeholder(__("Enter Field", ['name' => __("Department/Chancellor")])),
+
+            Fields\Tag::make(__("Condition"), 'employeeOptions', \Sq\Guest\Nova\GuestOption::class)
+                ->showCreateRelationButton()
+                ->displayAsList()
+                ->exceptOnForms(),
+
 
         ];
     }

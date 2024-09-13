@@ -7,6 +7,7 @@ use App\Nova\User;
 use App\Support\Defense\DepartmentTypeEnum;
 use DigitalCreative\MegaFilter\MegaFilter;
 use DigitalCreative\MegaFilter\MegaFilterTrait;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Gate;
 use Sq\Employee\Nova\Gate as NovaGate;
 use Laravel\Nova\Actions\Action;
@@ -15,6 +16,7 @@ use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Sq\Query\Policy\UserDepartment;
 use Sq\Query\SqNovaSelectFilter;
 use Sq\Query\SqNovaTextFilter;
 
@@ -40,12 +42,22 @@ class Department extends Resource
         return __('Department');
     }
 
+    public static function indexQuery(NovaRequest $request, $query)
+    {
+        if (auth()->user()->hasRole('super-admin')) {
+            return $query;
+        }
+        return $query->whereIn('id', UserDepartment::getUserDepartment());
+    }
+
     public function fields(NovaRequest $request)
     {
         return [
             BelongsTo::make(trans("Header Department"), 'department', Department::class)
+                ->relatableQueryUsing(function (NovaRequest $request, Builder $query) {
+                    $query->whereIn('id', UserDepartment::getUserDepartment());
+                })
                 ->nullable()
-                ->searchable()
                 ->filterable(),
 
             Text::make(trans("Name"), 'fa_name')
@@ -79,7 +91,7 @@ class Department extends Resource
 
             HasMany::make(trans("Users"), 'user', User::class),
             HasMany::make(trans("Under Departments"), 'departments', Department::class),
-            HasMany::make(trans("Gates"), 'gates',NovaGate::class),
+            HasMany::make(trans("Gates"), 'gates', NovaGate::class),
             HasMany::make(trans("Employee"), 'card_infos', CardInfo::class),
             HasMany::make(trans("Hosts"), 'hosts', \Sq\Guest\Nova\Host::class),
 

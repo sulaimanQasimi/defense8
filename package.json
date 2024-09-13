@@ -19,7 +19,9 @@
         "build-employee-attendance-statistic": "cd nova-components/EmployeeAttendanceStatistic && npm run dev",
         "build-employee-attendance-statistic-prod": "cd nova-components/EmployeeAttendanceStatistic && npm run prod",
         "build-app-setting": "cd nova-components/AppSetting && npm run dev",
-        "build-app-setting-prod": "cd nova-components/AppSetting && npm run prod"
+        "build-app-setting-prod": "cd nova-components/AppSetting && npm run prod",
+        "build-select-department": "cd nova-components/SelectDepartment && npm run dev",
+        "build-select-department-prod": "cd nova-components/SelectDepartment && npm run prod"
     },
     "devDependencies": {
         "@inertiajs/vue3": "^1.0.0",

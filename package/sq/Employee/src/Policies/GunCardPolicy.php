@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Support\Defense\PermissionTranslation;
 use Illuminate\Auth\Access\Response;
 use Sq\Employee\Models\GunCard;
+use Sq\Query\Policy\UserDepartment;
 
 class GunCardPolicy
 {
@@ -14,7 +15,7 @@ class GunCardPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasPermissionTo(PermissionTranslation::viewAny("Gun Card"));
+        return $user->hasPermissionTo(PermissionTranslation::viewAny("Gun Card")) ;
 
     }
 
@@ -23,7 +24,7 @@ class GunCardPolicy
      */
     public function view(User $user, GunCard $gunCard): bool
     {
-        return $user->hasPermissionTo(PermissionTranslation::view("Gun Card"));
+        return $user->hasPermissionTo(PermissionTranslation::view("Gun Card"))  && in_array($gunCard->card_info->orginization->id, UserDepartment::getUserDepartment());
 
     }
 
@@ -41,7 +42,7 @@ class GunCardPolicy
      */
     public function update(User $user, GunCard $gunCard): bool
     {
-        return $user->hasPermissionTo(PermissionTranslation::update("Gun Card"));
+        return $user->hasPermissionTo(PermissionTranslation::update("Gun Card"))  && in_array($gunCard->card_info->orginization->id, UserDepartment::getUserDepartment());
 
     }
 
@@ -50,7 +51,7 @@ class GunCardPolicy
      */
     public function delete(User $user, GunCard $gunCard): bool
     {
-        return $user->hasPermissionTo(PermissionTranslation::delete("Gun Card"));
+        return $user->hasPermissionTo(PermissionTranslation::delete("Gun Card"))  && in_array($gunCard->card_info->orginization->id, UserDepartment::getUserDepartment());
 
     }
 
@@ -59,7 +60,7 @@ class GunCardPolicy
      */
     public function restore(User $user, GunCard $gunCard): bool
     {
-        return $user->hasPermissionTo(PermissionTranslation::restore("Gun Card"));
+        return $user->hasPermissionTo(PermissionTranslation::restore("Gun Card"))  && in_array($gunCard->card_info->orginization->id, UserDepartment::getUserDepartment());
 
     }
 
@@ -68,7 +69,7 @@ class GunCardPolicy
      */
     public function forceDelete(User $user, GunCard $gunCard): bool
     {
-        return $user->hasPermissionTo(PermissionTranslation::destroy("Gun Card"));
+        return $user->hasPermissionTo(PermissionTranslation::destroy("Gun Card"))  && in_array($gunCard->card_info->orginization->id, UserDepartment::getUserDepartment());
 
     }
 }

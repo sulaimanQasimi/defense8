@@ -6,11 +6,12 @@ use App\Models\User;
 use App\Support\Defense\PermissionTranslation;
 use Illuminate\Auth\Access\Response;
 use Sq\Employee\Models\Department;
+use Sq\Query\Policy\UserDepartment;
 
 class DepartmentPolicy
 {
 
-    public $resource="Department";
+    public $resource = "Department";
     /**
      * Determine whether the user can view any models.
      */
@@ -26,7 +27,7 @@ class DepartmentPolicy
     public function view(User $user, Department $department): bool
     {
 
-        return $user->hasPermissionTo(PermissionTranslation::view($this->resource));
+        return $user->hasPermissionTo(PermissionTranslation::view($this->resource)) && in_array($department->id,  UserDepartment::getUserDepartment());
 
     }
 
@@ -45,7 +46,7 @@ class DepartmentPolicy
      */
     public function update(User $user, department $department): bool
     {
-        return $user->hasPermissionTo(PermissionTranslation::update($this->resource));
+        return $user->hasPermissionTo(PermissionTranslation::update($this->resource)) && in_array($department->id,  UserDepartment::getUserDepartment());
 
     }
 
@@ -54,8 +55,7 @@ class DepartmentPolicy
      */
     public function delete(User $user, department $department): bool
     {
-        return $user->hasPermissionTo(PermissionTranslation::delete($this->resource));
-
+        return $user->hasPermissionTo(PermissionTranslation::delete($this->resource)) && in_array($department->id,  UserDepartment::getUserDepartment());
     }
 
     /**
@@ -64,7 +64,7 @@ class DepartmentPolicy
     public function restore(User $user, department $department): bool
     {
 
-        return $user->hasPermissionTo(PermissionTranslation::restore($this->resource));
+        return $user->hasPermissionTo(PermissionTranslation::restore($this->resource)) && in_array($department->id,  UserDepartment::getUserDepartment());
 
     }
 
@@ -73,11 +73,11 @@ class DepartmentPolicy
      */
     public function forceDelete(User $user, department $department): bool
     {
-        return $user->hasPermissionTo(PermissionTranslation::destroy($this->resource));
+        return $user->hasPermissionTo(PermissionTranslation::destroy($this->resource)) && in_array($department->id,  UserDepartment::getUserDepartment());
 
     }
     public function admin(User $user, department $department): bool
     {
-        return ($user->department)?$user->department->id===$department->id:false;
+        return ($user->department) ? $user->department->id === $department->id : false;
     }
 }

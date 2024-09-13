@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Kalnoy\Nestedset\NodeTrait;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Nova\Auth\Impersonatable;
 use Laravel\Sanctum\HasApiTokens;
@@ -30,7 +32,7 @@ class User extends Authenticatable
     use SoftDeletes;
 
     //    use TwoFactorAuthenticatable;
-
+    // use NodeTrait;
     use LogsActivity;
     /**
      * The attributes that are mass assignable.
@@ -86,6 +88,10 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Department::class);
     }
+    public function departments(): BelongsToMany
+    {
+        return $this->belongsToMany(Department::class, 'department_user', 'user_id', 'department_id');
+    }
     public function gate(): BelongsTo
     {
         return $this->belongsTo(Gate::class);
@@ -105,7 +111,7 @@ class User extends Authenticatable
 
     public function canImpersonate()
     {
-        return  $this->hasRole('super-admin');
+        return $this->hasRole('super-admin');
     }
 
     /**

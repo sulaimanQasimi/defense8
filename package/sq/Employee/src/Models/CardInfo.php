@@ -52,6 +52,8 @@ class CardInfo extends Model
     {
         return $this->hasMany(EmployeeVehicalCard::class);
     }
+
+    
     /**
      *  Gun Card
      */
@@ -59,10 +61,11 @@ class CardInfo extends Model
     {
         return $this->hasOne(GunCard::class);
     }
+
+
     /**
      *
      */
-
     public function employeeOptions(): BelongsToMany
     {
         return $this->belongsToMany(GuestOption::class, 'employee_option_related');

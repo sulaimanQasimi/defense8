@@ -44,21 +44,21 @@ class Village extends Resource
                 ),
             Text::make(trans("Name"), 'name')
                 ->required()
-                ->creationRules('required', 'string', Rule::unique('villages')
+                ->creationRules('required', 'string',
+                Rule::unique('villages')
                     ->where(function ($query) use ($request) {
                         return $query->where('district_id', $request->district)->where('deleted_at', null);
                     }))
                 ->updateRules(
                     'required',
-                    Rule::unique('districts')
+                    Rule::unique('villages')
                         ->where(function ($query) use ($request) {
                             return $query->where('district_id', $request->district)->where('deleted_at', null);
                         })->ignore($this->id),
 
                 ),
-                HasMany::make(trans("Main Address"), 'main_employee_address', CardInfo::class),
-                HasMany::make(trans("Current Address"), 'current_employee_address', CardInfo::class),
-
+                // HasMany::make(trans("Main Address"), 'main_employee_address', CardInfo::class),
+                // HasMany::make(trans("Current Address"), 'current_employee_address', CardInfo::class),
         ];
     }
 

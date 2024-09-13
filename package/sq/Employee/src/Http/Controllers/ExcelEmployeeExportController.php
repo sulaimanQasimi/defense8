@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use Sq\Employee\Exports\EmployeeCurrentMonthExport;
 use Sq\Employee\Models\Department;
+use Sq\Query\Policy\UserDepartment;
 
 class ExcelEmployeeExportController extends Controller
 {
@@ -32,6 +33,10 @@ class ExcelEmployeeExportController extends Controller
 
     public function attendance(Department $department)
     {
+
+        if (!in_array($department->id, UserDepartment::getUserDepartment())) {
+            abort(404);
+        }
         return Excel::download(new EmployeeCurrentMonthExport($department->id, $this->start, $this->end), 'current-month-employee.xlsx');
     }
 }

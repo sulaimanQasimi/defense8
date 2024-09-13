@@ -2,6 +2,7 @@
 
 namespace Sq\Employee\Models;
 
+use App\Support\HasCardInfo;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -12,16 +13,13 @@ class Attendance extends Model
 {
     use HasFactory;
     use SoftDeletes;
+    use HasCardInfo;
     protected $guarded = [];
     protected $casts = [
         "date" => 'date',
         'enter' => 'datetime',
         'exit' => 'datetime',
     ];
-    public function card_info(): BelongsTo
-    {
-        return $this->belongsTo(CardInfo::class);
-    }
     public function gate(): BelongsTo
     {
         return $this->belongsTo(Gate::class);
@@ -40,7 +38,7 @@ class Attendance extends Model
             return "غ";
         } else if ($this->state == "P") {
             return "ح";
-        }else {
+        } else {
             return null;
         }
     }

@@ -6,12 +6,14 @@ use App\Models\User;
 use App\Nova\Resource;
 use DigitalCreative\MegaFilter\MegaFilter;
 use DigitalCreative\MegaFilter\MegaFilterTrait;
+use Illuminate\Database\Eloquent\Builder;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Sq\Employee\Models\Department;
+use Sq\Query\Policy\UserDepartment;
 use Sq\Query\SqNovaSelectFilter;
 use Sq\Query\SqNovaTextFilter;
 
@@ -37,14 +39,20 @@ class Gate extends Resource
     {
         return __('Gate');
     }
+    public static function indexQuery(NovaRequest $request, $query)
+    {
+        return $query->whereIn('department_id',  UserDepartment::getUserDepartment());
+    }
 
     public function fields(NovaRequest $request)
     {
         return [
             BelongsTo::make(__("Department/Chancellor"), 'department', \Sq\Employee\Nova\Department::class)
+                ->relatableQueryUsing(function (NovaRequest $request, Builder $query) {
+                    $query->whereIn('id',  UserDepartment::getUserDepartment());
+                })
                 ->filterable()
-                ->sortable()
-                ->searchable(),
+                ->sortable(),
             Text::make(__("Persion Name"), 'fa_name')
                 ->required()
                 ->creationRules('required', 'string', 'unique:gates,fa_name')

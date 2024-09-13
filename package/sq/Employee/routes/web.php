@@ -43,6 +43,10 @@ Route::middleware(['role:super-admin'])
     ->get('employee/attendance/current/month/employee/{cardInfo:id}', [CurrentMonthEmployeeAttendance::class, 'single_employee'])
     ->name("employee.attendance.current.month.single");
 
+
+
+// Current Month Department Attendance in PDF Format
+
 Route::middleware(['role:super-admin'])
     ->get(
         'employee/attendance/current/month/department/{department:id}',
@@ -51,11 +55,16 @@ Route::middleware(['role:super-admin'])
     ->name("employee.attendance.current.month.department.single");
 
 
+// Current Month Department Attendance in Excel Format
+
 Route::middleware(['role:super-admin'])
-    ->get('employee/attendance/current/month/department/{department:id}/excel',
+    ->get(
+        'employee/attendance/current/month/department/{department:id}/excel',
         [ExcelEmployeeExportController::class, 'attendance']
     )
     ->name("employee.attendance.current.month.department.single.excel");
+
+// Custom Month Department Attendance in Excel Format
 
 Route::prefix('export/')
     ->name('export.excel.')
@@ -73,6 +82,3 @@ Route::prefix("employee/")
         Route::get('department/{department:id}/personal/info', 'department')
             ->name("department.employee.personal.info");
     });
-
-
-//

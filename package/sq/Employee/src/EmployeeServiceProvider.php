@@ -38,7 +38,7 @@ class EmployeeServiceProvider extends ServiceProvider
     }
     public function register()
     {
-
+//
     }
     public function routes()
     {
@@ -88,7 +88,7 @@ class EmployeeServiceProvider extends ServiceProvider
 
                 // Frame of Printable Card Menu Item
                 MenuItem::resource(\Sq\Card\Nova\PrintCardFrame::class),
-                MenuItem::resource(NovaResource\Website::class)->canSee(fn() => auth()->user()->hasRole('super-admin')),
+                // MenuItem::resource(NovaResource\Website::class)->canSee(fn() => auth()->user()->hasRole('super-admin')),
 
 
             ])->collapsable()->collapsedByDefault()->icon("fas fa-users-rectangle fa-2x");

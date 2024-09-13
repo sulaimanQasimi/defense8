@@ -4,10 +4,12 @@ namespace Sq\Employee\Nova;
 use App\Nova\Resource;
 use DigitalCreative\MegaFilter\MegaFilter;
 use DigitalCreative\MegaFilter\MegaFilterTrait;
+use Illuminate\Database\Eloquent\Builder;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use MZiraki\PersianDateField\PersianDate;
+use Sq\Query\Policy\UserDepartment;
 use Sq\Query\SqNovaDateFilter;
 use Sq\Query\SqNovaTextFilter;
 
@@ -33,10 +35,20 @@ class GunCard extends Resource
         return __('Gun Card');
     }
 
+    public static function indexQuery(NovaRequest $request, $query)
+    {
+        return $query->whereHas('card_info', function ($query) {
+            return $query->whereIn('department_id',  UserDepartment::getUserDepartment());
+        });
+    }
+
     public function fields(NovaRequest $request)
     {
         return [
-            BelongsTo::make(__('Employee'), 'card_info', CardInfo::class)->searchable(),
+            BelongsTo::make(__('Employee'), 'card_info', CardInfo::class)
+                ->relatableQueryUsing(function (NovaRequest $request, Builder $query) {
+                    $query->whereIn('department_id',  UserDepartment::getUserDepartment());
+                })->searchable(),
             Text::make(__("Gun Type"), "gun_type")
                 ->required()
                 ->rules("required", "string"),
@@ -102,7 +114,9 @@ class GunCard extends Resource
     public function actions(NovaRequest $request)
     {
         return [
-            (new \Sq\Card\Nova\Actions\GunPrintCardAction)->onlyOnDetail()->canRun(fn() => auth()->user()->hasRole("Print Card"))
+            (new \Sq\Card\Nova\Actions\GunPrintCardAction)->onlyOnDetail()
+            ->canRun(fn($request, $gun) => auth()->user()->hasPermissionTo("print-card")
+            && in_array($gun->card_info->orginization->id, UserDepartment::getUserDepartment())),
 
         ];
     }

@@ -39,6 +39,35 @@ class QuotaOil extends OilNovaResource
         return __('Quota Oil');
     }
 
+    public static $trafficCop = false;
+    public static $showPollingToggle = true;
+
+    public static $perPageViaRelationship = 20;
+
+    public static function indexQuery(NovaRequest $request, $query)
+    {
+        return $query->whereIn('department_id',auth()->user()->departments()->pluck('departments.id')->toArray());
+    }
+
+    public static function scoutQuery(NovaRequest $request, $query)
+    {
+        return $query;
+    }
+    public static function detailQuery(NovaRequest $request, $query)
+    {
+        return parent::detailQuery($request, $query);
+    }
+
+    public static function relatableQuery(NovaRequest $request, $query)
+    {
+        return parent::relatableQuery($request, $query);
+    }
+
+    public static function perPageOptions()
+    {
+        return [20, 50, 75, 100, 150];
+    }
+
     public function fields(NovaRequest $request)
     {
         return [
@@ -59,30 +88,16 @@ class QuotaOil extends OilNovaResource
                 Fields\Text::make(__("National ID"), "national_id")->exceptOnForms(),
                 //
                 Fields\Text::make(__("Phone"), "phone")->exceptOnForms(),
-                //
-                PersianDate::make(__("Date of Birth"), "birthday")->exceptOnForms(),
             ]),
             Panel::make(__("Job"), [
 
                 Fields\BelongsTo::make(__("Department/Chancellor"), 'orginization', Department::class)->exceptOnForms(),
-                Fields\BelongsTo::make(__("Gate"), 'gate', \Sq\Employee\Nova\Gate::class)
-                    ->dependsOn(
-                        ['orginization'],
-                        function (Fields\BelongsTo $field, NovaRequest $request, Fields\FormData $formData) {
-
-                            $field->relatableQueryUsing(function (NovaRequest $request, Builder $query) use ($formData) {
-                                $query->where('department_id', $formData->orginization);
-                            });
-                        }
-                    )->exceptOnForms(),
 
                 Fields\Text::make(__("Degree"), "degree")->exceptOnForms(),
                 Fields\Text::make(__("Grade"), "grade")->exceptOnForms(),
                 Fields\Text::make(__("Acupation"), "acupation")->exceptOnForms(),
 
                 Fields\Text::make(__("Job Stracture Title"), "job_structure")->exceptOnForms(),
-                Fields\Text::make(__("Previous Job"), "previous_job")->exceptOnForms(),
-                Fields\Text::make(__("Department/Chancellor"), "department")->exceptOnForms(),
             ])->limit(0),
             Panel::make(
                 trans("Oil Disterbution"),
@@ -97,7 +112,7 @@ class QuotaOil extends OilNovaResource
                         ->filterable()
                         ->displayUsingLabels(),
 
-                        Fields\Select::make(trans("Type"), 'employee_type')
+                    Fields\Select::make(trans("Type"), 'employee_type')
                         ->options([
                             "grade" => trans("Grade Rate"),
                             "duty" => trans("Duty Response"),
@@ -180,43 +195,15 @@ class QuotaOil extends OilNovaResource
 
     public static function redirectAfterCreate(NovaRequest $request, $resource)
     {
-        return '/resources/'.static::uriKey();
+        return '/resources/' . static::uriKey();
     }
     public static function redirectAfterUpdate(NovaRequest $request, $resource)
     {
-        return '/resources/'.static::uriKey();
+        return '/resources/' . static::uriKey();
     }
     public function actions(NovaRequest $request)
     {
         return [];
-    }
-    public static $trafficCop = false;
-    public static $showPollingToggle = true;
-
-    public static $perPageViaRelationship = 20;
-
-    public static function indexQuery(NovaRequest $request, $query)
-    {
-        return $query;
-    }
-
-    public static function scoutQuery(NovaRequest $request, $query)
-    {
-        return $query;
-    }
-    public static function detailQuery(NovaRequest $request, $query)
-    {
-        return parent::detailQuery($request, $query);
-    }
-
-    public static function relatableQuery(NovaRequest $request, $query)
-    {
-        return parent::relatableQuery($request, $query);
-    }
-
-    public static function perPageOptions()
-    {
-        return [20, 50, 75, 100, 150];
     }
 
 }

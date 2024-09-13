@@ -4,10 +4,12 @@ namespace Sq\Employee\Nova;
 
 use App\Nova\Actions\EmployeePrintCardAction;
 use App\Nova\Resource;
+use Illuminate\Database\Eloquent\Builder;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use MZiraki\PersianDateField\PersianDate;
+use Sq\Query\Policy\UserDepartment;
 
 class MainCard extends Resource
 {
@@ -29,12 +31,22 @@ class MainCard extends Resource
     }
 
 
+    public static function indexQuery(NovaRequest $request, $query)
+    {
+        return $query->whereHas('card_info', function ($query) {
+            return $query->whereIn('department_id', UserDepartment::getUserDepartment());
+        });
+    }
+
     public function fields(NovaRequest $request)
     {
         return [
-            BelongsTo::make(__('Employee'),'card_info',CardInfo::class),
-            PersianDate::make(__("Disterbute Date"),"card_perform"),
-            PersianDate::make(__("Expire Date"),"card_expired_date"),
+            BelongsTo::make(__('Employee'), 'card_info', CardInfo::class)
+                ->relatableQueryUsing(function (NovaRequest $request, Builder $query) {
+                    $query->whereIn('department_id', UserDepartment::getUserDepartment());
+                }),
+            PersianDate::make(__("Disterbute Date"), "card_perform"),
+            PersianDate::make(__("Expire Date"), "card_expired_date"),
         ];
     }
     public function cards(NovaRequest $request)
@@ -53,7 +65,9 @@ class MainCard extends Resource
     public function actions(NovaRequest $request)
     {
         return [
-            (new \Sq\Card\Nova\Actions\EmployeePrintCardAction)->onlyOnDetail()->canRun(fn()=>auth()->user()->hasRole("Print Card"))
+            (new \Sq\Card\Nova\Actions\EmployeePrintCardAction)->onlyOnDetail()
+                ->canRun(fn($request, $mainCard) => auth()->user()->hasPermissionTo("print-card")
+                    && in_array($mainCard->card_info->orginization->id, UserDepartment::getUserDepartment())),
         ];
     }
 }

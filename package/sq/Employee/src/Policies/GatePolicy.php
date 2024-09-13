@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Support\Defense\PermissionTranslation;
 use Illuminate\Auth\Access\Response;
 use Sq\Employee\Models\Gate;
+use Sq\Query\Policy\UserDepartment;
 
 class GatePolicy
 {
@@ -29,7 +30,7 @@ class GatePolicy
     {
 
 
-        return $user->hasPermissionTo(PermissionTranslation::view($this->resource));
+        return $user->hasPermissionTo(PermissionTranslation::view($this->resource)) && in_array($gate->department->id,  UserDepartment::getUserDepartment());
 
     }
 
@@ -39,7 +40,7 @@ class GatePolicy
     public function create(User $user): bool
     {
 
-        return $user->hasPermissionTo(PermissionTranslation::create($this->resource));
+        return $user->hasPermissionTo(PermissionTranslation::create($this->resource)) ;
 
     }
 
@@ -49,7 +50,7 @@ class GatePolicy
     public function update(User $user, Gate $gate): bool
     {
 
-        return $user->hasPermissionTo(PermissionTranslation::update($this->resource));
+        return $user->hasPermissionTo(PermissionTranslation::update($this->resource)) && in_array($gate->department->id,  UserDepartment::getUserDepartment());
     }
 
     /**
@@ -57,7 +58,7 @@ class GatePolicy
      */
     public function delete(User $user, Gate $gate): bool
     {
-        return $user->hasPermissionTo(PermissionTranslation::delete($this->resource));
+        return $user->hasPermissionTo(PermissionTranslation::delete($this->resource)) && in_array($gate->department->id,  UserDepartment::getUserDepartment());
     }
 
     /**
@@ -66,7 +67,7 @@ class GatePolicy
     public function restore(User $user, Gate $gate): bool
     {
 
-        return $user->hasPermissionTo(PermissionTranslation::restore($this->resource));
+        return $user->hasPermissionTo(PermissionTranslation::restore($this->resource)) && in_array($gate->department->id,  UserDepartment::getUserDepartment());
 
     }
 
@@ -75,7 +76,7 @@ class GatePolicy
      */
     public function forceDelete(User $user, Gate $gate): bool
     {
-        return $user->hasPermissionTo(PermissionTranslation::destroy($this->resource));
+        return $user->hasPermissionTo(PermissionTranslation::destroy($this->resource)) && in_array($gate->department->id,  UserDepartment::getUserDepartment());
 
     }
     public function gateChecker(User $user): bool
@@ -84,7 +85,7 @@ class GatePolicy
     }
     public function gateCheckerOwnDepartment(User $user, Gate $gate): bool
     {
-        return $user->hasPermissionTo("Gate Checker")  && $user?->department->id === $gate->department->id;
+        return $user->hasPermissionTo("Gate Checker")  && $user?->department->id === $gate->department->id ;
     }
 
 

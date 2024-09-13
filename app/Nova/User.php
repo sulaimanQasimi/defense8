@@ -7,15 +7,20 @@ use DigitalCreative\MegaFilter\MegaFilterTrait;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Validation\Rules;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\FormData;
 use Laravel\Nova\Fields\MorphToMany;
 use Laravel\Nova\Fields\Password;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
+// use PhoenixLib\NovaNestedTreeAttachMany\NestedTreeAttachManyField;
+// use zakariatlilani\NovaNestedTree\NestedTreeAttachManyField;
+use Whitecube\NovaFlexibleContent\Flexible;
 use Sq\Employee\Nova\Department;
 use Sq\Employee\Nova\Gate;
 use Sq\Query\SqNovaSelectFilter;
 use Sq\Query\SqNovaTextFilter;
+use ZakariaTlilani\NovaNestedTree\NestedTreeAttachManyField;
 
 class User extends Resource
 {
@@ -70,7 +75,11 @@ class User extends Resource
                 ->updateRules('nullable', Rules\Password::defaults()),
             MorphToMany::make('Roles', 'roles', \App\Nova\Role::class),
             MorphToMany::make('Permissions', 'permissions', \App\Nova\Permission::class),
-
+            
+            NestedTreeAttachManyField::make(trans("Departments"), 'departments', Department::class)
+                ->withLabelKey(labelKey: 'fa_name')
+                ->withAlwaysOpen(true)
+                ->searchable(true)
         ];
     }
 

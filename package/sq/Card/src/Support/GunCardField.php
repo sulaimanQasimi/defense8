@@ -21,6 +21,10 @@ trait GunCardField
     {
         return Str::of(self::gun_field()[$field])->wrap("{", "}");
     }
+    /**
+     * Summary of gun_allowed_field
+     * @return string
+     */
     public static function gun_allowed_field(): string
     {
         return implode(' ', array_map([self::class, 'gun_translated_field'], array_keys(self::gun_field())));

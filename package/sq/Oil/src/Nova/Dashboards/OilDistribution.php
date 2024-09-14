@@ -2,135 +2,23 @@
 
 namespace Sq\Oil\Nova\Dashboards;
 
-use App\Nova\Metrics\ExpendDiesel;
-use App\Nova\Metrics\ExpendPetrol;
-use App\Nova\Metrics\RemainDiesel;
-use App\Nova\Metrics\RemainPetrol;
-use Coroowicaksono\ChartJsIntegration\LineChart;
-use Hekmatinasser\Verta\Facades\Verta;
-use Illuminate\Support\Facades\DB;
 use Laravel\Nova\Dashboard;
-use Laravel\Nova\Metrics\ApexLineChart;
-use Number;
-use Sq\Query\OilStatistics;
-use Sq\Query\SqNovaValueMetric;
-use Support\Defense;
+use Sq\Oil\Nova\OilValueMetric;
 use Vehical\OilType;
 
 class OilDistribution extends Dashboard
 {
-    public function apex_chart_oil_disterbution_consume($oilType)
-    {
-        return collect(DB::table('oil_disterbutions')
-            // ->join("departments", 'departments.id', 'card_infos.department_id')
-            ->where("oil_type", $oilType)
-            ->select(DB::raw('sum(oil_disterbutions.oil_amount) as num'))
-            ->whereBetween('filled_date', [Defense::start_of_month(), Defense::end_of_month()])
-            ->selectRaw("date(filled_date) as date")
-            ->groupByRaw("date")
-            ->orderBy('date')
-            ->get(['num', 'date'])
-            ->map(function ($oil) {
-                return [
-                    "x" => verta($oil->date)->format("Y/m/d"),
-                    "y" => $oil->num
-                ];
-            }));
-    }
-
-
-
-
-
-
-
-    public function graph()
-    {
-        return
-            (new ApexLineChart())
-                ->options([
-                    "chart" => [
-                        "height" => 400,
-                        "type" => "area",
-                    ],
-                    "series" => [
-                        [
-                            // "type"=> 'line',
-                            "name" => trans("Diesel"),
-                            "data" => $this->apex_chart_oil_disterbution_consume(OilType::Diesel)->toArray()
-                        ],
-
-                        [
-                            "name" => trans("Petrole"),
-                            "data" => $this->apex_chart_oil_disterbution_consume(OilType::Petrole)->toArray()
-                        ],
-                    ],
-
-                    "xaxis" => [
-                        "type" => 'category',
-                        // "categories" => [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17],
-                    ]
-                ])->width('full');
-    }
     public function cards()
     {
-        $statistic = (new OilStatistics())->make();
         return [
-            // $this->graph()
-            RemainPetrol::make()->icon('fas fa-gas-pump fa-2x')
-                ->width('1/2'),
-            RemainDiesel::make()->icon('fas fa-gas-pump fa-2x')
-                ->width('1/2'),
-            ExpendPetrol::make()->icon('fas fa-gas-pump fa-2x')
-                ->width('1/2'),
-            ExpendDiesel::make()->icon('fas fa-gas-pump fa-2x')
-                ->width('1/2'),
-            (new SqNovaValueMetric(trans("Month Action", ['name' => __("Current Month"), 'type' => __(OilType::Petrole), 'action' => trans("Import")]), $statistic['current_month']['import'][OilType::Petrole]))
-                ->icon('fas fa-gas-pump fa-2x')
-                ->width('1/2'),
-            (new SqNovaValueMetric(trans("Month Action", ['name' => __("Current Month"), 'type' => __(OilType::Diesel), 'action' => trans("Import")]), $statistic['current_month']['import'][OilType::Diesel]))
-                ->icon('fas fa-gas-pump fa-2x')
-                ->width('1/2'),
-            //
-            (new SqNovaValueMetric(trans("Month Action", ['name' => __("Current Month"), 'type' => __(OilType::Petrole), 'action' => trans("Export")]), $statistic['current_month']['export'][OilType::Petrole]))
-                ->icon('fas fa-gas-pump fa-2x')
-                ->width('1/2'),
-            (new SqNovaValueMetric(trans("Month Action", ['name' => __("Current Month"), 'type' => __(OilType::Diesel), 'action' => trans("Export")]), $statistic['current_month']['export'][OilType::Diesel]))
-                ->icon('fas fa-gas-pump fa-2x')
-                ->width('1/2'),
-            //
-            (new SqNovaValueMetric(trans("Month Action", ['name' => __("Current Month"), 'type' => __(OilType::Petrole), 'action' => trans("Remain")]), $statistic['current_month']['remain'][OilType::Petrole]))
-                ->icon('fas fa-gas-pump fa-2x')
-                ->width('1/2'),
-            (new SqNovaValueMetric(trans("Month Action", ['name' => __("Current Month"), 'type' => __(OilType::Diesel), 'action' => trans("Remain")]), $statistic['current_month']['remain'][OilType::Diesel]))
+            (new OilValueMetric(OilType::Petrole))
                 ->icon('fas fa-gas-pump fa-2x')
                 ->width('1/2'),
 
-            //
-
-            (new SqNovaValueMetric(trans("Month Action", ['name' => __("Past Month"), 'type' => __(OilType::Petrole), 'action' => trans("Import")]), $statistic['past_month']['import'][OilType::Petrole]))
+            (new OilValueMetric(OilType::Diesel))
                 ->icon('fas fa-gas-pump fa-2x')
                 ->width('1/2'),
-            (new SqNovaValueMetric(trans("Month Action", ['name' => __("Past Month"), 'type' => __(OilType::Diesel), 'action' => trans("Import")]), $statistic['past_month']['import'][OilType::Diesel]))
-                ->icon('fas fa-gas-pump fa-2x')
-                ->width('1/2'),
-            //
-            (new SqNovaValueMetric(trans("Month Action", ['name' => __("Past Month"), 'type' => __(OilType::Petrole), 'action' => trans("Export")]), $statistic['past_month']['export'][OilType::Petrole]))
-                ->icon('fas fa-gas-pump fa-2x')
-                ->width('1/2'),
-            (new SqNovaValueMetric(trans("Month Action", ['name' => __("Past Month"), 'type' => __(OilType::Diesel), 'action' => trans("Export")]), $statistic['past_month']['export'][OilType::Diesel]))
-                ->icon('fas fa-gas-pump fa-2x')
-                ->width('1/2'),
-            //
-            (new SqNovaValueMetric(trans("Month Action", ['name' => __("Past Month"), 'type' => __(OilType::Petrole), 'action' => trans("Remain")]), $statistic['past_month']['remain'][OilType::Petrole]))
-                ->icon('fas fa-gas-pump fa-2x')
-                ->width('1/2'),
-            (new SqNovaValueMetric(trans("Month Action", ['name' => __("Past Month"), 'type' => __(OilType::Diesel), 'action' => trans("Remain")]),
-            $statistic['past_month']['remain'][OilType::Diesel]))
-                ->icon('fas fa-gas-pump fa-2x')
-                ->width('1/2'),
-
-        ];
+       ];
     }
 
     /**

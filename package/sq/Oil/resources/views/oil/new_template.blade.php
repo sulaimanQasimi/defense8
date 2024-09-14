@@ -259,33 +259,33 @@
                             <tr>
                                 <td class="px-6 py-1">
                                     <p class="font-medium leading-none text-gray-700 mr-2">
-                                        {{ $vehical->vehical_palete }}</p>
+                                        {{ $vehical?->vehical_palete }}</p>
                                 </td>
                                 <td class="px-6 py-1">
 
                                     <p class="font-medium leading-none text-gray-700 mr-2">
-                                        {{ $vehical->vehical_colour }}</p>
+                                        {{ $vehical?->vehical_colour }}</p>
                                 </td>
                                 <td class="px-6 py-1">
 
                                     <p class="font-medium leading-none text-gray-700 mr-2">
-                                        {{ $vehical->vehical_chassis }}</p>
+                                        {{ $vehical?->vehical_chassis }}</p>
                                 </td>
                                 <td class="px-6 py-1">
 
                                     <p class="font-medium leading-none text-gray-700 mr-2">
-                                        {{ $vehical->vehical_model }}</p>
+                                        {{ $vehical?->vehical_model }}</p>
                                 </td>
                                 <td class="px-6 py-1">
 
                                     <p class="font-medium leading-none text-gray-700 mr-2">
-                                        <a href="{{ route('sqemployee.employee.check.card', ['code' => $vehical->driver->registare_no]) }}"
-                                            class="text-blue-600 text-lg"> {{ $vehical->driver->full_name }}</a>
+                                        <a href="{{ route('sqemployee.employee.check.card', ['code' => $vehical?->driver?->registare_no]) }}"
+                                            class="text-blue-600 text-lg"> {{ $vehical?->driver?->full_name }}</a>
                                     </p>
                                 </td>
                                 <td class="px-6 py-1">
                                     <p class="font-medium leading-none text-gray-700 mr-2">
-                                        {!! $vehical->remark !!}</p>
+                                        {!! $vehical?->remark !!}</p>
                                 </td>
                             </tr>
                         @endforeach

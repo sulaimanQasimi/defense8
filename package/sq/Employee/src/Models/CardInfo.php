@@ -33,14 +33,6 @@ class CardInfo extends Model
     protected $casts = [
         'birthday' => 'date',
     ];
-
-
-
-
-
-
-
-
     protected $appends = [
         'current_month_oil_consumtion',
         'current_month_oil_remain',

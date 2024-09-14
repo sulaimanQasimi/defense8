@@ -152,8 +152,7 @@
     <div class="flex justify-around mt-10">
 
         {{--  IF Current Gate is Main Gate And Enter Gate is empty --}}
-
-        @if (auth()->user()->gate->id === $employee->gate?->id)
+        @if ((auth()->user()->gate->id === $employee->gate?->id)|| in_array($employee?->gate->id,\Sq\Query\Policy\UserDepartment::getUserGate()))
 
         @if (!$employee->current_gate_attendance?->enter && $employee->current_gate_attendance?->state !="U")
                 <a href="{{ route('sqemployee.employee.check.pass', ['cardInfo' => $employee->id, 'state' => 'enter']) }}"

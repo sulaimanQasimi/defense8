@@ -11,6 +11,7 @@ use Sq\Employee\Models\Website;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
+use Sq\Query\Policy\UserDepartment;
 
 class EmployeeScanCard extends Controller
 {
@@ -45,10 +46,9 @@ class EmployeeScanCard extends Controller
 
         $this->authorize('gateChecker', $gate);
 
-
         // Get wheather  enter or Exit
 
-        if ($gate->id === $cardInfo->gate?->id && !is_null($state)) {
+        if (($gate->id === $cardInfo->gate?->id || in_array($cardInfo?->gate->id, UserDepartment::getUserGate())) && !is_null($state)) {
 
             $today_attendance = Attendance::updateOrCreate(
                 [

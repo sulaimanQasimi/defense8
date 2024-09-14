@@ -80,7 +80,8 @@ class CardInfo extends Resource
                     ->rules('required', 'string')
                     ->placeholder(__("Enter Field", ['name' => __("Name")]))
                     ->filterable()
-                    ->sortable(),
+                    ->sortable()
+                    ->suggestions(\Sq\Query\Resource\NameSugestion::make()),
 
                 Fields\Text::make(__("Last Name"), "last_name")
                     ->nullable()

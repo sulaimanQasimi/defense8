@@ -96,6 +96,10 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Gate::class);
     }
+    public function gates(): BelongsToMany
+    {
+        return $this->belongsToMany(Gate::class);
+    }
     public function isSuperAdmin()
     {
         return $this->hasRole('super-admin');

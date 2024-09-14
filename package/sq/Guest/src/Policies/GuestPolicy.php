@@ -6,8 +6,6 @@ use Sq\Employee\Models\Gate;
 use Sq\Guest\Models\Guest;
 use App\Models\User;
 use App\Support\Defense\PermissionTranslation;
-use Carbon\Carbon;
-use Illuminate\Auth\Access\Response;
 
 class GuestPolicy
 {
@@ -24,7 +22,7 @@ class GuestPolicy
      */
     public function view(User $user, Guest $guest): bool
     {
-        return $user->hasPermissionTo(PermissionTranslation::view("Guest"));
+        return $user->hasPermissionTo(PermissionTranslation::view("Guest")) && $user->id === $guest->host->user_id;
     }
 
     /**
@@ -40,7 +38,6 @@ class GuestPolicy
      */
     public function update(User $user, Guest $guest): bool
     {
-        $date = Carbon::make($guest->registered_at);
         return $user->hasPermissionTo(PermissionTranslation::update("Guest")) && $user->id === $guest->host->user_id;
     }
 
@@ -89,5 +86,4 @@ class GuestPolicy
     {
         return $user->id === $guest->host->user_id || \Illuminate\Support\Facades\Gate::allows('gateChecker', Gate::class);
     }
-
 }

@@ -26,10 +26,9 @@ class Gate extends Resource
         'fa_name',
         'pa_name',
         'location',
-        'level'
+        'level',
+        'department.fa_name'
     ];
-
-
     public static function label()
     {
         return __('Gates');
@@ -39,9 +38,16 @@ class Gate extends Resource
     {
         return __('Gate');
     }
+
+
+    public function subtitle()
+    {
+        return $this->department->fa_name;
+    }
+
     public static function indexQuery(NovaRequest $request, $query)
     {
-        return $query->whereIn('department_id',  UserDepartment::getUserDepartment());
+        return $query->whereIn('department_id', UserDepartment::getUserDepartment());
     }
 
     public function fields(NovaRequest $request)
@@ -49,7 +55,7 @@ class Gate extends Resource
         return [
             BelongsTo::make(__("Department/Chancellor"), 'department', \Sq\Employee\Nova\Department::class)
                 ->relatableQueryUsing(function (NovaRequest $request, Builder $query) {
-                    $query->whereIn('id',  UserDepartment::getUserDepartment());
+                    $query->whereIn('id', UserDepartment::getUserDepartment());
                 })
                 ->filterable()
                 ->sortable(),

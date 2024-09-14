@@ -3,6 +3,7 @@ namespace Sq\Employee\Nova;
 
 use App\Nova\Filters\AttendanceDateFilter;
 use App\Nova\Resource;
+use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use MZiraki\PersianDateField\PersianDate;
@@ -21,6 +22,7 @@ class Attendance extends Resource
     public function fields(NovaRequest $request)
     {
         return [
+            BelongsTo::make(__("Gate"), 'gate', Gate::class),
             Select::make(trans("State"), 'state')->options([
                 'U' => trans("Upsent"),
                 'P' =>  trans("Present"),

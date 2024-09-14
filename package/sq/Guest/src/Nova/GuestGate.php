@@ -31,7 +31,7 @@ class GuestGate extends Resource
     public function fields(NovaRequest $request)
     {
         return [
-            // Host
+            // Gate
             BelongsTo::make(__("Gate"), 'gate', \Sq\Employee\Nova\Gate::class),
 
             // Host
@@ -41,6 +41,7 @@ class GuestGate extends Resource
                 ->required()
                 ->rules('required', 'date')
                 ->placeholder(__("Enter Field", ['name' => __("Enter")])),
+
             PersianDateTime::make(__("Exited"), "exit_at")
                 ->required()
                 ->rules('required', 'date')

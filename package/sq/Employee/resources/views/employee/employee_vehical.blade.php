@@ -34,24 +34,24 @@
                     <tr tabindex="0" class="bg-white border-b">
 
                         <td class="px-6  border-1 border-gray-600 py-4">
-                            {{ $vehical->vehical_palete }}
+                            {{ $vehical?->vehical_palete }}
 
                         </td>
                         <td class="px-6  border-1 border-gray-600 py-4">
-                            {{ $vehical->vehical_colour }}
+                            {{ $vehical?->vehical_colour }}
                         </td>
                         <td class="px-6  border-1 border-gray-600 py-4">
-                            {{ $vehical->vehical_chassis }}
+                            {{ $vehical?->vehical_chassis }}
                         </td>
                         <td class="px-6  border-1 border-gray-600 py-4">
-                            {{ $vehical->vehical_model }}
+                            {{ $vehical?->vehical_model }}
                         </td>
                         <td class="px-6  border-1 border-gray-600 py-4">
-                            <a href="{{ route('sqemployee.employee.check.card', ['code' => $vehical->driver->registare_no]) }}"
-                                class="text-blue-600 text-lg"> {{ $vehical->driver->full_name }}</a>
+                            <a href="{{ route('sqemployee.employee.check.card', ['code' => $vehical->driver?->registare_no]) }}"
+                                class="text-blue-600 text-lg"> {{ $vehical->driver?->full_name }}</a>
                         </td>
                         <td class="px-6  border-1 border-gray-600 py-4">
-                            {!! $vehical->remark !!}
+                            {!! $vehical?->remark !!}
                         </td>
                     </tr>
                 @empty

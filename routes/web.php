@@ -7,6 +7,7 @@ use Sq\Employee\Models\Department;
 use Sq\Employee\Models\Gate;
 use Sq\Guest\Models\Host;
 use Sq\Query\Policy\UserDepartment;
+use Sq\Query\Resource\NameSugestion;
 
 Route::middleware(['auth', 'permission:change_language'])
     ->prefix('app/setting/')
@@ -29,10 +30,11 @@ Route::middleware(['auth'])->get('test', function () {
 // $host=Gate::find(1);
 // $host->update([  'department_id'=>2,]);
 dd(
-    \Sq\Guest\Models\Host::query()
-    ->whereIn('department_id', UserDepartment::getUserDepartment())
-    ->pluck('head_name', 'id')
-    ->toArray()
+    // \Sq\Guest\Models\Host::query()
+    // ->whereIn('department_id', UserDepartment::getUserDepartment())
+    // ->pluck('head_name', 'id')
+    // ->toArray()
+    NameSugestion::make()
 );
 });
 

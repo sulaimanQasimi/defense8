@@ -66,8 +66,7 @@ class HostPolicy
      */
     public function restore(User $user, Host $host): bool
     {
-        return $user->hasPermissionTo(PermissionTranslation::restore("Host"))
-        && $this->owner($user,$host) && in_array($host->deparment_id, UserDepartment::getUserDepartment());
+        return $user->hasPermissionTo(PermissionTranslation::restore("Host")) && $this->owner($user,$host) && in_array($host->deparment_id, UserDepartment::getUserDepartment());
     }
 
     /**

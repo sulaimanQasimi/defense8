@@ -15,6 +15,7 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 // use PhoenixLib\NovaNestedTreeAttachMany\NestedTreeAttachManyField;
 // use zakariatlilani\NovaNestedTree\NestedTreeAttachManyField;
+use Sq\Query\Policy\UserDepartment;
 use Whitecube\NovaFlexibleContent\Flexible;
 use Sq\Employee\Nova\Department;
 use Sq\Employee\Nova\Gate;
@@ -47,20 +48,23 @@ class User extends Resource
     public function fields(NovaRequest $request)
     {
         return [
+            // Name
             Text::make(__("Name"), 'name')
                 ->sortable()
                 ->rules('required', 'max:255'),
-
+            // Email
             Text::make(__("Email"), 'email')
                 ->copyable()
                 ->sortable()
                 ->rules('required', 'email', 'max:254')
                 ->creationRules('unique:users,email')
                 ->updateRules('unique:users,email,{{resourceId}}'),
+
+            // Thier Own user Department
             BelongsTo::make(__("Department/Chancellor"), 'department', Department::class)
                 ->filterable()
                 ->sortable(),
-
+            // The Gate That User Belongs to
             BelongsTo::make(__("Gate"), 'gate', Gate::class)->dependsOn(
                 ['department'],
                 function (BelongsTo $field, NovaRequest $request, FormData $formData) {
@@ -69,13 +73,17 @@ class User extends Resource
                     });
                 }
             ),
+
+            BelongsToMany::make(__("Attendance Gate Check"), 'gates', Gate::class)
+                ->searchable()
+                ->withSubtitles(),
             Password::make(__("Password"), 'password')
                 ->onlyOnForms()
                 ->creationRules('required', Rules\Password::defaults())
                 ->updateRules('nullable', Rules\Password::defaults()),
-            MorphToMany::make('Roles', 'roles', \App\Nova\Role::class),
-            MorphToMany::make('Permissions', 'permissions', \App\Nova\Permission::class),
-            
+            MorphToMany::make(trans('Roles'), 'roles', \App\Nova\Role::class),
+            MorphToMany::make(trans('Permissions'), 'permissions', \App\Nova\Permission::class),
+
             NestedTreeAttachManyField::make(trans("Departments"), 'departments', Department::class)
                 ->withLabelKey(labelKey: 'fa_name')
                 ->withAlwaysOpen(true)

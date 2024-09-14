@@ -14,7 +14,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        // $schedule->command('telescope:prune --hours=48')->daily();
+        $schedule->command('telescope:prune --hours=48')->dailyAt("23:00");
         $schedule->command('backup:run --only-db')->dailyAt("21:30");
         //
         $schedule->call(function () {
@@ -26,6 +26,7 @@ class Kernel extends ConsoleKernel
                 );
             }
         })->dailyAt("09:00");
+        // $schedule->command('telescope:prune')->dailyAt("08:30");
         // $schedule->command('backup:clean')->everyMinute();
         // $schedule->command('view:clear')->everyMinute();
         // $schedule->exec('npm run build')->everyMinute();

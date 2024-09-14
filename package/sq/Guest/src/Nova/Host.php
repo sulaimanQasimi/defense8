@@ -45,11 +45,13 @@ class Host extends Resource
 
     public static function indexQuery(NovaRequest $request, $query)
     {
+
+        // If user is host than show thier own guests
         if (auth()->user()->host) {
             return $query->where('id', auth()->user()->host->id);
         }
 
-
+        // Get All host of Dependant Department
         return $query->whereIn('department_id', UserDepartment::getUserDepartment());
     }
 
@@ -59,11 +61,13 @@ class Host extends Resource
     {
         return [
 
+            // Head Department
             BelongsTo::make(__("Department/Chancellor"), 'department', Department::class)
+
+                // User Must Select Dependant Department
                 ->relatableQueryUsing(function (NovaRequest $request, Builder $query) {
                     $query->whereIn('id', UserDepartment::getUserDepartment());
                 })
-
                 ->filterable()
                 ->sortable()
                 ->searchable(),
@@ -95,7 +99,10 @@ class Host extends Resource
             // User
             BelongsTo::make(__("User"), 'user', User::class)
                 ->rules('required', 'unique:hosts,user_id')
-                ->showCreateRelationButton()->searchable(),
+                ->showCreateRelationButton()
+                ->searchable(),
+
+            // All Guest  of Host
             HasMany::make(__('Guests'), 'guests', Guest::class),
         ];
     }

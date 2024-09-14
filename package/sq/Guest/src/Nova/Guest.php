@@ -101,6 +101,8 @@ class Guest extends Resource
                 ->exceptOnForms(),
             //
             Text::make(__("Invited By"), fn() => $this->host->head_name),
+
+
             //
             Text::make(__("Address"), 'address')
                 ->required()
@@ -115,6 +117,7 @@ class Guest extends Resource
                 ->hideWhenUpdating(fn() => $this->registered_at->isBefore(Carbon::today()))
                 ->required()->rules('required', 'date'),
 
+            // Which Gates should he enter
             Select::make(__("Enter Gate"), 'enter_gate')
                 ->options(
                     \App\Support\Defense\Gate::gate_options()

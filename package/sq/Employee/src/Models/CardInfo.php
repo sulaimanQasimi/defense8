@@ -80,9 +80,9 @@ class CardInfo extends Model
     /**
      *  Gun Card
      */
-    public function gun_card(): HasOne
+    public function gun_card(): HasMany
     {
-        return $this->hasOne(GunCard::class);
+        return $this->hasMany(GunCard::class);
     }
 
 

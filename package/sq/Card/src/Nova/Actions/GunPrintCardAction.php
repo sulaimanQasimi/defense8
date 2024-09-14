@@ -28,7 +28,7 @@ class GunPrintCardAction extends Action
     public function handle(ActionFields $fields, Collection $models)
     {
         foreach ($models as $model) {
-            return ActionResponse::openInNewTab(route('sq.gun.print-card-for',['cardInfo'=>$model->card_info->id, "printCardFrame"=>$fields->frame]));
+            return ActionResponse::openInNewTab(route('sq.gun.print-card-for',['gunCard'=>$model->id, "printCardFrame"=>$fields->frame]));
         }
     }
 

@@ -52,9 +52,11 @@
         <div>
             <div>{{ \Sq\Card\Support\PrintCardField::info_allowed_field() }}</div>
             <div>{{ \Sq\Card\Support\PrintCardField::main_allowed_field() }}</div>
-            <div>{{ \Sq\Card\Support\PrintCardField::gun_allowed_field() }}</div>
             @if ($cardFrame->type == \App\Support\Defense\Print\PrintTypeEnum::EmployeeCar)
                 <div>{{ \Sq\Card\Support\PrintCardField::vehical_allowed_field() }}</div>
+            @endif
+            @if ($cardFrame->type == \App\Support\Defense\Print\PrintTypeEnum::Gun)
+                <div>{{ \Sq\Card\Support\PrintCardField::gun_allowed_field() }}</div>
             @endif
         </div>
         <label for="font-size" class="block mb-2 text-sm font-medium text-gray-900">

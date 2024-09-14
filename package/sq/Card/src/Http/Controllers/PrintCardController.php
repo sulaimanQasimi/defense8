@@ -10,6 +10,7 @@ use App\Support\Defense\Print\PrintTypeEnum;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Sq\Card\Support\PrintCardField;
+use Sq\Employee\Models\GunCard;
 use Sq\Query\Policy\UserDepartment;
 
 class PrintCardController
@@ -31,21 +32,22 @@ class PrintCardController
         return view(($card->dim === "vertical") ? 'sqcard::print.card-vertical' : 'sqcard::print.card-horizontal', compact('cardInfo', 'card', 'details', 'remark'));
 
     }
-    public function gun(Request $request, CardInfo $cardInfo, int $printCardFrame): View
+    public function gun(Request $request, GunCard $gunCard, int $printCardFrame): View
     {
 
-        if (!in_array($cardInfo->department_id, UserDepartment::getUserDepartment())) {
+        if (!in_array($gunCard->card_info->department_id, UserDepartment::getUserDepartment())) {
             abort(404);
         }
 
         $card = PrintCardFrame::findOrFail($printCardFrame);
+        $cardInfo = $gunCard->card_info;
         if (!$card->type == PrintTypeEnum::Gun) {
             abort(404);
         }
         app()->setLocale('fa');
 
         // Get / Replace the field to Value
-        $field = new PrintCardField($cardInfo, $card);
+        $field = new PrintCardField($gunCard->card_info, $card, null, $gunCard);
         $details = $field->details;
         $remark = $field->remark;
 

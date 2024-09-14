@@ -20,19 +20,20 @@ final class PrintCardField
 
     public $version;
 
-    public function __construct(private Employee $employee, private Frame $frame,public $vehical = null){
-        $this->version=app()->version();
+    public function __construct(private Employee $employee, private Frame $frame, public $vehical = null, public $gun = null)
+    {
+        $this->version = app()->version();
     }
     private function replace(string $context)
     {
         return
             Pipeline::send($context)->through([
-                    fn($context, Closure $next) => $next($this->info_render($context)),
-                    fn($context, Closure $next) => $next($this->main_render($context)),
-                    fn($context, Closure $next) => $next($this->gun_render($context)),
-                    fn($context, Closure $next) => $next($this->vehical_render($context,$this->vehical)),
-                ])
-                ->then(fn($context) => $context);
+                fn($context, Closure $next) => $next($this->info_render($context)),
+                fn($context, Closure $next) => $next($this->main_render($context)),
+                fn($context, Closure $next) => $next($this->gun_render($context, $this->gun)),
+                fn($context, Closure $next) => $next($this->vehical_render($context, $this->vehical)),
+            ])
+                ->then(destination: fn($context): mixed => $context);
     }
 
     public function __get($name)
@@ -41,7 +42,7 @@ final class PrintCardField
             return $this->replace($this->frame->details ?? "");
         }
         if ($name == 'remark') {
-            return $this->replace($this->frame->remark??"");
+            return $this->replace($this->frame->remark ?? "");
         }
     }
 }

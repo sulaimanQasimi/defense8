@@ -21,13 +21,7 @@ class PrintAllTypeCardEmployeeAction extends Action
     public function handle(ActionFields $fields, Collection $models)
     {
         foreach ($models as $model) {
-
-            if ($fields->type === PrintTypeEnum::Employee) {
-                return $this->route('sq.employee.print-card-for', $model->id, $fields->frame);
-            }
-            if ($fields->type === PrintTypeEnum::Gun) {
-                return $this->route('sq.gun.print-card-for', $model->id, $fields->frame);
-            }
+            return $this->route('sq.employee.print-card-for', $model->id, $fields->frame);
         }
     }
 
@@ -45,24 +39,12 @@ class PrintAllTypeCardEmployeeAction extends Action
     {
         return [
 
-            Select::make(trans("Type"), 'type')->options([
-                PrintTypeEnum::Employee => trans("Employee"),
-                PrintTypeEnum::Gun => trans("Gun Card"),
-            ])->displayUsingLabels(),
             Select::make(trans("Card Type"), 'frame')
-                ->options([])
                 ->displayUsingLabels()
                 ->rules('required', 'exists:print_card_frames,id')
-                ->dependsOn(
-                    ['type'],
-                    function (Select $field, NovaRequest $request, FormData $formData) {
-                        $field->options(\Sq\Card\Models\PrintCardFrame::where('type', $formData->type)
-                            ->pluck('name', 'id'));
-
-                        // $field->relatableQueryUsing(function (NovaRequest $request, Builder $query) use ($formData) {
-                        //     $query->where('province_id', $formData->province);
-                        // });
-                    }
+                ->options(
+                    \Sq\Card\Models\PrintCardFrame::where('type', PrintTypeEnum::Employee)
+                        ->pluck('name', 'id')
                 ),
         ];
     }

@@ -204,7 +204,7 @@ class CardInfo extends Resource
                 ->exceptOnForms()
                 ->hideFromIndex(),
             Fields\HasOne::make(__("Main Card"), 'main_card', MainCard::class),
-            Fields\HasOne::make(__("Gun Card"), 'gun_card', GunCard::class)->hideWhenCreating(),
+            Fields\HasMany::make(__("Gun Card"), 'gun_card', GunCard::class),
             Fields\HasMany::make(__("Employee Vehical Card"), 'employee_vehical_card', EmployeeVehicalCard::class),
             Panel::make(
                 trans("Oil Disterbution"),

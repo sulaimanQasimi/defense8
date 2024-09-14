@@ -15,7 +15,7 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware('permission:print-card')->get('print-employee-card-for/{cardInfo:id}/card/{printCardFrame}', (new PrintCardController())->employee(...))->name('employee.print-card-for');
 
     // Gun Card
-    Route::middleware('permission:print-card')->get('print/gun/{cardInfo:id}/card/{printCardFrame}', (new PrintCardController())->gun(...))->name('gun.print-card-for');
+    Route::middleware('permission:print-card')->get('print/gun/{gunCard:id}/card/{printCardFrame}', (new PrintCardController())->gun(...))->name('gun.print-card-for');
 
     // Employee Car Card
     Route::middleware('permission:print-card')->get('print/employeeCar/{employeeVehicalCard:id}/card/{printCardFrame}', (new PrintCardController())->employee_car(...))->name('employee-car.print-card-for');

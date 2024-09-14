@@ -91,9 +91,17 @@ class PrintCardFrame extends Resource
                 ->sole()
                 ->withoutConfirmation()
                 ->onlyOnDetail()
-                ->canRun(fn() => auth()->user()->hasRole("Design Card")),
-            (new \Sq\Card\Nova\Actions\FetchCardDesign)->canRun(fn() => auth()->user()->hasRole("Design Card"))
+                ->canRun(fn() => auth()->user()->hasPermissionTo("design-card")),
+            (new \Sq\Card\Nova\Actions\FetchCardDesign)->canRun(fn() => auth()->user()->hasPermissionTo("design-card"))
 
         ];
+    }
+    public function replicate()
+    {
+        return tap(parent::replicate(), function ($resource) {
+            $model = $resource->model();
+
+            $model->name = 'Duplicate of ' . $model->name;
+        });
     }
 }

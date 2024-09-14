@@ -48,7 +48,8 @@ class GunCard extends Resource
             BelongsTo::make(__('Employee'), 'card_info', CardInfo::class)
                 ->relatableQueryUsing(function (NovaRequest $request, Builder $query) {
                     $query->whereIn('department_id',  UserDepartment::getUserDepartment());
-                })->searchable(),
+                })
+                ->searchable(),
             Text::make(__("Gun Type"), "gun_type")
                 ->required()
                 ->rules("required", "string"),

@@ -197,7 +197,8 @@
                                 @lang('Oil Type')
                             </th>
                             <td class="px-4 py-1  text-2xl">
-                                @lang($employee->oil_type && $employee->oil_type == \Vehical\OilType::Diesel ? 'Diesel' : 'Petrole')
+                                @lang($employee->oil_type && $employee->oil_type == \Vehical\OilType::Diesel ? 'Diesel' : '')
+                                @lang($employee->oil_type && $employee->oil_type == \Vehical\OilType::Petrole ? 'Petrole' : '')
                             </td>
                         </tr>
                         <tr class="border border-gray-600">

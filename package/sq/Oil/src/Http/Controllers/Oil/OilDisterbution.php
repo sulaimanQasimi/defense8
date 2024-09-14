@@ -8,6 +8,7 @@ use Date;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
+use Sq\Query\Policy\UserDepartment;
 use Vehical\OilType;
 use Vehical\Vehical;
 
@@ -17,18 +18,29 @@ class OilDisterbution extends Controller
     {
         $code = $request->input("code");
 
-        $employee = CardInfo::query()->where('registare_no', "=", $code)->first();
+        $employee = CardInfo::query()
+            ->whereIn('department_id', UserDepartment::getUserDepartment())
+            ->where('registare_no', "=", $code)
+            ->first();
+
         return view('sqoil::oil.new_template', compact('employee'));
     }
     public function store(Request $request, CardInfo $cardInfo)
     {
         $amount = $request->input('amount');
+
         $diesel = Vehical::remain_diesel_oil();
+
         $petrol = Vehical::remain_petrol_oil();
 
         $data = Validator::make($request->all(), [
             'amount' => 'required|numeric|not_in:0',
         ]);
+
+
+        if (!in_array($cardInfo?->department_id, UserDepartment::getUserDepartment())) {
+            return redirect()->back();
+        }
 
         if ($data->fails()) {
 
@@ -92,6 +104,6 @@ class OilDisterbution extends Controller
             'filled_date' => now()
         ]);
 
-        return redirect()->route('sq.oil.print.slip', ['oilDisterbution'=> $oil]);
+        return redirect()->route('sq.oil.print.slip', ['oilDisterbution' => $oil]);
     }
 }

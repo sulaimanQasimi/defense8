@@ -144,13 +144,13 @@
           </tr>
         </thead>
         <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
-          <tr class="group" v-for="oil in disterbutes.data">
+          <tr class="group" v-for="(oil,index) in disterbutes.data">
             <td
               style="border: 1px solid #18a2f3"
               class="px-2 py-2 whitespace-nowrap cursor-pointer dark:bg-gray-800 group-hover:bg-gray-50 dark:group-hover:bg-gray-900"
             >
               <div class="items-center justify-center flex text-center">
-                <p class="text-center" v-text="oil.id" />
+                <p class="text-center" v-text="index+1" />
               </div>
             </td>
             <td

@@ -16,7 +16,9 @@
 
 </head>
 
-<body dir="rtl" class="px-6">
+<body dir="rtl" class="px-6 py-6 print:p-0">
+    <a href="{{ route('sq.oil.oil') }}" class="print:hidden bg-blue-600 hover:bg-blue-500 p-3  px-4 justify-center rounded-full">
+        <i class="fa fa-home text-white"></i></a>
     <div class="">
         <div class="text-center my-5"></div>
         <table class="text-sm text-left rtl:text-right ">

@@ -23,24 +23,25 @@ Route::middleware(['auth'])
         Route::get('youtube', 'list')->name('youtube.list');
         Route::get('youtube/preview/{video:id}', 'preview')->name('youtube.preview');
     });
-Route::middleware(['auth'])->get('test', function () {
+Route::get('test', function () {
 
 
 
 
-    $statistic = (new OilStatistics())->make();
+    // $statistic = (new OilStatistics())->make();
 
 
 
 
-    $result = match ('current_month_import') {
-        'current_month_import' => $statistic['current_month']['import'][\Vehical\OilType::Petrole],
-        'current_month_export' => $statistic['current_month']['export'][\Vehical\OilType::Petrole],
-        'current_month_remain' => $statistic['current_month']['remain'][\Vehical\OilType::Petrole],
-        'past_month_import' => $statistic['past_month']['import'][\Vehical\OilType::Petrole],
-        'past_month_export' => $statistic['past_month']['export'][\Vehical\OilType::Petrole],
-        'past_month_remain' => $statistic['past_month']['remain'][\Vehical\OilType::Petrole],
-    };
-    dd($result);
+    // $result = match ('current_month_import') {
+    //     'current_month_import' => $statistic['current_month']['import'][\Vehical\OilType::Petrole],
+    //     'current_month_export' => $statistic['current_month']['export'][\Vehical\OilType::Petrole],
+    //     'current_month_remain' => $statistic['current_month']['remain'][\Vehical\OilType::Petrole],
+    //     'past_month_import' => $statistic['past_month']['import'][\Vehical\OilType::Petrole],
+    //     'past_month_export' => $statistic['past_month']['export'][\Vehical\OilType::Petrole],
+    //     'past_month_remain' => $statistic['past_month']['remain'][\Vehical\OilType::Petrole],
+    // };
+    // dd($result);
+    \Sq\Employee\Models\Department::fixTree();
 });
 

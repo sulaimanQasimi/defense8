@@ -25,13 +25,14 @@ Route::get('/generate-attendance/{department}/{month}/{year}', function (Request
 Route::get('/requirement', function () {
 
     $years = [];
-    // $departments = Department::all();
+    
     for ($i = 1388; $i <= verta()->year; $i++) {
         $years[] = [
             "display" => $i,
             "value" => $i
         ];
     }
+
     return [
         "months" => [
             ["display" => __('Hamal'), "value" => 1],

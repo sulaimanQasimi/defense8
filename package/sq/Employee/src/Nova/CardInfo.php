@@ -50,6 +50,10 @@ class CardInfo extends Resource
     public static $trafficCop = false;
     public static function indexQuery(NovaRequest $request, $query)
     {
+        if (auth()->user()->hasRole('super-admin')) {
+            return $query;
+        }
+
         return $query->whereIn('department_id', UserDepartment::getUserDepartment());
     }
     public static function label()
@@ -333,6 +337,7 @@ class CardInfo extends Resource
                 ->canRun(fn($request, $infoCard) => in_array($infoCard->orginization->id, UserDepartment::getUserDepartment()))
                 ->withoutConfirmation()
                 ->onlyOnDetail(),
+
             (new \Sq\Card\Nova\Actions\PrintAllTypeCardEmployeeAction)->onlyOnDetail()
                 ->canRun(fn($request, $infoCard) => auth()->user()->hasPermissionTo("print-card")
                     && in_array($infoCard->orginization->id, UserDepartment::getUserDepartment()))
@@ -349,6 +354,7 @@ class CardInfo extends Resource
                 // ->searchable()
                 ->filterable()
                 ->sortable()
+                ->withoutTrashed()
                 ->showCreateRelationButton(),
 
             Fields\BelongsTo::make(__("Gate"), 'gate', Gate::class)
@@ -360,7 +366,9 @@ class CardInfo extends Resource
                             $query->where('department_id', $formData->orginization);
                         });
                     }
-                )->showCreateRelationButton(),
+                )
+                ->showCreateRelationButton()
+                ->withoutTrashed(),
 
 
             Fields\Text::make(__("Degree"), "degree")
@@ -398,8 +406,6 @@ class CardInfo extends Resource
                 ->showCreateRelationButton()
                 ->displayAsList()
                 ->exceptOnForms(),
-
-
         ];
     }
 }

@@ -10,6 +10,7 @@ use App\Nova\Dashboards\GraphDashboard;
 use App\Nova\Dashboards\Main;
 use App\Nova\User;
 use App\Nova\Video;
+use App\Support\Defense\PermissionTranslation;
 use Bolechen\NovaActivitylog\Resources\Activitylog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate as FacadesGate;
@@ -145,8 +146,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             new \Badinansoft\LanguageSwitch\LanguageSwitch,
 
             // new \GeneaLabs\NovaPassportManager\NovaPassportManager,
+            (new PriceTracker)->canSee(fn() => auth()->user()->hasPermissionTo(PermissionTranslation::viewAny("Card Info"))),
 
-            (new PriceTracker)->canSee(fn() => auth()->user()->hasRole('super-admin')),
             (new GuestReport)->canSee(fn() => auth()->user()->hasRole('super-admin')),
             (new OilReport())->canSee(fn() => auth()->user()->hasRole('super-admin')),
             (new AppSetting())->canSee(fn() => auth()->user()->hasRole('super-admin')),

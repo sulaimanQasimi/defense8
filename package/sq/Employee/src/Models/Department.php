@@ -20,7 +20,6 @@ class Department extends Model
     protected static function boot()
     {
         parent::boot();
-
         
         // Power Check while Creating
         static::creating(
@@ -39,9 +38,6 @@ class Department extends Model
                 }
             }
         );
-
-
-
     }
 
     public function getParentIdName()

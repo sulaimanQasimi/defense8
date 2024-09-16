@@ -2,6 +2,8 @@
 
 namespace App\Nova;
 
+use App\Nova\Actions\ClearUserDependantDepartment;
+use App\Nova\Actions\CopyUserDependantDepartment;
 use DigitalCreative\MegaFilter\MegaFilter;
 use DigitalCreative\MegaFilter\MegaFilterTrait;
 use Illuminate\Database\Eloquent\Builder;
@@ -13,10 +15,6 @@ use Laravel\Nova\Fields\MorphToMany;
 use Laravel\Nova\Fields\Password;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
-// use PhoenixLib\NovaNestedTreeAttachMany\NestedTreeAttachManyField;
-// use zakariatlilani\NovaNestedTree\NestedTreeAttachManyField;
-use Sq\Query\Policy\UserDepartment;
-use Whitecube\NovaFlexibleContent\Flexible;
 use Sq\Employee\Nova\Department;
 use Sq\Employee\Nova\Gate;
 use Sq\Query\SqNovaSelectFilter;
@@ -28,6 +26,7 @@ class User extends Resource
     use MegaFilterTrait;
     public static $model = \App\Models\User::class;
     public static $title = 'name';
+    // public static $subTitle = 'department.fa_name';
     public static $search = [
         'id',
         'name',
@@ -35,6 +34,11 @@ class User extends Resource
         'department.fa_name',
         'gate.fa_name'
     ];
+
+    public function subtitle()
+    {
+        return $this->department->fa_name;
+    }
 
     public static function label()
     {
@@ -63,7 +67,9 @@ class User extends Resource
             // Thier Own user Department
             BelongsTo::make(__("Department/Chancellor"), 'department', Department::class)
                 ->filterable()
-                ->sortable(),
+                ->sortable()
+                ->withoutTrashed(),
+
             // The Gate That User Belongs to
             BelongsTo::make(__("Gate"), 'gate', Gate::class)->dependsOn(
                 ['department'],
@@ -72,7 +78,8 @@ class User extends Resource
                         $query->where('department_id', $formData->department);
                     });
                 }
-            ),
+            )
+                ->withoutTrashed(),
 
             BelongsToMany::make(__("Attendance Gate Check"), 'gates', Gate::class)
                 ->searchable()
@@ -138,6 +145,9 @@ class User extends Resource
     }
     public function actions(NovaRequest $request)
     {
-        return [];
+        return [
+            (new CopyUserDependantDepartment)->canRun(fn() => auth()->user()->hasRole('super-admin')),
+            (new ClearUserDependantDepartment)->canRun(fn() => auth()->user()->hasRole('super-admin'))
+        ];
     }
 }

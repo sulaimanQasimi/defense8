@@ -1,6 +1,7 @@
 <?php
 namespace Sq\Employee;
 
+use App\Support\Defense\PermissionTranslation;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Nova\Menu\MenuItem;
@@ -14,12 +15,15 @@ class EmployeeServiceProvider extends ServiceProvider
 
     public function boot()
     {
-        Livewire::component('sq.employee.livewire.attendance',\Sq\Employee\Livewire\Attendance::class);
-        Livewire::component('sq-employee-set-employee-attendance',\Sq\Employee\Livewire\Department\SetEmployeeAttendanceState::class);
+        Livewire::component('sq.employee.livewire.attendance', \Sq\Employee\Livewire\Attendance::class);
+        Livewire::component('sq-employee-set-employee-attendance', \Sq\Employee\Livewire\Department\SetEmployeeAttendanceState::class);
 
         Nova::resources([
             NovaResource\Attendance::class,
             NovaResource\CardInfo::class,
+                // temp Resource
+            NovaResource\UnknownEmployee::class,
+
             NovaResource\Department::class,
             NovaResource\EmployeeVehicalCard::class,
             NovaResource\Gate::class,
@@ -38,7 +42,7 @@ class EmployeeServiceProvider extends ServiceProvider
     }
     public function register()
     {
-//
+        //
     }
     public function routes()
     {
@@ -58,6 +62,8 @@ class EmployeeServiceProvider extends ServiceProvider
 
                 // Employee Menu Item
                 MenuItem::resource(NovaResource\CardInfo::class),
+                // Employee Menu Item
+                MenuItem::resource(NovaResource\UnknownEmployee::class),
 
                 // Employee Menu Item
                 MenuItem::resource(NovaResource\EmployeeVehicalCard::class),
@@ -84,7 +90,7 @@ class EmployeeServiceProvider extends ServiceProvider
 
                 // Report Generator of Attendance
                 MenuItem::link(__("ATTENDANCE EMPLOYEE Report Generator"), 'price-tracker')
-                ->canSee(fn() => auth()->user()->hasRole('super-admin')),
+                    ->canSee(fn() => auth()->user()->hasPermissionTo(PermissionTranslation::viewAny("Card Info"))),
 
                 // Frame of Printable Card Menu Item
                 MenuItem::resource(\Sq\Card\Nova\PrintCardFrame::class),
@@ -100,7 +106,7 @@ class EmployeeServiceProvider extends ServiceProvider
             // 'domain' => config('nova.domain', null),
             'as' => 'sqemployee.',
             'prefix' => 'sq/modules/employee',
-            'middleware' => ['web','auth'],
+            'middleware' => ['web', 'auth'],
 
         ];
     }

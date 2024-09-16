@@ -100,7 +100,8 @@ class Host extends Resource
             BelongsTo::make(__("User"), 'user', User::class)
                 ->rules('required', 'unique:hosts,user_id')
                 ->showCreateRelationButton()
-                ->searchable(),
+                ->searchable()
+                ->withSubtitles(),
 
             // All Guest  of Host
             HasMany::make(__('Guests'), 'guests', Guest::class),

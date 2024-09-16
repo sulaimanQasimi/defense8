@@ -1,4 +1,5 @@
 <?php
+use App\Support\Defense\PermissionTranslation;
 use Illuminate\Support\Facades\Route;
 use Sq\Employee\Http\Controllers\CurrentMonthEmployeeAttendance;
 use Sq\Employee\Http\Controllers\EmployeeInfoPDF;
@@ -44,26 +45,6 @@ Route::middleware(['role:super-admin'])
     ->name("employee.attendance.current.month.single");
 
 
-
-// Current Month Department Attendance in PDF Format
-
-Route::middleware(['role:super-admin'])
-    ->get(
-        'employee/attendance/current/month/department/{department:id}',
-        [CurrentMonthEmployeeAttendance::class, 'single_department']
-    )
-    ->name("employee.attendance.current.month.department.single");
-
-
-// Current Month Department Attendance in Excel Format
-
-Route::middleware(['role:super-admin'])
-    ->get(
-        'employee/attendance/current/month/department/{department:id}/excel',
-        [ExcelEmployeeExportController::class, 'attendance']
-    )
-    ->name("employee.attendance.current.month.department.single.excel");
-
 // Custom Month Department Attendance in Excel Format
 
 Route::prefix('export/')
@@ -81,4 +62,25 @@ Route::prefix("employee/")
 
         Route::get('department/{department:id}/personal/info', 'department')
             ->name("department.employee.personal.info");
+    });
+Route::middleware(['permission:' . PermissionTranslation::viewAny("Card Info")])
+    ->group(function () {
+
+        // Current Month Department Attendance in PDF Format
+
+        Route::get(
+            'employee/attendance/current/month/department/{department:id}',
+            [CurrentMonthEmployeeAttendance::class, 'single_department']
+        )
+            ->name("employee.attendance.current.month.department.single");
+
+
+        // Current Month Department Attendance in Excel Format
+        Route::get(
+            'employee/attendance/current/month/department/{department:id}/excel',
+            [ExcelEmployeeExportController::class, 'attendance']
+        )
+            ->name("employee.attendance.current.month.department.single.excel");
+
+
     });

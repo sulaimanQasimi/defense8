@@ -23,7 +23,6 @@ return new class extends Migration
             $table->string("vehical_owner")->nullable();
             $table->string("vehical_engine_no")->nullable();
             $table->string("vehical_registration_no")->nullable();
-
             $table->string("name")->nullable();
             $table->string("last_name")->nullable();
             $table->string("father_name")->nullable();

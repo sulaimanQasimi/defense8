@@ -18,7 +18,7 @@ return new class extends Migration {
         });
         Schema::table('villages', function (Blueprint $table) {
             $table->string("name")->nullable()->change();
-
+            
             $table->unique(["district_id",'name','deleted_at']);
         });
     }

@@ -34,10 +34,10 @@ class GuestCount extends Value
     public function ranges()
     {
         return [
+            'ALL' => Nova::__('All'),
             30 => Nova::__('30 Days'),
             60 => Nova::__('60 Days'),
             90 => Nova::__('90 Days'),
-            'ALL'=> Nova::__('All'),
         ];
     }
 

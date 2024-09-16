@@ -18,45 +18,26 @@ class GunTrends extends Value
     public function calculate(NovaRequest $request)
     {
 
-        return $this->count($request, GunCard::class);}
-
-    /**
-     * Get the ranges available for the metric.
-     *
-     * @return array
-     */
-
-    /**
-     * Determine the amount of time the results of the metric should be cached.
-     *
-     * @return \DateTimeInterface|\DateInterval|float|int|null
-     */
-    public function cacheFor(): void
-    {
-        // return now()->addMinutes(5);
+        return $this->count($request, GunCard::class);
     }
-
-    /**
-     * Get the URI key for the metric.
-     *
-     * @return string
-     */
     public function uriKey()
     {
         return 'gun-trends';
     }
 
-    public function name(){
+    public function name()
+    {
         return __('Registered Gun');
 
     }
     public function ranges()
     {
         return [
+
+            'ALL' => Nova::__('All'),
             30 => Nova::__('30 Days'),
             60 => Nova::__('60 Days'),
             90 => Nova::__('90 Days'),
-            'ALL'=> Nova::__('All'),
         ];
     }
 }

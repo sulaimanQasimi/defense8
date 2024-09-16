@@ -63,6 +63,8 @@ Route::prefix("employee/")
         Route::get('department/{department:id}/personal/info', 'department')
             ->name("department.employee.personal.info");
     });
+
+//
 Route::middleware(['permission:' . PermissionTranslation::viewAny("Card Info")])
     ->group(function () {
 

@@ -17,7 +17,6 @@ class EmployeeServiceProvider extends ServiceProvider
     {
         Livewire::component('sq.employee.livewire.attendance', \Sq\Employee\Livewire\Attendance::class);
         Livewire::component('sq-employee-set-employee-attendance', \Sq\Employee\Livewire\Department\SetEmployeeAttendanceState::class);
-
         Nova::resources([
             NovaResource\Attendance::class,
             NovaResource\CardInfo::class,
@@ -34,7 +33,7 @@ class EmployeeServiceProvider extends ServiceProvider
 
         $this->loadMigrationsFrom(__DIR__ . "/../database/migrations");
         $this->loadViewsFrom(__DIR__ . "/../resources/views/", 'sqemployee');
-        Route::group($this->routeConfiguration(), function () {
+        Route::group(attributes: $this->routeConfiguration(), routes: function (): void {
             $this->loadRoutesFrom(__DIR__ . "/../routes/web.php");
         });
         $this->loadRoutesFrom(__DIR__ . "/../routes/api.php");

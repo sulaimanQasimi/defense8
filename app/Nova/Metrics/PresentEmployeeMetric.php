@@ -22,7 +22,16 @@ class PresentEmployeeMetric extends Value
     }
     public function calculate(NovaRequest $request)
     {
-        return $this->count($request, Attendance::query()->where('state', 'P')->whereDate('date', now()));
+        return $this->result(Attendance::query()->where('state', 'P')
+            ->whereDate('date', now())
+
+            ->whereHas('card_info', function ($query) use ($request) {
+                return $query->where('department_id', $request->input('range'));
+            })->count())->format([
+                    'thousandSeparated' => true,
+                    'mantissa' => 0,
+                ]);
+        ;
     }
 
     /**
@@ -32,9 +41,7 @@ class PresentEmployeeMetric extends Value
      */
     public function ranges()
     {
-        return [
-
-        ];
+        return auth()->user()->departments()->orderBy('fa_name')->pluck('fa_name', 'departments.id')->toArray();
     }
 
     /**

@@ -17,8 +17,15 @@ class GunTrends extends Value
      */
     public function calculate(NovaRequest $request)
     {
-
-        return $this->count($request, GunCard::class);
+        return $this->result(GunCard::query()
+            ->whereHas('card_info', function ($query) use ($request) {
+                return $query->where('department_id', $request->input('range'));
+            })->count())
+            ->format([
+                'thousandSeparated' => true,
+                'mantissa' => 0,
+            ]);
+        ;
     }
     public function uriKey()
     {
@@ -30,14 +37,9 @@ class GunTrends extends Value
         return __('Registered Gun');
 
     }
+
     public function ranges()
     {
-        return [
-
-            'ALL' => Nova::__('All'),
-            30 => Nova::__('30 Days'),
-            60 => Nova::__('60 Days'),
-            90 => Nova::__('90 Days'),
-        ];
+        return auth()->user()->departments()->orderBy('fa_name')->pluck('fa_name', 'departments.id')->toArray();
     }
 }

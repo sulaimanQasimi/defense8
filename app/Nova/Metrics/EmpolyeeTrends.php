@@ -12,16 +12,16 @@ class EmpolyeeTrends extends Value
 {
     public function calculate(NovaRequest $request)
     {
-        return $this->count($request, CardInfo::class);
+        return $this->result(CardInfo::query()
+            ->where('department_id', $request->input('range'))->count())
+            ->format([
+                'thousandSeparated' => true,
+                'mantissa' => 0,
+            ]);
     }
     public function ranges()
     {
-        return [
-            'ALL' => Nova::__('All'),
-            30 => Nova::__('30 Days'),
-            60 => Nova::__('60 Days'),
-            90 => Nova::__('90 Days'),
-        ];
+        return auth()->user()->departments()->orderBy('fa_name')->pluck('fa_name', 'departments.id')->toArray();
     }
     public function uriKey()
     {

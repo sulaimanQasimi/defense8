@@ -16,10 +16,17 @@ class TodayGuest extends Value
      */
     public function calculate(NovaRequest $request)
     {
-        if ($request->user()->host) {
-            return $this->count($request, Guest::query()->where('host_id', $request->user()->host->id)->whereDate('registered_at', today()));
-        }
-        return $this->count($request, Guest::query()->whereDate('registered_at', today()));
+        return $this->result(
+            Guest::query()
+                ->whereDate('registered_at', today())
+                ->whereHas('host', function ($query) use ($request) {
+                    return $query->where('department_id', $request->input('range'));
+                })->count()
+        )->format([
+                    'thousandSeparated' => true,
+                    'mantissa' => 0,
+                ]);
+        ;
     }
 
     /**
@@ -27,23 +34,13 @@ class TodayGuest extends Value
      *
      * @return array
      */
+
     public function ranges()
     {
-        return [
-
-        ];
+        return auth()->user()->departments()->orderBy('fa_name')->pluck('fa_name', 'departments.id')->toArray();
     }
-
-    /**
-     * Determine the amount of time the results of the metric should be cached.
-     *
-     * @return \DateTimeInterface|\DateInterval|float|int|null
-     */
-    public function cacheFor(): void
+    public function name()
     {
-        // return now()->addMinutes(5);
-    }
-    public function name(){
         return __('Today Guest');
     }
 }

@@ -9,31 +9,38 @@ use Sq\Guest\Models\GuestGate;
 class TodayExitGuestMetric extends Value
 {
 
-    public function name(){
+    public function name()
+    {
         return trans("Today Exit Guest Metric");
     }
     public function calculate(NovaRequest $request)
     {
 
-        return $this->count($request, GuestGate::query()->join('gates','gates.id','=','gate_id')->where('gates.level', 1)->whereNotNull('exit_at')->whereDate('exit_at', now()));
+        return $this->result(
+            GuestGate::query()
+                ->whereHas('gate', function ($query) {
+                    return $query->where('gates.level', 1);
+                })
+                ->whereNotNull('exit_at')
+                ->whereDate('exit_at', now())
+
+                ->whereHas('guest', function ($query) use ($request) {
+                    return $query->whereHas(relation: 'host', callback: function ($query) use ($request) {
+                        return $query->where('department_id', $request->input('range'));
+                    });
+                })->count()
+        )->format([
+                    'thousandSeparated' => true,
+                    'mantissa' => 0,
+                ]);
+        ;
     }
 
-    /**
-     * Get the ranges available for the metric.
-     *
-     * @return array
-     */
     public function ranges()
     {
-        return [
-        ];
+        return auth()->user()->departments()->orderBy('fa_name')->pluck('fa_name', 'departments.id')->toArray();
     }
 
-    /**
-     * Determine the amount of time the results of the metric should be cached.
-     *
-     * @return \DateTimeInterface|\DateInterval|float|int|null
-     */
     public function cacheFor(): void
     {
         // return now()->addMinutes(5);

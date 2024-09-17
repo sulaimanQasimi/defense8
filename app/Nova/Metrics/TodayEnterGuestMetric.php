@@ -9,19 +9,28 @@ use Sq\Guest\Models\GuestGate;
 
 class TodayEnterGuestMetric extends Value
 {
-    /**
-     * Calculate the value of the metric.
-     *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @return mixed
-     */
-
-     public function name(){
+    public function name()
+    {
         return trans("Today Enter Guest Metric");
     }
     public function calculate(NovaRequest $request)
     {
-        return $this->count($request, GuestGate::query()->join('gates','gates.id','=','gate_id')->where('gates.level', 1)->whereNotNull('entered_at')->whereDate('entered_at',now()));
+        return $this->result(
+            GuestGate::query()
+                ->whereHas('gate', function ($query) {
+                    return $query->where('gates.level', 1);
+                })
+                ->whereNotNull(columns: 'entered_at')
+                ->whereDate(column: 'entered_at', operator: now())
+                ->whereHas('guest', function ($query) use ($request) {
+                    return $query->whereHas(relation: 'host', callback: function ($query) use ($request) {
+                        return $query->where('department_id', $request->input('range'));
+                    });
+                })->count()
+        )->format([
+            'thousandSeparated' => true,
+            'mantissa' => 0,
+        ]);
     }
 
     /**

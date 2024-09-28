@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8c23e18f1ec9a682379a7b8015800319",
+    "content-hash": "51c760f985b7a3f55aec1502c0d74b63",
     "packages": [
         {
             "name": "acme/app-setting",
@@ -2075,6 +2075,76 @@
                 "source": "https://github.com/ezyang/htmlpurifier/tree/v4.17.0"
             },
             "time": "2023-11-17T15:01:25+00:00"
+        },
+        {
+            "name": "ferdiunal/nova-editable-field",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ferdiunal/nova-editable-field.git",
+                "reference": "25ef9e8591b357a632e17f197bc50035b255e776"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ferdiunal/nova-editable-field/zipball/25ef9e8591b357a632e17f197bc50035b255e776",
+                "reference": "25ef9e8591b357a632e17f197bc50035b255e776",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/framework": "^10.0|^11.0",
+                "laravel/nova": "^4.0",
+                "php": "^8.2"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Ferdiunal\\NovaEditableField\\FieldServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Ferdiunal\\NovaEditableField\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ferdi Ünal",
+                    "email": "ferdiunal@outlook.com",
+                    "homepage": "https://gitub.com/ferdiunal",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A Laravel Nova package to make fields editable.",
+            "keywords": [
+                "editable",
+                "field",
+                "laravel",
+                "nova",
+                "nova-editable",
+                "nova-editable-field",
+                "nova-field"
+            ],
+            "support": {
+                "issues": "https://github.com/ferdiunal/nova-editable-field/issues",
+                "source": "https://github.com/ferdiunal/nova-editable-field/tree/v1.0.1"
+            },
+            "funding": [
+                {
+                    "url": "https://buymeacoffee.com/ferdiunal",
+                    "type": "buymeacoffee"
+                },
+                {
+                    "url": "https://github.com/sponsors/ferdiunal",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-09-16T18:12:15+00:00"
         },
         {
             "name": "fruitcake/php-cors",

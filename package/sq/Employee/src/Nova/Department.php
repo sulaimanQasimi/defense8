@@ -30,8 +30,6 @@ class Department extends Resource
         'pa_name',
         'en_name',
     ];
-
-
     public static function label()
     {
         return __('Departments');
@@ -40,6 +38,10 @@ class Department extends Resource
     public static function singularLabel()
     {
         return __('Department');
+    }
+    public function subtitle()
+    {
+        return $this->department?->fa_name;
     }
 
     public static function indexQuery(NovaRequest $request, $query)

@@ -12,21 +12,45 @@ use Sq\Query\Policy\UserDepartment;
 
 class UnknownEmployee extends CardInfo
 {
-
+    /**
+     * The click action to use when clicking on the resource in the table.
+     *
+     * Can be one of: 'detail' (default), 'edit', 'select', 'preview', or 'ignore'.
+     *
+     * @var string
+     */
+    public static $clickAction = 'edit';
+    /**
+     * Summary of label
+     * @return array|string|null
+     */
     public static function label()
     {
-        return __('Unknown Employees');
+        return __('Unknown Employee');
     }
-
+    /**
+     * Summary of singularLabel
+     * @return array|string|null
+     */
     public static function singularLabel()
     {
         return __('Unknown Employee');
     }
-
+    /**
+     * Summary of indexQuery
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param mixed $query
+     * @return Builder
+     */
     public static function indexQuery(NovaRequest $request, $query)
     {
         return $query->whereNull('department_id');
     }
+    /**
+     * Summary of fieldsForUpdate
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @return array
+     */
     public function fieldsForUpdate(NovaRequest $request)
     {
         return [
@@ -51,12 +75,14 @@ class UnknownEmployee extends CardInfo
                         });
                     }
                 )
-
                 ->showCreateRelationButton()
                 ->withoutTrashed()
                 ->withSubtitles(),
-
-
         ];
+    }
+
+    public static function redirectAfterUpdate(NovaRequest $request, $resource)
+    {
+        return '/resources/card-infos/' . $resource->getKey();
     }
 }

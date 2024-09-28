@@ -13,6 +13,7 @@ use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\FormData;
 use Laravel\Nova\Fields\MorphToMany;
 use Laravel\Nova\Fields\Password;
+use Laravel\Nova\Fields\Tag;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Sq\Employee\Nova\Department;
@@ -94,7 +95,14 @@ class User extends Resource
             NestedTreeAttachManyField::make(trans("Departments"), 'departments', Department::class)
                 ->withLabelKey(labelKey: 'fa_name')
                 ->withAlwaysOpen(true)
-                ->searchable(true)
+                ->searchable(true),
+
+            Tag::make(__("Attendance Gate Check"), 'gates', Gate::class)
+                ->searchable()
+                ->withSubtitles()
+                ->displayAsList()
+                ->showCreateRelationButton()
+                ->modalSize('7xl'),
         ];
     }
 

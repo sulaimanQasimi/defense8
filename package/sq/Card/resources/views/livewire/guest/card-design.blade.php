@@ -5,7 +5,7 @@
             @push('css')
                 <script type="text/javascript" src="{{ asset('cards/qrcode/jquery.min.js') }}"></script>
                 <script type="text/javascript" src="{{ asset('cards/qrcode/qrcode.js') }}"></script>
-                <script type="text/javascript" src="{{ asset('cards/ckeditor/ckeditor.js') }}"></script>
+                {{-- <script type="text/javascript" src="{{ asset('cards/ckeditor/ckeditor.js') }}"></script> --}}
                 <style>
                     @media print {
                         body {

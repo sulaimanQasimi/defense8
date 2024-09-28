@@ -9,7 +9,7 @@
     @livewireStyles
     <link rel="stylesheet" href="{{ asset('select2/css/select2.min.css') }}">
     <link type="text/css" href="{{ asset('date/css/persian-datepicker.css') }}" rel="stylesheet" />
-    @vite(['resources/js/app.js'])
+    @vite(['resources/js/app.js','resources/css/app.css'])
 
     @stack('css')
     <style>
@@ -161,11 +161,11 @@
                 }
             }
         </style>
-   
+
     </style>
 
     <link type="text/css" href="{{ asset('single.css') }}" rel="stylesheet" />
-    
+
 </head>
 <body class="persian-font antialiased bg-sky-300">
     <div class="px-4 py-2">

@@ -25,6 +25,7 @@
         "coroowicaksono/nova-carousel": "^0.0.6",
         "digital-creative/nova-mega-filter": "^1.0",
         "elibyy/tcpdf-laravel": "^11.0",
+        "ferdiunal/nova-editable-field": "*",
         "guratr/nova-command-runner": "^1.0",
         "guzzlehttp/guzzle": "^7.2",
         "hekmatinasser/verta": "^8.3",

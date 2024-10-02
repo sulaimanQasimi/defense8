@@ -9,7 +9,8 @@
     @livewireStyles
     <link rel="stylesheet" href="{{ asset('select2/css/select2.min.css') }}">
     <link type="text/css" href="{{ asset('date/css/persian-datepicker.css') }}" rel="stylesheet" />
-    @vite(['resources/js/app.js','resources/css/app.css'])
+    <link type="text/css" href="{{ asset('build/assets/app.css') }}" rel="stylesheet" />
+    @vite(['resources/js/app.js'])
 
     @stack('css')
     <style>

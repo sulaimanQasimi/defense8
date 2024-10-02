@@ -17,6 +17,9 @@ class PrintCardController
 {
     public function employee(Request $request, CardInfo $cardInfo, int $printCardFrame): View
     {
+        if(!$cardInfo->confirmed){
+            abort(404);
+        }
         if (!in_array($cardInfo->department_id, UserDepartment::getUserDepartment())) {
             abort(404);
         }
@@ -34,6 +37,10 @@ class PrintCardController
     }
     public function gun(Request $request, GunCard $gunCard, int $printCardFrame): View
     {
+
+        if(!$gunCard->card_info->confirmed){
+            abort(404);
+        }
 
         if (!in_array($gunCard->card_info->department_id, UserDepartment::getUserDepartment())) {
             abort(404);
@@ -57,6 +64,10 @@ class PrintCardController
 
     public function employee_car(Request $request, EmployeeVehicalCard $employeeVehicalCard, int $printCardFrame): View
     {
+
+        if(!$employeeVehicalCard->card_info->confirmed){
+            abort(404);
+        }
 
         if (!in_array($employeeVehicalCard->card_info->department_id, UserDepartment::getUserDepartment())) {
             abort(404);

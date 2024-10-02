@@ -7,6 +7,7 @@ use Acme\StripeInspector\StripeInspector;
 use App\Nova\Actions\EditCardInfoOption;
 use App\Nova\Actions\EditCardInfoRemark;
 use App\Nova\Actions\ExportCardInfo;
+use Sq\Employee\Nova\Actions\ConfirmEmployee;
 use Sq\Location\Nova as Location;
 use App\Nova\Resource;
 use App\Support\Defense\EditAditionalCardInfoEnum;
@@ -71,6 +72,7 @@ class CardInfo extends Resource
             Panel::make(__(), [
                 // URL::make(trans("CURRENT MONTH ATTENDANCE EMPLOYEE"),fn()=>route('employee.attendance.current.month.single',['cardInfo'=>$this->id]))->onlyOnDetail(),
                 Fields\Image::make(__("Photo"), "photo")->nullable()->rules("image"),
+                Fields\Boolean::make(__("Confirmed"), 'confirmed')->exceptOnForms(),
                 Fields\Text::make(__("Register No"), "registare_no")
                     ->copyable()
                     ->required()
@@ -320,13 +322,16 @@ class CardInfo extends Resource
             (new EditCardInfoRemark())
                 ->canSee(fn() => auth()->user()->hasPermissionTo(EditAditionalCardInfoEnum::Remark))
                 ->canRun(fn($request, $infoCard) => EditAditionalCardInfoEnum::Remark
-                    && in_array($infoCard->orginization->id, UserDepartment::getUserDepartment())),
+                    && in_array($infoCard->orginization->id, UserDepartment::getUserDepartment())
+                    && $infoCard->confirmed
+                ),
 
             // Edit Options
             (new EditCardInfoOption())
                 ->canSee(fn() => auth()->user()->hasPermissionTo(EditAditionalCardInfoEnum::Option))
                 ->canRun(fn($request, $infoCard) => EditAditionalCardInfoEnum::Remark
-                    && in_array($infoCard->orginization->id, UserDepartment::getUserDepartment())),
+                    && in_array($infoCard->orginization->id, UserDepartment::getUserDepartment())
+                    && $infoCard->confirmed),
 
             // Download Attendance
             Action::openInNewTab(
@@ -336,11 +341,19 @@ class CardInfo extends Resource
                 ->sole()
                 ->canRun(fn($request, $infoCard) => in_array($infoCard->orginization->id, UserDepartment::getUserDepartment()))
                 ->withoutConfirmation()
+                
                 ->onlyOnDetail(),
 
             (new \Sq\Card\Nova\Actions\PrintAllTypeCardEmployeeAction)->onlyOnDetail()
-                ->canRun(fn($request, $infoCard) => auth()->user()->hasPermissionTo("print-card")
-                    && in_array($infoCard->orginization->id, UserDepartment::getUserDepartment()))
+                ->canRun(fn($request, $infoCard) =>
+                auth()->user()->hasPermissionTo("print-card")
+                && in_array($infoCard->orginization->id, UserDepartment::getUserDepartment())
+            && $infoCard->confirmed
+
+            ),
+            (new ConfirmEmployee)
+            ->canRun(fn($request, $infoCard) => auth()->user()->hasPermissionTo("confirm-employee")
+                && in_array($infoCard->orginization->id, UserDepartment::getUserDepartment()))
         ];
     }
 

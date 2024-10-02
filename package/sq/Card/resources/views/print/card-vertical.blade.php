@@ -8,6 +8,7 @@
     @vite(['resources/js/app.js'])
     <link type="text/css" href="{{ asset('single.css') }}" rel="stylesheet" />
     <link type="text/css" href="{{ asset('cards/font.css') }}" rel="stylesheet" />
+    <link type="text/css" href="{{ asset('build/assets/app.css') }}" rel="stylesheet" />
 
     <style>
         @page {

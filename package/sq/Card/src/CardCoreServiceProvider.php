@@ -24,6 +24,7 @@ class CardCoreServiceProvider extends ServiceProvider
         $this->loadRoutesFrom(__DIR__ . "/../routes/api.php");
 
         $this->loadViewsFrom(__DIR__ . "/../resources/views/", 'sqcard');
+        $this->loadJsonTranslationsFrom(__DIR__ . "/../langs");
 
         $this->loadMigrationsFrom(__DIR__ . "/../database/migrations");
         if ($this->app->runningInConsole()) {

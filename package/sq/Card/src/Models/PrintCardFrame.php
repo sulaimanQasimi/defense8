@@ -24,6 +24,12 @@ class PrintCardFrame extends Model
             function ($card) {
                 if (is_null($card->attr)) {
                     $card->attr = [
+                        'barCode' => [
+                            'x' => null,
+                            'y' => null,
+                            'z' => null
+                        ],
+                        'backImage' => null,
                         'ministry' => [
                             'fontSize' => null,
                             'fontFamily' => null,
@@ -44,6 +50,13 @@ class PrintCardFrame extends Model
                         ],
                         'profile' => [
                             'path' => 'logo.png',
+                            'size' => null,
+                            'x' => null,
+                            'y' => null,
+
+                        ],
+                        'signature' => [
+                            'path' => null,
                             'size' => null,
                             'x' => null,
                             'y' => null,

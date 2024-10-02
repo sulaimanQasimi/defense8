@@ -67,7 +67,8 @@ class MainCard extends Resource
         return [
             (new \Sq\Card\Nova\Actions\EmployeePrintCardAction)->onlyOnDetail()
                 ->canRun(fn($request, $mainCard) => auth()->user()->hasPermissionTo("print-card")
-                    && in_array($mainCard->card_info->orginization->id, UserDepartment::getUserDepartment())),
+                    && in_array($mainCard->card_info->orginization->id, UserDepartment::getUserDepartment())
+                    && $mainCard->card_info->confirmed),
         ];
     }
 }

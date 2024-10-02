@@ -1,56 +1,61 @@
 @props(['card', 'details', 'cardInfo'])
-
-<div>
-
-    <div class="bg-white  h-[2.2in] w-[3.44in] block relative  bg-cover bg-center bg-local bg-no-repeat"
-        style="background-image: url('{{ $card->ip_address }}/storage/{{ $card->attr['content']['background'] }}');">
-        <div class=""
-            style="background-color: {{ $card->attr['header']['backgroundColor'] }}; color:{{ $card->attr['content']['fontColor'] }}">
-            <div class="text-center" style="font-size: {{ $card->attr['government']['fontSize'] }}px">
-                {{ $card->attr['government']['title'] }}</div>
-
-            <div class="text-center" style="font-size: {{ $card->attr['ministry']['fontSize'] }}px">
-                {{ $card->attr['ministry']['title'] }}
-            </div>
-
-            <img src="{{ $card->ip_address }}/storage/{{ $card->attr['government']['path'] }}" class="h-12 absolute rounded-full"
-                style="
+@php
+    $heightStyle = 'height: 2.16in; width: 3.41in;';
+    $wholeSize = 'height: 4.32in;width: 3.41in;';
+@endphp
+<div class="relative" style="{{ $wholeSize }}">
+    <div class="bg-white block bg-cover bg-center bg-local bg-no-repeat"
+        style="background-image: url('{{ $card->ip_address }}/storage/{{ $card->attr['content']['background'] }}');{{ $heightStyle }}">
+        <div class="text-center">
+            {!! $card->attr['government']['title'] !!}</div>
+        <img src="{{ $card->ip_address }}/storage/{{ $card->attr['government']['path'] }}"
+            class="h-12 absolute"
+            style="
                                 top: {{ $card->attr['government']['y'] }}px;
                                 left:{{ $card->attr['government']['x'] }}px;
                                 height: {{ $card->attr['government']['size'] }}px" />
-            <img src="{{ $card->ip_address }}/storage/{{ $card->attr['ministry']['path'] }}" class="h-12 absolute rounded-full"
-                style="
+        <img src="{{ $card->ip_address }}/storage/{{ $card->attr['ministry']['path'] }}"
+            class="h-12 absolute"
+            style="
                                 top: {{ $card->attr['ministry']['y'] }}px;
                                 left: {{ $card->attr['ministry']['x'] }}px;
                                 height: {{ $card->attr['ministry']['size'] }}px;
                                 " />
+        {{-- Diffrent Cards component --}}
+        <div class="px-2">
+            {{ $slot }}
         </div>
+        <img src="{{ $cardInfo->image_path }}" class="h-16 absolute"
+            style=" top: {{ $card->attr['profile']['y'] }}px;left:{{ $card->attr['profile']['x'] }}px;height:{{ $card->attr['profile']['size'] }}px " />
 
-        <div style="" class="bg-cover bg-center bg-local bg-no-repeat  h-[1.6in]">
-            {{-- Diffrent Cards component --}}
-
-            <div class="px-2">
-                {{ $slot }}
-            </div>
-        </div>
-
-        <div class="h-2" style="background-color: {{ $card->attr['header']['backgroundColor'] }}"></div>
-        <div>
-            <img src="{{ $cardInfo->image_path }}" class="h-16 absolute"
-                style=" top: {{ $card->attr['profile']['y'] }}px;left:{{ $card->attr['profile']['x'] }}px;height:{{ $card->attr['profile']['size'] }}px " />
-        </div>
         <div id="qrcode"
             style="position: absolute; top: {{ $card->attr['qrcode']['y'] }}px; left: {{ $card->attr['qrcode']['x'] }}px ;">
         </div>
+
+
+        <img id="barcode"
+            style="position: absolute; top: {{ $card->attr['barCode']['y'] }}px;left:{{ $card->attr['barCode']['x'] }}px;rotate:{{ $card->attr['barCode']['z'] }}deg " />
+
     </div>
-    <div class=" h-[2.1in] w-[3.44in] max-h-[2.13in] max-w-[3.44in]  block  relative bg-cover bg-center bg-local bg-no-repeat "
-        style="background-image: url('{{ $card->ip_address }}/storage/{{ $card->attr['content']['background'] }}');">
+
+
+    <div class="block bg-cover bg-center bg-local bg-no-repeat "
+        style="background-image: url('{{ $card->ip_address }}/storage/{{ $card->attr['backImage'] }}');
+    {{ $heightStyle }}">
         <div class="px-2 py-3">
             <div class="text-sm font-medium">{!! $remark !!}</div>
         </div>
     </div>
+
     @push('js')
         <script type="text/javascript">
+            JsBarcode('#barcode', "{{ $cardInfo->registare_no }}", {
+                format: "CODE128",
+                // background: "#000000/",
+                width: 2.5,
+                height: 40,
+                displayValue: false
+            });
             var qrcode = new QRCode(document.getElementById("qrcode"), {
                 width: {{ $card->attr['qrcode']['size'] }},
                 height: {{ $card->attr['qrcode']['size'] }}

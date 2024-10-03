@@ -49,8 +49,8 @@
         JsBarcode('#barcode', 222, {
             format: "CODE128",
             // background: "#000000/",
-            width: 3,
-            height: 40,
+            width: 2.5,
+            height: 20,
             displayValue: false
         });
     </script>

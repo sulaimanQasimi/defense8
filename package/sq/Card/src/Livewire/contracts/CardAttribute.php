@@ -82,6 +82,8 @@ trait CardAttribute
             // Profile
             case "signature.path":
                 $this->cardFrame->update(['attr->signature->path' => Str::after($this->attr['signature']['path']->store(path: 'public/signature'), 'public/')]);
+                $this->redirect(route('sq.employee.design-card', ['printCardFrame' => $this->cardFrame]), true);
+
                 break;
             case "signature.title":
                 $this->cardFrame->update(['attr->signature->title' => $this->attr['signature']['title']]);

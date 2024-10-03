@@ -44,5 +44,8 @@ final class PrintCardField
         if ($name == 'remark') {
             return $this->replace($this->frame->remark ?? "");
         }
+        if ($name == 'header') {
+            return $this->replace(context: $this->frame->attr['government']['title'] ?? "");
+        }
     }
 }

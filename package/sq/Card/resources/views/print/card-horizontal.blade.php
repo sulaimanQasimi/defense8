@@ -22,12 +22,7 @@
 <body class="persian-font antialiased">
 
     {{-- Print Context --}}
-    <x-sqcard::card.horizontal :card="$card" :cardInfo="$cardInfo" :id="'guest-' . $cardInfo->id">
-        {!! $details !!}
-        <x-slot:remark>
-            {!! $remark !!}
-        </x-slot:remark>
-    </x-sqcard::card.horizontal>
+    <x-sqcard::card.horizontal :card="$card" :cardInfo="$cardInfo" :id="'guest-' . $cardInfo->id" :field="$field"/>
 
     <script type="text/javascript" src="{{ asset('cards/qrcode/qrcode.js') }}"></script>
     @stack('js')

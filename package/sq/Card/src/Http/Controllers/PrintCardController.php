@@ -15,78 +15,81 @@ use Sq\Query\Policy\UserDepartment;
 
 class PrintCardController
 {
+    public function __construct()
+    {
+        app()->setLocale(locale: 'fa');
+    }
+
+    /**
+     * Summary of employee
+     * @param \Illuminate\Http\Request $request
+     * @param \Sq\Employee\Models\CardInfo $cardInfo
+     * @param int $printCardFrame
+     * @return \Illuminate\View\View
+     */
     public function employee(Request $request, CardInfo $cardInfo, int $printCardFrame): View
     {
-        if(!$cardInfo->confirmed){
+        return $this->card_optimization(cardInfo: $cardInfo, printCardFrame: $printCardFrame, printTypeEnum: PrintTypeEnum::Employee,gun:null,employeeVehicalCard:null);
+    }
+
+    /**
+     * Summary of gun
+     * @param \Illuminate\Http\Request $request
+     * @param \Sq\Employee\Models\GunCard $gunCard
+     * @param int $printCardFrame
+     * @return \Illuminate\View\View
+     */
+    public function gun(Request $request, GunCard $gunCard, int $printCardFrame): View
+    {
+        return $this->card_optimization(cardInfo: $gunCard->card_info, printCardFrame: $printCardFrame, printTypeEnum: PrintTypeEnum::Gun, gun: $gunCard);
+    }
+
+    /**
+     * Summary of employee_car
+     * @param \Illuminate\Http\Request $request
+     * @param \Sq\Employee\Models\EmployeeVehicalCard $employeeVehicalCard
+     * @param int $printCardFrame
+     * @return \Illuminate\View\View
+     */
+    public function employee_car(Request $request, EmployeeVehicalCard $employeeVehicalCard, int $printCardFrame): View
+    {
+        return $this->card_optimization(cardInfo: $employeeVehicalCard->card_info, printCardFrame: $printCardFrame, printTypeEnum: PrintTypeEnum::EmployeeCar, employeeVehicalCard: $employeeVehicalCard);
+    }
+    /**
+     * Summary of card_optimization
+     * @param mixed $cardInfo
+     * @param mixed $printCardFrame
+     * @param mixed $employeeVehicalCard
+     * @param mixed $gun
+     * @param mixed $printTypeEnum
+     * @return \Illuminate\View\View
+     */
+    private function card_optimization($cardInfo, $printCardFrame, $employeeVehicalCard = null, $gun = null, $printTypeEnum): View
+    {
+        $card = PrintCardFrame::findOrFail(id: $printCardFrame);
+
+        /**
+         * If employee confirmed by Admin
+         */
+        if (!$cardInfo->confirmed) {
             abort(404);
         }
+
+        /**
+         * If User have Depandant department of the employee
+         */
         if (!in_array($cardInfo->department_id, UserDepartment::getUserDepartment())) {
             abort(404);
         }
-        $card = PrintCardFrame::findOrFail($printCardFrame);
-        if (!$card->type == PrintTypeEnum::Employee) {
+
+
+        if (!$card->type == $printTypeEnum) {
             abort(404);
         }
-        app()->setLocale('fa');
-        // Get / Replace the field to Value
-        $field = new PrintCardField($cardInfo, $card);
-        $details = $field->details;
-        $remark = $field->remark;
-        return view(($card->dim === "vertical") ? 'sqcard::print.card-vertical' : 'sqcard::print.card-horizontal', compact('cardInfo', 'card', 'details', 'remark'));
-
-    }
-    public function gun(Request $request, GunCard $gunCard, int $printCardFrame): View
-    {
-
-        if(!$gunCard->card_info->confirmed){
-            abort(404);
-        }
-
-        if (!in_array($gunCard->card_info->department_id, UserDepartment::getUserDepartment())) {
-            abort(404);
-        }
-
-        $card = PrintCardFrame::findOrFail($printCardFrame);
-        $cardInfo = $gunCard->card_info;
-        if (!$card->type == PrintTypeEnum::Gun) {
-            abort(404);
-        }
-        app()->setLocale('fa');
 
         // Get / Replace the field to Value
-        $field = new PrintCardField($gunCard->card_info, $card, null, $gunCard);
-        $details = $field->details;
-        $remark = $field->remark;
+        $field = new PrintCardField(employee: $cardInfo, frame: $card, vehical: $employeeVehicalCard, gun: $gun);
 
-        return view(($card->dim === "vertical") ? 'sqcard::print.card-vertical' : 'sqcard::print.card-horizontal', compact('cardInfo', 'card', 'details', 'remark'));
-
-    }
-
-    public function employee_car(Request $request, EmployeeVehicalCard $employeeVehicalCard, int $printCardFrame): View
-    {
-
-        if(!$employeeVehicalCard->card_info->confirmed){
-            abort(404);
-        }
-
-        if (!in_array($employeeVehicalCard->card_info->department_id, UserDepartment::getUserDepartment())) {
-            abort(404);
-        }
-
-
-        $card = PrintCardFrame::findOrFail($printCardFrame);
-
-        if (!$card->type == PrintTypeEnum::EmployeeCar) {
-            abort(404);
-        }
-
-        app()->setLocale('fa');
-
-        // Get / Replace the field to Value
-        $field = new PrintCardField($employeeVehicalCard->card_info, $card, $employeeVehicalCard);
-        $details = $field->details;
-        $remark = $field->remark;
-        $cardInfo = $employeeVehicalCard->card_info;
-        return view(($card->dim === "vertical") ? 'sqcard::print.card-vertical' : 'sqcard::print.card-horizontal', compact('cardInfo', 'card', 'details', 'remark'));
+        return view(($card->dim === "vertical") ? 'sqcard::print.card-vertical' : 'sqcard::print.card-horizontal', compact('cardInfo', 'card', 'field'));
     }
 }

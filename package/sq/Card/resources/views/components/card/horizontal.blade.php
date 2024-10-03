@@ -1,4 +1,4 @@
-@props(['card', 'details', 'cardInfo'])
+@props(['card', 'cardInfo','field'])
 @php
     $heightStyle = 'height: 2.16in; width: 3.41in;';
     $wholeSize = 'height: 4.32in;width: 3.41in;';
@@ -7,7 +7,7 @@
     <div class="bg-white block bg-cover bg-center bg-local bg-no-repeat"
         style="background-image: url('{{ $card->ip_address }}/storage/{{ $card->attr['content']['background'] }}');{{ $heightStyle }}">
         <div class="text-center">
-            {!! $card->attr['government']['title'] !!}</div>
+            {!! $field->header !!}</div>
         <img src="{{ $card->ip_address }}/storage/{{ $card->attr['government']['path'] }}"
             class="h-12 absolute"
             style="
@@ -21,9 +21,17 @@
                                 left: {{ $card->attr['ministry']['x'] }}px;
                                 height: {{ $card->attr['ministry']['size'] }}px;
                                 " />
+        <img src="{{ $card->ip_address }}/storage/{{ $card->attr['signature']['path'] }}"
+            class="h-12 absolute"
+            style="z-index: 100;
+                                top: {{ $card->attr['signature']['y'] }}px;
+                                left: {{ $card->attr['signature']['x'] }}px;
+                                height: {{ $card->attr['signature']['size'] }}px;
+                                " />
         {{-- Diffrent Cards component --}}
         <div class="px-2">
-            {{ $slot }}
+
+            {!! $field->details !!}
         </div>
         <img src="{{ $cardInfo->image_path }}" class="h-16 absolute"
             style=" top: {{ $card->attr['profile']['y'] }}px;left:{{ $card->attr['profile']['x'] }}px;height:{{ $card->attr['profile']['size'] }}px " />
@@ -43,7 +51,8 @@
         style="background-image: url('{{ $card->ip_address }}/storage/{{ $card->attr['backImage'] }}');
     {{ $heightStyle }}">
         <div class="px-2 py-3">
-            <div class="text-sm font-medium">{!! $remark !!}</div>
+            <div class="text-sm font-medium">
+                {!! $field->remark !!}</div>
         </div>
     </div>
 
@@ -53,7 +62,7 @@
                 format: "CODE128",
                 // background: "#000000/",
                 width: 2.5,
-                height: 40,
+                height: 20,
                 displayValue: false
             });
             var qrcode = new QRCode(document.getElementById("qrcode"), {

@@ -14,7 +14,8 @@
 
 <body class="persian-font antialiased">
     {{-- Print Context --}}
-    <x-sqcard::card.vertical :card="$card" :cardInfo="$cardInfo" :id="'guest-' . $cardInfo->id" :field="$field" />
+    {{ $slot }}
+
     <script type="text/javascript" src="{{ asset('cards/qrcode/qrcode.js') }}"></script>
     @stack('js')
 </body>

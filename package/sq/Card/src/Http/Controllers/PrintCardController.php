@@ -90,6 +90,6 @@ class PrintCardController
         // Get / Replace the field to Value
         $field = new PrintCardField(employee: $cardInfo, frame: $card, vehical: $employeeVehicalCard, gun: $gun);
 
-        return view(($card->dim === "vertical") ? 'sqcard::print.card-vertical' : 'sqcard::print.card-horizontal', compact('cardInfo', 'card', 'field'));
+        return view('sqcard::print.card', compact('cardInfo', 'card', 'field'));
     }
 }

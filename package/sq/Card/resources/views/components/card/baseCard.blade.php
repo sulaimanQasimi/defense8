@@ -1,9 +1,4 @@
-@props(['card', 'field', 'cardInfo'])
-@php
-    $heightStyle = ' width: 2.16in; height: 3.41in;';
-    $wholeSize = 'width: 2.16in;height: 6.82in;';
-@endphp
-
+@props(['card', 'field', 'cardInfo', 'heightStyle', 'wholeSize'])
 <div class="relative" style="{{ $wholeSize }}">
     <!-- Breathing in, I calm body and mind. Breathing out, I smile. - Thich Nhat Hanh -->
     <div class="bg-white block bg-cover bg-center bg-local bg-no-repeat"
@@ -11,20 +6,16 @@
         <div class="text-center">
             {!! $field->header !!}
         </div>
-        <img src="{{ $card->ip_address }}/storage/{{ $card->attr['government']['path'] }}"
-            class="h-12 absolute"
+        <img src="{{ $card->ip_address }}/storage/{{ $card->attr['government']['path'] }}" class="h-12 absolute"
             style="
                                 top: {{ $card->attr['government']['y'] }}px;
                                 left:{{ $card->attr['government']['x'] }}px;
                                 height: {{ $card->attr['government']['size'] }}px" />
-        <img src="{{ $card->ip_address }}/storage/{{ $card->attr['ministry']['path'] }}"
-            class="h-12 absolute"
+        <img src="{{ $card->ip_address }}/storage/{{ $card->attr['ministry']['path'] }}" class="h-12 absolute"
             style="
                                 top: {{ $card->attr['ministry']['y'] }}px;
                                 left: {{ $card->attr['ministry']['x'] }}px;
-                                height: {{ $card->attr['ministry']['size'] }}px;
-                                " />
-        " />
+                                height: {{ $card->attr['ministry']['size'] }}px;" />
         <img src="{{ $card->ip_address }}/storage/{{ $card->attr['signature']['path'] }}" class="h-12 absolute"
             style="z-index: 100;
                                                                                      top: {{ $card->attr['signature']['y'] }}px;

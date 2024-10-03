@@ -1,6 +1,5 @@
 <div>
     {{-- Be like water. --}}
-    @dump($attr)
     <div>
         @once
             @push('css')
@@ -42,8 +41,6 @@
             @includeWhen($cardFrame->dim === 'horizontal', 'sqcard::livewire.guest.card-design-horizontal')
             @includeWhen($cardFrame->dim == 'vertical', 'sqcard::livewire.guest.card-design-vertical')
         </div>
-
-
     </div>
     <script>
         JsBarcode('#barcode', 222, {

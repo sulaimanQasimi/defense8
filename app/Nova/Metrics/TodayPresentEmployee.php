@@ -17,8 +17,9 @@ class TodayPresentEmployee extends Value
     public function calculate(NovaRequest $request)
     {
         return $this->result(
-            Attendance::query()->where('state', 'U')
-                ->whereDate('Date', now())
+            Attendance::query()
+                ->whereDate('date', now())
+                ->where('state', 'U')
                 ->whereHas('card_info', function ($query) use ($request) {
                     return $query->where('department_id', $request->input('range'));
                 })->count()
@@ -40,6 +41,6 @@ class TodayPresentEmployee extends Value
     }
     public function name()
     {
-        return trans("Today Present Employee");
+        return trans("Today Absent Employee");
     }
 }

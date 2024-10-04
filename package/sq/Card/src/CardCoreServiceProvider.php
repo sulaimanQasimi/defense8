@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use Laravel\Nova\Nova;
 use Livewire\Livewire;
 use Sq\Card\Livewire\CardDesign;
+use Sq\Card\Nova\PrintCard;
 use Sq\Card\Nova\PrintCardFrame;
 
 class CardCoreServiceProvider extends ServiceProvider
@@ -15,7 +16,8 @@ class CardCoreServiceProvider extends ServiceProvider
     {
         Livewire::component('sq-card-design', CardDesign::class);
         Nova::resources([
-            PrintCardFrame::class
+            PrintCardFrame::class,
+            PrintCard::class
         ]);
 
         Route::group($this->routeConfiguration(), function () {

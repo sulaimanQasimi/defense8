@@ -7,6 +7,7 @@ use Acme\StripeInspector\StripeInspector;
 use App\Nova\Actions\EditCardInfoOption;
 use App\Nova\Actions\EditCardInfoRemark;
 use App\Nova\Actions\ExportCardInfo;
+use Sq\Card\Nova\PrintCard;
 use Sq\Employee\Nova\Actions\ConfirmEmployee;
 use Sq\Location\Nova as Location;
 use App\Nova\Resource;
@@ -66,7 +67,7 @@ class CardInfo extends Resource
     {
         return __('Employee');
     }
-    public function fields(NovaRequest $request)
+    public function fields(NovaRequest $request): array
     {
         return [
             Panel::make(__(), [
@@ -240,7 +241,8 @@ class CardInfo extends Resource
 
             ),
             Fields\HasMany::make(__("Oil Report"), 'oil_disterbutions', \Sq\Oil\Nova\OilDisterbution::class),
-            Fields\HasMany::make(__("Attendance"), 'attendance', Attendance::class),
+            Fields\HasMany::make(name: __("Attendance"), attribute: 'attendance', resource: Attendance::class),
+            Fields\HasMany::make(name: __("Print Card"), attribute: 'print_cards', resource: PrintCard::class),
             StripeInspector::make(),
         ];
     }
@@ -341,7 +343,7 @@ class CardInfo extends Resource
                 ->sole()
                 ->canRun(fn($request, $infoCard) => in_array($infoCard->orginization->id, UserDepartment::getUserDepartment()))
                 ->withoutConfirmation()
-                
+
                 ->onlyOnDetail(),
 
             (new \Sq\Card\Nova\Actions\PrintAllTypeCardEmployeeAction)->onlyOnDetail()

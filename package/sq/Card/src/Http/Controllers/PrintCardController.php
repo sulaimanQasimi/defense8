@@ -3,6 +3,7 @@
 namespace Sq\Card\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Sq\Card\Models\PrintCard;
 use Sq\Employee\Models\CardInfo;
 use Sq\Employee\Models\EmployeeVehicalCard;
 use Sq\Card\Models\PrintCardFrame;
@@ -29,7 +30,7 @@ class PrintCardController
      */
     public function employee(Request $request, CardInfo $cardInfo, int $printCardFrame): View
     {
-        return $this->card_optimization(cardInfo: $cardInfo, printCardFrame: $printCardFrame, printTypeEnum: PrintTypeEnum::Employee,gun:null,employeeVehicalCard:null);
+        return $this->card_optimization(cardInfo: $cardInfo, printCardFrame: $printCardFrame, printTypeEnum: PrintTypeEnum::Employee, gun: null, employeeVehicalCard: null);
     }
 
     /**
@@ -89,6 +90,22 @@ class PrintCardController
 
         // Get / Replace the field to Value
         $field = new PrintCardField(employee: $cardInfo, frame: $card, vehical: $employeeVehicalCard, gun: $gun);
+        
+        $card_record = PrintCard::create(attributes: [
+            'user_id' => auth()->id(),
+            'card_info_id' => $cardInfo->id,
+            'print_card_frame_id' => $card->id,
+            'issue' => match ($printTypeEnum) {
+                PrintTypeEnum::Employee => $cardInfo?->main_card?->card_perform,
+                PrintTypeEnum::EmployeeCar => $cardInfo?->employee_vehical_card?->register_date,
+                PrintTypeEnum::Gun => $cardInfo?->gun?->register_date,
+            },
+            'expire' => match ($printTypeEnum) {
+                PrintTypeEnum::Employee => $cardInfo?->main_card?->card_expired_date,
+                PrintTypeEnum::EmployeeCar => $cardInfo?->employee_vehical_card?->expire_date,
+                PrintTypeEnum::Gun => $cardInfo?->gun?->expire_date,
+            },
+        ]);
 
         return view('sqcard::print.card', compact('cardInfo', 'card', 'field'));
     }

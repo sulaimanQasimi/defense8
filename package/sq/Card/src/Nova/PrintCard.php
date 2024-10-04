@@ -36,7 +36,6 @@ class PrintCard extends Resource
             BelongsTo::make(trans("Card Type"),'card_info',PrintCardFrame::class),
             PersianDate::make(trans("Issue Date"),'issue'),
             PersianDate::make(trans("Expire Date"),'expire'),
-
         ];
     }
     public function cards(NovaRequest $request)

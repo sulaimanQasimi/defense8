@@ -13,6 +13,8 @@
 CKEDITOR.editorConfig = function (config) {
     // config.extraPlugins = 'richcombo';
 
+    config.uiColor = '#AADC6E';
+    
     config.language = 'fa';
     config.extraPlugins = 'lineheight';
     config.line_height="0.1em;0.2em;0.3em;0.4em;0.5em;1em;1.1em;1.2em;1.3em;1.4em;1.5em";
@@ -25,4 +27,7 @@ CKEDITOR.editorConfig = function (config) {
         { name: 'colors', items: ['TextColor', 'BGColor'] },
         { name: 'tools', items: ['Maximize', 'ShowBlocks','lineheight'] },
     ];
+
+    config.contentCss = "../font.css";
+    config.font_names = 'نسیم/persian-font;نازنین/nazanin-font' + config.font_names;
 };

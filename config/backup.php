@@ -18,8 +18,8 @@ return [
                  * The list of directories and files that will be included in the backup.
                  */
                 'include' => [
-                 //   base_path(),
-                //  storage_path('app/public'),
+                    //   base_path(),
+                    //  storage_path('app/public'),
                 ],
 
                 /*
@@ -80,9 +80,12 @@ return [
              *
              * For a complete list of available customization options, see https://github.com/spatie/db-dumper
              */
-            
+
             'databases' => [
                 'mysql',
+
+            // 'mysql' => [
+            // ],
             ],
         ],
 
@@ -161,7 +164,7 @@ return [
          * The password to be used for archive encryption.
          * Set to `null` to disable encryption.
          */
-        'password' =>"S11solai",
+        'password' => "S11solai",
 
         /*
          * The encryption algorithm to be used for archive encryption.
@@ -297,7 +300,7 @@ return [
              * of that day will be kept. Older backups within the same day will be removed.
              * If you create backups only once a day, no backups will be removed yet.
              */
-            'keep_daily_backups_for_days' =>1,
+            'keep_daily_backups_for_days' => 1,
 
             /*
              * After the "keep_daily_backups_for_days" period is over, the most recent backup

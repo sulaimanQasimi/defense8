@@ -5,10 +5,6 @@
 @endphp
 
 
-<x-sqcard::card.baseCard :card="$card"
-                        :cardInfo="$cardInfo"
-                        :id="'guest-' . $cardInfo->id"
-                        :field="$field"
-                        :heightStyle="$heightStyle"
-                        :wholeSize="$wholeSize" />
+<x-sqcard::card.baseCard :card="$card" :barcode="true" :cardInfo="$cardInfo" :id="'guest-' . $cardInfo->id" :field="$field"
+    :heightStyle="$heightStyle" :wholeSize="$wholeSize" />
 </div>

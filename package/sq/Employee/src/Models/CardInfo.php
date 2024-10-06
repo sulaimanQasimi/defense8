@@ -52,6 +52,12 @@ class CardInfo extends Model
             }
         );
 
+        static::created(
+            function ($cardinfo) {
+                $cardinfo->confirmed=false;
+                $cardinfo->save();
+            }
+        );
         // Power Check while Updating
         static::updating(
             function ($cardinfo) {

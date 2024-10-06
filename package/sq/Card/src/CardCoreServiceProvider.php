@@ -27,7 +27,7 @@ class CardCoreServiceProvider extends ServiceProvider
 
         $this->loadViewsFrom(__DIR__ . "/../resources/views/", 'sqcard');
         $this->loadJsonTranslationsFrom(__DIR__ . "/../langs");
-
+        $this->mergeConfigFrom(__DIR__ . "/../config/sq-card.php",'sq-card');
         $this->loadMigrationsFrom(__DIR__ . "/../database/migrations");
         if ($this->app->runningInConsole()) {
             $this->publishes([
@@ -38,8 +38,8 @@ class CardCoreServiceProvider extends ServiceProvider
         }
 
         $this->publishes([
-            __DIR__.'/../resources/assets' => public_path('cards'),
-          ], 'assets');
+            __DIR__ . '/../resources/assets' => public_path('cards'),
+        ], 'assets');
 
 
     }

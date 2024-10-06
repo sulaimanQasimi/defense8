@@ -43,11 +43,11 @@
         </div>
     </div>
     <script>
-        JsBarcode('#barcode', 222, {
+        JsBarcode('#barcode', "G5-00000", {
             format: "CODE128",
             // background: "#000000/",
-            width: 2.5,
-            height: 20,
+            width: {{ config('sq-card.barcode-size') }},
+            height: 10,
             displayValue: false
         });
     </script>

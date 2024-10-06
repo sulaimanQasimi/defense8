@@ -1,4 +1,4 @@
-@props(['card', 'field', 'cardInfo', 'heightStyle', 'wholeSize'])
+@props(['card', 'field', 'cardInfo', 'heightStyle', 'wholeSize', 'barcode' => true])
 <div class="relative" style="{{ $wholeSize }}">
     <!-- Breathing in, I calm body and mind. Breathing out, I smile. - Thich Nhat Hanh -->
     <div class="bg-white block bg-cover bg-center bg-local bg-no-repeat"
@@ -34,9 +34,12 @@
             style="position: absolute; top: {{ $card->attr['qrcode']['y'] }}px; left: {{ $card->attr['qrcode']['x'] }}px ;">
         </div>
 
-
-        <img id="{{ $attributes->get('id') }}-barcode"
-            style="position: absolute; top: {{ $card->attr['barCode']['y'] }}px;left:{{ $card->attr['barCode']['x'] }}px;rotate:{{ $card->attr['barCode']['z'] }}deg " />
+        @if ($barcode)
+            <div
+                style="position: absolute; top: {{ $card->attr['barCode']['y'] }}px;left:{{ $card->attr['barCode']['x'] }}px;rotate:{{ $card->attr['barCode']['z'] }}deg ">
+                <svg id="{{ $attributes->get('id') }}-barcode"></svg>
+            </div>
+        @endif
 
     </div>
 
@@ -51,14 +54,15 @@
 </div>
 @push('js')
     <script type="text/javascript">
-        JsBarcode('#{{ $attributes->get('id') }}-barcode', "{{ $cardInfo->registare_no }}", {
-            format: "CODE128",
-            // background: "#000000/",
-            width: 2.5,
-            height: 20,
-            displayValue: false
-        });
-
+        @if ($barcode)
+            JsBarcode('#{{ $attributes->get('id') }}-barcode', "{{ $cardInfo->registare_no }}", {
+                format: "CODE128",
+                // background: "#000000/",
+                width: {{ config('sq-card.barcode-size') }},
+                height: 10,
+                displayValue: false
+            });
+        @endif
         var qrcode = new QRCode(document.getElementById("{{ $attributes->get('id') }}"), {
             width: {{ $card->attr['qrcode']['size'] }},
             height: {{ $card->attr['qrcode']['size'] }}

@@ -99,15 +99,25 @@
                             </p>
                         </td>
                     </tr>
+                    <tr class="border border-gray-600">
+                        <th scope="col" class="px-4 py-1  text-2xl">
+                            اروند دروازه:
+                        </th>
 
 
+                        <td class="px-4 py-1  text-2xl">
+
+                            <p class="font-medium leading-none text-gray-700 mr-2 text-2xl">
+                                {{ $employee->gate?->fa_name }}
+                            </p>
+                        </td>
+                    </tr>
                 </thead>
             </table>
-
         </div>
 
 
-        <div class=" border-gray-600 border py-1 px-2">
+        <div class="border-gray-600 border py-1 px-2">
             <div class="text-3xl font-bold text-blue-700">شرایط:</div>
             @foreach ($employee->employeeOptions as $option)
                 <div class="text-blue-600  text-xl">{{ $option->name }}</div>
@@ -116,7 +126,7 @@
 
         <div>
 
-            <img style="height: 500px" class="rounded-lg block"
+            <img style="height: 400px" class="rounded-lg block"
                 src="{{ asset("storage/{$employee->photo}") }}" />
 
         </div>
@@ -137,12 +147,15 @@
     <div class="flex justify-around mt-10">
 
         {{--  IF Current Gate is Main Gate And Enter Gate is empty --}}
-        @if ((auth()->user()->gate?->id === $employee->gate?->id)|| in_array($employee?->gate?->id,\Sq\Query\Policy\UserDepartment::getUserGate()))
 
-        @if (!$employee->current_gate_attendance?->enter && $employee->current_gate_attendance?->state !="U")
+        @if (in_array($employee?->gate?->id,\Sq\Query\Policy\UserDepartment::getUserGate()))
+@dump(in_array($employee?->gate?->id,\Sq\Query\Policy\UserDepartment::getUserGate()))
+        @if ( !$employee->current_gate_attendance?->enter
+        && $employee->current_gate_attendance?->state !="U")
                 <a href="{{ route('sqemployee.employee.check.pass', ['cardInfo' => $employee->id, 'state' => 'enter']) }}"
                     class="px-7 rounded-lg hover:scale-95 py-1 text-white bg-gradient-to-t from-green-600 to-green-500"
-                    style="">@lang('Present')</a>
+                    style="">@lang('Present')
+                </a>
             @endif
 
             @if (!is_null($employee->current_gate_attendance?->enter) && is_null($employee->current_gate_attendance?->exit) && $employee->current_gate_attendance?->state !="U")

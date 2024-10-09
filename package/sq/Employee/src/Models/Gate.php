@@ -43,9 +43,6 @@ class Gate extends Model
                 }
             }
         );
-
-
-
     }
     public function user(): HasMany
     {
@@ -67,5 +64,10 @@ class Gate extends Model
     public function department(): BelongsTo
     {
         return $this->belongsTo(Department::class);
+    }
+
+    public function scaned_employee(): HasMany
+    {
+        return $this->hasMany(related: ScanedEmployee::class);
     }
 }

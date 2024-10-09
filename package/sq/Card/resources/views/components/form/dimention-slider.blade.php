@@ -5,8 +5,8 @@
         @lang($label)
     </label>
     <label class="slider space-x-3">
-        <input type="range" class="level" x-model="{{ $xModel }}" max="{{ $xMax }}" />
-        <input type="range" class="level" x-model="{{ $yModel }}" max="{{ $yMax }}" />
-        <input type="range" class="level" x-model="{{ $zModel }}" max="{{ $zMax }}" />
+        <input type="number" class="level" x-model="{{ $xModel }}" max="{{ $xMax }}" />
+        <input type="number" class="level" x-model="{{ $yModel }}" max="{{ $yMax }}" />
+        <input type="number" class="level" x-model="{{ $zModel }}" max="{{ $zMax }}" />
     </label>
 </div>

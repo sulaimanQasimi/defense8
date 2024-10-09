@@ -17,7 +17,7 @@ CKEDITOR.editorConfig = function (config) {
 
     config.language = 'fa';
     config.extraPlugins = 'lineheight';
-    config.line_height="0.1em;0.2em;0.3em;0.4em;0.5em;1em;1.1em;1.2em;1.3em;1.4em;1.5em";
+    config.line_height="0.1em;0.2em;0.3em;0.4em;0.5em;0.6em;0.7em;0.8em;0.9em;1em;1.1em;1.2em;1.3em;1.4em;1.5em";
     config.toolbar = [
         { name: 'basicstyles', items: ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'CopyFormatting', 'RemoveFormat'] },
         { name: 'paragraph', items: ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl', 'Language'] },

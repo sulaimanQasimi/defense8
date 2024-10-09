@@ -84,6 +84,10 @@ class CardInfo extends Model
     {
         return $this->hasMany(Attendance::class);
     }
+    public function scaned_employee(): HasMany
+    {
+        return $this->hasMany(related: ScanedEmployee::class);
+    }
     public function gate(): BelongsTo
     {
         return $this->belongsTo(Gate::class);

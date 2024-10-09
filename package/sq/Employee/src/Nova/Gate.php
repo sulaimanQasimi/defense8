@@ -73,7 +73,9 @@ class Gate extends Resource
                 ->creationRules('required', 'numeric')
                 ->help(__("Use 1 For Main Gate")),
             HasMany::make(__("Employees"), 'cardInfos', CardInfo::class),
-            HasMany::make(__("Users"), 'user', \App\Nova\User::class)
+            HasMany::make(__("Users"), 'user', \App\Nova\User::class),
+            HasMany::make(name: __("Scaned Employee"), attribute: 'scaned_employee', resource: ScanedEmployee::class)
+
         ];
     }
     public function cards(NovaRequest $request)

@@ -244,6 +244,7 @@ class CardInfo extends Resource
             Fields\HasMany::make(name: __("Attendance"), attribute: 'attendance', resource: Attendance::class),
             Fields\HasMany::make(name: __("Print Card"), attribute: 'print_cards', resource: PrintCard::class),
             StripeInspector::make(),
+            Fields\HasMany::make(name: __("Scaned Employee"), attribute: 'scaned_employee', resource: ScanedEmployee::class)
         ];
     }
     public function cards(NovaRequest $request)
@@ -261,32 +262,46 @@ class CardInfo extends Resource
     {
         return [
             MegaFilter::make([
+
                 //
                 new SqNovaTextFilter(label: __("Register No"), column: 'registare_no'),
+
                 //
                 new SqNovaTextFilter(label: __("Name"), column: 'name'),
+
                 //
                 new SqNovaTextFilter(label: __("Last Name"), column: 'last_name'),
+
                 //
                 new SqNovaTextFilter(label: __("Father Name"), column: 'father_name'),
+
                 //
                 new SqNovaTextFilter(label: __("Grand Father Name"), column: 'grand_father_name'),
+
                 //
                 new SqNovaTextFilter(label: __("National ID"), column: 'national_id'),
+
                 //
                 new SqNovaTextFilter(label: __("Phone"), column: 'phone'),
+
                 //
                 new SqNovaDateFilter(label: __("Date of Birth"), column: 'birthday'),
+
                 //
                 new SqNovaTextFilter(label: __("Degree"), column: 'degree'),
+
                 //
                 new SqNovaTextFilter(label: __("Grade"), column: 'grade'),
+
                 //
                 new SqNovaTextFilter(label: __("Acupation"), column: 'acupation'),
+
                 //
                 new SqNovaTextFilter(label: __("Job Stracture Title"), column: 'job_structure'),
+
                 //
                 new SqNovaTextFilter(label: __("Previous Job"), column: 'previous_job'),
+                
                 //
                 new SqNovaSelectFilter(
                     label: __("Department/Chancellor"),
@@ -323,7 +338,8 @@ class CardInfo extends Resource
             ,
             (new EditCardInfoRemark())
                 ->canSee(fn() => auth()->user()->hasPermissionTo(EditAditionalCardInfoEnum::Remark))
-                ->canRun(fn($request, $infoCard) => EditAditionalCardInfoEnum::Remark
+                ->canRun(
+                    fn($request, $infoCard) => EditAditionalCardInfoEnum::Remark
                     && in_array($infoCard->orginization->id, UserDepartment::getUserDepartment())
                     && $infoCard->confirmed
                 ),
@@ -347,15 +363,16 @@ class CardInfo extends Resource
                 ->onlyOnDetail(),
 
             (new \Sq\Card\Nova\Actions\PrintAllTypeCardEmployeeAction)->onlyOnDetail()
-                ->canRun(fn($request, $infoCard) =>
-                auth()->user()->hasPermissionTo("print-card")
-                && in_array($infoCard->orginization->id, UserDepartment::getUserDepartment())
-            && $infoCard->confirmed
+                ->canRun(
+                    fn($request, $infoCard) =>
+                    auth()->user()->hasPermissionTo("print-card")
+                    && in_array($infoCard->orginization->id, UserDepartment::getUserDepartment())
+                    && $infoCard->confirmed
 
-            ),
+                ),
             (new ConfirmEmployee)
-            ->canRun(fn($request, $infoCard) => auth()->user()->hasPermissionTo("confirm-employee")
-                && in_array($infoCard->orginization->id, UserDepartment::getUserDepartment()))
+                ->canRun(fn($request, $infoCard) => auth()->user()->hasPermissionTo("confirm-employee")
+                    && in_array($infoCard->orginization->id, UserDepartment::getUserDepartment()))
         ];
     }
 

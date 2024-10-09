@@ -9,6 +9,7 @@ use Laravel\Nova\Menu\MenuSection;
 use Laravel\Nova\Nova;
 use Livewire\Livewire;
 use Sq\Employee\Nova as NovaResource;
+use Sq\Employee\Nova\ScanedEmployee;
 
 class EmployeeServiceProvider extends ServiceProvider
 {
@@ -20,6 +21,7 @@ class EmployeeServiceProvider extends ServiceProvider
         Nova::resources([
             NovaResource\Attendance::class,
             NovaResource\CardInfo::class,
+            ScanedEmployee::class,
                 // temp Resource
             NovaResource\UnknownEmployee::class,
 
@@ -37,6 +39,7 @@ class EmployeeServiceProvider extends ServiceProvider
             $this->loadRoutesFrom(__DIR__ . "/../routes/web.php");
         });
         $this->loadRoutesFrom(__DIR__ . "/../routes/api.php");
+        $this->loadJsonTranslationsFrom(__DIR__ . "/../langs/");
 
     }
     public function register()
@@ -51,24 +54,26 @@ class EmployeeServiceProvider extends ServiceProvider
     {
         return
             // Card and Employee Section
-            MenuSection::make(__('Employees'), [
+            MenuSection::make( __('Employees'), [
 
                 // Department Menu Item
-                MenuItem::resource(NovaResource\Department::class),
+                MenuItem::resource(resourceClass: NovaResource\Department::class),
 
                 // Gate Menu Item
-                MenuItem::resource(NovaResource\Gate::class),
+                MenuItem::resource(resourceClass: NovaResource\Gate::class),
 
                 // Employee Menu Item
-                MenuItem::resource(NovaResource\CardInfo::class),
+                MenuItem::resource(resourceClass: NovaResource\CardInfo::class),
+                //
+                MenuItem::resource(resourceClass: NovaResource\ScanedEmployee::class),
                 // Employee Menu Item
-                MenuItem::resource(NovaResource\UnknownEmployee::class),
+                MenuItem::resource(resourceClass: NovaResource\UnknownEmployee::class),
 
                 // Employee Menu Item
-                MenuItem::resource(NovaResource\EmployeeVehicalCard::class),
+                MenuItem::resource(resourceClass: NovaResource\EmployeeVehicalCard::class),
 
                 // Employee Menu Item
-                MenuItem::resource(NovaResource\GunCard::class),
+                MenuItem::resource(resourceClass: NovaResource\GunCard::class),
 
                 // Employee Check out Page
                 MenuItem::externalLink(__("Employee Check Card"), route("sqemployee.employee.check.card"))
@@ -96,7 +101,10 @@ class EmployeeServiceProvider extends ServiceProvider
                 // MenuItem::resource(NovaResource\Website::class)->canSee(fn() => auth()->user()->hasRole('super-admin')),
 
 
-            ])->collapsable()->collapsedByDefault()->icon("fas fa-users-rectangle fa-2x");
+            ])
+                ->collapsable()
+                ->collapsedByDefault()
+                ->icon("fas fa-users-rectangle fa-2x");
     }
 
     protected function routeConfiguration()

@@ -2,8 +2,12 @@
 
 use App\Http\Controllers\YoutubeController;
 use App\Livewire\Setting\LanguageAutomization;
+use App\Settings\AttendanceTimer;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Pipeline;
 use Illuminate\Support\Facades\Route;
+use Sq\Employee\Livewire\Attendance;
 Route::middleware(['auth', 'permission:change_language'])
     ->prefix('app/setting/')
     ->name('app.setting.')
@@ -18,9 +22,10 @@ Route::middleware(['auth'])
         Route::get(uri: 'youtube/preview/{video:id}', action: 'preview')->name('youtube.preview');
     });
 Route::get('test', function () {
-$i=454;
-$f=encrypt($i);
-DB::commit();
-dd($f,decrypt($f));
+    // Pipeline::
+    // dd(Carbon::make(mb_split(' ', (new AttendanceTimer)->start)[0]));
+    dd(
+    );
+    ;
 });
 

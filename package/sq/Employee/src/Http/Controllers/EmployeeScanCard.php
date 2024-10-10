@@ -3,6 +3,10 @@
 namespace Sq\Employee\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Settings\AttendanceTimer;
+use Closure;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Pipeline;
 use Sq\Employee\Models\Attendance;
 use Sq\Employee\Models\CardInfo;
 use Sq\Employee\Models\MainCard;
@@ -18,25 +22,41 @@ class EmployeeScanCard extends Controller
 {
     public function scan(Request $request)
     {
+        $date = self::attendance_timer();
+        $attendance = [];
         //
         $guest = null;
+
         //
         $code = $request->input("code");
+
         //
         if (\Illuminate\Support\Str::startsWith($code, 'Guest-')) {
             $guest = Guest::query()->where('barcode', $code)->first();
+
         }
+
         //
-        $employee = CardInfo::query()->where('registare_no', "=", $code)->first();
+        $employee = CardInfo::query()->with(['employeeOptions', 'employee_vehical_card', 'gun_card'])->where('registare_no', "=", $code)->first();
+
         if ($employee) {
             ScanedEmployee::create(attributes: [
                 'card_info_id' => $employee->id,
                 'gate_id' => auth()->user()?->gate?->id,
                 'scaned_at' => now(),
             ]);
+
+            $attendance = [
+                'present' => !$employee->current_gate_attendance?->enter && $employee->current_gate_attendance?->state != 'U',
+                'exit' => !is_null($employee->current_gate_attendance?->enter) && is_null($employee->current_gate_attendance?->exit) && $employee->current_gate_attendance?->state != "U",
+                'absent'=>$employee->current_gate_attendance?->state != 'P' && is_null($employee->current_gate_attendance?->state),
+
+                'allowed_gate'=>in_array($employee?->gate?->id, \Sq\Query\Policy\UserDepartment::getUserGate())
+            ];
         }
+
         //
-        return view("sqemployee::employee.scan", compact("employee", "code", 'guest'));
+        return view("sqemployee::employee.scan", compact("employee", "code", 'guest', 'date', 'attendance'));
     }
 
 
@@ -101,6 +121,36 @@ class EmployeeScanCard extends Controller
     public function scan_other_website_employee(Request $request)
     {
 
+    }
+    public static function attendance_timer()
+    {
+
+        return Pipeline::send(passable: (new AttendanceTimer()))
+            ->through(pipes: [
+                fn($context, Closure $next): mixed => $next(['start' => $context->start, 'end' => $context->end]),
+                fn($context, Closure $next): mixed => $next(['start' => mb_split(pattern: ' ', string: $context['start']), 'end' => mb_split(' ', $context['end'])]),
+                fn($context, Closure $next): mixed => $next(
+                    [
+                        'start' =>
+                            [
+                                Carbon::make(var: $context['start'][0]),
+                                Carbon::make(var: $context['start'][1])
+                            ],
+                        'end' => [
+                            Carbon::make(var: $context['end'][0])->addHours(value: 12),
+                            Carbon::make(var: $context['end'][1])->addHours(value: 12)
+                        ]
+                    ]
+                ),
+                fn($context, Closure $next): mixed => $next(
+                    [
+                        'start' => Carbon::now()->between($context['start']['0'], $context['start']['1']),
+                        // 2:10 < 1:20 &&
+                        'end' => Carbon::now()->between($context['end']['0'], $context['end']['1'])
+                    ]
+                )
+            ])
+            ->then(destination: fn($context): mixed => $context);
     }
 
 }

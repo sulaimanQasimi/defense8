@@ -1,4 +1,5 @@
 <?php
+use App\Settings\AttendanceTimer;
 use App\Settings\Login;
 use App\Settings\LoginPage;
 
@@ -10,7 +11,8 @@ return [
      */
     'settings' => [
             // LoginPage::class
-        Login::class
+        Login::class,
+        AttendanceTimer::class
     ],
 
     /*

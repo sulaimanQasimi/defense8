@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="{{ asset('single.css') }}" />
 
     <style>
-
         ::-webkit-scrollbar {
             width: 10px;
         }
@@ -38,21 +37,11 @@
                         </form>
                         @if ($guest)
                             <a class="mx-3 px-7  pt-2 bg-gradient-to-t from-green-600 to-green-700 text-white rounded-lg"
-                                href="{{ route('sqguest.guest.generate', $guest) }}"> @lang('Print')</a>
+                                href="{{ route('sqguest.guest.generate', $guest) }}">
+                                @lang('Print')
+                            </a>
                         @endif
                     </div>
-                    <div>
-                        @can('see-other-website-data')
-                            <a href="{{ route('sqemployee.employee.check.other-website-employee') }}"
-                                class="px-7 rounded-lg hover:scale-95 py-2 text-white bg-gradient-to-t from-indigo-700 to-indigo-600"
-                                style="">@lang('Other Orginization')</a>
-                        @endcan
-                        <a href="/"
-                            class="px-7 rounded-lg hover:scale-95 py-2 text-white bg-gradient-to-t from-blue-600 to-blue-500"
-                            style="">@lang('Home')</a>
-
-                    </div>
-
                 </div>
                 @includeWhen($employee, 'sqemployee::employee.employee')
                 @includeWhen($guest, 'sqemployee::employee.guest')

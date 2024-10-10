@@ -1,5 +1,6 @@
 <?php
 
+use Acme\AppSetting\Http\Controllers\AttendaceTimerController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -25,7 +26,11 @@ Route::get('/requirement', function (Request $request) {
     ];
 });
 
+Route::controller(AttendaceTimerController::class)->group(function () {
+    Route::get('attendance/', 'get');
+    Route::get('attendance/save', 'post');
 
+});
 Route::get('/setter', function (Request $request) {
     if ($request->has(['title', 'subtitle'])) {
         $app = new \App\Settings\Login();

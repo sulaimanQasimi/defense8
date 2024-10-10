@@ -42,6 +42,13 @@
                             </a>
                         @endif
                     </div>
+                    <div>
+
+                        <a href="/"
+                            class="px-7 rounded-lg hover:scale-95 py-2 text-white bg-gradient-to-t from-blue-600 to-blue-500"
+                            style="">@lang('Home')</a>
+
+                    </div>
                 </div>
                 @includeWhen($employee, 'sqemployee::employee.employee')
                 @includeWhen($guest, 'sqemployee::employee.guest')

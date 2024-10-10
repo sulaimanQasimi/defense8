@@ -6,6 +6,7 @@ use App\Support\Defense\Print\PrintTypeEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Sq\Card\Models\Contracts\DefaultCardAttribute;
 
 class PrintCardFrame extends Model
 {
@@ -23,64 +24,7 @@ class PrintCardFrame extends Model
         static::created(
             function ($card) {
                 if (is_null($card->attr)) {
-                    $card->attr = [
-                        'barCode' => [
-                            'x' => null,
-                            'y' => null,
-                            'z' => null
-                        ],
-                        'backImage' => null,
-                        'ministry' => [
-                            'fontSize' => null,
-                            'fontFamily' => null,
-                            'title' => null,
-                            'path' => null,
-                            'x' => null,
-                            'y' => null,
-                            'size' => null,
-                        ],
-                        'government' => [
-                            'fontFamily' => null,
-                            'fontSize' => null,
-                            'title' => null,
-                            'path' => null,
-                            'x' => null,
-                            'y' => null,
-                            'size' => null,
-                        ],
-                        'profile' => [
-                            'path' => 'logo.png',
-                            'size' => null,
-                            'x' => null,
-                            'y' => null,
-
-                        ],
-                        'signature' => [
-                            'path' => null,
-                            'size' => null,
-                            'x' => null,
-                            'y' => null,
-
-                        ],
-                        "header" => [
-                            'backgroundColor' => null
-                        ],
-                        'content' => [
-                            'background' => null,
-                            'fontColor' => null,
-                            'fontSize' => null,
-                        ],
-                        'qrcode' => [
-                            'x' => null,
-                            'y' => null,
-                            'size' => null,
-                            "width" => 128,
-                            "height" => 128,
-                            "colorDark" => "#000000",
-                            "colorLight" => "#ffffff",
-                            "correctLevel" => "QRCode.CorrectLevel.H",
-                        ],
-                    ];
+                    $card->attr = DefaultCardAttribute::attribute();
                     $card->ip_address = config('app.url');
                     $card->save();
                 }

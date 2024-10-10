@@ -3,6 +3,7 @@
 namespace Sq\Card\Livewire;
 
 use Sq\Card\Livewire\Contracts\CardAttribute;
+use Sq\Card\Models\Contracts\DefaultCardAttribute;
 use Sq\Card\Models\PrintCardFrame;
 use Illuminate\Support\Str;
 use Livewire\Attributes\Rule;
@@ -30,7 +31,8 @@ class CardDesign extends Component
         $this->attr = $printCardFrame->attr;
         $this->details = $printCardFrame->details;
         $this->remark = $printCardFrame->remark;
-    }
+      }
+
 
     /**
      * Update the Front page content

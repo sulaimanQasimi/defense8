@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Nova\Filters;
+namespace Sq\Employee\Nova\Filters;
 
 use Laravel\Nova\Filters\Filter;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use MZiraki\PersianDateFilter\PersianDateFilter;
+use Sq\Employee\Models\Department;
 
-class AttendanceDateFilter extends PersianDateFilter
+class AttendanceDepartmentFilter extends Filter
 {
     /**
      * The filter's component.
      *
      * @var string
      */
-    // public $component = 'date-filter';
+    public $component = 'select-filter';
 
     /**
      * Apply the filter to the given query.
@@ -25,7 +25,9 @@ class AttendanceDateFilter extends PersianDateFilter
      */
     public function apply(NovaRequest $request, $query, $value)
     {
-        return $query->whereDate('date', $value);
+        return $query->whereHas(relation: 'card_info', callback: function ($query) use ($value) {
+            return $query->where('department_id', $value);
+        });
     }
 
     /**
@@ -36,6 +38,10 @@ class AttendanceDateFilter extends PersianDateFilter
      */
     public function options(NovaRequest $request)
     {
-        return [];
+        return array_flip(Department::pluck('fa_name', 'id')->toArray());
+    }
+    public function name(): string
+    {
+        return trans("Department");
     }
 }

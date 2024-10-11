@@ -15,18 +15,7 @@ Route::middleware(["guestGatePassed", 'can:gateChecker,\Sq\Employee\Models\Gate'
         // Self Website Check
         Route::get('employee', 'scan')->name('card');
         Route::get('passemployee/{cardInfo:id}/to', 'employeeState')->name('pass');
-
-        // Other Orginization
-        Route::middleware(['permission:see-other-website-data'])
-            ->get('other', 'scan_other_website_employee')
-            ->name('other-website-employee');
     });
-
-// Other Website Employees Check
-Route::middleware(['permission:see-other-website-data'])
-    ->get('other-websites', [EmployeeScanCard::class, 'scan_other_website_employee'])
-    ->name('check.other-website-employee');
-
 
 Route::middleware(['role:super-admin'])
     ->get("attend", Attendance::class)
@@ -35,10 +24,6 @@ Route::middleware(['role:super-admin'])
 Route::middleware(['can:admin,department', 'permission:check own department attendance'])
     ->get("attendance/{department:id?}", SetAttendance::class)
     ->name("department.employee.attendance.check");
-
-// Route::middleware(['role:super-admin'])
-//     ->get('employee/attendance/current/month', CurrentMonthEmployeeAttendance::class)
-//     ->name("employee.attendance.current.month");
 
 Route::middleware(['role:super-admin'])
     ->get('employee/attendance/current/month/employee/{cardInfo:id}', [CurrentMonthEmployeeAttendance::class, 'single_employee'])

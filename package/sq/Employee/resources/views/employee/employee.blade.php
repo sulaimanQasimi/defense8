@@ -68,7 +68,7 @@
                         <td class="px-4 py-1  text-2xl">
 
                             <p class="font-medium leading-none text-gray-700 mr-2 text-2xl">
-                                {{ ($employee->main_card)?verta($employee->main_card?->card_perform)->format('Y/m/d'):"" }}
+                                {{ $employee->main_card ? verta($employee->main_card?->card_perform)->format('Y/m/d') : '' }}
                             </p>
                         </td>
                     </tr>
@@ -82,7 +82,7 @@
 
                             <p class="font-medium leading-none text-gray-700 mr-2 text-2xl">
 
-                                {{ ($employee->main_card)?verta($employee->main_card?->card_expired_date)->format('Y/m/d'):"" }}
+                                {{ $employee->main_card ? verta($employee->main_card?->card_expired_date)->format('Y/m/d') : '' }}
                             </p>
                         </td>
                     </tr>
@@ -112,6 +112,25 @@
                             </p>
                         </td>
                     </tr>
+                    <tr class="border border-gray-600">
+                        <th scope="col" class="px-4 py-1  text-2xl">
+                            حاضری امروز:
+                        </th>
+
+
+                        <td class="px-4 py-1  text-2xl">
+
+                            <p class="font-medium leading-none text-gray-700 mr-2 text-2xl">
+                                {{ trans(
+                                    match ($employee->today_attendance?->state) {
+                                        'U' => 'Upsent',
+                                        'P' => 'Present',
+                                        default=>"حاضری نداده است",
+                                    },
+                                ) }}
+                            </p>
+                        </td>
+                    </tr>
                 </thead>
             </table>
         </div>
@@ -126,8 +145,7 @@
 
         <div>
 
-            <img style="height: 400px" class="rounded-lg block"
-                src="{{ asset("storage/{$employee->photo}") }}" />
+            <img style="height: 400px" class="rounded-lg block" src="{{ asset("storage/{$employee->photo}") }}" />
 
         </div>
     </div>
@@ -144,7 +162,7 @@
         </div>
     </div>
 
-    @include("sqemployee::employee.attendance")
-    @include("sqemployee::employee.gun_card")
-    @include("sqemployee::employee.employee_vehical")
+    @include('sqemployee::employee.attendance')
+    @include('sqemployee::employee.gun_card')
+    @include('sqemployee::employee.employee_vehical')
 </div>

@@ -2,18 +2,23 @@
 
     {{--  IF Current Gate is Main Gate And Enter Gate is empty --}}
     @if ($attendance['allowed_gate'])
+
+        {{-- IF Employee Come  --}}
         @if ($date['start'] && $attendance['present'])
             <a href="{{ route('sqemployee.employee.check.pass', ['cardInfo' => $employee->id, 'state' => 'enter']) }}"
                 class="px-7 rounded-lg hover:scale-95 py-1 text-white bg-gradient-to-t from-green-600 to-green-500"
                 style="">@lang('Present')
             </a>
         @endif
+
+        {{-- Exit the ministry --}}
         @if ($date['end'] && $attendance['exit'])
             <a href="{{ route('sqemployee.employee.check.pass', ['cardInfo' => $employee->id, 'state' => 'exit']) }}"
                 class="px-7 rounded-lg hover:scale-95 py-1 text-white bg-gradient-to-t from-red-600 to-red-500"
                 style="">@lang('Exited')</a>
         @endif
 
+        {{-- If the Employee not comming --}}
         @if ($attendance['absent'])
             <a href="{{ route('sqemployee.employee.check.pass', ['cardInfo' => $employee->id, 'state' => 'upsent']) }}"
                 class="px-7 rounded-lg hover:scale-95 py-1 text-white bg-gradient-to-t from-red-600 to-red-500"

@@ -5,8 +5,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ config('app.name') }}</title>
-    @vite(['resources/js/app.js', 'resources/js/app.js'])
+    @vite(['resources/js/app.js'])
     <link rel="stylesheet" href="{{ asset('single.css') }}" />
+    <link rel="stylesheet" href="{{ asset('build/assets/app.css') }}" />
 
     <style>
         ::-webkit-scrollbar {
@@ -24,7 +25,7 @@
     </style>
 </head>
 
-<body dir="rtl">
+<body dir="rtl" class="bg-indigo-400">
     <div class="px-2 py-1">
         <div class="sm:px-6 w-auto">
             <div class="py-2 md:py-2 px-2 md:px-8 xl:px-10">

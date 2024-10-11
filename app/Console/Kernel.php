@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use Laravel\Nova\Notifications\NovaNotification;
+use Sq\Employee\Jobs\ApsentAndExitedEmployeeAttendance;
 
 class Kernel extends ConsoleKernel
 {
@@ -16,7 +17,7 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('telescope:prune --hours=48')->dailyAt("23:00");
         // $schedule->command('backup:run --only-db')->dailyAt("21:30");
-        $schedule->command('backup:run --only-db')->everyTenSeconds();
+        // $schedule->command('backup:run --only-db')->everyTenSeconds();
         //
         $schedule->call(function () {
             foreach (User::all() as $user) {
@@ -27,6 +28,9 @@ class Kernel extends ConsoleKernel
                 );
             }
         })->dailyAt("09:00");
+        $schedule->job(new ApsentAndExitedEmployeeAttendance())->everyFiveSeconds();
+
+
         // $schedule->command('telescope:prune')->dailyAt("08:30");
         // $schedule->command('backup:clean')->everyMinute();
         // $schedule->command('view:clear')->everyMinute();

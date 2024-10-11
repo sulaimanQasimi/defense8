@@ -33,12 +33,18 @@ class EmployeeScanCard extends Controller
         //
         if (\Illuminate\Support\Str::startsWith($code, 'Guest-')) {
             $guest = Guest::query()->where('barcode', $code)->first();
-
         }
 
         //
-        $employee = CardInfo::query()->with(['employeeOptions', 'employee_vehical_card', 'gun_card'])->where('registare_no', "=", $code)->first();
+        $employee = CardInfo::query()
+            // Preload Relationships
+            ->with(['employeeOptions', 'employee_vehical_card', 'gun_card'])
+            // Find Current Employee
+            ->where('registare_no', "=", $code)
+            // Get First Record
+            ->first();
 
+        // Create Scaned Record
         if ($employee) {
             ScanedEmployee::create(attributes: [
                 'card_info_id' => $employee->id,
@@ -49,9 +55,9 @@ class EmployeeScanCard extends Controller
             $attendance = [
                 'present' => !$employee->current_gate_attendance?->enter && $employee->current_gate_attendance?->state != 'U',
                 'exit' => !is_null($employee->current_gate_attendance?->enter) && is_null($employee->current_gate_attendance?->exit) && $employee->current_gate_attendance?->state != "U",
-                'absent'=>$employee->current_gate_attendance?->state != 'P' && is_null($employee->current_gate_attendance?->state),
+                'absent' => $employee->current_gate_attendance?->state != 'P' && is_null($employee->current_gate_attendance?->state),
 
-                'allowed_gate'=>in_array($employee?->gate?->id, \Sq\Query\Policy\UserDepartment::getUserGate())
+                'allowed_gate' => in_array($employee?->gate?->id, UserDepartment::getUserGate())
             ];
         }
 
@@ -64,7 +70,7 @@ class EmployeeScanCard extends Controller
     public function employeeState(Request $request, CardInfo $cardInfo)
     {
 
-        $this->authorize('gatePass', $cardInfo);
+        $this->authorize(ability: 'gatePass', arguments: $cardInfo);
 
         // Get Current Gate
         $state = $request->input('state');
@@ -73,21 +79,22 @@ class EmployeeScanCard extends Controller
         $gate = auth()->user()->gate;
 
         // If user have ability to Gate Checker
-        $this->authorize('gateChecker', $gate);
+        $this->authorize(ability: 'gateChecker', arguments: $gate);
 
 
         // Get wheather  enter or Exit
 
         if ((in_array(needle: $cardInfo?->gate->id, haystack: UserDepartment::getUserGate())) && !is_null($state)) {
 
-            $today_attendance =
-                Attendance::updateOrCreate(
-                    [
-                        'gate_id' => $gate->id,
-                        'card_info_id' => $cardInfo->id,
-                        'date' => now()->format('Y-m-d'),
-                    ]
-                );
+            $today_attendance = Attendance::updateOrCreate(
+                [
+                    'card_info_id' => $cardInfo->id,
+                    'date' => now()->format('Y-m-d'),
+                ],
+                [
+                    'gate_id' => $gate->id,
+                ]
+            );
 
             // If employee Not absent and the state is enter
             if ($today_attendance->state != "U" && $state == 'enter') {
@@ -118,14 +125,12 @@ class EmployeeScanCard extends Controller
         return redirect()->route("sqemployee.employee.check.card");
     }
 
-    public function scan_other_website_employee(Request $request)
-    {
 
-    }
+
     public static function attendance_timer()
     {
 
-        return Pipeline::send(passable: (new AttendanceTimer()))
+        return Pipeline::send(passable: new AttendanceTimer)
             ->through(pipes: [
                 fn($context, Closure $next): mixed => $next(['start' => $context->start, 'end' => $context->end]),
                 fn($context, Closure $next): mixed => $next(['start' => mb_split(pattern: ' ', string: $context['start']), 'end' => mb_split(' ', $context['end'])]),

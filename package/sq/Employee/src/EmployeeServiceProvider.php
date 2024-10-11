@@ -17,20 +17,21 @@ class EmployeeServiceProvider extends ServiceProvider
     public function boot()
     {
         Livewire::component('sq.employee.livewire.attendance', \Sq\Employee\Livewire\Attendance::class);
-        Livewire::component('sq-employee-set-employee-attendance', \Sq\Employee\Livewire\Department\SetEmployeeAttendanceState::class);
+        Livewire::component(
+            'sq-employee-set-employee-attendance',
+            \Sq\Employee\Livewire\Department\SetEmployeeAttendanceState::class
+        );
         Nova::resources([
             NovaResource\Attendance::class,
             NovaResource\CardInfo::class,
             ScanedEmployee::class,
-                // temp Resource
-            NovaResource\UnknownEmployee::class,
+
 
             NovaResource\Department::class,
             NovaResource\EmployeeVehicalCard::class,
             NovaResource\Gate::class,
             NovaResource\GunCard::class,
             NovaResource\MainCard::class,
-            NovaResource\Website::class,
         ]);
 
         $this->loadMigrationsFrom(__DIR__ . "/../database/migrations");
@@ -54,7 +55,7 @@ class EmployeeServiceProvider extends ServiceProvider
     {
         return
             // Card and Employee Section
-            MenuSection::make( __('Employees'), [
+            MenuSection::make(__('Employees'), [
 
                 // Department Menu Item
                 MenuItem::resource(resourceClass: NovaResource\Department::class),
@@ -64,10 +65,9 @@ class EmployeeServiceProvider extends ServiceProvider
 
                 // Employee Menu Item
                 MenuItem::resource(resourceClass: NovaResource\CardInfo::class),
+                MenuItem::resource(resourceClass: NovaResource\Attendance::class),
                 //
                 MenuItem::resource(resourceClass: NovaResource\ScanedEmployee::class),
-                // Employee Menu Item
-                MenuItem::resource(resourceClass: NovaResource\UnknownEmployee::class),
 
                 // Employee Menu Item
                 MenuItem::resource(resourceClass: NovaResource\EmployeeVehicalCard::class),
@@ -98,7 +98,6 @@ class EmployeeServiceProvider extends ServiceProvider
 
                 // Frame of Printable Card Menu Item
                 MenuItem::resource(\Sq\Card\Nova\PrintCardFrame::class),
-                // MenuItem::resource(NovaResource\Website::class)->canSee(fn() => auth()->user()->hasRole('super-admin')),
 
 
             ])

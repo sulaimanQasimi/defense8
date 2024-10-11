@@ -92,8 +92,7 @@ class PrintCardFrame extends Resource
                 ->withoutConfirmation()
                 ->onlyOnDetail()
                 ->canRun(fn() => auth()->user()->hasPermissionTo("design-card")),
-            (new \Sq\Card\Nova\Actions\FetchCardDesign)->canRun(fn() => auth()->user()->hasPermissionTo("design-card"))
-
+   
         ];
     }
     public function replicate()

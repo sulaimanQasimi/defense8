@@ -4,6 +4,8 @@ namespace Sq\Employee\Models;
 
 use Carbon\Carbon;
 use Hekmatinasser\Verta\Facades\Verta;
+use Illuminate\Database\Eloquent\Builder;
+use Sq\Employee\Models\Contracts\AttendanceRelationship;
 use Sq\Employee\Models\Contracts\EmployeeIDCard;
 use Sq\Employee\Models\Contracts\LocationAttribute;
 use Sq\Guest\Models\GuestOption;
@@ -31,6 +33,7 @@ class CardInfo extends Model
     use LocationAttribute;
     use EmployeeOilDisterbutionAttributes;
     use EmployeeIDCard;
+    use AttendanceRelationship;
     protected $casts = [
         'birthday' => 'date',
     ];
@@ -54,7 +57,7 @@ class CardInfo extends Model
 
         static::created(
             function ($cardinfo) {
-                $cardinfo->confirmed=false;
+                $cardinfo->confirmed = false;
                 $cardinfo->save();
             }
         );
@@ -75,14 +78,6 @@ class CardInfo extends Model
     public function employeeOptions(): BelongsToMany
     {
         return $this->belongsToMany(GuestOption::class, 'employee_option_related');
-    }
-    public function current_gate_attendance(): HasOne
-    {
-        return $this->hasOne(related: Attendance::class)->where(column: 'date', operator: now()->format(format: 'Y-m-d'));
-    }
-    public function attendance()
-    {
-        return $this->hasMany(Attendance::class);
     }
     public function scaned_employee(): HasMany
     {
@@ -112,12 +107,12 @@ class CardInfo extends Model
     public function current_month_oil_disterbutions(): HasMany
     {
         return $this->hasMany(related: \Sq\Oil\Models\OilDisterbution::class)
-        ->whereBetween('filled_date',[
-            // Verta::->toCarbon()
-            Carbon::parse(Verta::parse(Verta::startMonth())->toCarbon())->startOfDay(),
-            Carbon::parse(Verta::parse(Verta::endMonth())->toCarbon())->endOfDay(),
+            ->whereBetween('filled_date', [
+                // Verta::->toCarbon()
+                Carbon::parse(Verta::parse(Verta::startMonth())->toCarbon())->startOfDay(),
+                Carbon::parse(Verta::parse(Verta::endMonth())->toCarbon())->endOfDay(),
 
-        ]);
+            ]);
     }
 
 }

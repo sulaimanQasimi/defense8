@@ -16,9 +16,12 @@ class SetEmployeeAttendanceState extends Component
         if ($this->employee->gate) {
             Attendance::updateOrCreate(
                 [
-                    'gate_id' => $this->employee->gate->id,
                     'card_info_id' => $this->employee->id,
                     'date' => now()->format('Y-m-d'),
+                ],
+                [
+
+                    'gate_id' => $this->employee->gate->id,
                 ]
             );
         }
@@ -30,11 +33,14 @@ class SetEmployeeAttendanceState extends Component
     }
     public function save($state): void
     {
-        $today_attendance =Attendance::updateOrCreate(
+        $today_attendance = Attendance::updateOrCreate(
             [
-                'gate_id' => $this->employee->gate->id,
                 'card_info_id' => $this->employee->id,
                 'date' => now()->format('Y-m-d'),
+            ],
+            [
+
+                'gate_id' => $this->employee->gate->id,
             ]
         );
 
@@ -49,6 +55,5 @@ class SetEmployeeAttendanceState extends Component
             $today_attendance->state = "U";
         }
         $today_attendance->save();
-        // $this->redirect(route("sqemployee.department.employee.attendance.check", ['department' => $this->employee->orginization->id]), true);
     }
 }

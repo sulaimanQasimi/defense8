@@ -1,5 +1,5 @@
 <div class="mt-7" dir="rtl">
-    <div class="grid grid-cols-3 gap-x-6">
+    <div class="grid grid-cols-3 gap-x-6 cursor-no-drop">
         <div class="">
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 ">
                 <thead class="">
@@ -142,16 +142,12 @@
                 <div class="text-blue-600  text-xl">{{ $option->name }}</div>
             @endforeach
         </div>
-
         <div>
-
             <img style="height: 400px" class="rounded-lg block" src="{{ asset("storage/{$employee->photo}") }}" />
-
         </div>
     </div>
 
-
-    <div class="">
+    <div class="cursor-no-drop">
         <div class="text-4xl m-5"> </div>
         <div class="flex items-center p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
             role="alert">

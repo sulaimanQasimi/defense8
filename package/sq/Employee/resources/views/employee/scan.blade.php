@@ -30,10 +30,10 @@
         <div class="sm:px-6 w-auto">
             <div class="py-2 md:py-2 px-2 md:px-8 xl:px-10">
                 <div class="sm:flex items-center justify-between">
-                    <div class=" flex ">
+                    <div class="flex ">
                         <form action="">
                             <input name="code" autofocus type="text" id="scanner" dir="ltr"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
                                 required>
                         </form>
                         @if ($guest)
@@ -44,11 +44,11 @@
                         @endif
                     </div>
                     <div>
-
                         <a href="/"
-                            class="px-7 rounded-lg hover:scale-95 py-2 text-white bg-gradient-to-t from-blue-600 to-blue-500"
-                            style="">@lang('Home')</a>
-
+                            class="px-7 rounded-lg hover:scale-95 py-2 text-white bg-gradient-to-t from-indigo-600 to-indigo-500"
+                            style="">
+                            @lang('Home')
+                        </a>
                     </div>
                 </div>
                 @includeWhen($employee, 'sqemployee::employee.employee')

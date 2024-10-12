@@ -12,9 +12,9 @@ Route::middleware(["guestGatePassed", 'can:gateChecker,\Sq\Employee\Models\Gate'
     ->controller(EmployeeScanCard::class)
     ->name('employee.check.')
     ->group(function () {
+
         // Self Website Check
         Route::get('employee', 'scan')->name('card');
-        Route::get('passemployee/{cardInfo:id}/to', 'employeeState')->name('pass');
     });
 
 Route::middleware(['role:super-admin'])

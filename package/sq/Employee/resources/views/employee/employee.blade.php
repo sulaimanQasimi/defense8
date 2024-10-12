@@ -122,14 +122,23 @@
 
                             <p class="font-medium leading-none text-gray-700 mr-2 text-2xl">
                                 {{ trans(
-                                    match ($employee->today_attendance?->state) {
+                                    match ($attendance?->state) {
                                         'U' => 'Upsent',
                                         'P' => 'Present',
-                                        default=>"حاضری نداده است",
+                                        default => 'حاضری نداده است',
                                     },
                                 ) }}
                             </p>
+
                         </td>
+                    </tr>
+                    <tr class="border border-gray-600">
+                        <th scope="col" class="px-4 py-1  text-2xl">
+                             {{ $attendance?->enter ? verta($attendance->enter)->format('Y/m/d h:i') : '' }}
+                        </th>
+                        <th scope="col" class="px-4 py-1  text-2xl">
+                             {{ $attendance?->exit ? verta($attendance?->exit)->format('Y/m/d h:i') : '' }}
+                        </th>
                     </tr>
                 </thead>
             </table>
@@ -157,8 +166,7 @@
             </div>
         </div>
     </div>
-
-    @include('sqemployee::employee.attendance')
+    \
     @include('sqemployee::employee.gun_card')
     @include('sqemployee::employee.employee_vehical')
 </div>

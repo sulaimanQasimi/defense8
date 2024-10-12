@@ -4,12 +4,22 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ config('app.name') }}</title>
-    @vite(['resources/js/app.js'])
-    <link rel="stylesheet" href="{{ asset('single.css') }}" />
+    <title>{{ config('app.name') }}</title>z:
     <link rel="stylesheet" href="{{ asset('build/assets/app.css') }}" />
 
     <style>
+        @font-face {
+            font-family: "persian-font";
+            /* This is the name you will use to reference the custom font */
+            src: url("/mod_font.ttf") format("truetype");
+            /* Specify the path to your font file */
+        }
+
+        body {
+            font-family: 'persian-font';
+            /* Change 'Arial' to the desired font family */
+        }
+
         ::-webkit-scrollbar {
             width: 10px;
         }

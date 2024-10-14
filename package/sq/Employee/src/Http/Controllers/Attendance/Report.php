@@ -3,6 +3,7 @@ namespace Sq\Employee\Http\Controllers\Attendance;
 
 use Elibyy\TCPDF\Facades\TCPDF;
 use Hekmatinasser\Verta\Facades\Verta;
+use Sq\Employee\Models\Department;
 use TCPDF_FONTS;
 
 class Report
@@ -32,13 +33,15 @@ class Report
         private $end,
         private $year,
         private $month,
+        private readonly Department $department,
         private readonly bool $downloadable = false,
         private readonly string|null $header_title = null,
         private readonly int $nameColumnSize = 30,
-        private readonly int $fatherNameColumnSize = 30,
+        private readonly int $fatherNameColumnSize = 30
 
     ) {
-        $this->employees = $employee()->with([
+        $this->employees = $employee()
+        ->with([
             'attendance' => function ($query) {
                 $query
                     ->orderBy('date', 'ASC')
@@ -98,7 +101,7 @@ class Report
             TCPDF::Cell(10, 7, $days->where('state', 'P')->count(), true, false, 'C');
 
             TCPDF::Cell(10, 7, $days->where('state', 'U')->count(), true, false, 'C');
-            TCPDF::Cell(10, 7, $days->count(), true, true, 'C');
+            TCPDF::Cell(10, 7, $days->whereNotNull('state')->count(), true, true, 'C');
 
             $i++;
         }
@@ -110,16 +113,17 @@ class Report
         TCPDF_FONTS::addTTFfont(public_path('mod_font.ttf'), 'TrueTypeUnicode', '', 96);
         TCPDF::SetFont('mod_font', '', 11);
         TCPDF::setRTL(true);
-        TCPDF::setPageOrientation('L');
-        TCPDF::SetMargins(5, 55, 5);
+        TCPDF::setPageOrientation(orientation: 'L');
+        TCPDF::SetMargins(left: 5, top: 55, right: 5);
         TCPDF::SetHeaderMargin(2);
         TCPDF::SetFooterMargin(5);
-        TCPDF::SetAutoPageBreak(TRUE, 5);
-        TCPDF::setHeaderCallback(function ($pdf) {
+        TCPDF::SetAutoPageBreak(auto: TRUE, margin: 5);
+        TCPDF::setHeaderCallback(headerCallback: function ($pdf) {
             $pdf->SetFont('mod_font', '', 11);
-            $pdf->Cell(297, 10, config("app.name"), false, true, 'C');
-            $pdf->Cell(297, 10, $this->header_title ?? trans('Monthly CURRENT MONTH ATTENDANCE EMPLOYEE', ['month' => $this->month()]), false, true, 'C');
-            $pdf->Cell(297, 10, $this->formatDate(), false, true, 'C');
+            $pdf->Cell(297, 5, config("app.name"), false, true, 'C');
+            $pdf->Cell(297, 5, $this->department->fa_name, false, true, 'C');
+            $pdf->Cell(297, 5, $this->header_title ?? trans('Monthly CURRENT MONTH ATTENDANCE EMPLOYEE', ['month' => $this->month()]), false, true, 'C');
+            $pdf->Cell(297, 5, $this->formatDate(), false, true, 'C');
             $pdf->SetFont('helvetica', '', 10);
             $pdf->Cell(107, 0, '');
             $style = [
@@ -185,15 +189,15 @@ class Report
     public function download()
     {
 
-        return TCPDF::Output($this->month() . ".pdf", ($this->downloadable) ? 'D' : 'i');
+        return TCPDF::Output(name: $this->month() . ".pdf", dest: ($this->downloadable) ? 'D' : 'i');
 
     }
     private function formatDate()
     {
-        return verta($this->date)->format("Y-m");
+        return verta(datetime: $this->date)->format(format: "Y-m");
     }
     private function month(): string
     {
-        return trans($this->months[intval(verta($this->date)->month)]);
+        return trans(key: $this->months[intval(verta($this->date)->month)]);
     }
 }

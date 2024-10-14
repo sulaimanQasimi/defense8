@@ -3,6 +3,7 @@
 namespace Sq\Employee\Http\Controllers;
 
 use Sq\Employee\Http\Controllers\Attendance\Report;
+use Sq\Employee\Http\Controllers\Attendance\SingleEmployeeReport;
 use Sq\Employee\Models\CardInfo;
 use Sq\Employee\Models\Department;
 use Hekmatinasser\Verta\Facades\Verta;
@@ -31,19 +32,22 @@ class CurrentMonthEmployeeAttendance
         $this->start = Verta::parse($date->startMonth()->format("Y-m-d"))->toCarbon();
         $this->end = Verta::parse($date->endMonth()->format("Y-m-d"))->toCarbon();
     }
-
-    public function __invoke()
-    {
-        $query = CardInfo::query();
-        return (new Report(employee: fn() => $query, date: $this->date, start: $this->start, end: $this->end, year: $this->year, month: $this->month))->maker()->download();
-    }
     public function single_employee(CardInfo $cardInfo)
     {
         if (!in_array($cardInfo->department_id, UserDepartment::getUserDepartment())) {
             abort(404);
         }
-        $query = CardInfo::where('id', $cardInfo->id);
-        return (new Report(employee: fn() => $query, date: $this->date, start: $this->start, end: $this->end, year: $this->year, month: $this->month))
+        $employee = CardInfo::where('id', $cardInfo->id)
+            ->with([
+                'attendance' => function ($query) {
+                    $query
+                        ->orderBy('date', 'ASC')
+                        ->whereBetween("date", [$this->start, $this->end]);
+                }
+            ])
+            ->first();
+
+        return (new SingleEmployeeReport(employee: $employee, date: $this->date, start: $this->start, end: $this->end, year: $this->year, month: $this->month))
             ->maker()
             ->download();
     }
@@ -53,6 +57,6 @@ class CurrentMonthEmployeeAttendance
             abort(404);
         }
         $query = CardInfo::where('department_id', $department->id)->orderBy('name');
-        return (new Report(employee: fn() => $query, date: $this->date, start: $this->start, end: $this->end, year: $this->year, month: $this->month))->maker()->download();
+        return (new Report(employee: fn() => $query, date: $this->date, start: $this->start, end: $this->end, year: $this->year, month: $this->month, department: $department))->maker()->download();
     }
 }

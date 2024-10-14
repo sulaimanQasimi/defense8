@@ -26,7 +26,10 @@ Route::middleware(['can:admin,department', 'permission:check own department atte
     ->name("department.employee.attendance.check");
 
 Route::middleware(['role:super-admin'])
-    ->get('employee/attendance/current/month/employee/{cardInfo:id}', [CurrentMonthEmployeeAttendance::class, 'single_employee'])
+    ->get(
+        'employee/attendance/current/month/employee/{cardInfo:id}',
+        [CurrentMonthEmployeeAttendance::class, 'single_employee']
+    )
     ->name("employee.attendance.current.month.single");
 
 
@@ -52,6 +55,7 @@ Route::prefix("employee/")
 //
 Route::middleware(['permission:' . PermissionTranslation::viewAny("Card Info")])
     ->group(function () {
+
 
         // Current Month Department Attendance in PDF Format
 

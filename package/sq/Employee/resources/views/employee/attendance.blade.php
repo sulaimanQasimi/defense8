@@ -17,13 +17,6 @@
                 class="px-7 rounded-lg hover:scale-95 py-1 text-white bg-gradient-to-t from-red-600 to-red-500"
                 style="">@lang('Exited')</a>
         @endif
-
-        {{-- If the Employee not comming --}}
-        @if ($attendance['absent'])
-            <a href="{{ route('sqemployee.employee.check.pass', ['cardInfo' => $employee->id, 'state' => 'upsent']) }}"
-                class="px-7 rounded-lg hover:scale-95 py-1 text-white bg-gradient-to-t from-red-600 to-red-500"
-                style="">@lang('Upsent')</a>
-        @endif
-
+        
     @endif
 </div>

@@ -25,14 +25,14 @@
     </style>
 </head>
 
-<body dir="rtl" class="bg-indigo-400">
+<body dir="rtl">
     <div class="px-2 py-1">
         <div class="sm:px-6 w-auto">
             <div class="py-2 md:py-2 px-2 md:px-8 xl:px-10">
                 <div class="sm:flex items-center justify-between">
                     <div class=" flex ">
                         <form action="">
-                            <input name="code" autofocus type="text" dir="ltr"
+                            <input name="code" autofocus type="text" id="scanner" dir="ltr"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                 required>
                         </form>
@@ -56,6 +56,17 @@
             </div>
         </div>
     </div>
+    <script>
+        const field = document.getElementById('scanner');
+
+        function keepFocus() {
+            field.focus();
+        }
+
+        field.addEventListener('blur', keepFocus)
+
+        field.focus()
+    </script>
 </body>
 
 </html>

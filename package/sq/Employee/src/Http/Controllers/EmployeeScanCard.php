@@ -27,10 +27,10 @@ class EmployeeScanCard extends Controller
         //
         $guest = null;
 
-        //
+        // get the code from request
         $code = $request->input("code");
 
-        //
+        // if the guest code scaned
         if (\Illuminate\Support\Str::startsWith($code, 'Guest-')) {
             $guest = Guest::query()->where('barcode', $code)->first();
         }
@@ -52,14 +52,29 @@ class EmployeeScanCard extends Controller
                 'scaned_at' => now(),
             ]);
 
+            // Create a new instance
+            Attendance::updateOrCreate(
+                [
+                    'card_info_id' => $employee->id,
+                    'date' => now()->format('Y-m-d'),
+                ],
+                [
+                    'gate_id' => auth()->user()->gate->id,
+                ]
+            );
             $attendance = [
-                'present' => !$employee->current_gate_attendance?->enter && $employee->current_gate_attendance?->state != 'U',
-                'exit' => !is_null($employee->current_gate_attendance?->enter) && is_null($employee->current_gate_attendance?->exit) && $employee->current_gate_attendance?->state != "U",
-                'absent' => $employee->current_gate_attendance?->state != 'P' && is_null($employee->current_gate_attendance?->state),
+
+                // IF enter is null and state not absent
+                'present' => is_null($employee->today_attendance?->enter) && $employee->today_attendance?->state != 'U',
+
+                // IF enter is not Null and State not absent
+                'exit' => $employee->today_attendance?->enter && is_null($employee->today_attendance?->exit) && $employee->today_attendance?->state != "U",
 
                 'allowed_gate' => in_array($employee?->gate?->id, UserDepartment::getUserGate())
             ];
+            
         }
+
 
         //
         return view("sqemployee::employee.scan", compact("employee", "code", 'guest', 'date', 'attendance'));
@@ -83,9 +98,9 @@ class EmployeeScanCard extends Controller
 
 
         // Get wheather  enter or Exit
-
         if ((in_array(needle: $cardInfo?->gate->id, haystack: UserDepartment::getUserGate())) && !is_null($state)) {
 
+            // Create a new instance
             $today_attendance = Attendance::updateOrCreate(
                 [
                     'card_info_id' => $cardInfo->id,
@@ -96,32 +111,29 @@ class EmployeeScanCard extends Controller
                 ]
             );
 
-            // If employee Not absent and the state is enter
-            if ($today_attendance->state != "U" && $state == 'enter') {
+            // if employee not absent
+            if ($today_attendance->state != "U") {
 
-                // Fill the date to NOW
-                $today_attendance->enter = now();
+                // If employee Not absent and the state is enter
+                if ($state == 'enter') {
 
-                // State changed to P - Present
-                $today_attendance->state = "P";
+                    // Fill the date to NOW
+                    $today_attendance->enter = now();
 
-                // else If employee Present and the state is enter and not absent then fill exit to now
-            } elseif ($today_attendance->enter && $today_attendance->state != "U" && $state == 'exit') {
+                    // State changed to P - Present
+                    $today_attendance->state = "P";
 
-                // Update Attendance Datetime to NOW
-                $today_attendance->exit = now();
+                    // else If employee Present and the state is enter and not absent then fill exit to now
+                } elseif ($today_attendance->enter && $state == 'exit') {
 
-            } elseif ($today_attendance->state != "P" && $state == 'upsent') {
-
-                // State changed to U - Absent
-                $today_attendance->state = "U";
+                    // Update Attendance Datetime to NOW
+                    $today_attendance->exit = now();
+                }
+                // Save the instance
+                $today_attendance->save();
             }
-
-            $today_attendance->save();
-
-        } else {
-            return abort(403);
         }
+
         return redirect()->route("sqemployee.employee.check.card");
     }
 
@@ -150,7 +162,6 @@ class EmployeeScanCard extends Controller
                 fn($context, Closure $next): mixed => $next(
                     [
                         'start' => Carbon::now()->between($context['start']['0'], $context['start']['1']),
-                        // 2:10 < 1:20 &&
                         'end' => Carbon::now()->between($context['end']['0'], $context['end']['1'])
                     ]
                 )

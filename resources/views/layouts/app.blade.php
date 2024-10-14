@@ -8,6 +8,7 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
     @livewireStyles
     <link rel="stylesheet" href="{{ asset('select2/css/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('build/assets/app.css') }}">
     <link type="text/css" href="{{ asset('date/css/persian-datepicker.css') }}" rel="stylesheet" />
     <link type="text/css" href="{{ asset('build/assets/app.css') }}" rel="stylesheet" />
     @vite(['resources/js/app.js'])

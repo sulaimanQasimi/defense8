@@ -37,10 +37,10 @@ class CardInfo extends Model
     protected $casts = [
         'birthday' => 'date',
     ];
-    protected $appends = [
-        'current_month_oil_consumtion',
-        'current_month_oil_remain',
-    ];
+    // protected $appends = [
+    //     'current_month_oil_consumtion',
+    //     'current_month_oil_remain',
+    // ];
     protected $fillable = ['remark'];
     protected static function boot()
     {
@@ -108,10 +108,8 @@ class CardInfo extends Model
     {
         return $this->hasMany(related: \Sq\Oil\Models\OilDisterbution::class)
             ->whereBetween('filled_date', [
-                // Verta::->toCarbon()
                 Carbon::parse(Verta::parse(Verta::startMonth())->toCarbon())->startOfDay(),
                 Carbon::parse(Verta::parse(Verta::endMonth())->toCarbon())->endOfDay(),
-
             ]);
     }
 

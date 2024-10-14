@@ -57,9 +57,9 @@
                             <td class="px-6 py-4">{{ $employee->last_name }}</td>
                             <td class="px-6 py-4">{{ $employee->father_name }}</td>
                             <td class="px-6 py-4">{{ $employee->grand_father_name }}</td>
-                            <td class="px-6 py-4">{{ (optional($employee->current_gate_attendance)->date)?verta(optional($employee->current_gate_attendance)->date)->format('Y-m-d'):"" }}</td>
-                            <td class="px-6 py-4">{{ (optional($employee->current_gate_attendance)->enter)?verta(optional($employee->current_gate_attendance)->enter)->format('h:i a'):"" }}</td>
-                            <td class="px-6 py-4">{{ (optional($employee->current_gate_attendance)->exit)?verta(optional($employee->current_gate_attendance)->exit)->format('h:i a'):"" }}</td>
+                            <td class="px-6 py-4">{{ (optional($employee->today_attendance)->date)?verta(optional($employee->today_attendance)->date)->format('Y-m-d'):"" }}</td>
+                            <td class="px-6 py-4">{{ (optional($employee->today_attendance)->enter)?verta(optional($employee->today_attendance)->enter)->format('h:i a'):"" }}</td>
+                            <td class="px-6 py-4">{{ (optional($employee->today_attendance)->exit)?verta(optional($employee->today_attendance)->exit)->format('h:i a'):"" }}</td>
                             <td class="px-6 py-4"><livewire:sq-employee-set-employee-attendance :$employee :id="'attendnace -'.$employee->id"/></td>
 
                         </tr>

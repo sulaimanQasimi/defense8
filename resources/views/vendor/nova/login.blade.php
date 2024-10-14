@@ -13,6 +13,7 @@
     <link type="text/css" href="{{ asset('date/css/persian-datepicker.css') }}" rel="stylesheet" />
     @vite(['resources/js/app.js'])
     <link rel="stylesheet" href="{{ asset('style.css') }}">
+    <link rel="stylesheet" href="{{ asset('build/assets/app.css') }}">
 </head>
 
 <body>

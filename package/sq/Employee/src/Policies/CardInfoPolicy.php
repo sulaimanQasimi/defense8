@@ -81,13 +81,7 @@ class CardInfoPolicy
 
     public function gatePass(User $user, CardInfo $infoCard): bool
     {
-        // return ($user->gate && $infoCard->gate) ? $user?->gate->id == $infoCard?->gate->id : false;
         if ($user->gate && $infoCard->gate) {
-
-            if ($user?->gate->id == $infoCard?->gate->id) {
-                return true;
-            }
-
             if (in_array($infoCard?->gate->id, UserDepartment::getUserGate())) {
                 return true;
             }

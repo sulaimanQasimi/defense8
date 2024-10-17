@@ -3,6 +3,8 @@
 namespace Sq\Employee\Models;
 
 use Kalnoy\Nestedset\NodeTrait;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 use Sq\Guest\Models\Host;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -16,11 +18,13 @@ class Department extends Model
 {
     use HasFactory;
     use SoftDeletes;
+
+    use LogsActivity;
     use NodeTrait;
     protected static function boot()
     {
         parent::boot();
-        
+
         // Power Check while Creating
         static::creating(
             function ($department) {
@@ -39,10 +43,22 @@ class Department extends Model
             }
         );
     }
-
+    /**
+     * Nested Loop
+     * @return string
+     */
     public function getParentIdName()
     {
         return 'department_id';
+    }
+
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logAll()
+            ->setDescriptionForEvent(callback:
+                fn(string $eventName): string => "This model has been {$eventName}");
     }
 
     /**

@@ -33,7 +33,10 @@ class ApsentAndExitedEmployeeAttendance implements ShouldQueue
             ->get()
             ->each(callback: function ($employee) {
                 $employee->today_attendance_present_not_exit()
-                    ->update(['exit' => now()]);
+                    ->update([
+                        'exit' => now(),
+                        'state' => 'U'
+                    ]);
             });
 
 
@@ -55,24 +58,26 @@ class ApsentAndExitedEmployeeAttendance implements ShouldQueue
                         'state' => "U"
                     ]
                 );
-            }); // IF the employee doesnt have attendance than Create attendant with absent state
-            CardInfo::query()
-                ->whereHas(relation: 'today_attendance_not_present_exit')
-                ->with(relations: ['today_attendance'])
-                ->get()
-                ->each(callback: function ($employee) {
-                    Attendance::updateOrCreate(
-                        [
-                            'card_info_id' => $employee->id,
-                            'date' => now()->format('Y-m-d'),
-                        ],
-                        [
-                            'gate_id' => $employee->gate?->id,
-                            'time' => now(),
-                            'state' => "U"
-                        ]
-                    );
-                });
+            });
+
+        // IF the employee doesnt have attendance than Create attendant with absent state
+        CardInfo::query()
+            ->whereHas(relation: 'today_attendance_not_present_exit')
+            ->with(relations: ['today_attendance'])
+            ->get()
+            ->each(callback: function ($employee) {
+                Attendance::updateOrCreate(
+                    [
+                        'card_info_id' => $employee->id,
+                        'date' => now()->format('Y-m-d'),
+                    ],
+                    [
+                        'gate_id' => $employee->gate?->id,
+                        'time' => now(),
+                        'state' => "U"
+                    ]
+                );
+            });
 
     }
 }

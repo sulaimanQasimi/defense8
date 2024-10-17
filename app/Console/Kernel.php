@@ -28,7 +28,13 @@ class Kernel extends ConsoleKernel
                 );
             }
         })->dailyAt("09:00");
-        $schedule->job(new ApsentAndExitedEmployeeAttendance())->everyFiveSeconds();
+
+        $schedule
+            ->job(new \Sq\Employee\Jobs\ApsentAndExitedEmployeeAttendance())
+            ->dailyAt("16:20")
+            ->evenInMaintenanceMode();
+        // $schedule->command('down')->everyTenSeconds();
+        // $schedule->command('up')->everyTwentySeconds();
 
 
         // $schedule->command('telescope:prune')->dailyAt("08:30");

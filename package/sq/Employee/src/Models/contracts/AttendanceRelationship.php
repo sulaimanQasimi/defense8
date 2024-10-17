@@ -19,11 +19,11 @@ trait AttendanceRelationship
     public function today_attendance()
     {
         return $this->hasOne(Attendance::class)
-        ->ofMany(column: [
-            'id' => 'max'
-        ], aggregate: function (Builder $query) {
-            $query->whereDate('date', now());
-        });
+            ->ofMany(column: [
+                'id' => 'max'
+            ], aggregate: function (Builder $query) {
+                $query->whereDate('date', now());
+            });
     }
 
 
@@ -34,9 +34,11 @@ trait AttendanceRelationship
             ->ofMany(column: [
                 'id' => 'max'
             ], aggregate: function (Builder $query) {
-                $query->whereDate('date', now())
+                $query
+                    ->whereDate('date', now())
                     ->whereNotNull('enter')
-                    ->whereNull('exit');
+                    ->whereNull('exit')
+                    ->where('state','P');
             });
     }
 
@@ -51,16 +53,19 @@ trait AttendanceRelationship
                     ->whereNotNull('enter')
                     ->whereNotNull('exit');
             });
-    }// Employee Entered to Ministry
+    }
+    // Employee Entered to Ministry
     public function today_attendance_not_present_exit()
     {
         return $this->hasOne(Attendance::class)
-            ->ofMany(column: [
-                'id' => 'max'
-            ], aggregate: function (Builder $query) {
-                $query->whereDate('date', now())
-                    ->whereNull('enter')
-                    ->whereNull('exit');
-            });
+            ->ofMany(column:
+                [
+                    'id' => 'max'
+                ], aggregate: function (Builder $query) {
+                    $query->whereDate('date', now())
+                        ->whereNull('enter')
+                        ->whereNull('exit')
+                        ->whereNot('state', 'U');
+                });
     }
 }

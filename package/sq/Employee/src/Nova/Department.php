@@ -9,8 +9,11 @@ use DigitalCreative\MegaFilter\MegaFilter;
 use DigitalCreative\MegaFilter\MegaFilterTrait;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Gate;
+use Laravel\Nova\Panel;
+use MZiraki\PersianDateField\PersianDateTime;
 use Sq\Employee\Nova\Gate as NovaGate;
 use Laravel\Nova\Actions\Action;
+use Laravel\Nova\Fields;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\Select;
@@ -90,7 +93,22 @@ class Department extends Resource
                 ->rules('required', 'in:Independant,Assistant,Directory,HeaderShip,Commander,Management,Directorate')->filterable()->displayUsingLabels(),
             Text::make(trans("Hosts"), fn() => $this->hosts->count())->onlyOnIndex(),
             Text::make(trans("Employees"), fn() => $this->card_infos->count())->onlyOnIndex(),
+            Panel::make(trans("Attendance"), [
 
+                // Attendance Start Hour
+                Text::make(name: trans("Start"), attribute: "start")
+                    ->rules('required')
+                    ->textAlign("center")
+                    ->placeholder("08:30-09:30")
+                    ->help(trans("Only Morning Hours")),
+
+                // Final Attendance Hour
+                Text::make(name: trans("Exit"), attribute: "end")
+                    ->rules('required')
+                    ->textAlign('left')
+                    ->placeholder("02:30-03:00")
+                    ->help(trans("Only Afternoon Hours")),
+            ]),
             HasMany::make(trans("Users"), 'user', User::class),
             HasMany::make(trans("Under Departments"), 'departments', Department::class),
             HasMany::make(trans("Gates"), 'gates', NovaGate::class),

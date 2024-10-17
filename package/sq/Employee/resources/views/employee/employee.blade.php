@@ -132,6 +132,17 @@
 
                         </td>
                     </tr>
+                    {{-- Department Timer --}}
+                    <tr class="border border-gray-600">
+                        <th scope="col" class="px-4 py-1  text-2xl">
+                             {{ $employee->orginization->start}}
+                        </th>
+                        <th scope="col" class="px-4 py-1  text-2xl">
+                            {{ $employee->orginization->end}}
+
+                        </th>
+                    </tr>
+                    {{-- Today Attendance --}}
                     <tr class="border border-gray-600">
                         <th scope="col" class="px-4 py-1  text-2xl">
                              {{ $attendance?->enter ? verta($attendance->enter)->format('Y/m/d h:i') : '' }}

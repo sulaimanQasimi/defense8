@@ -18,7 +18,7 @@ Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
 
-Artisan::command('install', function () {
+Artisan::command(signature: 'install', callback: function () {
     Artisan::call('migrate');
     Artisan::call('db:seed');
     Artisan::call('key:generate');

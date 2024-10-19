@@ -3,101 +3,42 @@ namespace Sq\Employee\Http\Controllers\Attendance;
 
 use Elibyy\TCPDF\Facades\TCPDF;
 use Hekmatinasser\Verta\Facades\Verta;
+use Sq\Employee\Http\Controllers\Attendance\Contracts\AttendanceSettings;
+use Sq\Employee\Models\CardInfo;
 use Sq\Employee\Models\Department;
+use Sq\Query\Policy\UserDepartment;
 use TCPDF_FONTS;
 
-class SingleEmployeeReport
+class SingleEmployeeReport extends AttendanceSettings
 {
-    private $months = [
-        "",
-        "Hamal",
-        "Thour",
-        "Jawza",
-        "Sarathan",
-        "Asad",
-        "Sunbulah",
-        "Mizan",
-        "Aqrab",
-        "Qous",
-        "Jadi",
-        "Dalwa",
-        "Hod",
-    ];
-
-
+    /**
+     * Summary of employee
+     * @var CardInfo
+     */
+    protected $employee;
     public function __construct(
-        private $employee,
-        private $date,
-        private $start,
-        private $end,
-        private $year,
-        private $month,
-
+        protected $id
     ) {
-    }
-    public function add_more_report($date, $start, $end)
-    {
-        $this->date = $date;
-        $this->start = $start;
-        $this->end = $end;
-        return $this->maker();
+        parent::__construct();
+        $this->employee = CardInfo::where('id', $id)->with([
+            'attendance' => function ($query) {
+                $query
+                    ->orderBy('date', 'ASC')
+                    ->whereBetween("date", [$this->start, $this->end]);
+            }
+        ])
+            ->first();
+            $this->department=$this->employee->orginization;
+
+        if (!in_array($this->employee->department_id, UserDepartment::getUserDepartment())) {
+            abort(404);
+        }
+
     }
     public function maker()
     {
         TCPDF::AddPage();
-        TCPDF_FONTS::addTTFfont(public_path('mod_font.ttf'), 'TrueTypeUnicode', '', 96);
-        TCPDF::SetFont('mod_font', '', 11);
-        TCPDF::setRTL(true);
-        // TCPDF::setPageOrientation(orientation: 'L');
-        TCPDF::SetMargins(left: 5, top: 0, right: 5);
-        TCPDF::SetHeaderMargin(0);
-        // TCPDF::SetFooterMargin(5);
-        TCPDF::SetAutoPageBreak(auto: TRUE, margin: 5);
-        TCPDF::SetFont('mod_font', '', 11);
-        TCPDF::Cell(197, 5, config("app.name"), false, true, 'C');
-        TCPDF::Cell(197, 5, $this->employee?->orginization?->fa_name, false, true, 'C');
-        TCPDF::Cell(197, 5, $this->header_title ?? trans('Monthly CURRENT MONTH ATTENDANCE EMPLOYEE', ['month' => $this->month()]), false, true, 'C');
-        TCPDF::Cell(197, 5, $this->formatDate(), false, true, 'C');
-        TCPDF::SetFont('helvetica', '', 10);
-        TCPDF::Cell(60, 0, '');
-        $style = [
-            'position' => 'absolute',
-            'align' => 'C',
-            'stretch' => true,
-            'fitwidth' => true,
-            'cellfitalign' => '',
-            'border' => false,
-            'hpadding' => 'auto',
-            'vpadding' => 'auto',
-            'fgcolor' => [255, 0, 0],
-            'bgcolor' => false,
-            //array(255,255,255),
-            'text' => false,
-            'font' => 'helvetica',
-            'fontsize' => 8,
-            'stretchtext' => 4,
-        ];
-
-        TCPDF::write1DBarcode(time(), 'C39', '', '', '', 14, 0.4, $style, 'N');
-        TCPDF::Image('logo.png', 40, 10, 20, 20);
-        // TCPDF::Image(, 260, 10, 20, 20);
-        $style = [
-            'border' => 2,
-            'vpadding' => 'auto',
-            'hpadding' => 'auto',
-            'fgcolor' => [255, 0, 0],
-            'bgcolor' => false,
-            //array(255,255,255)
-            'module_width' => 1,
-            // width of a single module in points
-            'module_height' => 1,
-        ];
-
-        // QRCODE,L : QR-CODE Low error correction
-        TCPDF::write2DBarcode(now()->toIso8601String(), 'QRCODE,L', 190, 10, 20, 20, $style, 'N');
-        TCPDF::SetFont('mod_font', '', 8);
-
-
+        $this->header();
         TCPDF::Ln(18);
         TCPDF::Cell(40, 7, trans('Name'), true, false, 'C', false);
         TCPDF::Cell(30, 7, $this->employee->name, true, false, 'C', false);
@@ -157,17 +98,5 @@ class SingleEmployeeReport
         TCPDF::Cell(40, 7, $days->where('state', 'U')->count(), true, true, 'C');
 
         return $this;
-    }
-    public function download()
-    {
-        return TCPDF::Output(name: $this->month() . ".pdf", dest: 'i');
-    }
-    private function formatDate()
-    {
-        return verta(datetime: $this->date)->format(format: "Y-m");
-    }
-    private function month(): string
-    {
-        return trans(key: $this->months[intval(verta($this->date)->month)]);
     }
 }

@@ -179,7 +179,7 @@ class Department extends Resource
 
             Action::openInNewTab(
                 __("Download CURRENT MONTH ATTENDANCE EMPLOYEE"),
-                fn($department) => route('employee.attendance.current.month..department.single', ['department' => $department->id])
+                fn($department) => route('sqemployee.employee.attendance.current.month.department.single', ['department' => $department->id])
             )
                 ->sole()
                 ->canRun(fn($request, $department) => Gate::allows('admin', $department))

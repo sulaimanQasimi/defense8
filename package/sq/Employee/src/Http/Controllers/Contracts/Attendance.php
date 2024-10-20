@@ -21,8 +21,8 @@ class Attendance
 
             // Preload Relationships
             ->with(relations: ['employeeOptions', 'employee_vehical_card', 'gun_card', 'orginization'])
-            // Find Current Employee
 
+            // Find Current Employee
             ->where(column: 'registare_no', operator: "=", value: $code)
 
             // Get First Record
@@ -123,6 +123,6 @@ class Attendance
 
         }
     }
-    
+
 
 }

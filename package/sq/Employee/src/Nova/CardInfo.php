@@ -7,6 +7,7 @@ use Acme\StripeInspector\StripeInspector;
 use App\Nova\Actions\EditCardInfoOption;
 use App\Nova\Actions\EditCardInfoRemark;
 use App\Nova\Actions\ExportCardInfo;
+use Laravel\Nova\Fields\KeyValue;
 use Sq\Card\Nova\PrintCard;
 use Sq\Employee\Nova\Actions\ConfirmEmployee;
 use Sq\Location\Nova as Location;
@@ -134,6 +135,11 @@ class CardInfo extends Resource
                     ->rules('nullable', 'string')
                     ->placeholder(__("Enter Field", ['name' => __("Date of Birth")]))
                     ->hideFromIndex(),
+                    KeyValue::make(__("Info"),'extra_info')
+                    ->rules('json')
+                    ->keyLabel(trans("Name"))
+                    ->valueLabel(trans("Info"))
+                    ->actionText(trans("Add row"))
             ]),
             Panel::make(__("Job"), $this->job_fields())->limit(0),
             Panel::make(__("Main Address"), [
@@ -301,7 +307,7 @@ class CardInfo extends Resource
 
                 //
                 new SqNovaTextFilter(label: __("Previous Job"), column: 'previous_job'),
-                
+
                 //
                 new SqNovaSelectFilter(
                     label: __("Department/Chancellor"),

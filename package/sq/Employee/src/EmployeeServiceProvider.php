@@ -25,8 +25,6 @@ class EmployeeServiceProvider extends ServiceProvider
             NovaResource\Attendance::class,
             NovaResource\CardInfo::class,
             ScanedEmployee::class,
-
-
             NovaResource\Department::class,
             NovaResource\EmployeeVehicalCard::class,
             NovaResource\Gate::class,

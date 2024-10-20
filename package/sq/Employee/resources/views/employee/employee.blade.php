@@ -135,21 +135,23 @@
                     {{-- Department Timer --}}
                     <tr class="border border-gray-600">
                         <th scope="col" class="px-4 py-1  text-2xl">
-                             {{ $employee->orginization->start}}
+                            {{ (is_null($employee->orginization->start)|| $employee->orginization->start =="")?(new \App\Settings\AttendanceTimer())->start: $employee->orginization->start}}
                         </th>
                         <th scope="col" class="px-4 py-1  text-2xl">
-                            {{ $employee->orginization->end}}
-
+                            {{ (is_null($employee->orginization->end)|| $employee->orginization->end =="")?(new \App\Settings\AttendanceTimer())->end: $employee->orginization->end}}
                         </th>
                     </tr>
                     {{-- Today Attendance --}}
                     <tr class="border border-gray-600">
+
                         <th scope="col" class="px-4 py-1  text-2xl">
                              {{ $attendance?->enter ? verta($attendance->enter)->format('Y/m/d h:i') : '' }}
                         </th>
+
                         <th scope="col" class="px-4 py-1  text-2xl">
                              {{ $attendance?->exit ? verta($attendance?->exit)->format('Y/m/d h:i') : '' }}
                         </th>
+
                     </tr>
                 </thead>
             </table>

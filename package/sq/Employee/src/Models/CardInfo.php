@@ -36,6 +36,7 @@ class CardInfo extends Model
     use AttendanceRelationship;
     protected $casts = [
         'birthday' => 'date',
+        'extra_info'=>'array'
     ];
     // protected $appends = [
     //     'current_month_oil_consumtion',

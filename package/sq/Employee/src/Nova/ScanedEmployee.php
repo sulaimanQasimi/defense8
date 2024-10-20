@@ -16,6 +16,16 @@ class ScanedEmployee extends Resource
     public static $title = 'id';
     public static $search = [
         'id',
+        'card_info.name',
+        'card_info.last_name',
+        'card_info.father_name',
+        'card_info.grand_father_name',
+        'card_info.job_structure',
+        'card_info.national_id',
+        'card_info.grade',
+        'card_info.degree',
+        'card_info.department',
+        'card_info.registare_no',
     ];
 
 
@@ -40,7 +50,7 @@ class ScanedEmployee extends Resource
             return $query->whereIn('department_id',  UserDepartment::getUserDepartment());
         });
     }
-    
+
     public function fields(NovaRequest $request)
     {
         return [

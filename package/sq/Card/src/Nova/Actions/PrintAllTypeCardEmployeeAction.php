@@ -27,7 +27,7 @@ class PrintAllTypeCardEmployeeAction extends Action
 
     final private function route($route, $id, $card): ActionResponse
     {
-        return ActionResponse::openInNewTab(route($route, ['cardInfo' => $id, "printCardFrame" => $card]));
+        return ActionResponse::openInNewTab(route($route, ['mainCard' => $id, "printCardFrame" => $card]));
     }
     /**
      * Get the fields available on the action.

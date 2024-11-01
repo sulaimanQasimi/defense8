@@ -11,9 +11,14 @@ trait EmployeeIDCard
     /**
      * Main Card
      */
-    public function main_card(): HasOne
+    public function main_card(): HasMany
     {
-        return $this->hasOne(MainCard::class);
+        return $this->hasMany(MainCard::class);
+    }
+    public function current_id_card()
+    {
+        return $this->hasOne(MainCard::class)->ofMany(['id' => 'max']);
+
     }
     /**
      *  Employee Vehical Card

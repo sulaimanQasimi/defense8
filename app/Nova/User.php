@@ -79,7 +79,7 @@ class User extends Resource
                         $query->where('department_id', $formData->department);
                     });
                 }
-            )
+            )->showCreateRelationButton()
                 ->withoutTrashed(),
 
             BelongsToMany::make(__("Attendance Gate Check"), 'gates', Gate::class)

@@ -44,6 +44,7 @@ Route::prefix('export/')
 
 Route::prefix("employee/")
     ->controller(EmployeeInfoPDF::class)
+    // ->name('report.')
     ->group(function () {
         Route::get('{cardInfo:id}/personal/info', 'info')
             ->name("employee.personal.info");

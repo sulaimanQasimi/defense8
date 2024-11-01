@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('card_infos', function (Blueprint $table) {
-            $table->boolean(column: 'confirmed')->default(false);
+        Schema::table('main_cards', function (Blueprint $table) {
+            $table->boolean('muthanna')->default(false);
         });
     }
 
@@ -21,9 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('card_infos', function (Blueprint $table) {
-            $table->dropColumn(columns: 'confirmed');
-
+        Schema::table('main_cards', function (Blueprint $table) {
+            $table->dropColumn('muthanna');
         });
     }
 };

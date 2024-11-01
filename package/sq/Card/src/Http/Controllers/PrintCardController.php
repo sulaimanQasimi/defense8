@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Sq\Card\Support\PrintCardField;
 use Sq\Employee\Models\GunCard;
+use Sq\Employee\Models\MainCard;
 use Sq\Query\Policy\UserDepartment;
 
 class PrintCardController
@@ -28,9 +29,18 @@ class PrintCardController
      * @param int $printCardFrame
      * @return \Illuminate\View\View
      */
-    public function employee(Request $request, CardInfo $cardInfo, int $printCardFrame): View
+    public function employee(Request $request, MainCard $mainCard , int $printCardFrame): View
     {
-        return $this->card_optimization(cardInfo: $cardInfo, printCardFrame: $printCardFrame, printTypeEnum: PrintTypeEnum::Employee, gun: null, employeeVehicalCard: null);
+        if ($mainCard->printed) {
+            abort(404);
+        }
+
+
+        $mainCard->printed=true;
+        $mainCard->printed_at=now();
+        $mainCard->save();
+
+        return $this->card_optimization(cardInfo: $mainCard->card_info, printCardFrame: $printCardFrame, printTypeEnum: PrintTypeEnum::Employee,mainCard:$mainCard, gun: null, employeeVehicalCard: null);
     }
 
     /**
@@ -65,7 +75,7 @@ class PrintCardController
      * @param mixed $printTypeEnum
      * @return \Illuminate\View\View
      */
-    private function card_optimization($cardInfo, $printCardFrame, $employeeVehicalCard = null, $gun = null, $printTypeEnum): View
+    private function card_optimization($cardInfo, $printCardFrame, $employeeVehicalCard = null, $gun = null, $printTypeEnum,$mainCard): View
     {
         $card = PrintCardFrame::findOrFail(id: $printCardFrame);
 
@@ -89,21 +99,21 @@ class PrintCardController
         }
 
         // Get / Replace the field to Value
-        $field = new PrintCardField(employee: $cardInfo, frame: $card, vehical: $employeeVehicalCard, gun: $gun);
-        
+        $field = new PrintCardField(employee: $cardInfo, frame: $card, vehical: $employeeVehicalCard, gun: $gun,mainCard:$mainCard);
+
         $card_record = PrintCard::create(attributes: [
             'user_id' => auth()->id(),
             'card_info_id' => $cardInfo->id,
             'print_card_frame_id' => $card->id,
             'issue' => match ($printTypeEnum) {
-                PrintTypeEnum::Employee => $cardInfo?->main_card?->card_perform,
-                PrintTypeEnum::EmployeeCar => $cardInfo?->employee_vehical_card?->register_date,
-                PrintTypeEnum::Gun => $cardInfo?->gun?->register_date,
+                PrintTypeEnum::Employee => $mainCard?->card_perform,
+                PrintTypeEnum::EmployeeCar => $employeeVehicalCard?->register_date,
+                PrintTypeEnum::Gun => $gun?->register_date,
             },
             'expire' => match ($printTypeEnum) {
-                PrintTypeEnum::Employee => $cardInfo?->main_card?->card_expired_date,
-                PrintTypeEnum::EmployeeCar => $cardInfo?->employee_vehical_card?->expire_date,
-                PrintTypeEnum::Gun => $cardInfo?->gun?->expire_date,
+                PrintTypeEnum::Employee => $mainCard?->card_expired_date,
+                PrintTypeEnum::EmployeeCar => $employeeVehicalCard?->expire_date,
+                PrintTypeEnum::Gun => $gun?->expire_date,
             },
         ]);
 

@@ -54,12 +54,15 @@
     @script
         <script>
             // Remark Field
+
             CKEDITOR.replace('details').on('change', function(e) {
                 $wire.set('details', this.getData());
             });
+
             CKEDITOR.replace('remark').on('change', function(e) {
                 $wire.set('remark', this.getData());
             });
+
             CKEDITOR.replace('header').on('change', function(e) {
                 $wire.set('attr.government.title', this.getData());
             });

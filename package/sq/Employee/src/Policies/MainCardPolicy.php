@@ -23,7 +23,7 @@ class MainCardPolicy
      */
     public function view(User $user, MainCard $mainCard): bool
     {
-        return $user->hasPermissionTo(PermissionTranslation::view("Main Card"))  && in_array($mainCard->card_info->orginization->id,  UserDepartment::getUserDepartment());
+        return $user->hasPermissionTo(PermissionTranslation::view("Main Card")) && in_array($mainCard->card_info->orginization->id, UserDepartment::getUserDepartment());
     }
 
     /**
@@ -31,7 +31,7 @@ class MainCardPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasPermissionTo(PermissionTranslation::create("Main Card")) ;
+        return $user->hasPermissionTo(PermissionTranslation::create("Main Card"));
     }
 
     /**
@@ -39,7 +39,7 @@ class MainCardPolicy
      */
     public function update(User $user, MainCard $mainCard): bool
     {
-        return $user->hasPermissionTo(PermissionTranslation::update("Main Card"))  && in_array($mainCard->card_info->orginization->id,  UserDepartment::getUserDepartment());
+        return $user->hasPermissionTo(PermissionTranslation::update("Main Card")) && in_array($mainCard->card_info->orginization->id, UserDepartment::getUserDepartment());
     }
 
     /**
@@ -47,7 +47,7 @@ class MainCardPolicy
      */
     public function delete(User $user, MainCard $mainCard): bool
     {
-        return $user->hasPermissionTo(PermissionTranslation::delete("Main Card"))  && in_array($mainCard->card_info->orginization->id,  UserDepartment::getUserDepartment());
+        return $user->hasPermissionTo(PermissionTranslation::delete("Main Card")) && in_array($mainCard->card_info->orginization->id, UserDepartment::getUserDepartment()) && (!$mainCard->printed);
     }
 
     /**
@@ -55,7 +55,7 @@ class MainCardPolicy
      */
     public function restore(User $user, MainCard $mainCard): bool
     {
-        return $user->hasPermissionTo(PermissionTranslation::restore("Main Card"))  && in_array($mainCard->card_info->orginization->id,  UserDepartment::getUserDepartment());
+        return $user->hasPermissionTo(PermissionTranslation::restore("Main Card")) && in_array($mainCard->card_info->orginization->id, UserDepartment::getUserDepartment()) && (!$mainCard->printed);
     }
 
     /**
@@ -63,6 +63,6 @@ class MainCardPolicy
      */
     public function forceDelete(User $user, MainCard $mainCard): bool
     {
-        return $user->hasPermissionTo(PermissionTranslation::destroy("Main Card"))  && in_array($mainCard->card_info->orginization->id,  UserDepartment::getUserDepartment());
+        return $user->hasPermissionTo(PermissionTranslation::destroy("Main Card")) && in_array($mainCard->card_info->orginization->id, UserDepartment::getUserDepartment()) && (!$mainCard->printed);
     }
 }

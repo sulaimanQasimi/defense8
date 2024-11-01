@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ config('app.name') }}</title>z:
+    <title>{{ config('app.name') }}</title>
     <link rel="stylesheet" href="{{ asset('build/assets/app.css') }}" />
 
     <style>
@@ -35,32 +35,37 @@
     </style>
 </head>
 
-<body dir="rtl">
+<body class="bg-gradient-to-b from-blue-50 to-blue-100 px-5 pt-2">
+    <!-- Header -->
+    <header
+        class="flex justify-between items-center bg-gradient-to-r from-[#6c64ff] to-[#0095ff] p-4 rounded-lg shadow-lg">
+        <div>
+
+            @if ($guest)
+                <a class="mx-3 px-7  pt-2 bg-gradient-to-t from-green-600 to-green-700 text-white rounded-lg"
+                    href="{{ route('sqguest.guest.generate', $guest) }}">
+                    @lang('Print')
+                </a>
+            @else
+                <a href="/"
+                    class="px-7 rounded-lg hover:scale-95 py-2 text-white bg-gradient-to-t from-indigo-600 to-indigo-500"
+                    style="">
+                    @lang('Home')
+                </a>
+            @endif
+        </div>
+        <h1 class="text-white text-2xl font-bold">د ملی دفاع وزارت</h1>
+
+        <form action="" class="flex items-center">
+            <input name="code" autofocus type="text" id="scanner" dir="ltr" placeholder="د کارت نمبر"
+                class="border text-center border-gray-300 p-2 rounded-l-md focus:outline-none focus:ring-2 focus:ring-[#FF6F61] focus:border-transparent"
+                required />
+        </form>
+    </header>
+
     <div class="px-2 py-1">
         <div class="sm:px-6 w-auto">
             <div class="py-2 md:py-2 px-2 md:px-8 xl:px-10">
-                <div class="sm:flex items-center justify-between">
-                    <div class="flex ">
-                        <form action="">
-                            <input name="code" autofocus type="text" id="scanner" dir="ltr"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
-                                required>
-                        </form>
-                        @if ($guest)
-                            <a class="mx-3 px-7  pt-2 bg-gradient-to-t from-green-600 to-green-700 text-white rounded-lg"
-                                href="{{ route('sqguest.guest.generate', $guest) }}">
-                                @lang('Print')
-                            </a>
-                        @endif
-                    </div>
-                    <div>
-                        <a href="/"
-                            class="px-7 rounded-lg hover:scale-95 py-2 text-white bg-gradient-to-t from-indigo-600 to-indigo-500"
-                            style="">
-                            @lang('Home')
-                        </a>
-                    </div>
-                </div>
                 @includeWhen($employee, 'sqemployee::employee.employee')
                 @includeWhen($guest, 'sqemployee::employee.guest')
             </div>

@@ -20,7 +20,7 @@ final class PrintCardField
 
     public $version;
 
-    public function __construct(private Employee $employee, private Frame $frame, public $vehical = null, public $gun = null)
+    public function __construct(private Employee $employee, private Frame $frame, public $vehical = null, public $gun = null,public $mainCard)
     {
         $this->version = app()->version();
     }
@@ -28,7 +28,7 @@ final class PrintCardField
     {
         return
             Pipeline::send($context)->through([
-                fn($context, Closure $next) => $next($this->info_render($context)),
+                fn($context, Closure $next) => $next($this->info_render(context: $context)),
                 fn($context, Closure $next) => $next($this->main_render($context)),
                 fn($context, Closure $next) => $next($this->gun_render($context, $this->gun)),
                 fn($context, Closure $next) => $next($this->vehical_render($context, $this->vehical)),

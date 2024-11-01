@@ -193,7 +193,18 @@ class Department extends Resource
                 ->sole()
                 ->canRun(fn($request, $department) => Gate::allows('admin', $department))
                 ->withoutConfirmation()
+                ->onlyOnDetail(),
+
+            Action::openInNewTab(
+                __("Employee Report"),
+                fn($department) => route('sqemployee.department.employee.personal.info', ['department' => $department->id])
+            )
+                ->sole()
+                ->canRun(fn($request, $department) => Gate::allows('admin', $department))
+                ->withoutConfirmation()
                 ->onlyOnDetail()
+
+
         ];
     }
 }

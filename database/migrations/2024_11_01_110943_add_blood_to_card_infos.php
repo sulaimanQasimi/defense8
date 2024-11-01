@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Sq\Query\Support\BloodEnum;
 
 return new class extends Migration
 {
@@ -12,7 +13,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('card_infos', function (Blueprint $table) {
-            $table->boolean(column: 'confirmed')->default(false);
+            $table->string('blood_group')->nullable();
         });
     }
 
@@ -22,7 +23,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('card_infos', function (Blueprint $table) {
-            $table->dropColumn(columns: 'confirmed');
+            $table->dropColumn('blood_group');
 
         });
     }

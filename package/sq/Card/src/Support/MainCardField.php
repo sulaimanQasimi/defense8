@@ -11,6 +11,7 @@ trait MainCardField
         return [
             "card_perform" => __("Preform Date"),
             "card_expired_date" => __("Expire Date"),
+            "muthanna"=>__("Muthanna")
         ];
 
     }
@@ -30,7 +31,11 @@ trait MainCardField
     protected function main_render(string $context): string
     {
         return Str::of($context)
-            ->replace($this->main_translated_field('card_perform'), ($this->employee->main_card?->card_perform) ? verta($this->employee->main_card?->card_perform)->format("Y/m/d") : "N/A")
-            ->replace($this->main_translated_field('card_expired_date'), ($this->employee->main_card?->card_expired_date) ? verta($this->employee->main_card?->card_expired_date)->format("Y/m/d") : "N/A");
+
+        ->replace($this->main_translated_field('muthanna'), ($this->mainCard?->muthanna) ? __("Muthanna") : '')
+
+        ->replace($this->main_translated_field('card_perform'), ($this->mainCard?->card_perform) ? verta($this->mainCard?->card_perform)->format("Y/m/d") : "N/A")
+
+            ->replace($this->main_translated_field('card_expired_date'), ($this->mainCard?->card_expired_date) ? verta($this->mainCard?->card_expired_date)->format("Y/m/d") : "N/A");
     }
 }

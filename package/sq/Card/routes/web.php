@@ -22,7 +22,7 @@ Route::middleware(['auth'])
         // Card Frame Print Request Route
 
         // // Employee Card
-        Route::middleware('permission:print-card')->get('print-employee-card-for/{cardInfo:id}/card/{printCardFrame}', (new PrintCardController())->employee(...))->name('employee.print-card-for');
+        Route::middleware('permission:print-card')->get('print-employee-card-for/{mainCard:id}/card/{printCardFrame}', (new PrintCardController())->employee(...))->name('employee.print-card-for');
 
         // Gun Card
         Route::middleware('permission:print-card')->get('print/gun/{gunCard:id}/card/{printCardFrame}', (new PrintCardController())->gun(...))->name('gun.print-card-for');

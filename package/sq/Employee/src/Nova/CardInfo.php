@@ -7,7 +7,9 @@ use Acme\StripeInspector\StripeInspector;
 use App\Nova\Actions\EditCardInfoOption;
 use App\Nova\Actions\EditCardInfoRemark;
 use App\Nova\Actions\ExportCardInfo;
+use Illuminate\Validation\Rule;
 use Laravel\Nova\Fields\KeyValue;
+use Laravel\Nova\Fields\Select;
 use Sq\Card\Nova\PrintCard;
 use Sq\Employee\Nova\Actions\ConfirmEmployee;
 use Sq\Location\Nova as Location;
@@ -25,6 +27,7 @@ use Sq\Query\Policy\UserDepartment;
 use Sq\Query\SqNovaDateFilter;
 use Sq\Query\SqNovaSelectFilter;
 use Sq\Query\SqNovaTextFilter;
+use Sq\Query\Support\BloodEnum;
 use Vehical\OilType;
 
 class CardInfo extends Resource
@@ -135,9 +138,14 @@ class CardInfo extends Resource
                     ->rules('nullable', 'string')
                     ->placeholder(__("Enter Field", ['name' => __("Date of Birth")]))
                     ->hideFromIndex(),
-                    KeyValue::make(__("Info"),'extra_info')
+                Select::make(__("Blood Group"), "blood_group")
+                    ->nullable()
+                    ->rules('nullable', Rule::in(BloodEnum::InArray()))
+                    ->options(BloodEnum::withLabelInArray())
+                    ->placeholder(__("Enter Field", ['name' => __("Blood Group")])),
+                KeyValue::make(__("Info"), 'extra_info')
                     ->rules('json')
-                    ->keyLabel(trans("Name"))
+                    ->keyLabel(trans("Title"))
                     ->valueLabel(trans("Info"))
                     ->actionText(trans("Add row"))
             ]),
@@ -216,7 +224,7 @@ class CardInfo extends Resource
             Fields\Trix::make(__("Remark"), 'remark')
                 ->exceptOnForms()
                 ->hideFromIndex(),
-            Fields\HasOne::make(__("Main Card"), 'main_card', MainCard::class),
+            Fields\HasMany::make(__("Main Card"), 'main_card', MainCard::class),
             Fields\HasMany::make(__("Gun Card"), 'gun_card', GunCard::class),
             Fields\HasMany::make(__("Employee Vehical Card"), 'employee_vehical_card', EmployeeVehicalCard::class),
             Panel::make(
@@ -340,8 +348,7 @@ class CardInfo extends Resource
         return [
             (new ExportCardInfo())
                 //->askForFilename()
-                ->askForWriterType()
-            ,
+                ->askForWriterType(),
             (new EditCardInfoRemark())
                 ->canSee(fn() => auth()->user()->hasPermissionTo(EditAditionalCardInfoEnum::Remark))
                 ->canRun(
@@ -368,14 +375,7 @@ class CardInfo extends Resource
 
                 ->onlyOnDetail(),
 
-            (new \Sq\Card\Nova\Actions\PrintAllTypeCardEmployeeAction)->onlyOnDetail()
-                ->canRun(
-                    fn($request, $infoCard) =>
-                    auth()->user()->hasPermissionTo("print-card")
-                    && in_array($infoCard->orginization->id, UserDepartment::getUserDepartment())
-                    && $infoCard->confirmed
 
-                ),
             (new ConfirmEmployee)
                 ->canRun(fn($request, $infoCard) => auth()->user()->hasPermissionTo("confirm-employee")
                     && in_array($infoCard->orginization->id, UserDepartment::getUserDepartment()))

@@ -6,7 +6,9 @@ use App\Nova\Actions\EmployeePrintCardAction;
 use App\Nova\Resource;
 use Illuminate\Database\Eloquent\Builder;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Trix;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use MZiraki\PersianDateField\PersianDate;
 use Sq\Query\Policy\UserDepartment;
@@ -45,8 +47,17 @@ class MainCard extends Resource
                 ->relatableQueryUsing(function (NovaRequest $request, Builder $query) {
                     $query->whereIn('department_id', UserDepartment::getUserDepartment());
                 }),
-            PersianDate::make(__("Disterbute Date"), "card_perform"),
-            PersianDate::make(__("Expire Date"), "card_expired_date"),
+
+            PersianDate::make(__("Disterbute Date"), "card_perform")->hideWhenUpdating(
+                fn()=>$this->printed
+            ),
+            PersianDate::make(__("Expire Date"), "card_expired_date")->hideWhenUpdating(
+                fn()=>$this->printed
+            ),
+            Trix::make(trans('Remark'), 'remark'),
+            Boolean::make(__("Print"), 'printed')->exceptOnForms(),
+            Boolean::make(__("Muthanna"), 'muthanna')->hideWhenUpdating(),
+            PersianDate::make(__("Print Date"), 'printed_at')->exceptOnForms(),
         ];
     }
     public function cards(NovaRequest $request)
@@ -66,9 +77,11 @@ class MainCard extends Resource
     {
         return [
             (new \Sq\Card\Nova\Actions\EmployeePrintCardAction)->onlyOnDetail()
-                ->canRun(fn($request, $mainCard) => auth()->user()->hasPermissionTo("print-card")
+                ->canRun(fn($request, $mainCard)
+                    => auth()->user()->hasPermissionTo("print-card")
                     && in_array($mainCard->card_info->orginization->id, UserDepartment::getUserDepartment())
                     && $mainCard->card_info->confirmed),
+
         ];
     }
 }

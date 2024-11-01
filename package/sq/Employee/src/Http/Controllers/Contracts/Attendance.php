@@ -20,7 +20,7 @@ class Attendance
         $this->employee = CardInfo::query()
 
             // Preload Relationships
-            ->with(relations: ['employeeOptions', 'employee_vehical_card', 'gun_card', 'orginization'])
+            ->with(relations: ['employeeOptions','current_id_card', 'employee_vehical_card', 'gun_card', 'orginization'])
 
             // Find Current Employee
             ->where(column: 'registare_no', operator: "=", value: $code)

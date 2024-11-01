@@ -3,6 +3,7 @@
 use App\Http\Controllers\YoutubeController;
 use App\Livewire\Setting\LanguageAutomization;
 use Illuminate\Support\Facades\Route;
+use Sq\Employee\Models\Department;
 Route::middleware(['auth', 'permission:change_language'])
     ->prefix('app/setting/')
     ->name('app.setting.')
@@ -16,3 +17,15 @@ Route::middleware(['auth'])
         Route::get(uri: 'youtube', action: 'list')->name('youtube.list');
         Route::get(uri: 'youtube/preview/{video:id}', action: 'preview')->name('youtube.preview');
     });
+Route::get('test',function () {
+// dd(BastTypeEnum::cases());
+$d=Department::find(1);
+dd(
+
+// Accessing ancestors
+$d->ancestors,
+
+// Accessing descendants
+$d->descendants
+);
+});

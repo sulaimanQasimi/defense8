@@ -2,6 +2,7 @@
 namespace Sq\Employee\Document;
 
 use Elibyy\TCPDF\Facades\TCPDF;
+use Sq\Query\Support\BloodEnum;
 use TCPDF_FONTS;
 
 class PersonalInfo
@@ -60,13 +61,25 @@ class PersonalInfo
         TCPDF::Cell(30, 7, trans("Phone"), true, false, 'C');
         TCPDF::Cell(35, 7, $employee->phone, true, false, 'C');
         TCPDF::Cell(30, 7, trans("Blood Group"), true, false, 'C');
-        TCPDF::Cell(35, 7, '', true, true, 'C');
+        TCPDF::Cell(35, 7, match($employee->blood_group){
+            'OM' => 'O-',
+            'OP' => 'O+',
+            'AM' => 'A-',
+            'AP' => 'A+',
+            'BM' => 'B-',
+            'BP' => 'B+',
+            'ABM' => 'AB-',
+            'ABP' => 'AB+',
+            default =>''
+
+        }, true, true, 'C');
 
 
         TCPDF::Image($employee->photo?storage_path("app/public/$employee->photo"):storage_path('app/logo.png'), 50, 50, 40, 40);
 
         TCPDF::Ln(10);
         TCPDF::Cell(195, 7, trans("Job"), true, true, 'C');
+
         // Row 3
         TCPDF::Cell(30, 7, trans("Degree"), true, false, 'C');
         TCPDF::Cell(35, 7, $employee->degree, true, false, 'C');
@@ -88,27 +101,30 @@ class PersonalInfo
 
         TCPDF::Ln(10);
         TCPDF::Cell(195, 7, trans("Main Address"), true, true, 'C');
-        // Row 3
 
+        // Row 3
         TCPDF::Cell(30, 7, trans("Main Provice"), true, false, 'C');
-        TCPDF::Cell(35, 7, $employee->m_village, true, false, 'C');
+        TCPDF::Cell(35, 7, $employee->m_province, true, false, 'C');
 
         TCPDF::Cell(30, 7, trans("Main District"), true, false, 'C');
         TCPDF::Cell(35, 7, $employee->m_district, true, false, 'C');
 
         TCPDF::Cell(30, 7, trans("Main Village"), true, false, 'C');
-        TCPDF::Cell(35, 7, $employee->m_province, true, true, 'C');
+        TCPDF::Cell(35, 7, $employee->m_village, true,  true, 'C');
 
         TCPDF::Ln(5);
-
         TCPDF::Cell(195, 7, trans("Current Address"), true, true, 'C');
 
         TCPDF::Cell(30, 7, trans("Current Provice"), true, false, 'C');
-        TCPDF::Cell(35, 7, $employee->c_village, true, false, 'C');
+
+        TCPDF::Cell(35, 7, $employee->c_province, true, false, 'C');
+
         TCPDF::Cell(30, 7, trans("Current District"), true, false, 'C');
+
         TCPDF::Cell(35, 7, $employee->c_district, true, false, 'C');
+
         TCPDF::Cell(30, 7, trans("Current Village"), true, false, 'C');
-        TCPDF::Cell(35, 7, $employee->c_province, true, true, 'C');
+        TCPDF::Cell(35, 7, $employee->c_village, true, true, 'C');
 
 
         return $this;

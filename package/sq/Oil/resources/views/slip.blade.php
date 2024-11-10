@@ -9,8 +9,9 @@
     <link rel="stylesheet" href="{{ asset('select2/css/select2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('fontawesom/all.min.css') }}">
     <link type="text/css" href="{{ asset('date/css/persian-datepicker.css') }}" rel="stylesheet" />
-    @vite(['resources/js/app.js'])
+
     <link rel="stylesheet" href="{{ asset('style.css') }}">
+    <link rel="stylesheet" href="{{ asset('build/assets/app.css') }}">
 
     <script type="text/javascript" src="{{ asset('qrcode/qrcode.js') }}"></script>
 

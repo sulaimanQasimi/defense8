@@ -118,7 +118,7 @@ class GunCard extends Resource
             (new \Sq\Card\Nova\Actions\GunPrintCardAction)->onlyOnDetail()
             ->canRun(fn($request, $gun) => auth()->user()->hasPermissionTo("print-card")
             && in_array($gun->card_info->orginization->id, UserDepartment::getUserDepartment())
-            && $gun->card_info->confirmed),
+           ),
 
         ];
     }

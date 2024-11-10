@@ -167,7 +167,7 @@ class EmployeeVehicalCard extends Resource
                 ->canRun(
                     fn($request, $employeeVehicalCard) => auth()->user()->hasPermissionTo("print-card")
                     && in_array($employeeVehicalCard->card_info->orginization->id, UserDepartment::getUserDepartment())
-                    && $employeeVehicalCard->card_info->confirmed
+                
                 ),
             (new VehicalRemarkAction)->canSee(fn() => auth()->user()->hasPermissionTo("add remark for vehical")),
 

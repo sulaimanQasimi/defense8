@@ -23,6 +23,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Sq\Query\Policy\UserDepartment;
+use Sq\Query\Support\BloodEnum;
 
 class CardInfo extends Model
 {
@@ -36,7 +37,8 @@ class CardInfo extends Model
     use AttendanceRelationship;
     protected $casts = [
         'birthday' => 'date',
-        'extra_info'=>'array'
+        'extra_info'=>'array',
+        // 'blood_group'=>BloodEnum::class
     ];
     // protected $appends = [
     //     'current_month_oil_consumtion',

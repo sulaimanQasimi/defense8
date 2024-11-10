@@ -55,8 +55,8 @@ class MainCard extends Resource
                 fn()=>$this->printed
             ),
             Trix::make(trans('Remark'), 'remark'),
-            Boolean::make(__("Print"), 'printed')->exceptOnForms(),
-            Boolean::make(__("Muthanna"), 'muthanna')->hideWhenUpdating(),
+            Boolean::make(__("Print"), 'printed')->hideWhenCreating(),
+            Boolean::make(__("Muthanna"), 'muthanna'),
             PersianDate::make(__("Print Date"), 'printed_at')->exceptOnForms(),
         ];
     }
@@ -80,7 +80,7 @@ class MainCard extends Resource
                 ->canRun(fn($request, $mainCard)
                     => auth()->user()->hasPermissionTo("print-card")
                     && in_array($mainCard->card_info->orginization->id, UserDepartment::getUserDepartment())
-                    && $mainCard->card_info->confirmed),
+                   ),
 
         ];
     }

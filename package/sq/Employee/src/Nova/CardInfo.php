@@ -12,6 +12,7 @@ use Laravel\Nova\Fields\KeyValue;
 use Laravel\Nova\Fields\Select;
 use Sq\Card\Nova\PrintCard;
 use Sq\Employee\Nova\Actions\ConfirmEmployee;
+use Sq\Employee\Nova\Filters\ConfirmedEmployee;
 use Sq\Location\Nova as Location;
 use App\Nova\Resource;
 use App\Support\Defense\EditAditionalCardInfoEnum;
@@ -138,17 +139,21 @@ class CardInfo extends Resource
                     ->rules('nullable', 'string')
                     ->placeholder(__("Enter Field", ['name' => __("Date of Birth")]))
                     ->hideFromIndex(),
+
                 Select::make(__("Blood Group"), "blood_group")
                     ->nullable()
                     ->rules('nullable', Rule::in(BloodEnum::InArray()))
                     ->options(BloodEnum::withLabelInArray())
+                    ->displayUsingLabels()
                     ->placeholder(__("Enter Field", ['name' => __("Blood Group")])),
+
                 KeyValue::make(__("Info"), 'extra_info')
                     ->rules('json')
                     ->keyLabel(trans("Title"))
                     ->valueLabel(trans("Info"))
                     ->actionText(trans("Add row"))
             ]),
+
             Panel::make(__("Job"), $this->job_fields())->limit(0),
             Panel::make(__("Main Address"), [
 
@@ -335,6 +340,7 @@ class CardInfo extends Resource
                 ),
                 //
                 new SqNovaTextFilter(label: trans("Monthly Rate"), column: "monthly_rate"),
+                new ConfirmedEmployee
             ])->columns(4)
         ];
     }
@@ -349,20 +355,19 @@ class CardInfo extends Resource
             (new ExportCardInfo())
                 //->askForFilename()
                 ->askForWriterType(),
+
             (new EditCardInfoRemark())
                 ->canSee(fn() => auth()->user()->hasPermissionTo(EditAditionalCardInfoEnum::Remark))
                 ->canRun(
                     fn($request, $infoCard) => EditAditionalCardInfoEnum::Remark
                     && in_array($infoCard->orginization->id, UserDepartment::getUserDepartment())
-                    && $infoCard->confirmed
                 ),
 
             // Edit Options
             (new EditCardInfoOption())
                 ->canSee(fn() => auth()->user()->hasPermissionTo(EditAditionalCardInfoEnum::Option))
                 ->canRun(fn($request, $infoCard) => EditAditionalCardInfoEnum::Remark
-                    && in_array($infoCard->orginization->id, UserDepartment::getUserDepartment())
-                    && $infoCard->confirmed),
+                    && in_array($infoCard->orginization->id, UserDepartment::getUserDepartment())),
 
             // Download Attendance
             Action::openInNewTab(

@@ -13,6 +13,8 @@
 
     @stack('css')
     <link type="text/css" href="{{ asset('single.css') }}" rel="stylesheet" />
+
+    <link rel="stylesheet" href="{{ asset('build/assets/app.css') }}">
     <link type="text/css" href="{{ asset('sweetalert2/sweetalert2.min.css') }}" rel="stylesheet" />
 </head>
 

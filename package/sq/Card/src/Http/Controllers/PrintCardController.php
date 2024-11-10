@@ -31,15 +31,6 @@ class PrintCardController
      */
     public function employee(Request $request, MainCard $mainCard , int $printCardFrame): View
     {
-        if ($mainCard->printed) {
-            abort(404);
-        }
-
-
-        $mainCard->printed=true;
-        $mainCard->printed_at=now();
-        $mainCard->save();
-
         return $this->card_optimization(cardInfo: $mainCard->card_info, printCardFrame: $printCardFrame, printTypeEnum: PrintTypeEnum::Employee,mainCard:$mainCard, gun: null, employeeVehicalCard: null);
     }
 
@@ -78,14 +69,6 @@ class PrintCardController
     private function card_optimization($cardInfo, $printCardFrame, $employeeVehicalCard = null, $gun = null, $printTypeEnum,$mainCard): View
     {
         $card = PrintCardFrame::findOrFail(id: $printCardFrame);
-
-        /**
-         * If employee confirmed by Admin
-         */
-        if (!$cardInfo->confirmed) {
-            abort(404);
-        }
-
         /**
          * If User have Depandant department of the employee
          */

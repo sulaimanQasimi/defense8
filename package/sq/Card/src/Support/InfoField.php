@@ -21,6 +21,10 @@ trait InfoField
             "job_structure" => trans("Job Stracture Title"),
             "department" => trans("Department"),
             "gate" => trans("Gate"),
+            'blood_group' => trans("Blood Group"),
+            "main_province" => trans("Province"),
+            "main_district" => trans("District"),
+            "phone" => trans("Phone")
         ];
     }
     private static function info_translated_field($field)
@@ -37,7 +41,7 @@ trait InfoField
     }
     protected function info_render($context)
     {
-       return Str::of($context)
+        return Str::of($context)
             ->replace($this->info_translated_field('name'), $this->employee->name)
             ->replace($this->info_translated_field('father_name'), $this->employee->father_name)
             ->replace($this->info_translated_field('last_name'), $this->employee->last_name)
@@ -46,9 +50,30 @@ trait InfoField
             ->replace($this->info_translated_field('job_structure'), $this->employee->job_structure)
             ->replace($this->info_translated_field('national_id'), $this->employee->national_id)
             ->replace($this->info_translated_field('degree'), $this->employee->degree)
-            ->replace($this->info_translated_field('birthday'), ($this->employee?->birthday)? verta($this->employee->birthday)->format("Y/m/d"):'')
+            ->replace($this->info_translated_field('birthday'), ($this->employee?->birthday) ? verta($this->employee->birthday)->format("Y/m/d") : '')
             ->replace($this->info_translated_field('grade'), $this->employee->grade)
             ->replace($this->info_translated_field('registare_no'), $this->employee->registare_no)
-            ->replace($this->info_translated_field('gate'), $this->employee->gate?->fa_name);
+            ->replace($this->info_translated_field('gate'), $this->employee->gate?->fa_name)
+
+            // Unverfied Fields
+
+            ->replace($this->info_translated_field('blood_group'), match ($this->employee?->blood_group) {
+                'OM' => 'O-',
+                'OP' => 'O+',
+                'AM' => 'A-',
+                'AP' => 'A+',
+                'BM' => 'B-',
+                'BP' => 'B+',
+                'ABM' => 'AB-',
+                'ABP' => 'AB+',
+                default => ''
+
+            })
+
+            ->replace($this->info_translated_field("main_province"), $this->employee?->m_province)
+            ->replace($this->info_translated_field("main_district"), $this->employee?->m_district)
+            ->replace($this->info_translated_field("phone"), $this->employee->phone)
+
+        ;
     }
 }

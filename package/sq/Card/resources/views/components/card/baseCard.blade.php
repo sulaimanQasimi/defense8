@@ -55,13 +55,13 @@
 @push('js')
     <script type="text/javascript">
         @if ($barcode)
-            JsBarcode('#{{ $attributes->get('id') }}-barcode', "{{ $cardInfo->registare_no }}", {
-                format: "CODE128",
-                // background: "#000000/",
-                width: {{ config('sq-card.barcode-size') }},
-                height: 10,
-                displayValue: false
-            });
+            // JsBarcode('#{{ $attributes->get('id') }}-barcode', "{{ $cardInfo->registare_no }}", {
+            //     format: "CODE128",
+            //     // background: "#000000/",
+            //     width: {{ config('sq-card.barcode-size') }},
+            //     height: 10,
+            //     displayValue: false
+            // });
         @endif
         var qrcode = new QRCode(document.getElementById("{{ $attributes->get('id') }}"), {
             width: {{ $card->attr['qrcode']['size'] }},

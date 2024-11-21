@@ -2,7 +2,9 @@
     "name": "sq/employee",
     "autoload": {
         "psr-4": {
-            "Sq\\Employee\\": "src/"
+            "Sq\\Employee\\": "src/",
+            "Sq\\Employee\\Database\\": "database",
+            "Sq\\Employee\\Database\\Factories\\": "database/factories"
         }
     },
     "require": {},

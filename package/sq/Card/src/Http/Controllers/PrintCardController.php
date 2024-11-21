@@ -29,9 +29,16 @@ class PrintCardController
      * @param int $printCardFrame
      * @return \Illuminate\View\View
      */
-    public function employee(Request $request, MainCard $mainCard , int $printCardFrame): View
+    public function employee(Request $request, MainCard $mainCard, int $printCardFrame): View
     {
-        return $this->card_optimization(cardInfo: $mainCard->card_info, printCardFrame: $printCardFrame, printTypeEnum: PrintTypeEnum::Employee,mainCard:$mainCard, gun: null, employeeVehicalCard: null);
+        return $this->card_optimization(
+            cardInfo: $mainCard->card_info,
+            printCardFrame: $printCardFrame,
+            printTypeEnum: PrintTypeEnum::Employee,
+            mainCard: $mainCard,
+            gun: null,
+            employeeVehicalCard: null
+        );
     }
 
     /**
@@ -43,7 +50,14 @@ class PrintCardController
      */
     public function gun(Request $request, GunCard $gunCard, int $printCardFrame): View
     {
-        return $this->card_optimization(cardInfo: $gunCard->card_info, printCardFrame: $printCardFrame, printTypeEnum: PrintTypeEnum::Gun, gun: $gunCard);
+        return $this->card_optimization(
+            cardInfo: $gunCard->card_info,
+            printCardFrame: $printCardFrame,
+            employeeVehicalCard: null,
+            gun: $gunCard,
+            printTypeEnum: PrintTypeEnum::Gun,
+            mainCard: null
+        );
     }
 
     /**
@@ -55,7 +69,14 @@ class PrintCardController
      */
     public function employee_car(Request $request, EmployeeVehicalCard $employeeVehicalCard, int $printCardFrame): View
     {
-        return $this->card_optimization(cardInfo: $employeeVehicalCard->card_info, printCardFrame: $printCardFrame, printTypeEnum: PrintTypeEnum::EmployeeCar, employeeVehicalCard: $employeeVehicalCard);
+        return $this->card_optimization(
+            cardInfo: $employeeVehicalCard->card_info,
+            printCardFrame: $printCardFrame,
+            printTypeEnum: PrintTypeEnum::EmployeeCar,
+            employeeVehicalCard: $employeeVehicalCard,
+            gun: null,
+            mainCard: null
+        );
     }
     /**
      * Summary of card_optimization
@@ -66,7 +87,7 @@ class PrintCardController
      * @param mixed $printTypeEnum
      * @return \Illuminate\View\View
      */
-    private function card_optimization($cardInfo, $printCardFrame, $employeeVehicalCard = null, $gun = null, $printTypeEnum,$mainCard): View
+    private function card_optimization($cardInfo, $printCardFrame, $employeeVehicalCard = null, $gun = null, $printTypeEnum, $mainCard): View
     {
         $card = PrintCardFrame::findOrFail(id: $printCardFrame);
         /**
@@ -82,7 +103,7 @@ class PrintCardController
         }
 
         // Get / Replace the field to Value
-        $field = new PrintCardField(employee: $cardInfo, frame: $card, vehical: $employeeVehicalCard, gun: $gun,mainCard:$mainCard);
+        $field = new PrintCardField(employee: $cardInfo, frame: $card, vehical: $employeeVehicalCard, gun: $gun, mainCard: $mainCard);
 
         $card_record = PrintCard::create(attributes: [
             'user_id' => auth()->id(),

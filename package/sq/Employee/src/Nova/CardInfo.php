@@ -257,8 +257,32 @@ class CardInfo extends Resource
                         ->displayUsing(fn($monthly_rate) => trans("Liter", ["value" => $monthly_rate]))
                         ->onlyOnDetail()
                 ]
-
             ),
+            Panel::make(trans("Special Card Field"), [
+                Fields\Text::make(trans("Gun Type"), 'special_gun')
+                ->showOnCreating(function (NovaRequest $request, $resource) {
+                    return auth()->user()->hasPermissionTo("special-id-card");
+                })->showOnUpdating(function (NovaRequest $request, $resource) {
+                    return auth()->user()->hasPermissionTo("special-id-card");
+                }),
+                Fields\Text::make(trans("Black Mirror Vehical Card"), 'special_black_mirror')
+                ->showOnCreating(function (NovaRequest $request, $resource) {
+                    return auth()->user()->hasPermissionTo("special-id-card");
+                })
+                ->showOnUpdating(function (NovaRequest $request, $resource) {
+                    return auth()->user()->hasPermissionTo("special-id-card");
+                }),
+                Fields\Text::make(trans("Vehical Type"), 'special_vehical')
+                ->showOnCreating(function (NovaRequest $request, $resource) {
+                    return auth()->user()->hasPermissionTo("special-id-card");
+                })
+                ->showOnUpdating(function (NovaRequest $request, $resource) {
+                    return auth()->user()->hasPermissionTo("special-id-card");
+                }),
+            ]),
+
+
+
             Fields\HasMany::make(__("Oil Report"), 'oil_disterbutions', \Sq\Oil\Nova\OilDisterbution::class),
             Fields\HasMany::make(name: __("Attendance"), attribute: 'attendance', resource: Attendance::class),
             Fields\HasMany::make(name: __("Print Card"), attribute: 'print_cards', resource: PrintCard::class),

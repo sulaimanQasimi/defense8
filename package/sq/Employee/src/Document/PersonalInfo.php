@@ -15,6 +15,12 @@ class PersonalInfo
         TCPDF::SetHeaderMargin(2);
         TCPDF::SetFooterMargin(5);
         TCPDF::SetAutoPageBreak(TRUE, 5);
+        // TCPDF::AddPage();
+        // TCPDF::SetFont('mod_font', '', 11);
+        // TCPDF::Image('logo.png', 112, 10, 20, 20);
+
+        // TCPDF::Cell(35, 7, $employee->name, true, false, 'C');
+
 
     }
 
@@ -71,7 +77,6 @@ class PersonalInfo
             'ABM' => 'AB-',
             'ABP' => 'AB+',
             default =>''
-
         }, true, true, 'C');
 
 

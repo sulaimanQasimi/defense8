@@ -2,6 +2,7 @@
 
 namespace Sq\Employee\Nova;
 
+use Afj95\LaravelNovaHijriDatepickerField\HijriDatePicker;
 use App\Nova\Actions\EmployeePrintCardAction;
 use App\Nova\Resource;
 use Illuminate\Database\Eloquent\Builder;
@@ -48,12 +49,29 @@ class MainCard extends Resource
                     $query->whereIn('department_id', UserDepartment::getUserDepartment());
                 }),
 
-            PersianDate::make(__("Disterbute Date"), "card_perform")->hideWhenUpdating(
-                fn()=>$this->printed
-            ),
-            PersianDate::make(__("Expire Date"), "card_expired_date")->hideWhenUpdating(
-                fn()=>$this->printed
-            ),
+            // PersianDate::make(__("Disterbute Date"), "card_perform")->hideWhenUpdating(
+            //     fn()=>$this->printed
+            // ),
+            // PersianDate::make(__("Expire Date"), "card_expired_date")->hideWhenUpdating(
+            //     fn()=>$this->printed
+            // ),
+
+
+            HijriDatePicker::make(__("Disterbute Date"), "card_perform")->hideWhenUpdating(
+                fn() => $this->printed
+            )
+                ->format('iYYYY/iMM/iDD')
+                ->placeholder('YYYY/MM/DD')
+                ->selected_date('1444/12/12')
+                ->placement('bottom')
+            ,
+            HijriDatePicker::make(__("Expire Date"), "card_expired_date")->hideWhenUpdating(
+                fn() => $this->printed
+            )
+                ->format('iYYYY/iMM/iDD')
+                ->placeholder('YYYY/MM/DD')
+                ->selected_date('1444/12/12')
+                ->placement('bottom'),
             Trix::make(trans('Remark'), 'remark'),
             Boolean::make(__("Print"), 'printed')->hideWhenCreating(),
             Boolean::make(__("Muthanna"), 'muthanna'),
@@ -77,10 +95,11 @@ class MainCard extends Resource
     {
         return [
             (new \Sq\Card\Nova\Actions\EmployeePrintCardAction)->onlyOnDetail()
-                ->canRun(fn($request, $mainCard)
+                ->canRun(
+                    fn($request, $mainCard)
                     => auth()->user()->hasPermissionTo("print-card")
                     && in_array($mainCard->card_info->orginization->id, UserDepartment::getUserDepartment())
-                   ),
+                ),
 
         ];
     }

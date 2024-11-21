@@ -24,7 +24,10 @@ trait InfoField
             'blood_group' => trans("Blood Group"),
             "main_province" => trans("Province"),
             "main_district" => trans("District"),
-            "phone" => trans("Phone")
+            "phone" => trans("Phone"),
+            'special_gun'=>"نوع سلاح برای کارت ویژه",
+            'special_black_mirror'=>"شیشه سیاه برای کارت ویژه",
+            'special_vehical'=>"نوع واسطه برای کارت ویژه",
         ];
     }
     private static function info_translated_field($field)
@@ -42,7 +45,9 @@ trait InfoField
     protected function info_render($context)
     {
         return Str::of($context)
-            ->replace($this->info_translated_field('name'), $this->employee->name)
+
+        ->replace($this->info_translated_field('name'), $this->employee->name)
+
             ->replace($this->info_translated_field('father_name'), $this->employee->father_name)
             ->replace($this->info_translated_field('last_name'), $this->employee->last_name)
             ->replace($this->info_translated_field('grand_father_name'), $this->employee->grand_father_name)
@@ -54,6 +59,15 @@ trait InfoField
             ->replace($this->info_translated_field('grade'), $this->employee->grade)
             ->replace($this->info_translated_field('registare_no'), $this->employee->registare_no)
             ->replace($this->info_translated_field('gate'), $this->employee->gate?->fa_name)
+
+
+            /**
+             * برای کارت های ویژه کارمندان ومقامات وزارت دفاع ملی
+             */
+            ->replace($this->info_translated_field('special_gun'), $this->employee->special_gun)
+            ->replace($this->info_translated_field('special_black_mirror'), $this->employee->special_black_mirror)
+            ->replace($this->info_translated_field('special_vehical'), $this->employee->special_vehical)
+
 
             // Unverfied Fields
 

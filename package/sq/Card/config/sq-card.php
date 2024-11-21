@@ -1,4 +1,4 @@
 <?php
 return [
-    'barcode-size' => "1.2",
+    'barcode-size' => "0.6",
 ];

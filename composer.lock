@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "51c760f985b7a3f55aec1502c0d74b63",
+    "content-hash": "e2ca2609e9d7176e5e31189578602dc4",
     "packages": [
         {
             "name": "acme/app-setting",
@@ -298,6 +298,125 @@
             "transport-options": {
                 "relative": true
             }
+        },
+        {
+            "name": "afj95/laravel-nova-hijri-datepicker-field",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/afj95/laravel-nova-hijri-datepicker-field.git",
+                "reference": "51ae9a3ae79f4e6c27b45bd7c5c99b96270003cd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/afj95/laravel-nova-hijri-datepicker-field/zipball/51ae9a3ae79f4e6c27b45bd7c5c99b96270003cd",
+                "reference": "51ae9a3ae79f4e6c27b45bd7c5c99b96270003cd",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.3|^8.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Afj95\\LaravelNovaHijriDatepickerField\\FieldServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Afj95\\LaravelNovaHijriDatepickerField\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "mPhpMaster",
+                    "email": "59211285+mPhpMaster@users.noreply.github.com"
+                }
+            ],
+            "description": "Laravel nova hijri datepicker field.",
+            "keywords": [
+                "datepicker",
+                "field",
+                "hijri",
+                "islamic",
+                "laravel",
+                "nova"
+            ],
+            "support": {
+                "issues": "https://github.com/afj95/laravel-nova-hijri-datepicker-field/issues",
+                "source": "https://github.com/afj95/laravel-nova-hijri-datepicker-field/tree/1.0.0"
+            },
+            "time": "2023-07-27T14:50:05+00:00"
+        },
+        {
+            "name": "alkoumi/laravel-hijri-date",
+            "version": "v1.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/alkoumi/laravel-hijri-date.git",
+                "reference": "ee726cf66349e8ab15f6f0b4041b9c96b7919742"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/alkoumi/laravel-hijri-date/zipball/ee726cf66349e8ab15f6f0b4041b9c96b7919742",
+                "reference": "ee726cf66349e8ab15f6f0b4041b9c96b7919742",
+                "shasum": ""
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Alkoumi\\LaravelHijriDate\\LaravelHijriDateServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Alkoumi\\LaravelHijriDate\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mohammed Alkoumi",
+                    "email": "komy66@gmail.com"
+                }
+            ],
+            "description": "Laravel package to Convert laravel date to our Amazing 💝 Hjri date {ummul qura and vice versa} . to look like [ الخميس ، ٢٢ ربيع الآخر ، ١٤٤١ - ٠٧:٤٩ مساءً]",
+            "homepage": "https://be.net/komy",
+            "keywords": [
+                "date",
+                "hijri-calendar",
+                "hijri-date",
+                "hjri",
+                "laravel-hijri-date",
+                "ummul-qura",
+                "ummul-qura-calendar"
+            ],
+            "support": {
+                "issues": "https://github.com/alkoumi/laravel-hijri-date/issues",
+                "source": "https://github.com/alkoumi/laravel-hijri-date/tree/v1.0.4"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/",
+                    "type": "github"
+                },
+                {
+                    "url": "https://www.patreon.com/mohammadelkoumi",
+                    "type": "patreon"
+                }
+            ],
+            "time": "2020-11-27T09:41:21+00:00"
         },
         {
             "name": "ayvazyan10/nova-imagic",
@@ -3075,6 +3194,102 @@
                 }
             ],
             "time": "2022-05-21T17:30:32+00:00"
+        },
+        {
+            "name": "joedixon/laravel-translation",
+            "version": "v1.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/joedixon/laravel-translation.git",
+                "reference": "4a467398bae73cd16522d523b557e96f3455b9d2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/joedixon/laravel-translation/zipball/4a467398bae73cd16522d523b557e96f3455b9d2",
+                "reference": "4a467398bae73cd16522d523b557e96f3455b9d2",
+                "shasum": ""
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.0.0",
+                "orchestra/testbench": "^4.0",
+                "phpunit/phpunit": "^8.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "JoeDixon\\Translation\\TranslationServiceProvider",
+                        "JoeDixon\\Translation\\TranslationBindingsServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "JoeDixon\\Translation\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Joe Dixon",
+                    "email": "hello@joedixon.co.uk"
+                }
+            ],
+            "description": "A tool for managing all of your Laravel translations",
+            "support": {
+                "issues": "https://github.com/joedixon/laravel-translation/issues",
+                "source": "https://github.com/joedixon/laravel-translation/tree/master"
+            },
+            "time": "2020-04-13T20:06:24+00:00"
+        },
+        {
+            "name": "joedixon/nova-translation",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/joedixon/nova-translation.git",
+                "reference": "99447c8225abf1e9a9b8bd610b94d98fad15c562"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/joedixon/nova-translation/zipball/99447c8225abf1e9a9b8bd610b94d98fad15c562",
+                "reference": "99447c8225abf1e9a9b8bd610b94d98fad15c562",
+                "shasum": ""
+            },
+            "require": {
+                "joedixon/laravel-translation": "^1.0.0",
+                "php": ">=7.1.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Joedixon\\NovaTranslation\\ToolServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Joedixon\\NovaTranslation\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "A Laravel Nova tool.",
+            "keywords": [
+                "laravel",
+                "nova"
+            ],
+            "support": {
+                "issues": "https://github.com/joedixon/nova-translation/issues",
+                "source": "https://github.com/joedixon/nova-translation/tree/v1.0.0"
+            },
+            "time": "2019-09-09T20:06:06+00:00"
         },
         {
             "name": "kalnoy/nestedset",
@@ -8228,7 +8443,7 @@
             "dist": {
                 "type": "path",
                 "url": "./package/sq/employee",
-                "reference": "14cd78618af14c6964537620967504d5d4c59c7c"
+                "reference": "ee54c29a5bd45ce47104c60f9fa83ec00f47f064"
             },
             "type": "library",
             "extra": {
@@ -8240,7 +8455,9 @@
             },
             "autoload": {
                 "psr-4": {
-                    "Sq\\Employee\\": "src/"
+                    "Sq\\Employee\\": "src/",
+                    "Sq\\Employee\\Database\\": "database",
+                    "Sq\\Employee\\Database\\Factories\\": "database/factories"
                 }
             },
             "transport-options": {

@@ -14,6 +14,7 @@ use App\Support\Defense\PermissionTranslation;
 use Bolechen\NovaActivitylog\Resources\Activitylog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate as FacadesGate;
+use Joedixon\NovaTranslation\NovaTranslation;
 use Laravel\Nova\Menu\Menu;
 use Laravel\Nova\Menu\MenuItem;
 use Laravel\Nova\Menu\MenuSection;
@@ -69,7 +70,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 MenuItem::resource(Permission::class),
                 MenuItem::resource(Role::class),
                 MenuItem::resource(User::class),
-                
+
 
                 MenuItem::externalLink(__("Create Token"), url("user/api-tokens"))
                     ->canSee(fn() => auth()->user()->hasRole('api-token'))->openInNewTab(),
@@ -152,6 +153,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             new \Acme\Forum\Forum(),
 
             new \Guratr\CommandRunner\CommandRunner,
+            // new NovaTranslation(),
 
         ];
     }

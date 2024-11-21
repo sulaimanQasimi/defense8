@@ -1,6 +1,8 @@
 <?php
 namespace Sq\Card\Support;
 
+use Alkoumi\LaravelHijriDate\Hijri;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 
 trait MainCardField
@@ -11,7 +13,7 @@ trait MainCardField
         return [
             "card_perform" => __("Preform Date"),
             "card_expired_date" => __("Expire Date"),
-            "muthanna"=>__("Muthanna")
+            "muthanna" => __("Muthanna")
         ];
 
     }
@@ -32,10 +34,10 @@ trait MainCardField
     {
         return Str::of($context)
 
-        ->replace($this->main_translated_field('muthanna'), ($this->mainCard?->muthanna) ? __("Muthanna") : '')
+            ->replace($this->main_translated_field('muthanna'), ($this->mainCard?->muthanna) ? __("Muthanna") : '')
+            // Hijri::Date('l ، j F ، Y', $date);
+            ->replace($this->main_translated_field('card_perform'), ($this->mainCard?->card_perform) ? Carbon::make($this->mainCard?->card_perform)->format("Y/m/d") : "N/A")
 
-        ->replace($this->main_translated_field('card_perform'), ($this->mainCard?->card_perform) ? verta($this->mainCard?->card_perform)->format("Y/m/d") : "N/A")
-
-            ->replace($this->main_translated_field('card_expired_date'), ($this->mainCard?->card_expired_date) ? verta($this->mainCard?->card_expired_date)->format("Y/m/d") : "N/A");
+            ->replace($this->main_translated_field('card_expired_date'), ($this->mainCard?->card_expired_date) ? Carbon::make($this->mainCard?->card_expired_date)->format("Y/m/d") : "N/A");
     }
 }

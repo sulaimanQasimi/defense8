@@ -35,22 +35,24 @@
                 width: attr.qrcode.size,
                 height: attr.qrcode.size
             });
+
+
         qrcode.clear();
-        qrcode.makeCode('123');" x-show="state.show"
+        qrcode.makeCode('123');
+
+        JsBarcode('#barcode', 'G5-00000', {
+            format: 'CODE128',
+            // background: '#000000/',
+            width: 1.2,
+            height: 10,
+            displayValue: false
+        });" x-show="state.show"
             x-cloak>
             @includeWhen($cardFrame->dim === 'horizontal', 'sqcard::livewire.guest.card-design-horizontal')
             @includeWhen($cardFrame->dim == 'vertical', 'sqcard::livewire.guest.card-design-vertical')
         </div>
     </div>
-    <script>
-        // JsBarcode('#barcode', "G5-00000", {
-        //     format: "CODE128",
-        //     // background: "#000000/",
-        //     width: {{ config('sq-card.barcode-size') }},
-        //     height: 10,
-        //     displayValue: false
-        });
-    </script>
+
     @script
         <script>
             // Remark Field

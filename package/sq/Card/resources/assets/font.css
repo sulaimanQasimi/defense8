@@ -1,13 +1,30 @@
 @font-face {
-    font-family: 'persian-font';
+    font-family: "persian-font";
     /* This is the name you will use to reference the custom font */
-    src: url("/mod_font.ttf") format('truetype');
+    src: url("/mod_font.ttf") format("truetype");
     /* Specify the path to your font file */
 }
 
 @font-face {
-    font-family: 'nazanin-font';
+    font-family: "nazanin-font";
     /* This is the name you will use to reference the custom font */
-    src: url("./fonts/B_Nazanin.ttf") format('truetype');
+    src: url("./fonts/B_Nazanin.ttf") format("truetype");
     /* Specify the path to your font file */
+}
+
+@font-face {
+    font-family: "ihsan-bv";
+    src: url("./fonts/ihsan-bv.ttf");
+}
+@font-face {
+    font-family: "ihsan-likedood";
+    src: url("./fonts/ihsan-likedood.ttf");
+}
+@font-face {
+    font-family: "ihsan-MV";
+    src: url("./fonts/ihsan-MV.ttf");
+}
+@font-face {
+    font-family: "ihsan-NV";
+    src: url("./fonts/ihsan-NV.ttf");
 }

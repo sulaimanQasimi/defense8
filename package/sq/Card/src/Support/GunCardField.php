@@ -2,6 +2,7 @@
 
 namespace Sq\Card\Support;
 
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 
 trait GunCardField
@@ -42,7 +43,8 @@ trait GunCardField
             ->replace($this->gun_translated_field("gun_no"), $gun?->gun_no)
             ->replace($this->gun_translated_field("range"), $gun?->range)
             ->replace($this->gun_translated_field("gun_recieved_date"), ($gun?->filled_form_date) ? verta($gun?->filled_form_date)->format("Y/m/d") : "")
-            ->replace($this->gun_translated_field("gun_register_date"), ($gun?->register_date) ? verta($gun?->register_date)->format("Y/m/d") : "")
-            ->replace($this->gun_translated_field("gun_expire_date"), ($gun?->expire_date) ? verta($gun?->expire_date)->format("Y/m/d") : "");
+
+            ->replace($this->gun_translated_field("gun_register_date"), ($gun?->register_date) ? Carbon::make($gun?->register_date)->format("Y/m/d") : "")
+            ->replace($this->gun_translated_field("gun_expire_date"), ($gun?->expire_date) ? Carbon::make($gun?->expire_date)->format("Y/m/d") : "");
     }
 }

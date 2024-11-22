@@ -1,6 +1,7 @@
 <?php
 namespace Sq\Employee\Nova;
 
+use Afj95\LaravelNovaHijriDatepickerField\HijriDatePicker;
 use App\Nova\Resource;
 use DigitalCreative\MegaFilter\MegaFilter;
 use DigitalCreative\MegaFilter\MegaFilterTrait;
@@ -38,7 +39,7 @@ class GunCard extends Resource
     public static function indexQuery(NovaRequest $request, $query)
     {
         return $query->whereHas('card_info', function ($query) {
-            return $query->whereIn('department_id',  UserDepartment::getUserDepartment());
+            return $query->whereIn('department_id', UserDepartment::getUserDepartment());
         });
     }
 
@@ -47,7 +48,7 @@ class GunCard extends Resource
         return [
             BelongsTo::make(__('Employee'), 'card_info', CardInfo::class)
                 ->relatableQueryUsing(function (NovaRequest $request, Builder $query) {
-                    $query->whereIn('department_id',  UserDepartment::getUserDepartment());
+                    $query->whereIn('department_id', UserDepartment::getUserDepartment());
                 })
                 ->searchable(),
             Text::make(__("Gun Type"), "gun_type")
@@ -60,14 +61,31 @@ class GunCard extends Resource
             Text::make(__("Gun Range"), "range")
                 ->required()
                 ->rules("required", "string"),
-            PersianDate::make(__("Disterbute Date"), "register_date")
-                ->required()
-                ->rules('required', 'date')
-                ->placeholder(__("Enter Field", ['name' => __("Disterbute Date")])),
-            PersianDate::make(__("Expire Date"), "expire_date")
-                ->required()
-                ->rules('required', 'date')
-                ->placeholder(__("Enter Field", ['name' => __("Expire Date")])),
+
+            HijriDatePicker::make(__("Disterbute Date"), "register_date")
+                ->hideWhenUpdating(
+                    fn() => $this->printed
+                )
+                ->format('iYYYY/iMM/iDD')
+                ->placeholder('YYYY/MM/DD')
+                ->selected_date('1444/12/12')
+                ->placement('bottom'),
+            HijriDatePicker::make(__("Expire Date"), "expire_date")
+                ->hideWhenUpdating(
+                    fn() => $this->printed
+                )
+                ->format('iYYYY/iMM/iDD')
+                ->placeholder('YYYY/MM/DD')
+                ->selected_date('1444/12/12')
+                ->placement('bottom'),
+            // PersianDate::make(__("Disterbute Date"), "register_date")
+            //     ->required()
+            //     ->rules('required', 'date')
+            //     ->placeholder(__("Enter Field", ['name' => __("Disterbute Date")])),
+            // PersianDate::make(__("Expire Date"), "expire_date")
+            //     ->required()
+            //     ->rules('required', 'date')
+            //     ->placeholder(__("Enter Field", ['name' => __("Expire Date")])),
 
         ];
     }
@@ -116,9 +134,10 @@ class GunCard extends Resource
     {
         return [
             (new \Sq\Card\Nova\Actions\GunPrintCardAction)->onlyOnDetail()
-            ->canRun(fn($request, $gun) => auth()->user()->hasPermissionTo("print-card")
-            && in_array($gun->card_info->orginization->id, UserDepartment::getUserDepartment())
-           ),
+                ->canRun(
+                    fn($request, $gun) => auth()->user()->hasPermissionTo("print-card")
+                    && in_array($gun->card_info->orginization->id, UserDepartment::getUserDepartment())
+                ),
 
         ];
     }

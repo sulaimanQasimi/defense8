@@ -119,6 +119,8 @@ trait CardAttribute
                 break;
             case "barCode.z":
                 $this->cardFrame->update(['attr->barCode->z' => $this->attr['barCode']['z']]);
+                $this->redirect(route('sq.employee.design-card', ['printCardFrame' => $this->cardFrame]), true);
+   
                 break;
 
             case "header.backgroundColor":

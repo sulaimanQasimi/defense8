@@ -5,7 +5,6 @@ For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
 
 body
 {
-    border-radius: 90px;
 	/* Font */
 	/* Emoji fonts are added to visualise them nicely in Internet Explorer. */
 	font-family: sans-serif, Arial, Verdana, "Trebuchet MS", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
@@ -61,7 +60,7 @@ a
 ol,ul,dl
 {
 	/* IE7: reset rtl list margin. (#7334) */
-	margin-right: 0;
+	*margin-right: 0px;
 	/* Preserved spaces for list items with text direction different than the list. (#6249,#8049)*/
 	padding: 0 40px;
 }

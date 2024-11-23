@@ -53,7 +53,7 @@ trait VehicalCardField
             ->replace($this->vehical_translated_field('driver_name'), $vehical?->driver?->name)
             ->replace($this->vehical_translated_field('driver_last_name'), $vehical?->driver?->last_name)
             ->replace($this->vehical_translated_field('driver_registare_no'), $vehical?->driver?->registare_no)
-            //
+            // Hijri Date Fields
             ->replace($this->vehical_translated_field('vehical_register_date'), ($vehical?->register_date)? Carbon::make($vehical->register_date)->format("Y/m/d"):'')
             ->replace($this->vehical_translated_field('vehical_expire_date'), ($vehical?->expire_date)? Carbon::make($vehical->expire_date)->format("Y/m/d"):'')
         ;

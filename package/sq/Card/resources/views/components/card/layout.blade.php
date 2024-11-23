@@ -10,12 +10,17 @@
     <link type="text/css" href="{{ asset('build/assets/app.css') }}" rel="stylesheet" />
     <script src="{{ asset('alpine.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('cards/JsBarcode/dist/JsBarcode.all.min.js') }}"></script>
+<style>
+    body{
+        margin: 0;
+        padding: 0;
+    }
+</style>
 </head>
 
 <body class="persian-font antialiased">
     {{-- Print Context --}}
     {{ $slot }}
-
     <script type="text/javascript" src="{{ asset('cards/qrcode/qrcode.js') }}"></script>
     @stack('js')
 </body>

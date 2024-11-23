@@ -36,7 +36,7 @@
 
         @if ($barcode)
             <div
-                style="position: absolute; top: {{ $card->attr['barCode']['y'] }}px;left:{{ $card->attr['barCode']['x'] }}px;rotate:{{ $card->attr['barCode']['z'] }}deg ">
+                style="position: absolute; top: {{ $card->attr['barCode']['y'] }}px;left:{{ $card->attr['barCode']['x'] }}px;">
                 <svg id="{{ $attributes->get('id') }}-barcode"></svg>
             </div>
         @endif
@@ -58,7 +58,7 @@
             JsBarcode('#{{ $attributes->get('id') }}-barcode', "{{ $cardInfo->registare_no }}", {
                 format: "CODE128",
                 // background: "#000000/",
-                width: {{ config('sq-card.barcode-size') }},
+                width: 1.2,
                 height: 10,
                 displayValue: false
             });

@@ -63,17 +63,12 @@ class GunCard extends Resource
                 ->rules("required", "string"),
 
             HijriDatePicker::make(__("Disterbute Date"), "register_date")
-                ->hideWhenUpdating(
-                    fn() => $this->printed
-                )
+
                 ->format('iYYYY/iMM/iDD')
                 ->placeholder('YYYY/MM/DD')
                 ->selected_date('1444/12/12')
                 ->placement('bottom'),
             HijriDatePicker::make(__("Expire Date"), "expire_date")
-                ->hideWhenUpdating(
-                    fn() => $this->printed
-                )
                 ->format('iYYYY/iMM/iDD')
                 ->placeholder('YYYY/MM/DD')
                 ->selected_date('1444/12/12')

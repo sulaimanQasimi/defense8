@@ -48,26 +48,19 @@ class MainCard extends Resource
                 ->relatableQueryUsing(function (NovaRequest $request, Builder $query) {
                     $query->whereIn('department_id', UserDepartment::getUserDepartment());
                 }),
-
-            // PersianDate::make(__("Disterbute Date"), "card_perform")->hideWhenUpdating(
-            //     fn()=>$this->printed
-            // ),
-            // PersianDate::make(__("Expire Date"), "card_expired_date")->hideWhenUpdating(
-            //     fn()=>$this->printed
-            // ),
-
-
-            HijriDatePicker::make(__("Disterbute Date"), "card_perform")->hideWhenUpdating(
-                fn() => $this->printed
-            )
+            HijriDatePicker::make(__("Disterbute Date"), "card_perform")
+                ->hideWhenUpdating(
+                    fn() => $this->printed
+                )
                 ->format('iYYYY/iMM/iDD')
                 ->placeholder('YYYY/MM/DD')
                 ->selected_date('1444/12/12')
                 ->placement('bottom')
             ,
-            HijriDatePicker::make(__("Expire Date"), "card_expired_date")->hideWhenUpdating(
-                fn() => $this->printed
-            )
+            HijriDatePicker::make(__("Expire Date"), "card_expired_date")
+                ->hideWhenUpdating(
+                    fn() => $this->printed
+                )
                 ->format('iYYYY/iMM/iDD')
                 ->placeholder('YYYY/MM/DD')
                 ->selected_date('1444/12/12')

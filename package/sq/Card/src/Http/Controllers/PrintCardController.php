@@ -53,10 +53,8 @@ class PrintCardController
         return $this->card_optimization(
             cardInfo: $gunCard->card_info,
             printCardFrame: $printCardFrame,
-            employeeVehicalCard: null,
             gun: $gunCard,
             printTypeEnum: PrintTypeEnum::Gun,
-            mainCard: null
         );
     }
 
@@ -74,8 +72,6 @@ class PrintCardController
             printCardFrame: $printCardFrame,
             printTypeEnum: PrintTypeEnum::EmployeeCar,
             employeeVehicalCard: $employeeVehicalCard,
-            gun: null,
-            mainCard: null
         );
     }
     /**
@@ -87,7 +83,7 @@ class PrintCardController
      * @param mixed $printTypeEnum
      * @return \Illuminate\View\View
      */
-    private function card_optimization($cardInfo, $printCardFrame, $employeeVehicalCard = null, $gun = null, $printTypeEnum, $mainCard): View
+    private function card_optimization($cardInfo, $printCardFrame, $employeeVehicalCard = null, $gun = null, $printTypeEnum = null, $mainCard = null): View
     {
         $card = PrintCardFrame::findOrFail(id: $printCardFrame);
         /**
@@ -106,14 +102,19 @@ class PrintCardController
         $field = new PrintCardField(employee: $cardInfo, frame: $card, vehical: $employeeVehicalCard, gun: $gun, mainCard: $mainCard);
 
         $card_record = PrintCard::create(attributes: [
+            //
             'user_id' => auth()->id(),
+
             'card_info_id' => $cardInfo->id,
+
             'print_card_frame_id' => $card->id,
+            // Issue Date In specifict Format
             'issue' => match ($printTypeEnum) {
                 PrintTypeEnum::Employee => $mainCard?->card_perform,
                 PrintTypeEnum::EmployeeCar => $employeeVehicalCard?->register_date,
                 PrintTypeEnum::Gun => $gun?->register_date,
             },
+            //  Expire Date
             'expire' => match ($printTypeEnum) {
                 PrintTypeEnum::Employee => $mainCard?->card_expired_date,
                 PrintTypeEnum::EmployeeCar => $employeeVehicalCard?->expire_date,

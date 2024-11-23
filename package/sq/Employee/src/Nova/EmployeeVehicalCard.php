@@ -1,6 +1,7 @@
 <?php
 namespace Sq\Employee\Nova;
 
+use Afj95\LaravelNovaHijriDatepickerField\HijriDatePicker;
 use App\Nova\Actions\VehicalRemarkAction;
 use App\Nova\Resource;
 use DigitalCreative\MegaFilter\MegaFilter;
@@ -103,15 +104,17 @@ class EmployeeVehicalCard extends Resource
                 ->searchable()
                 ->nullable(),
 
-            PersianDate::make(__("Disterbute Date"), "register_date")
-                ->required()
-                ->rules('required', 'date')
-                ->placeholder(__("Enter Field", ['name' => __("Disterbute Date")])),
+            HijriDatePicker::make(__("Disterbute Date"), "register_date")
+                ->format('iYYYY/iMM/iDD')
+                ->placeholder('YYYY/MM/DD')
+                ->selected_date('1444/12/12')
+                ->placement('bottom'),
 
-            PersianDate::make(__("Expire Date"), "expire_date")
-                ->required()
-                ->rules('required', 'date')
-                ->placeholder(__("Enter Field", ['name' => __("Expire Date")])),
+            HijriDatePicker::make(__("Expire Date"), "expire_date")
+                ->format('iYYYY/iMM/iDD')
+                ->placeholder('YYYY/MM/DD')
+                ->selected_date('1444/12/12')
+                ->placement('bottom'),
 
             Trix::make(__("Remark"), 'remark')
                 ->exceptOnForms()
@@ -167,7 +170,7 @@ class EmployeeVehicalCard extends Resource
                 ->canRun(
                     fn($request, $employeeVehicalCard) => auth()->user()->hasPermissionTo("print-card")
                     && in_array($employeeVehicalCard->card_info->orginization->id, UserDepartment::getUserDepartment())
-                
+
                 ),
             (new VehicalRemarkAction)->canSee(fn() => auth()->user()->hasPermissionTo("add remark for vehical")),
 

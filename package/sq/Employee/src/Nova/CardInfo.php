@@ -260,23 +260,23 @@ class CardInfo extends Resource
             ),
             Panel::make(trans("Special Card Field"), [
                 Fields\Text::make(trans("Gun Type"), 'special_gun')
-                ->showOnCreating(function (NovaRequest $request, $resource) {
+                ->showOnCreating(function (NovaRequest $request) {
                     return auth()->user()->hasPermissionTo("special-id-card");
-                })->showOnUpdating(function (NovaRequest $request, $resource) {
+                })->showOnUpdating(function (NovaRequest $request) {
                     return auth()->user()->hasPermissionTo("special-id-card");
                 }),
                 Fields\Text::make(trans("Black Mirror Vehical Card"), 'special_black_mirror')
-                ->showOnCreating(function (NovaRequest $request, $resource) {
+                ->showOnCreating(function (NovaRequest $request) {
                     return auth()->user()->hasPermissionTo("special-id-card");
                 })
-                ->showOnUpdating(function (NovaRequest $request, $resource) {
+                ->showOnUpdating(function (NovaRequest $request) {
                     return auth()->user()->hasPermissionTo("special-id-card");
                 }),
                 Fields\Text::make(trans("Vehical Type"), 'special_vehical')
-                ->showOnCreating(function (NovaRequest $request, $resource) {
+                ->showOnCreating(function (NovaRequest $request) {
                     return auth()->user()->hasPermissionTo("special-id-card");
                 })
-                ->showOnUpdating(function (NovaRequest $request, $resource) {
+                ->showOnUpdating(function (NovaRequest $request) {
                     return auth()->user()->hasPermissionTo("special-id-card");
                 }),
             ]),

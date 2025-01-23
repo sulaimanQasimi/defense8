@@ -36,22 +36,18 @@ class MainCard extends Resource
 
     public static function indexQuery(NovaRequest $request, $query)
     {
-        return $query->whereHas(
-            'card_info',
-            function ($query) {
-                return $query->whereIn('department_id', UserDepartment::getUserDepartment());
-            }
-        );
+        return $query->whereHas('card_info', function ($query) {
+            return $query->whereIn('department_id', UserDepartment::getUserDepartment());
+        });
     }
 
     public function fields(NovaRequest $request)
     {
         return [
-            BelongsTo::make(__('Employee'), 'card_info', CardInfo::class)
-                ->relatableQueryUsing(function (NovaRequest $request, Builder $query) {
-                    $query->whereIn('department_id', UserDepartment::getUserDepartment());
-                }),
-
+            BelongsTo::make(__('Employee'), 'card_info', CardInfo::class),
+//                ->relatableQueryUsing(function (NovaRequest $request, Builder $query) {
+  //                  $query->whereIn('department_id', UserDepartment::getUserDepartment());
+     //           }),
             HijriDatePicker::make(__("Disterbute Date"), "card_perform")
                 ->hideWhenUpdating(
                     fn() => $this->printed

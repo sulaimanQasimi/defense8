@@ -72,7 +72,7 @@
                         <td class="px-4 py-1  text-xl">
 
                             <p class="font-medium leading-none text-gray-700 mr-2 text-xl">
-                                {{ $employee->current_id_card ? verta($employee->current_id_card?->card_perform)->format('Y/m/d') : '' }}
+                                {{ $employee->current_id_card?->card_perform }}
                             </p>
                         </td>
                     </tr>
@@ -86,7 +86,7 @@
 
                             <p class="font-medium leading-none text-gray-700 mr-2 text-xl">
 
-                                {{ $employee->current_id_card ? verta($employee->current_id_card?->card_expired_date)->format('Y/m/d') : '' }}
+                                {{ $employee->current_id_card?->card_expired_date }}
                             </p>
                         </td>
                     </tr>

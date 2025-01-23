@@ -83,9 +83,10 @@ trait InfoField
                 default => ''
 
             })
-
-            ->replace($this->info_translated_field("main_province"), $this->employee?->m_province)
-            ->replace($this->info_translated_field("main_district"), $this->employee?->m_district)
+   
+			->replace($this->info_translated_field("main_province"), $this->employee?->main_province?->name)
+            ->replace($this->info_translated_field("main_district"), $this->employee?->main_district?->name)
+         
             ->replace($this->info_translated_field("phone"), $this->employee->phone)
 
         ;

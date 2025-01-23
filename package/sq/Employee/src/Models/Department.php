@@ -26,13 +26,7 @@ class Department extends Model
         parent::boot();
 
         // Power Check while Creating
-        static::creating(
-            function ($department) {
-                if (!in_array($department->department_id, UserDepartment::getUserDepartment())) {
-                    return abort(403);
-                }
-            }
-        );
+        
 
         // Power Check while Updating
         static::updating(

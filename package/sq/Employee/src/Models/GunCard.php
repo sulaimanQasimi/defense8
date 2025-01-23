@@ -13,7 +13,13 @@ class GunCard extends Model
     use HasFactory;
     use SoftDeletes;
     use HasCardInfo;
-    protected $casts = [
+
+    protected $fillable = [
+        'register_date' => "date",
+        'expire_date' => "date",
+        "filled_form_date"=> "date",
+    ];   
+   protected $casts = [
         'register_date' => "date",
         'expire_date' => "date",
         "filled_form_date"=> "date",

@@ -1,4 +1,4 @@
-@props(['card', 'field', 'cardInfo', 'heightStyle', 'wholeSize', 'barcode' => true])
+@props(['card', 'field', 'cardInfo', 'heightStyle', 'wholeSize', 'barcode' => true,'v'=>true])
 <div class="relative" style="{{ $wholeSize }}">
     <!-- Breathing in, I calm body and mind. Breathing out, I smile. - Thich Nhat Hanh -->
     <div class="bg-white block bg-cover bg-center bg-local bg-no-repeat"
@@ -22,8 +22,6 @@
                                                                                      left: {{ $card->attr['signature']['x'] }}px;
                                                                                      height: {{ $card->attr['signature']['size'] }}px;
                                                                                      " />
-
-
         <div class="px-2">
             {!! $field->details !!}
         </div>

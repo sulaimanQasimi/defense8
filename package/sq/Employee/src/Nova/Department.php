@@ -97,14 +97,13 @@ class Department extends Resource
 
                 // Attendance Start Hour
                 Text::make(name: trans("Start"), attribute: "start")
-                    ->rules('required')
                     ->textAlign("center")
                     ->placeholder("08:30-09:30")
                     ->help(trans("Only Morning Hours")),
 
                 // Final Attendance Hour
                 Text::make(name: trans("Exit"), attribute: "end")
-                    ->rules('required')
+   
                     ->textAlign('left')
                     ->placeholder("02:30-03:00")
                     ->help(trans("Only Afternoon Hours")),

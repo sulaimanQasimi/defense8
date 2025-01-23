@@ -262,7 +262,7 @@ class CardInfo extends Resource
                 Fields\Text::make(trans("Gun Type"), 'special_gun')
                 ->showOnCreating(function (NovaRequest $request) {
                     return auth()->user()->hasPermissionTo("special-id-card");
-                })->showOnUpdating(function (NovaRequest $request) {
+                })->showOnUpdating(function (NovaRequest $request, $resource) {
                     return auth()->user()->hasPermissionTo("special-id-card");
                 }),
                 Fields\Text::make(trans("Black Mirror Vehical Card"), 'special_black_mirror')
@@ -273,7 +273,7 @@ class CardInfo extends Resource
                     return auth()->user()->hasPermissionTo("special-id-card");
                 }),
                 Fields\Text::make(trans("Vehical Type"), 'special_vehical')
-                ->showOnCreating(function (NovaRequest $request) {
+                ->showOnCreating(function (NovaRequest $reques) {
                     return auth()->user()->hasPermissionTo("special-id-card");
                 })
                 ->showOnUpdating(function (NovaRequest $request) {

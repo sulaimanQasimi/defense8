@@ -14,7 +14,7 @@ class EmployeeVehicalCard extends Model
     use SoftDeletes;
     use HasCardInfo;
     use HasDriver;
-    protected $fillable = ['remark'];
+    protected $fillable = ['remark','register_date','expire_date'];
     protected $casts = [
         'register_date' => "date",
         'expire_date' => "date",

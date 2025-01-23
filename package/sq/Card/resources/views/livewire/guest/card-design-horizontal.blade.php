@@ -1,6 +1,6 @@
 @php
-    $heightStyle = ' height: 2.4in; width: 3.41in;';
-    $wholeSize = 'height: 4.8in;width: 3.41in;';
+    $heightStyle = ' height: 2.16in; width: 3.41in;';
+    $wholeSize = 'height: 4.32in;width: 3.41in;';
 @endphp
 <div dir="rtl">
     <div class="grid md:grid-cols-6 sm:grid-cols-1 gap-x-6 gap-y-3">
@@ -36,7 +36,7 @@
                 <div class="px-2" x-html="details"></div>
                 @include('sqcard::livewire.guest.components.contentFile')
             </div>
-            <div class="bg-white block bg-cover bg-center bg-local bg-no-repeat" style="{{ $heightStyle }}"
+            <div class="bg-white block bg-cover bg-center bg-local bg-no-repeat" style="height: 2.32in; width: 3.41in;"
                 :style="{ 'background-image': 'url(' + '/storage/' + attr.backImage + ')' }">
                 <div class="px-2" x-html="remark"></div>
             </div>

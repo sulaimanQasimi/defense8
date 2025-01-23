@@ -16,6 +16,10 @@ class MainCard extends Model
     use SoftDeletes;
     use HasCardInfo;
     // use HasUuids;
+	protected $fillable=[
+	"card_perform",
+	"card_expired_date",
+	];
     protected $casts = [
         "card_second_date" => 'date',
         "card_perform" => 'date',

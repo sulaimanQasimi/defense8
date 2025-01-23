@@ -151,8 +151,6 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             (new OilReport())->canSee(fn() => auth()->user()->hasRole('super-admin')),
             (new AppSetting())->canSee(fn() => auth()->user()->hasRole('super-admin')),
             new \Acme\Forum\Forum(),
-
-            new \Guratr\CommandRunner\CommandRunner,
             // new NovaTranslation(),
 
         ];

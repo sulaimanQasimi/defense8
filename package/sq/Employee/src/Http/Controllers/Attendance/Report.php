@@ -45,7 +45,7 @@ class Report extends AttendanceSettings
         TCPDF::AddPage();
         $this->header();
         TCPDF::SetFillColor(102, 120, 135);
-        TCPDF::SetTextColor(255, 255, 255);
+        // TCPDF::SetTextColor(255, 255, 255);
         TCPDF::Ln(10);
         TCPDF::Cell(9, 7, '#', true, false, 'C', true);
         TCPDF::Cell($this->nameColumnSize, 7, trans('Name'), true, false, 'C', true);
@@ -68,6 +68,10 @@ class Report extends AttendanceSettings
         $i = 1;
         TCPDF::SetFont('mod_font', '', 8);
         foreach ($this->employees as $employee) {
+
+            TCPDF::SetFillColor(255, 255, 255);
+            TCPDF::SetTextColor(0, 0, 0);
+
             TCPDF::Cell(9, 7, $i, true, false, 'C');
             TCPDF::Cell($this->nameColumnSize, 7, $employee->name, true, false, 'C');
             TCPDF::Cell($this->fatherNameColumnSize, 7, $employee->father_name, true, false, 'C');

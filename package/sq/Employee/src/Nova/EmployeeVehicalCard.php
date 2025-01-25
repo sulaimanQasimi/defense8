@@ -172,7 +172,8 @@ class EmployeeVehicalCard extends Resource
                     && in_array($employeeVehicalCard->card_info->orginization->id, UserDepartment::getUserDepartment())
 
                 ),
-            (new VehicalRemarkAction)->canSee(fn() => auth()->user()->hasPermissionTo("add remark for vehical")),
+            (new VehicalRemarkAction)
+            ->canSee(fn() => auth()->user()->hasPermissionTo("add remark for vehical")),
 
         ];
     }

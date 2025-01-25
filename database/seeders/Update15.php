@@ -13,6 +13,8 @@ class Update15 extends Seeder
      */
     public function run(): void
     {
+        $this->call(CreateDesignCardPermission::class);
+        $this->call(AddEmployeeConfirmedPermissionSeeder::class);
         Permission::query()->updateOrCreate(['name' => 'quota_oil_update'],['fa_name' => 'ویرایش سهمیه تیل کارمندان', 'group' =>'تیل توزیع شده']);
     }
 }

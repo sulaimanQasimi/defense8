@@ -13,6 +13,7 @@ use Laravel\Nova\Actions\ActionResponse;
 use Laravel\Nova\Fields\ActionFields;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Sq\Query\Policy\UserDepartment;
 
 class EmployeeCarPrintCardAction extends Action
 {
@@ -28,7 +29,9 @@ class EmployeeCarPrintCardAction extends Action
     {
         return [
             Select::make(trans("Card Type"), 'frame')->options(
-                PrintCardFrame::where('type', PrintTypeEnum::EmployeeCar)->pluck('name', 'id')
+                PrintCardFrame::where('type', PrintTypeEnum::EmployeeCar)
+                ->whereIn('department_id', UserDepartment::getUserDepartment())
+                ->pluck('name', 'id')
             )->displayUsingLabels()->rules('required', 'exists:print_card_frames,id'),
         ];
     }

@@ -1,13 +1,18 @@
 <?php
+
 namespace Sq\Card\Nova;
 
 
 use App\Nova\Resource;
 use App\Support\Defense\Print\PrintTypeEnum;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Laravel\Nova\Actions\Action;
+use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Sq\Employee\Nova\Department;
+use Sq\Query\Policy\UserDepartment;
 
 class PrintCardFrame extends Resource
 {
@@ -23,6 +28,14 @@ class PrintCardFrame extends Resource
     public static function singularLabel()
     {
         return __('Print Card Frame');
+    }
+
+    public static function indexQuery(NovaRequest $request, $query)
+    {
+        if (auth()->user()->hasRole('super-admin')) {
+            return $query;
+        }
+        return $query->whereIn('department_id', UserDepartment::getUserDepartment());
     }
     public function fields(NovaRequest $request)
     {
@@ -44,13 +57,22 @@ class PrintCardFrame extends Resource
                 ->displayUsingLabels()
                 ->required()
                 ->rules("required"),
+
+            BelongsTo::make(__("Department/Chancellor"), 'department', Department::class)
+                ->relatableQueryUsing(function (NovaRequest $request, Builder $query) {
+                    $query->whereIn('id', UserDepartment::getUserDepartment());
+                })
+                // ->searchable()
+                ->filterable()
+                ->sortable()
+                ->withoutTrashed(),
+
         ];
     }
 
     public function cards(NovaRequest $request)
     {
-        return [
-        ];
+        return [];
     }
 
     /**
@@ -91,8 +113,7 @@ class PrintCardFrame extends Resource
                 ->sole()
                 ->withoutConfirmation()
                 ->onlyOnDetail()
-                ->canRun(fn() => auth()->user()->hasPermissionTo("design-card")),
-   
+                ->canRun(fn($request, $card) => auth()->user()->hasPermissionTo("design-card") && in_array($card->department_id, UserDepartment::getUserDepartment())),
         ];
     }
     public function replicate()

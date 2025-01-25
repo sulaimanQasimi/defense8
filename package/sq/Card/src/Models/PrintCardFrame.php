@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Sq\Card\Models\Contracts\DefaultCardAttribute;
+use Sq\Employee\Models\Department;
 
 class PrintCardFrame extends Model
 {
@@ -30,5 +31,9 @@ class PrintCardFrame extends Model
                 }
             }
         );
+    }
+    public function department()
+    {
+        return $this->belongsTo(Department::class);
     }
 }

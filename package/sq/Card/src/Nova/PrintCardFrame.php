@@ -30,13 +30,13 @@ class PrintCardFrame extends Resource
         return __('Print Card Frame');
     }
 
-    public static function indexQuery(NovaRequest $request, $query)
-    {
-        if (auth()->user()->hasRole('super-admin')) {
-            return $query;
-        }
-        return $query->whereIn('department_id', UserDepartment::getUserDepartment());
-    }
+    // public static function indexQuery(NovaRequest $request, $query)
+    // {
+    //     if (auth()->user()->hasRole('super-admin')) {
+    //         return $query;
+    //     }
+    //     return $query->whereIn('department_id', UserDepartment::getUserDepartment());
+    // }
     public function fields(NovaRequest $request)
     {
         return [

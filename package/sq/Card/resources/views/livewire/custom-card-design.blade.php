@@ -27,7 +27,7 @@
     @endonce
 
     {{-- Be like water. --}}
-{{-- Loading Component --}}
+    {{-- Loading Component --}}
     @teleport('body')
     @include('sqcard::livewire.guest.components.loadingBanner')
     @endteleport
@@ -44,10 +44,10 @@ qrcode.makeCode('123');
 
 JsBarcode('#barcode', 'G5-00000', {
     format: 'CODE128',
-    // background: '#000000/',
+     {{-- background: '#000000/', --}}
     width: 1.2,
-    height: 10,
-    displayValue: false
+    height: 30,
+    displayValue: true
 });
 
 " x-data="{
@@ -114,9 +114,9 @@ JsBarcode('#barcode', 'G5-00000', {
     }
 }" x-show="state.show" x-cloak>
 
-        <div id="container" x-bind:style="{ width: attr.page.width+'mm', height: attr.page.height+'mm',
-    'background-image': 'url(' + '{{ $cardFrame->ip_address }}/storage/' + attr.content.background +
-        ')',
+
+
+        <div id="container" x-bind:style="{ width: attr.page.width+'mm', height: attr.page.height+'mm','background-image': 'url(' + '{{ $cardFrame->ip_address }}/storage/' + attr.content.background +')',
         'background-size': 'contain',
 
 'background-repeat': 'no-repeat',
@@ -124,12 +124,15 @@ JsBarcode('#barcode', 'G5-00000', {
 
 }" class="bg-gray-200 ">
 
-
 <div class="text-center" x-html="attr.government.title"></div>
 
 {{-- Government Logo --}}
 <img :src="'{{ $cardFrame->ip_address }}/storage/' + attr.government.path" class="absolute cursor-move" tabindex="0"
-@keydown="(event) => {
+@keydown="(event) => { if (event.key === 'ArrowUp' && event.shiftKey) {
+        attr.government.size += 1;
+    } else if (event.key === 'ArrowDown' && event.shiftKey) {
+        attr.government.size -= 1;
+    }else
     if (event.key === 'ArrowUp') {
         attr.government.y -= 1;
     } else if (event.key === 'ArrowDown') {
@@ -138,10 +141,6 @@ JsBarcode('#barcode', 'G5-00000', {
         attr.government.x -= 1;
     } else if (event.key === 'ArrowRight') {
         attr.government.x += 1;
-    } else if (event.key === 'ArrowUp' && event.shiftKey) {
-        attr.government.size += 1;
-    } else if (event.key === 'ArrowDown' && event.shiftKey) {
-        attr.government.size -= 1;
     }
 }"
 :style="{ top: attr.government.y + 'px', left: attr.government.x + 'px', height: attr.government.size + 'px' }" />
@@ -166,7 +165,8 @@ if (event.key === 'ArrowUp') {
 }"
 :style="{ top: attr.ministry.y + 'px', left: attr.ministry.x + 'px', height: attr.ministry.size + 'px' }" />
 
-<div class="px-2" x-html="details"></div>
+
+<div dir="rtl" x-html="details"></div>
 
 {{-- Profile Image --}}
 <img src="{{ asset('logo.png') }}" class="absolute cursor-move" tabindex="0"
@@ -248,14 +248,15 @@ if (event.key === 'ArrowUp') {
 <svg id="barcode"></svg>
 </div>
 
-</div>
+
+
+        </div>
 
 
         <div x-bind:style="{ top: top + 'px', left: left + 'px' }" class="absolute z-40">
             <div x-bind:class="{'bg-blue-200 bg-opacity-50 rounded-lg shadow-lg p-6 overflow-hidden': true}"
                 x-bind:style="{ 'width': width + 'px' }">
-                <div class="scale-110 cursor-move absolute "
-                    @keydown="(event) => {
+                <div class="scale-110 cursor-move absolute " @keydown="(event) => {
                         if (event.key === 'ArrowUp') {
                             top -= 1;
                         } else if (event.key === 'ArrowDown') {
@@ -265,10 +266,7 @@ if (event.key === 'ArrowUp') {
                         } else if (event.key === 'ArrowRight') {
                            right += 1;
                         }
-                    }"
-
-
-                    style="top: -8px; right: -11px;">
+                    }" style="top: -8px; right: -11px;">
                     <button type="button">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="w-6 h-6 text-gray-500">
                             <path
@@ -297,6 +295,45 @@ if (event.key === 'ArrowUp') {
                         <div id="accordion-collapse-body-1" class="hidden p-2"
                             aria-labelledby="accordion-collapse-heading-1">
                             <textarea type="text" id="header" x-model="attr.government.title"></textarea>
+                        </div>
+
+
+                        {{-- #accordion-collapse-body-1 --}}
+                        <h2 id="accordion-collapse-heading-4">
+                            <button type="button"
+                                class="flex items-center justify-between w-full p-1 font-medium rtl:text-right text-gray-500  "
+                                data-accordion-target="#accordion-collapse-body-4" aria-expanded="true"
+                                aria-controls="accordion-collapse-body-4"> <svg data-accordion-icon
+                                    class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                        stroke-width="2" d="M9 5 5 1 1 5" />
+                                </svg>
+                                <label class="block mb-2 text-sm font-medium text-sky-500">@lang('Remark')</label>
+                            </button>
+                        </h2>
+                        <div id="accordion-collapse-body-4" class="hidden p-2"
+                            aria-labelledby="accordion-collapse-heading-4">
+                            <div class="my-2 col-span-2">
+                                <div dir="rtl">
+                                    <div>{{ \Sq\Card\Support\PrintCardField::info_allowed_field() }}</div>
+
+                                    @if ($cardFrame->type == \App\Support\Defense\Print\PrintTypeEnum::Employee)
+                                        <div>{{ \Sq\Card\Support\PrintCardField::main_allowed_field() }}</div>
+                                    @endif
+                                    @if ($cardFrame->type == \App\Support\Defense\Print\PrintTypeEnum::EmployeeCar)
+                                        <div>{{ \Sq\Card\Support\PrintCardField::vehical_allowed_field() }}</div>
+                                    @endif
+                                    @if ($cardFrame->type == \App\Support\Defense\Print\PrintTypeEnum::Gun)
+                                        <div>{{ \Sq\Card\Support\PrintCardField::gun_allowed_field() }}</div>
+                                    @endif
+                                </div>
+                                <label for="font-size" class="block mb-2 text-sm font-medium text-gray-900">
+                                    @lang(':resource Details', ['resource' => '']) </label>
+                                <textarea type="text" id="details" x-model="details" rows="4"
+                                    class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                            </div>
+
                         </div>
                         {{-- #accordion-collapse-body-2 --}}
                         <h2 id="accordion-collapse-heading-2">
@@ -475,7 +512,8 @@ if (event.key === 'ArrowUp') {
                                                     @lang('Ministry Logo')
                                                 </p>
                                             </div>
-                                            <input id="ministry-logo-file-upload" type="file"   wire:model.live="attr.ministry.path"  class="hidden" />
+                                            <input id="ministry-logo-file-upload" type="file"
+                                                wire:model.live="attr.ministry.path" class="hidden" />
                                         </label>
                                     </div>
                                 </div>
@@ -518,7 +556,8 @@ if (event.key === 'ArrowUp') {
                                                     @lang('Minister Signature')
                                                 </p>
                                             </div>
-                                            <input id="card-signature-file-upload"                 wire:model.live="attr.signature.path"  type="file" class="hidden" />
+                                            <input id="card-signature-file-upload" wire:model.live="attr.signature.path"
+                                                type="file" class="hidden" />
                                         </label>
                                     </div>
                                 </div>
@@ -536,16 +575,16 @@ if (event.key === 'ArrowUp') {
 <script>
     // Remark Field
 
-    // CKEDITOR.replace('details').on('change', function(e) {
-    //     $wire.set('details', this.getData());
-    // });
+    CKEDITOR.replace('details').on('change', function (e) {
+        $wire.set('details', this.getData());
+    });
 
     // CKEDITOR.replace('remark').on('change', function(e) {
     //     $wire.set('remark', this.getData());
     // });
 
     CKEDITOR.replace('header').on('change', function (e) {
-        // $wire.set('attr.government.title', this.getData());
+        $wire.set('attr.government.title', this.getData());
     });
 </script>
 @endscript

@@ -50,7 +50,7 @@ class CustomCardDesign extends Component
 
     ];
     protected string  $route = 'sq.card.livewire.custom-card-design';
-    
+
     public $attr;
     public $details;
     public $remark;

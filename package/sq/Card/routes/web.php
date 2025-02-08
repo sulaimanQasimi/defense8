@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Sq\Card\Http\Controllers\PrintCardController;
+use Sq\Card\Http\Controllers\TestCardController;
 use Sq\Card\Livewire\CardDesign;
 use Sq\Card\Livewire\CustomCardDesign;
 use Sq\Card\Models\Contracts\DefaultCardAttribute;
@@ -11,6 +12,8 @@ Route::middleware(['auth'])
     ->group(function () {
 
 
+
+        Route::get("r-preview/{customPaperCard:id}", [TestCardController::class,'custom']);
 
         Route::get("r-test/{customPaperCard:id}", CustomCardDesign::class)
             ->name('employee.paper-design-card');

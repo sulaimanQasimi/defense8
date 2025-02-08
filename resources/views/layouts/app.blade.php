@@ -40,7 +40,7 @@
                 /* slider */
                 --slider-width: 100%;
                 --slider-height: 6px;
-                --slider-bg: rgb(82, 82, 82);
+                --slider-bg: rgb(255, 255, 255);
                 --slider-border-radius: 999px;
                 /* level */
                 --level-color: #fff;

@@ -15,6 +15,15 @@ class CardDesign extends Component
     use WithFileUploads;
     use CardAttribute;
     public PrintCardFrame $cardFrame;
+    /**
+     * Generates the model route for the card design page.
+     *
+     * @return string The route URL for the card design page.
+     */
+    protected function ModelRoute()
+    {
+        return route('sq.employee.design-card', ['printCardFrame' => $this->cardFrame]);
+    }
 
     public $attr;
     public $details;
@@ -31,7 +40,7 @@ class CardDesign extends Component
         $this->attr = $printCardFrame->attr;
         $this->details = $printCardFrame->details;
         $this->remark = $printCardFrame->remark;
-      }
+    }
 
 
     /**

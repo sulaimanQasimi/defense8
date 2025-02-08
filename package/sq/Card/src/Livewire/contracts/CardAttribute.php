@@ -1,19 +1,34 @@
 <?php
+
 namespace Sq\Card\Livewire\Contracts;
+
 use Illuminate\Support\Str;
+
 trait CardAttribute
 {
     public function updatedAttr($value, $key)
     {
         switch ($key) {
+                // Page Str::endsWith($haystack, 'needles')
+            case "page.height":
+                $this->cardFrame->update(['attr->page->height' => $this->attr['page']['height']]);
+                break;
+
+            case "page.width":
+                $this->cardFrame->update(['attr->page->width' => $this->attr['page']['width']]);
+                break;
+
+
+
+
             case "content.background":
                 $this->cardFrame->update(['attr->content->background' => Str::after($this->attr['content']['background']->store(path: 'public/background'), 'public/')]);
-                $this->redirect(route('sq.employee.design-card', ['printCardFrame' => $this->cardFrame]), true);
+                $this->redirect($this->ModelRoute(), true);
                 break;
 
             case "government.path":
                 $this->cardFrame->update(['attr->government->path' => Str::after($this->attr['government']['path']->store(path: 'public/government'), 'public/')]);
-                $this->redirect(route('sq.employee.design-card', ['printCardFrame' => $this->cardFrame]), true);
+                $this->redirect($this->ModelRoute(), true);
                 break;
 
 
@@ -36,14 +51,14 @@ trait CardAttribute
                 $this->cardFrame->update(['attr->government->y' => $this->attr['government']['y']]);
                 break;
 
-            // Ministry Attribute
+                // Ministry Attribute
             case "ministry.path":
                 $this->cardFrame->update(['attr->ministry->path' => Str::after($this->attr['ministry']['path']->store(path: 'public/ministry'), 'public/')]);
-                $this->redirect(route('sq.employee.design-card', ['printCardFrame' => $this->cardFrame]), true);
+                $this->redirect($this->ModelRoute(), true);
                 break;
             case "backImage":
                 $this->cardFrame->update(['attr->backImage' => Str::after($this->attr['backImage']->store(path: 'public/backImage'), 'public/')]);
-                $this->redirect(route('sq.employee.design-card', ['printCardFrame' => $this->cardFrame]), true);
+                $this->redirect($this->ModelRoute(), true);
                 break;
             case "ministry.title":
                 $this->cardFrame->update(['attr->ministry->title' => $this->attr['ministry']['title']]);
@@ -61,7 +76,7 @@ trait CardAttribute
                 $this->cardFrame->update(['attr->ministry->y' => $this->attr['ministry']['y']]);
                 break;
 
-            // Profile
+                // Profile
             case "profile.path":
                 $this->cardFrame->update(['attr->profile->path' => Str::after($this->attr['profile']['path']->store(path: 'public/profile'), 'public/')]);
                 break;
@@ -79,10 +94,10 @@ trait CardAttribute
                 break;
 
 
-            // Profile
+                // Profile
             case "signature.path":
                 $this->cardFrame->update(['attr->signature->path' => Str::after($this->attr['signature']['path']->store(path: 'public/signature'), 'public/')]);
-                $this->redirect(route('sq.employee.design-card', ['printCardFrame' => $this->cardFrame]), true);
+                $this->redirect($this->ModelRoute(), true);
 
                 break;
             case "signature.title":
@@ -98,10 +113,10 @@ trait CardAttribute
                 $this->cardFrame->update(['attr->signature->y' => $this->attr['signature']['y']]);
                 break;
 
-            // QrCode
+                // QrCode
             case "qrcode.size":
                 $this->cardFrame->update(['attr->qrcode->size' => $this->attr['qrcode']['size']]);
-                $this->redirect(route('sq.employee.design-card', ['printCardFrame' => $this->cardFrame]), true);
+                $this->redirect($this->ModelRoute(), true);
                 break;
             case "qrcode.x":
                 $this->cardFrame->update(['attr->qrcode->x' => $this->attr['qrcode']['x']]);
@@ -110,7 +125,7 @@ trait CardAttribute
                 $this->cardFrame->update(['attr->qrcode->y' => $this->attr['qrcode']['y']]);
                 break;
 
-            // Barcode
+                // Barcode
             case "barCode.x":
                 $this->cardFrame->update(['attr->barCode->x' => $this->attr['barCode']['x']]);
                 break;
@@ -119,8 +134,8 @@ trait CardAttribute
                 break;
             case "barCode.z":
                 $this->cardFrame->update(['attr->barCode->z' => $this->attr['barCode']['z']]);
-                $this->redirect(route('sq.employee.design-card', ['printCardFrame' => $this->cardFrame]), true);
-   
+                $this->redirect($this->ModelRoute(), true);
+
                 break;
 
             case "header.backgroundColor":
@@ -130,6 +145,5 @@ trait CardAttribute
                 $this->cardFrame->update(['attr->content->fontColor' => $this->attr['content']['fontColor']]);
                 break;
         }
-
     }
 }

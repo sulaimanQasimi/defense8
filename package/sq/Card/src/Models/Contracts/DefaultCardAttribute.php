@@ -62,6 +62,11 @@ class DefaultCardAttribute
                 "colorLight" => "#ffffff",
                 "correctLevel" => "QRCode.CorrectLevel.H",
             ],
+            'page'=>[
+                'height'=>210,
+                'width'=>297,
+                'dim'=>'vertical'
+            ]
         ];
     }
 }

@@ -97,8 +97,11 @@ class PrintCardController
         if (!in_array($card->department_id, UserDepartment::getUserDepartment())) {
             abort(404);
         }
-        
+
         if (!$card->type == $printTypeEnum) {
+            abort(404);
+        }
+        if (!$cardInfo->confirmed) {
             abort(404);
         }
 

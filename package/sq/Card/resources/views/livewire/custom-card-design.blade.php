@@ -153,7 +153,7 @@ if (event.key === 'ArrowUp' && event.shiftKey) {
         attr.ministry.size += 1;
     } else if (event.key === 'ArrowDown' && event.shiftKey) {
         attr.ministry.size -= 1;
-    }else 
+    }else
 if (event.key === 'ArrowUp') {
         attr.ministry.y -= 1;
     } else if (event.key === 'ArrowDown') {
@@ -547,7 +547,6 @@ if (event.key === 'ArrowUp') {
     CKEDITOR.replace('header').on('change', function (e) {
         // $wire.set('attr.government.title', this.getData());
     });
-
 </script>
 @endscript
 </div>

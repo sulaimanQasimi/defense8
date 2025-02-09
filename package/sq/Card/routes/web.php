@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Sq\Card\Http\Controllers\PrintCardController;
+use Sq\Card\Http\Controllers\PrintPaperCardController;
 use Sq\Card\Http\Controllers\TestCardController;
 use Sq\Card\Livewire\CardDesign;
 use Sq\Card\Livewire\CustomCardDesign;
@@ -13,12 +14,25 @@ Route::middleware(['auth'])
 
 
 
-        Route::get("r-preview/{customPaperCard:id}", [TestCardController::class,'custom'])
-        ->name('employee.paper-test-card');
-        ;
+        /**
+         * Define a route for previewing a custom paper card.
+         *
+         * This route responds to a GET request at the URL pattern "paper-card/{customPaperCard:id}".
+         * It uses the 'custom' method of the TestCardController to handle the request.
+         * The route is named 'employee.paper-test-card'.
+         *
+         * @param int $customPaperCard:id The ID of the custom paper card to preview.
+         * @return \Illuminate\Http\Response
+         */
+        Route::get("paper-card-preview/{customPaperCard:id}", [TestCardController::class, 'custom'])
+            ->name('employee.paper-test-card');
 
-        Route::get("r-test/{customPaperCard:id}", CustomCardDesign::class)
+
+        Route::get("paper-card/{customPaperCard:id}", CustomCardDesign::class)
             ->name('employee.paper-design-card');
+
+
+
         // Card Frame Design Request Route
         Route::middleware('permission:design-card')
             ->get('card-design/{printCardFrame:id}', CardDesign::class)
@@ -38,4 +52,13 @@ Route::middleware(['auth'])
 
         // Employee Car Card
         Route::middleware('permission:print-card')->get('print/employeeCar/{employeeVehicalCard:id}/card/{printCardFrame}', (new PrintCardController())->employee_car(...))->name('employee-car.print-card-for');
+        Route::middleware('permission:print-card')
+        
+            ->controller(PrintPaperCardController::class)
+            ->name('paper.print-card')
+            ->group(function () {
+                Route::get('employee/{mainCard:id}/card/{printCardFrame}', 'employee')->name('employee');
+                Route::get('gun/{gunCard:id}/card/{printCardFrame}', 'gun')->name('gun');
+                Route::get('employeeCar/{employeeVehicalCard:id}/card/{printCardFrame}', 'employee_car')->name('employee_car');
+            });
     });

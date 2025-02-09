@@ -19,11 +19,13 @@ class MainCard extends Model
 	protected $fillable=[
 	"card_perform",
 	"card_expired_date",
+    'printed',
 	];
     protected $casts = [
         "card_second_date" => 'date',
         "card_perform" => 'date',
         "card_expired_date" => 'date',
-        'printed_at'=>'date'
+        'printed_at'=>'date',
+        'printed'=>'boolean'
     ];
 }

@@ -2,19 +2,22 @@
 
 namespace Sq\Card\Nova;
 
+use Afj95\LaravelNovaHijriDatepickerField\HijriDatePicker;
 use App\Nova\Resource;
 use App\Nova\User;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use MZiraki\PersianDateField\PersianDate;
 use Sq\Employee\Nova\CardInfo;
+use Sq\Query\Policy\UserDepartment;
 
 class PrintCard extends Resource
 {
     public static $model = \Sq\Card\Models\PrintCard::class;
-   public static $title = 'card_info.registare_no';
+    public static $title = 'card_info.registare_no';
 
     public static $search = [
         'card_info.registare_no',
@@ -28,14 +31,37 @@ class PrintCard extends Resource
     {
         return __('Print Card');
     }
+
+    public static function indexQuery(NovaRequest $request, $query)
+    {
+        if (auth()->user()->hasRole('super-admin')) {
+            return $query;
+        }
+        return $query->whereHas('card_info', function ($query) {
+            return $query->whereIn('department_id', UserDepartment::getUserDepartment());
+        });
+    }
+
     public function fields(NovaRequest $request)
     {
         return [
-            BelongsTo::make(trans("Employee"),'card_info',CardInfo::class),
-            BelongsTo::make(trans("User"),'user',User::class),
-            BelongsTo::make(trans("Card Type"),'card_info',PrintCardFrame::class),
-            PersianDate::make(trans("Issue Date"),'issue'),
-            PersianDate::make(trans("Expire Date"),'expire'),
+            BelongsTo::make(trans("Employee"), 'card_info', CardInfo::class),
+            Text::make(trans("Department"), fn()=>$this->card_info?->orginization?->fa_name),
+
+            BelongsTo::make(trans("User"), 'user', User::class),
+
+            BelongsTo::make(trans("Card Type"), 'printCardFrame', PrintCardFrame::class),
+
+            BelongsTo::make(trans("Paper Card"), 'customPaperCard', CustomPaperCard::class),
+
+            HijriDatePicker::make(trans("Issue Date"), 'issue')->format('iYYYY/iMM/iDD')
+                ->placeholder('YYYY/MM/DD')
+                ->selected_date('1444/12/12')
+                ->placement('bottom'),
+            HijriDatePicker::make(trans("Expire Date"), 'expire')->format('iYYYY/iMM/iDD')
+                ->placeholder('YYYY/MM/DD')
+                ->selected_date('1444/12/12')
+                ->placement('bottom'),
         ];
     }
     public function cards(NovaRequest $request)

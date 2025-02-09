@@ -56,7 +56,7 @@
             style="top: {{ $card?->attr['ministry']['y'] }}px; left: {{ $card?->attr['ministry']['x'] }}px; height: {{ $card?->attr['ministry']['size'] }}px;" />
         <div dir="rtl">{!! $field->details !!}</div>
         {{-- Profile Image --}}
-        <img src="{{ asset('logo.png') }}" class="absolute cursor-move" tabindex="0"
+        <img src="{{ $cardInfo->image_path }}" class="absolute cursor-move" tabindex="0"
             style="top: {{ $card?->attr['profile']['y'] }}px; left: {{ $card?->attr['profile']['x'] }}px; height: {{ $card?->attr['profile']['size'] }}px;" />
         {{-- Signature --}}
         <img src="/storage/{{ $card?->attr['signature']['path'] }}" class="absolute cursor-move" tabindex="0"
@@ -78,7 +78,7 @@
     </div>
     <script type="text/javascript" src="{{ asset('cards/qrcode/qrcode.js') }}"></script>
     <script>
-        JsBarcode("#barcode", "G2-000000", {
+        JsBarcode("#barcode", "{{ $cardInfo->registare_no }}", {
             format: "CODE128",
             // background: "#000000/",
             width: 1.2,
@@ -90,7 +90,7 @@
             width: {{ $card?->attr['qrcode']['size'] }},
             height: {{ $card?->attr['qrcode']['size'] }}
         });
-        qrcode.makeCode("G2-000000");
+        qrcode.makeCode("{{ $cardInfo->registare_no }}");
     </script>
 
 </body>

@@ -15,13 +15,15 @@ class GunCard extends Model
     use HasCardInfo;
 
     protected $fillable = [
-        'register_date' => "date",
-        'expire_date' => "date",
-        "filled_form_date"=> "date",
-    ];   
+        'register_date',
+        'expire_date',
+        'filled_form_date',
+        'printed'
+    ];
    protected $casts = [
-        'register_date' => "date",
-        'expire_date' => "date",
-        "filled_form_date"=> "date",
+        'register_date' => 'date',
+        'expire_date' => 'date',
+        'filled_form_date'=> 'date',
+        'printed'=> 'boolean',
     ];
 }

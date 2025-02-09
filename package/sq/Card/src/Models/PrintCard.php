@@ -17,4 +17,12 @@ class PrintCard extends Model
         'issue' => 'date',
         'expire' => 'date'
     ];
+    public function customPaperCard()
+    {
+        return $this->belongsTo(CustomPaperCard::class);
+    }
+    public function printCardFrame()
+    {
+        return $this->belongsTo(PrintCardFrame::class);
+    }
 }

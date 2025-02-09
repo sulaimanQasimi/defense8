@@ -31,6 +31,12 @@ class PrintPaperCardController extends Controller
      */
     public function employee(Request $request, MainCard $mainCard, int $printCardFrame): View
     {
+        if ($mainCard->printed) {
+            abort(404);
+        }
+        $mainCard->update(['printed' => 1]);
+
+
         return $this->card_optimization(
             cardInfo: $mainCard->card_info,
             printCardFrame: $printCardFrame,
@@ -50,6 +56,12 @@ class PrintPaperCardController extends Controller
      */
     public function gun(Request $request, GunCard $gunCard, int $printCardFrame): View
     {
+
+        if ($gunCard->printed) {
+            abort(404);
+        }
+        $gunCard->update(['printed' => 1]);
+
         return $this->card_optimization(
             cardInfo: $gunCard->card_info,
             printCardFrame: $printCardFrame,
@@ -67,6 +79,11 @@ class PrintPaperCardController extends Controller
      */
     public function employee_car(Request $request, EmployeeVehicalCard $employeeVehicalCard, int $printCardFrame): View
     {
+        if ($employeeVehicalCard->printed) {
+            abort(404);
+        }
+        $employeeVehicalCard->update(['printed' => 1]);
+
         return $this->card_optimization(
             cardInfo: $employeeVehicalCard->card_info,
             printCardFrame: $printCardFrame,
@@ -105,7 +122,6 @@ class PrintPaperCardController extends Controller
         if (!$cardInfo->confirmed) {
             abort(404);
         }
-        // dd($mainCard);
 
         // Get / Replace the field to Value
         $field = new PrintCardField(employee: $cardInfo, frame: $card, vehical: $employeeVehicalCard, gun: $gun, mainCard: $mainCard);

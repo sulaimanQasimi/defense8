@@ -1,4 +1,5 @@
 <?php
+
 namespace Sq\Employee\Nova;
 
 use Afj95\LaravelNovaHijriDatepickerField\HijriDatePicker;
@@ -8,6 +9,8 @@ use DigitalCreative\MegaFilter\MegaFilter;
 use DigitalCreative\MegaFilter\MegaFilterTrait;
 use Illuminate\Database\Eloquent\Builder;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Trix;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -49,8 +52,15 @@ class EmployeeVehicalCard extends Resource
     public function fields(NovaRequest $request)
     {
         return [
-
             Image::make(__('Photo'), 'photo')->disk('vehical'),
+            Select::make(__('Category'), 'category')
+                ->options([
+                    'الف' => __('الف'),
+                    'ب' => __('ب'),
+                    'ج' => __('ج'),
+                    'د' => __('د'),
+                    'چ' => __('چ'),
+                ]),
             BelongsTo::make(__('Employee'), 'card_info', CardInfo::class)
                 ->relatableQueryUsing(function (NovaRequest $request, Builder $query) {
                     $query->whereIn('department_id', UserDepartment::getUserDepartment());
@@ -115,6 +125,7 @@ class EmployeeVehicalCard extends Resource
                 ->placeholder('YYYY/MM/DD')
                 ->selected_date('1444/12/12')
                 ->placement('bottom'),
+            Boolean::make(__("Print"), 'printed')->hideWhenCreating(),
 
             Trix::make(__("Remark"), 'remark')
                 ->exceptOnForms()
@@ -125,8 +136,7 @@ class EmployeeVehicalCard extends Resource
 
     public function cards(NovaRequest $request)
     {
-        return [
-        ];
+        return [];
     }
 
     public function filters(NovaRequest $request)
@@ -169,11 +179,18 @@ class EmployeeVehicalCard extends Resource
                 ->onlyOnDetail()
                 ->canRun(
                     fn($request, $employeeVehicalCard) => auth()->user()->hasPermissionTo("print-card")
-                    && in_array($employeeVehicalCard->card_info->orginization->id, UserDepartment::getUserDepartment())
+                        && in_array($employeeVehicalCard->card_info->orginization->id, UserDepartment::getUserDepartment())
+
+                ),
+            (new \Sq\Card\Nova\Actions\EmployeeCarPrintPaperCardAction)
+                ->onlyOnDetail()
+                ->canRun(
+                    fn($request, $employeeVehicalCard) => auth()->user()->hasPermissionTo("print-card")
+                        && in_array($employeeVehicalCard->card_info->orginization->id, UserDepartment::getUserDepartment())
 
                 ),
             (new VehicalRemarkAction)
-            ->canSee(fn() => auth()->user()->hasPermissionTo("add remark for vehical")),
+                ->canSee(fn() => auth()->user()->hasPermissionTo("add remark for vehical")),
 
         ];
     }

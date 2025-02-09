@@ -1,4 +1,5 @@
 <?php
+
 namespace Sq\Employee\Nova;
 
 use Afj95\LaravelNovaHijriDatepickerField\HijriDatePicker;
@@ -7,7 +8,9 @@ use DigitalCreative\MegaFilter\MegaFilter;
 use DigitalCreative\MegaFilter\MegaFilterTrait;
 use Illuminate\Database\Eloquent\Builder;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Trix;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use MZiraki\PersianDateField\PersianDate;
 use Sq\Query\Policy\UserDepartment;
@@ -73,6 +76,9 @@ class GunCard extends Resource
                 ->placeholder('YYYY/MM/DD')
                 ->selected_date('1444/12/12')
                 ->placement('bottom'),
+
+            Trix::make(trans('Remark'), 'remark'),
+            Boolean::make(__("Print"), 'printed')->hideWhenCreating(),
             // PersianDate::make(__("Disterbute Date"), "register_date")
             //     ->required()
             //     ->rules('required', 'date')
@@ -131,7 +137,12 @@ class GunCard extends Resource
             (new \Sq\Card\Nova\Actions\GunPrintCardAction)->onlyOnDetail()
                 ->canRun(
                     fn($request, $gun) => auth()->user()->hasPermissionTo("print-card")
-                    && in_array($gun->card_info->orginization->id, UserDepartment::getUserDepartment())
+                        && in_array($gun->card_info->orginization->id, UserDepartment::getUserDepartment())
+                ),
+            (new \Sq\Card\Nova\Actions\GunPrintPaperCardAction)->onlyOnDetail()
+                ->canRun(
+                    fn($request, $gun) => auth()->user()->hasPermissionTo("print-card")
+                        && in_array($gun->card_info->orginization->id, UserDepartment::getUserDepartment())
                 ),
 
         ];

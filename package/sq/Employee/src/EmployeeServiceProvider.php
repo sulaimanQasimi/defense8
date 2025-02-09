@@ -97,6 +97,7 @@ class EmployeeServiceProvider extends ServiceProvider
                 // Frame of Printable Card Menu Item
                 MenuItem::resource(\Sq\Card\Nova\PrintCardFrame::class),
                 MenuItem::resource(\Sq\Card\Nova\CustomPaperCard::class),
+                MenuItem::resource(\Sq\Card\Nova\PrintCard::class),
 
 
             ])

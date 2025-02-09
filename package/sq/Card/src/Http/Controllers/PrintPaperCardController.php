@@ -116,7 +116,7 @@ class PrintPaperCardController extends Controller
 
             'card_info_id' => $cardInfo->id,
 
-            'print_card_frame_id' => $card->id,
+            'custom_paper_card_id' => $card->id,
             // Issue Date In specifict Format
             'issue' => match ($printTypeEnum) {
                 PrintTypeEnum::Employee => $mainCard?->card_perform,

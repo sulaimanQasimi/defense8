@@ -17,10 +17,6 @@
                 .container {
                     padding: 0;
                     border: 2px solid black;
-                    background-position: center;
-                    background-repeat: no-repeat;
-                    background-size: contain;
-                    background-image: url("aa.png");
                 }
             </style>
         @endpush
@@ -585,6 +581,30 @@ if (event.key === 'ArrowUp') {
 
     CKEDITOR.replace('header').on('change', function (e) {
         $wire.set('attr.government.title', this.getData());
+    });
+
+    // Function to initialize accordion
+    function initializeAccordion() {
+        const accordions = document.querySelectorAll('[data-accordion]');
+        accordions.forEach(accordion => {
+            const buttons = accordion.querySelectorAll('[data-accordion-target]');
+            buttons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const target = document.querySelector(button.getAttribute('data-accordion-target'));
+                    const expanded = button.getAttribute('aria-expanded') === 'true';
+                    button.setAttribute('aria-expanded', !expanded);
+                    target.classList.toggle('hidden', expanded);
+                });
+            });
+        });
+    }
+
+    // Initialize accordion on page load
+    document.addEventListener('DOMContentLoaded', initializeAccordion);
+
+    // Reinitialize accordion after Livewire updates the DOM
+    Livewire.hook('message.processed', (message, component) => {
+        initializeAccordion();
     });
 </script>
 @endscript

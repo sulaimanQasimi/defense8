@@ -2,7 +2,6 @@
 namespace Sq\Card\Support;
 
 use Sq\Employee\Models\CardInfo as Employee;
-use Sq\Card\Models\PrintCardFrame as Frame;
 use Sq\Card\Support\GunCardField;
 use Sq\Card\Support\InfoField;
 use Sq\Card\Support\MainCardField;
@@ -20,7 +19,7 @@ final class PrintCardField
 
     public $version;
 
-    public function __construct(private Employee $employee, private Frame $frame, public $vehical = null, public $gun = null,public $mainCard)
+    public function __construct(private Employee $employee, private  $frame, public $vehical = null, public $gun = null,public $mainCard)
     {
         $this->version = app()->version();
     }

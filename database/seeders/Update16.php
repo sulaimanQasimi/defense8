@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Sq\Employee\Database\Seeders\AddSpecialCardEntryPermission;
 
 class Update16 extends Seeder
 {
@@ -12,6 +13,6 @@ class Update16 extends Seeder
      */
     public function run(): void
     {
-        //
+        $this->call(AddSpecialCardEntryPermission::class);
     }
 }

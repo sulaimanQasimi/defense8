@@ -86,6 +86,7 @@ class PrintPaperCardController extends Controller
     private function card_optimization($cardInfo, $printCardFrame, $employeeVehicalCard = null, $gun = null, $printTypeEnum = null, $mainCard = null): View
     {
         $card = \Sq\Card\Models\CustomPaperCard::findOrFail(id: $printCardFrame);
+
         /**
          * If User have Depandant department of the employee
          */
@@ -98,12 +99,13 @@ class PrintPaperCardController extends Controller
             abort(404);
         }
 
-        if (!$card->type == $printTypeEnum) {
+        if ($card->type != $printTypeEnum) {
             abort(404);
         }
         if (!$cardInfo->confirmed) {
             abort(404);
         }
+        // dd($mainCard);
 
         // Get / Replace the field to Value
         $field = new PrintCardField(employee: $cardInfo, frame: $card, vehical: $employeeVehicalCard, gun: $gun, mainCard: $mainCard);
@@ -120,15 +122,17 @@ class PrintPaperCardController extends Controller
                 PrintTypeEnum::Employee => $mainCard?->card_perform,
                 PrintTypeEnum::EmployeeCar => $employeeVehicalCard?->register_date,
                 PrintTypeEnum::Gun => $gun?->register_date,
+                default => null,
             },
             //  Expire Date
             'expire' => match ($printTypeEnum) {
                 PrintTypeEnum::Employee => $mainCard?->card_expired_date,
                 PrintTypeEnum::EmployeeCar => $employeeVehicalCard?->expire_date,
                 PrintTypeEnum::Gun => $gun?->expire_date,
+                default => null,
             },
         ]);
 
-        return view('sqcard::print.card', compact('cardInfo', 'card', 'field'));
+        return view('sqcard::print.custom-card', compact('cardInfo', 'card', 'field'));
     }
 }

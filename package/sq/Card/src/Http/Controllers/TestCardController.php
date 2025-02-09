@@ -21,13 +21,21 @@ class TestCardController extends Controller
     {
         app()->setLocale(locale: 'fa');
     }
+    /**
+     * This function is responsible for rendering a custom paper card view.
+     *
+     * @param Request $request The incoming request object.
+     * @param \Sq\Card\Models\CustomPaperCard $customPaperCard The custom paper card model instance.
+     *
+     * @return View Returns a view with the custom paper card data.
+     */
     public function custom(Request $request, \Sq\Card\Models\CustomPaperCard $customPaperCard)
     {
         return view('sqcard::test.custom-card', [
-            'attr'=> $customPaperCard->attr,
-            'details'=> $customPaperCard->details,
-            'cardFrame'=> $customPaperCard,
-''
-            ]);
+            'attr' => $customPaperCard->attr,
+            'details' => $customPaperCard->details,
+            'cardFrame' => $customPaperCard,
+            'remark' => $customPaperCard->remark,
+        ]);
     }
 }

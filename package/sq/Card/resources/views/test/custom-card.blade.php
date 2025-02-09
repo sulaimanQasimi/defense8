@@ -11,22 +11,37 @@
     <script src="{{ asset('alpine.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('cards/JsBarcode/dist/JsBarcode.all.min.js') }}"></script>
     <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            /* direction: rtl; */
+        }
+
+        .printable {
+
+            /* display: flex;
+            flex-direction: row;
+            gap: 0; */
+        }
+
+        script {
+            display: none;
+        }
+
         @media print {
-            body * {
-                visibility: hidden;
+            body {
                 margin: 0;
                 padding: 0;
+                display: flex;
+                flex-direction: column;
+                gap: 0;
             }
 
-            #printable,
-            #printable * {
-                visibility: visible;
-            }
-
-            #printable {
-                position: absolute;
-                left: 0;
-                top: 0;
+            script {
+                display: none;
             }
         }
 
@@ -42,17 +57,15 @@
 </head>
 
 <body>
-    <div id="printable"
+    <div class="printable"
         style="width: {{ $attr['page']['width'] }}mm; height: {{ $attr['page']['height'] }}mm; background-image: url('{{ $cardFrame->ip_address }}/storage/{{ $attr['content']['background'] }}'); background-size: contain; background-repeat: no-repeat;"
         class="bg-gray-200">
         <div class="text-center">{!! $attr['government']['title'] !!}</div>
         {{-- Government Logo --}}
-        <img src="{{ $cardFrame->ip_address }}/storage/{{ $attr['government']['path'] }}" class="absolute"
-            tabindex="0"
+        <img src="{{ $cardFrame->ip_address }}/storage/{{ $attr['government']['path'] }}" class="absolute" tabindex="0"
             style="top: {{ $attr['government']['y'] }}px; left: {{ $attr['government']['x'] }}px; height: {{ $attr['government']['size'] }}px;" />
         {{-- Ministry Logo --}}
-        <img src="{{ $cardFrame->ip_address }}/storage/{{ $attr['ministry']['path'] }}" class="absolute"
-            tabindex="0"
+        <img src="{{ $cardFrame->ip_address }}/storage/{{ $attr['ministry']['path'] }}" class="absolute" tabindex="0"
             style="top: {{ $attr['ministry']['y'] }}px; left: {{ $attr['ministry']['x'] }}px; height: {{ $attr['ministry']['size'] }}px;" />
         <div dir="rtl">{!! $details !!}</div>
         {{-- Profile Image --}}
@@ -71,12 +84,15 @@
             <svg id="barcode"></svg>
         </div>
     </div>
-
+    <div dir="rtl" class="printable bg-white"
+        style="width: {{ $attr['page']['width'] }}mm; height: {{ $attr['page']['height'] }}mm; max-width: {{ $attr['page']['width'] }}mm; max-height: {{ $attr['page']['height'] }}mm;">
+        <div>{!! $remark !!}</div>
+    </div>
     <script type="text/javascript" src="{{ asset('cards/qrcode/qrcode.js') }}"></script>
-    <script>
+    <script type="text/javascript">
         JsBarcode("#barcode", "G2-000000", {
             format: "CODE128",
-            // background: "#000000/",
+            // background: "#000000",
             width: 1.2,
             height: 30,
             displayValue: true

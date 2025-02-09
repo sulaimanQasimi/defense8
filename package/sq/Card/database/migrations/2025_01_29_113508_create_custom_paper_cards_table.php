@@ -17,6 +17,7 @@ return new class extends Migration
 
             $table->string('name')->nullable();
             $table->longText("details")->nullable();
+            $table->longText("remark")->nullable();
             $table->json("attr")->nullable();
             $table->ipAddress()->nullable();
 

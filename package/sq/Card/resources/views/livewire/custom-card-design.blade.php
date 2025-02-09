@@ -6,7 +6,15 @@
             <script type="text/javascript" src="{{ asset('cards/qrcode/qrcode.js') }}"></script>
             <script type="text/javascript" src="{{ asset('cards/ckeditor/ckeditor.js') }}"></script>
             <script type="text/javascript" src="{{ asset('cards/JsBarcode/dist/JsBarcode.all.min.js') }}"></script>
-        @endpush
+            <style>
+                #printable {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                }
+            </style>
+            @endpush
     @endonce
 
     {{-- Be like water. --}}
@@ -15,6 +23,7 @@
     @include('sqcard::livewire.guest.components.loadingBanner')
     @endteleport
     <div id="printable" class=" pb-3" wire:ignore x-init="
+    updateTopOnScroll();
     let qrcode =
     new QRCode(document.getElementById('qrcode'), {
         width: attr.qrcode.size,
@@ -41,10 +50,10 @@ JsBarcode('#barcode', 'G5-00000', {
     isDragging: false,
     startX: 0,
     startY: 0,
-    left: 0,
+    left: 150,
     top: 18,
     width: 400,
-    scale: 0.5,
+    scale: 1,
     requestId : null,
     state: {
         show: true
@@ -62,11 +71,10 @@ JsBarcode('#barcode', 'G5-00000', {
     },
     drag(event) {
         if (this.isDragging) {
-            this.requestId = requestAnmiationFrame(()=>{
+            this.requestId = requestAnimationFrame(()=>{
                 this.left = event.clientX - this.startX;
-            this.top = event.clientY - this.startY;
+                this.top = event.clientY - this.startY;
             })
-
         }
     },
     scaleFactor: 0.6,
@@ -95,8 +103,13 @@ JsBarcode('#barcode', 'G5-00000', {
         this.attr.page.height = this.containerWidth;
         this.attr.page.width = this.containerHeight;
         this.isPortrait = !this.isPortrait;
+    },
+    updateTopOnScroll() {
+        window.addEventListener('scroll', () => {
+            this.top = window.scrollY;
+        });
     }
-}" x-show="state.show" x-cloak>
+}"  x-show="state.show" x-cloak>
 
 <div id="container" x-bind:style="{ width: attr.page.width+'mm', height: attr.page.height+'mm','background-image': 'url(' + '{{ $cardFrame->ip_address }}/storage/' + attr.content.background +')',
     'background-size': 'contain',
@@ -105,12 +118,12 @@ JsBarcode('#barcode', 'G5-00000', {
 'transform':    'scale(' + scale + ')'
 
 }" class="bg-gray-200 relative">
-
-<div class="text-center" x-html="attr.government.title"></div>
+<div  class="text-center"  x-html="attr.government.title"> </div>
 
 {{-- Government Logo --}}
 <img :src="'{{ $cardFrame->ip_address }}/storage/' + attr.government.path" class="absolute cursor-move" tabindex="0"
 @keydown="(event) => {
+event.preventDefault();
 if (event.key === 'ArrowUp' && event.shiftKey) {
     attr.government.size += 1;
 } else if (event.key === 'ArrowDown' && event.shiftKey) {
@@ -145,6 +158,8 @@ else if (event.key === 'ArrowUp') {
 {{-- Ministry Logo --}}
 <img :src="'{{ $cardFrame->ip_address }}/storage/' + attr.ministry.path" class="absolute cursor-move" tabindex="0"
 @keydown="(event) => {
+event.preventDefault();
+
 if (event.key === 'ArrowUp' && event.shiftKey) {
     attr.ministry.size += 1;
 } else if (event.key === 'ArrowDown' && event.shiftKey) {
@@ -167,7 +182,9 @@ if (event.key === 'ArrowUp') {
 
 {{-- Profile Image --}}
 <img src="{{ asset('logo.png') }}" class="absolute cursor-move" tabindex="0"
-@keydown="(event) => {if (event.key === 'ArrowUp' && event.shiftKey) {
+@keydown="(event) => {event.preventDefault();
+
+if (event.key === 'ArrowUp' && event.shiftKey) {
     attr.profile.size += 1;
 } else if (event.key === 'ArrowDown' && event.shiftKey) {
     attr.profile.size -= 1;
@@ -186,7 +203,9 @@ if (event.key === 'ArrowUp') {
 
 {{-- Signature --}}
 <img :src="'/storage/' + attr.signature.path" class="absolute cursor-move" tabindex="0" style="z-index: 100"
-@keydown="(event) => {if (event.key === 'ArrowUp' && event.shiftKey) {
+@keydown="(event) => {
+event.preventDefault();
+if (event.key === 'ArrowUp' && event.shiftKey) {
     attr.signature.size += 1;
 } else if (event.key === 'ArrowDown' && event.shiftKey) {
     attr.signature.size -= 1;
@@ -206,6 +225,8 @@ if (event.key === 'ArrowUp') {
 {{-- QR Code --}}
 <div id="qrcode" style="position: absolute;" x-ref="qrcode" class="cursor-move" tabindex="0"
 @keydown="(event) => {
+event.preventDefault();
+
 if (event.key === 'ArrowUp' && event.shiftKey) {
     attr.qrcode.size += 1;
 } else if (event.key === 'ArrowDown' && event.shiftKey) {
@@ -226,6 +247,8 @@ if (event.key === 'ArrowUp') {
 {{-- Barcode --}}
 <div style="position: absolute;" class="cursor-move" tabindex="0"
 @keydown="(event) => {
+event.preventDefault();
+
 if (event.key === 'ArrowUp' && event.shiftKey) {
     attr.barCode.size += 1;
 } else if (event.key === 'ArrowDown' && event.shiftKey) {
@@ -249,7 +272,15 @@ else if (event.key === 'ArrowUp') {
 
     </div>
 
+    <div id="container" x-bind:style="{
+        width: attr.page.width+'mm', height: attr.page.height+'mm',
+        'max-width': attr.page.width+'mm', 'max-height': attr.page.height+'mm',
+        'transform':    'scale(' + scale + ')'
 
+    }" class="bg-gray-200 relative">
+    <div x-html="remark" dir="rtl"></div>
+
+    </div>
 
         <div x-bind:style="{ top: top + 'px', left: left + 'px' }" class="absolute z-40">
             <div x-bind:class="{'bg-blue-200 bg-opacity-50 rounded-lg shadow-lg p-6 overflow-hidden': true}"
@@ -280,7 +311,7 @@ else if (event.key === 'ArrowUp') {
                         <h2 id="accordion-collapse-heading-1">
                             <button type="button"
                                 class="flex items-center justify-between w-full p-1 font-medium rtl:text-right text-gray-500  "
-                                data-accordion-target="#accordion-collapse-body-1" aria-expanded="true"
+                                data-accordion-target="#accordion-collapse-body-1" aria-expanded="false"
                                 aria-controls="accordion-collapse-body-1"> <svg data-accordion-icon
                                     class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true"
                                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
@@ -300,7 +331,7 @@ else if (event.key === 'ArrowUp') {
                         <h2 id="accordion-collapse-heading-4">
                             <button type="button"
                                 class="flex items-center justify-between w-full p-1 font-medium rtl:text-right text-gray-500  "
-                                data-accordion-target="#accordion-collapse-body-4" aria-expanded="true"
+                                data-accordion-target="#accordion-collapse-body-4" aria-expanded="false"
                                 aria-controls="accordion-collapse-body-4"> <svg data-accordion-icon
                                     class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true"
                                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
@@ -329,15 +360,18 @@ else if (event.key === 'ArrowUp') {
                                 <label for="font-size" class="block mb-2 text-sm font-medium text-gray-900">
                                     @lang(':resource Details', ['resource' => '']) </label>
                                 <textarea type="text" id="details" x-model="details" rows="4"
-                                    class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
-                            </div>
+                                    class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                </textarea>
+                               </div>
 
                         </div>
+                        {{-- #accordion-collapse-Remark --}}
+
                         {{-- #accordion-collapse-body-2 --}}
                         <h2 id="accordion-collapse-heading-2">
                             <button type="button"
                                 class="flex items-center justify-between w-full p-1 font-medium rtl:text-right text-gray-500  "
-                                data-accordion-target="#accordion-collapse-body-2" aria-expanded="true"
+                                data-accordion-target="#accordion-collapse-body-2" aria-expanded="false"
                                 aria-controls="accordion-collapse-body-2">
                                 <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true"
                                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
@@ -379,7 +413,7 @@ else if (event.key === 'ArrowUp') {
                         <h2 id="accordion-collapse-heading-3">
                             <button type="button"
                                 class="flex items-center justify-between w-full p-1 font-medium rtl:text-right text-gray-500  "
-                                data-accordion-target="#accordion-collapse-body-3" aria-expanded="true"
+                                data-accordion-target="#accordion-collapse-body-3" aria-expanded="false"
                                 aria-controls="accordion-collapse-body-3"> <svg data-accordion-icon
                                     class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true"
                                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
@@ -563,9 +597,35 @@ else if (event.key === 'ArrowUp') {
                                     </div>
                                 </div>
                             </div>
-
-
                         </div>
+{{-- Accordion Remark --}}
+<h2 id="accordion-collapse-heading-remark">
+    <button type="button"
+        class="flex items-center justify-between w-full p-1 font-medium rtl:text-right text-gray-500  "
+        data-accordion-target="#accordion-collapse-body-remark" aria-expanded="false"
+        aria-controls="accordion-collapse-body-remark">
+        <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                stroke-width="2" d="M9 5 5 1 1 5" />
+        </svg>
+        <label class="block mb-2 text-sm font-medium text-sky-500">@lang('Remark')</label>
+    </button>
+</h2>
+
+<div id="accordion-collapse-body-remark" class="hidden p-2"
+aria-labelledby="accordion-collapse-heading-remark">
+<div class="my-2 col-span-2">
+    <label for="font-size" class="block mb-2 text-sm font-medium text-gray-900 ">
+        @lang('Remark')</label>
+    <textarea type="text" id="remark" x-model="remark" rows="4"
+        class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+</div>
+
+
+</div>
+
+
                     </div>
                 </div>
             </div>
@@ -580,9 +640,9 @@ else if (event.key === 'ArrowUp') {
         $wire.set('details', this.getData());
     });
 
-    // CKEDITOR.replace('remark').on('change', function(e) {
-    //     $wire.set('remark', this.getData());
-    // });
+    CKEDITOR.replace('remark').on('change', function(e) {
+        $wire.set('remark', this.getData());
+    });
 
     CKEDITOR.replace('header').on('change', function (e) {
         $wire.set('attr.government.title', this.getData());

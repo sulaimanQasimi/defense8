@@ -32,9 +32,9 @@
 
         @page {
             size:
-                {{ $attr['page']['width'] }}
+                {{ $card?->attr['page']['width'] }}
                 mm
-                {{ $attr['page']['height'] }}
+                {{ $card?->attr['page']['height'] }}
                 mm;
             margin: 0;
         }
@@ -43,35 +43,39 @@
 
 <body>
     <div id="printable"
-        style="width: {{ $attr['page']['width'] }}mm; height: {{ $attr['page']['height'] }}mm; background-image: url('{{ $cardFrame->ip_address }}/storage/{{ $attr['content']['background'] }}'); background-size: contain; background-repeat: no-repeat;"
+        style="width: {{ $card?->attr['page']['width'] }}mm; height: {{ $card?->attr['page']['height'] }}mm; background-image: url('{{ $card->ip_address }}/storage/{{ $card?->attr['content']['background'] }}'); background-size: contain; background-repeat: no-repeat;"
         class="bg-gray-200">
-        <div class="text-center">{!! $attr['government']['title'] !!}</div>
+        <div class="text-center">{!! $card?->attr['government']['title'] !!}</div>
         {{-- Government Logo --}}
-        <img src="{{ $cardFrame->ip_address }}/storage/{{ $attr['government']['path'] }}" class="absolute cursor-move"
+        <img src="{{ $card->ip_address }}/storage/{{ $card?->attr['government']['path'] }}" class="absolute cursor-move"
             tabindex="0"
-            style="top: {{ $attr['government']['y'] }}px; left: {{ $attr['government']['x'] }}px; height: {{ $attr['government']['size'] }}px;" />
+            style="top: {{ $card?->attr['government']['y'] }}px; left: {{ $card?->attr['government']['x'] }}px; height: {{ $card?->attr['government']['size'] }}px;" />
         {{-- Ministry Logo --}}
-        <img src="{{ $cardFrame->ip_address }}/storage/{{ $attr['ministry']['path'] }}" class="absolute cursor-move"
+        <img src="{{ $card->ip_address }}/storage/{{ $card?->attr['ministry']['path'] }}" class="absolute cursor-move"
             tabindex="0"
-            style="top: {{ $attr['ministry']['y'] }}px; left: {{ $attr['ministry']['x'] }}px; height: {{ $attr['ministry']['size'] }}px;" />
-        <div dir="rtl">{!! $details !!}</div>
+            style="top: {{ $card?->attr['ministry']['y'] }}px; left: {{ $card?->attr['ministry']['x'] }}px; height: {{ $card?->attr['ministry']['size'] }}px;" />
+        <div dir="rtl">{!! $field->details !!}</div>
         {{-- Profile Image --}}
         <img src="{{ asset('logo.png') }}" class="absolute cursor-move" tabindex="0"
-            style="top: {{ $attr['profile']['y'] }}px; left: {{ $attr['profile']['x'] }}px; height: {{ $attr['profile']['size'] }}px;" />
+            style="top: {{ $card?->attr['profile']['y'] }}px; left: {{ $card?->attr['profile']['x'] }}px; height: {{ $card?->attr['profile']['size'] }}px;" />
         {{-- Signature --}}
-        <img src="/storage/{{ $attr['signature']['path'] }}" class="absolute cursor-move" tabindex="0"
-            style="z-index: 100; top: {{ $attr['signature']['y'] }}px; left: {{ $attr['signature']['x'] }}px; height: {{ $attr['signature']['size'] }}px;" />
+        <img src="/storage/{{ $card?->attr['signature']['path'] }}" class="absolute cursor-move" tabindex="0"
+            style="z-index: 100; top: {{ $card?->attr['signature']['y'] }}px; left: {{ $card?->attr['signature']['x'] }}px; height: {{ $card?->attr['signature']['size'] }}px;" />
         {{-- QR Code --}}
         <div id="qrcode"
-            style="position: absolute; top: {{ $attr['qrcode']['y'] }}px; left: {{ $attr['qrcode']['x'] }}px; height: {{ $attr['qrcode']['size'] }}px;"
+            style="position: absolute; top: {{ $card?->attr['qrcode']['y'] }}px; left: {{ $card?->attr['qrcode']['x'] }}px; height: {{ $card?->attr['qrcode']['size'] }}px;"
             class="cursor-move" tabindex="0"></div>
         {{-- Barcode --}}
-        <div style="position: absolute; top: {{ $attr['barCode']['y'] }}px; left: {{ $attr['barCode']['x'] }}px;"
+        <div style="position: absolute; top: {{ $card?->attr['barCode']['y'] }}px; left: {{ $card?->attr['barCode']['x'] }}px;"
             class="cursor-move" tabindex="0">
             <svg id="barcode"></svg>
         </div>
     </div>
 
+    <div dir="rtl" class="printable bg-white"
+        style="width: {{ $card?->attr['page']['width'] }}mm; height: {{ $card?->attr['page']['height'] }}mm; max-width: {{ $card?->attr['page']['width'] }}mm; max-height: {{ $card?->attr['page']['height'] }}mm;">
+        <div>{!! $field->remark !!}</div>
+    </div>
     <script type="text/javascript" src="{{ asset('cards/qrcode/qrcode.js') }}"></script>
     <script>
         JsBarcode("#barcode", "G2-000000", {
@@ -83,8 +87,8 @@
         });
 
         var qrcode = new QRCode(document.getElementById("qrcode"), {
-            width: {{ $attr['qrcode']['size'] }},
-            height: {{ $attr['qrcode']['size'] }}
+            width: {{ $card?->attr['qrcode']['size'] }},
+            height: {{ $card?->attr['qrcode']['size'] }}
         });
         qrcode.makeCode("G2-000000");
     </script>

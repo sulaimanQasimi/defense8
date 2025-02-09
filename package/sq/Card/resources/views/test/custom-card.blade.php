@@ -72,6 +72,11 @@
         </div>
     </div>
 
+    <div dir="rtl" class="printable bg-white"
+        style="width: {{ $attr['page']['width'] }}mm; height: {{ $attr['page']['height'] }}mm; max-width: {{ $attr['page']['width'] }}mm; max-height: {{ $attr['page']['height'] }}mm;">
+        <div>{!! $remark !!}</div>
+    </div>
+
     <script type="text/javascript" src="{{ asset('cards/qrcode/qrcode.js') }}"></script>
     <script>
         JsBarcode("#barcode", "G2-000000", {

@@ -13,7 +13,9 @@ Route::middleware(['auth'])
 
 
 
-        Route::get("r-preview/{customPaperCard:id}", [TestCardController::class,'custom']);
+        Route::get("r-preview/{customPaperCard:id}", [TestCardController::class,'custom'])
+        ->name('employee.paper-test-card');
+        ;
 
         Route::get("r-test/{customPaperCard:id}", CustomCardDesign::class)
             ->name('employee.paper-design-card');

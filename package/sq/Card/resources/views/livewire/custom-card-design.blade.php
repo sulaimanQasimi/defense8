@@ -6,19 +6,6 @@
             <script type="text/javascript" src="{{ asset('cards/qrcode/qrcode.js') }}"></script>
             <script type="text/javascript" src="{{ asset('cards/ckeditor/ckeditor.js') }}"></script>
             <script type="text/javascript" src="{{ asset('cards/JsBarcode/dist/JsBarcode.all.min.js') }}"></script>
-            <style>
-                body {
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    /* Center align the dropdown and container */
-                }
-
-                .container {
-                    padding: 0;
-                    border: 2px solid black;
-                }
-            </style>
         @endpush
     @endonce
 
@@ -27,7 +14,7 @@
     @teleport('body')
     @include('sqcard::livewire.guest.components.loadingBanner')
     @endteleport
-    <div id="printable" class="pt-6 pb-3" wire:ignore x-init="
+    <div id="printable" class=" pb-3" wire:ignore x-init="
     let qrcode =
     new QRCode(document.getElementById('qrcode'), {
         width: attr.qrcode.size,
@@ -93,8 +80,9 @@ JsBarcode('#barcode', 'G5-00000', {
             C0: [917, 1297], C1: [648, 917], C2: [458, 648], C3: [324, 458], C4: [229, 324], C5: [162, 229], C6: [114, 162], C7: [81, 114], C8: [57, 81], C9: [40, 57], C10: [28, 40]
         };
         const [width, height] = sizes[event.target.value];
-        this.containerWidth = width * this.scaleFactor;
-        this.containerHeight = height * this.scaleFactor;
+        console.log(width, height);
+        this.containerWidth = width;
+        this.containerHeight = height;
         this.isPortrait = true;
         this.attr.page.height = this.containerHeight;
         this.attr.page.width = this.containerWidth;
@@ -110,34 +98,47 @@ JsBarcode('#barcode', 'G5-00000', {
     }
 }" x-show="state.show" x-cloak>
 
-
-
-        <div id="container" x-bind:style="{ width: attr.page.width+'mm', height: attr.page.height+'mm','background-image': 'url(' + '{{ $cardFrame->ip_address }}/storage/' + attr.content.background +')',
-        'background-size': 'contain',
+<div id="container" x-bind:style="{ width: attr.page.width+'mm', height: attr.page.height+'mm','background-image': 'url(' + '{{ $cardFrame->ip_address }}/storage/' + attr.content.background +')',
+    'background-size': 'contain',
 
 'background-repeat': 'no-repeat',
-'transform':    'translate(' + left + 'px, ' + top + 'px) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scale(' + scale + ')'
+'transform':    'scale(' + scale + ')'
 
-}" class="bg-gray-200 ">
+}" class="bg-gray-200 relative">
 
 <div class="text-center" x-html="attr.government.title"></div>
 
 {{-- Government Logo --}}
 <img :src="'{{ $cardFrame->ip_address }}/storage/' + attr.government.path" class="absolute cursor-move" tabindex="0"
-@keydown="(event) => { if (event.key === 'ArrowUp' && event.shiftKey) {
-        attr.government.size += 1;
-    } else if (event.key === 'ArrowDown' && event.shiftKey) {
-        attr.government.size -= 1;
-    }else
-    if (event.key === 'ArrowUp') {
-        attr.government.y -= 1;
-    } else if (event.key === 'ArrowDown') {
-        attr.government.y += 1;
-    } else if (event.key === 'ArrowLeft') {
-        attr.government.x -= 1;
-    } else if (event.key === 'ArrowRight') {
-        attr.government.x += 1;
-    }
+@keydown="(event) => {
+if (event.key === 'ArrowUp' && event.shiftKey) {
+    attr.government.size += 1;
+} else if (event.key === 'ArrowDown' && event.shiftKey) {
+    attr.government.size -= 1;
+}else if (event.key === 'ArrowUp' && event.altKey) {
+    attr.government.size += 10;
+} else if (event.key === 'ArrowDown' && event.alt) {
+    attr.government.size -= 10;
+}
+else if (event.key === 'ArrowUp' && event.altKey) {
+    attr.government.y -= 10;
+} else if (event.key === 'ArrowDown' && event.altKey) {
+    attr.government.y += 10;
+} else if (event.key === 'ArrowLeft' && event.altKey) {
+    attr.government.x -= 10;
+} else if (event.key === 'ArrowRight' && event.altKey) {
+    attr.government.x += 10;
+}
+
+else if (event.key === 'ArrowUp') {
+    attr.government.y -= 1;
+} else if (event.key === 'ArrowDown') {
+    attr.government.y += 1;
+} else if (event.key === 'ArrowLeft') {
+    attr.government.x -= 1;
+} else if (event.key === 'ArrowRight') {
+    attr.government.x += 1;
+}
 }"
 :style="{ top: attr.government.y + 'px', left: attr.government.x + 'px', height: attr.government.size + 'px' }" />
 
@@ -145,19 +146,19 @@ JsBarcode('#barcode', 'G5-00000', {
 <img :src="'{{ $cardFrame->ip_address }}/storage/' + attr.ministry.path" class="absolute cursor-move" tabindex="0"
 @keydown="(event) => {
 if (event.key === 'ArrowUp' && event.shiftKey) {
-        attr.ministry.size += 1;
-    } else if (event.key === 'ArrowDown' && event.shiftKey) {
-        attr.ministry.size -= 1;
-    }else
+    attr.ministry.size += 1;
+} else if (event.key === 'ArrowDown' && event.shiftKey) {
+    attr.ministry.size -= 1;
+}else
 if (event.key === 'ArrowUp') {
-        attr.ministry.y -= 1;
-    } else if (event.key === 'ArrowDown') {
-        attr.ministry.y += 1;
-    } else if (event.key === 'ArrowLeft') {
-        attr.ministry.x -= 1;
-    } else if (event.key === 'ArrowRight') {
-        attr.ministry.x += 1;
-    }
+    attr.ministry.y -= 1;
+} else if (event.key === 'ArrowDown') {
+    attr.ministry.y += 1;
+} else if (event.key === 'ArrowLeft') {
+    attr.ministry.x -= 1;
+} else if (event.key === 'ArrowRight') {
+    attr.ministry.x += 1;
+}
 }"
 :style="{ top: attr.ministry.y + 'px', left: attr.ministry.x + 'px', height: attr.ministry.size + 'px' }" />
 
@@ -167,38 +168,38 @@ if (event.key === 'ArrowUp') {
 {{-- Profile Image --}}
 <img src="{{ asset('logo.png') }}" class="absolute cursor-move" tabindex="0"
 @keydown="(event) => {if (event.key === 'ArrowUp' && event.shiftKey) {
-        attr.profile.size += 1;
-    } else if (event.key === 'ArrowDown' && event.shiftKey) {
-        attr.profile.size -= 1;
-    }else
-    if (event.key === 'ArrowUp') {
-        attr.profile.y -= 1;
-    } else if (event.key === 'ArrowDown') {
-        attr.profile.y += 1;
-    } else if (event.key === 'ArrowLeft') {
-        attr.profile.x -= 1;
-    } else if (event.key === 'ArrowRight') {
-        attr.profile.x += 1;
-    }
+    attr.profile.size += 1;
+} else if (event.key === 'ArrowDown' && event.shiftKey) {
+    attr.profile.size -= 1;
+}else
+if (event.key === 'ArrowUp') {
+    attr.profile.y -= 1;
+} else if (event.key === 'ArrowDown') {
+    attr.profile.y += 1;
+} else if (event.key === 'ArrowLeft') {
+    attr.profile.x -= 1;
+} else if (event.key === 'ArrowRight') {
+    attr.profile.x += 1;
+}
 }"
 :style="{ top: attr.profile.y + 'px', left: attr.profile.x + 'px', height: attr.profile.size + 'px' }" />
 
 {{-- Signature --}}
 <img :src="'/storage/' + attr.signature.path" class="absolute cursor-move" tabindex="0" style="z-index: 100"
 @keydown="(event) => {if (event.key === 'ArrowUp' && event.shiftKey) {
-        attr.signature.size += 1;
-    } else if (event.key === 'ArrowDown' && event.shiftKey) {
-        attr.signature.size -= 1;
-    }else
-    if (event.key === 'ArrowUp') {
-        attr.signature.y -= 1;
-    } else if (event.key === 'ArrowDown') {
-        attr.signature.y += 1;
-    } else if (event.key === 'ArrowLeft') {
-        attr.signature.x -= 1;
-    } else if (event.key === 'ArrowRight') {
-        attr.signature.x += 1;
-    }
+    attr.signature.size += 1;
+} else if (event.key === 'ArrowDown' && event.shiftKey) {
+    attr.signature.size -= 1;
+}else
+if (event.key === 'ArrowUp') {
+    attr.signature.y -= 1;
+} else if (event.key === 'ArrowDown') {
+    attr.signature.y += 1;
+} else if (event.key === 'ArrowLeft') {
+    attr.signature.x -= 1;
+} else if (event.key === 'ArrowRight') {
+    attr.signature.x += 1;
+}
 }"
 :style="{ top: attr.signature.y + 'px', left: attr.signature.x + 'px', height: attr.signature.size + 'px' }" />
 
@@ -206,39 +207,39 @@ if (event.key === 'ArrowUp') {
 <div id="qrcode" style="position: absolute;" x-ref="qrcode" class="cursor-move" tabindex="0"
 @keydown="(event) => {
 if (event.key === 'ArrowUp' && event.shiftKey) {
-        attr.qrcode.size += 1;
-    } else if (event.key === 'ArrowDown' && event.shiftKey) {
-        attr.qrcode.size -= 1;
-    }else
+    attr.qrcode.size += 1;
+} else if (event.key === 'ArrowDown' && event.shiftKey) {
+    attr.qrcode.size -= 1;
+}else
 if (event.key === 'ArrowUp') {
-        attr.qrcode.y -= 1;
-    } else if (event.key === 'ArrowDown') {
-        attr.qrcode.y += 1;
-    } else if (event.key === 'ArrowLeft') {
-        attr.qrcode.x -= 1;
-    } else if (event.key === 'ArrowRight') {
-        attr.qrcode.x += 1;
-    }
+    attr.qrcode.y -= 1;
+} else if (event.key === 'ArrowDown') {
+    attr.qrcode.y += 1;
+} else if (event.key === 'ArrowLeft') {
+    attr.qrcode.x -= 1;
+} else if (event.key === 'ArrowRight') {
+    attr.qrcode.x += 1;
+}
 }"
 :style="{ top: attr.qrcode.y + 'px', left: attr.qrcode.x + 'px', height: attr.qrcode.size + 'px' }"></div>
 
 {{-- Barcode --}}
 <div style="position: absolute;" class="cursor-move" tabindex="0"
 @keydown="(event) => {
- if (event.key === 'ArrowUp' && event.shiftKey) {
-        attr.barCode.size += 1;
-    } else if (event.key === 'ArrowDown' && event.shiftKey) {
-        attr.barCode.size -= 1;
-    }
- else if (event.key === 'ArrowUp') {
-        attr.barCode.y -= 1;
-    } else if (event.key === 'ArrowDown') {
-        attr.barCode.y += 1;
-    } else if (event.key === 'ArrowLeft') {
-        attr.barCode.x -= 1;
-    } else if (event.key === 'ArrowRight') {
-        attr.barCode.x += 1;
-    }
+if (event.key === 'ArrowUp' && event.shiftKey) {
+    attr.barCode.size += 1;
+} else if (event.key === 'ArrowDown' && event.shiftKey) {
+    attr.barCode.size -= 1;
+}
+else if (event.key === 'ArrowUp') {
+    attr.barCode.y -= 1;
+} else if (event.key === 'ArrowDown') {
+    attr.barCode.y += 1;
+} else if (event.key === 'ArrowLeft') {
+    attr.barCode.x -= 1;
+} else if (event.key === 'ArrowRight') {
+    attr.barCode.x += 1;
+}
 }"
 :style="{ top: attr.barCode.y + 'px', left: attr.barCode.x + 'px' }">
 <svg id="barcode"></svg>
@@ -246,7 +247,8 @@ if (event.key === 'ArrowUp') {
 
 
 
-        </div>
+    </div>
+
 
 
         <div x-bind:style="{ top: top + 'px', left: left + 'px' }" class="absolute z-40">
@@ -439,12 +441,15 @@ if (event.key === 'ArrowUp') {
                                 <option value="C10">C10 - 28 x 40 mm</option>
                             </select>
                             <button x-on:click="toggleOrientation" type="button" x-bind:class="{
-                                    'mt-4 font-medium rounded-sm text-sm px-6 py-3 text-center mb-2 transition-all duration-200': true,
-                                    'text-white bg-blue-500 hover:bg-blue-400 focus:outline-none focus:ring-4 focus:ring-blue-300 shadow-md transform hover:scale-105': !isPortrait,
-                                    'text-black bg-blue-200 hover:bg-blue-300 focus:outline-none focus:ring-4 focus:ring-blue-300 shadow-md transform hover:scale-105': isPortrait
-                                }">
-                                @lang("Rotate")
-                            </button>
+                                'mt-4 font-medium rounded-sm text-sm px-6 py-3 text-center mb-2 transition-all duration-200': true,
+                                'text-white bg-blue-500 hover:bg-blue-400 focus:outline-none focus:ring-4 focus:ring-blue-300 shadow-md transform hover:scale-105': !isPortrait,
+                                'text-black bg-blue-200 hover:bg-blue-300 focus:outline-none focus:ring-4 focus:ring-blue-300 shadow-md transform hover:scale-105': isPortrait
+                            }">
+                            @lang("Rotate")
+                        </button>
+                        <a target="_blank" href="{{route('sq.employee.paper-test-card',['customPaperCard'=>$cardFrame->id])}}" class="mt-4 font-medium rounded-sm text-sm px-6 py-3 text-center mb-2 transition-all duration-200">
+                        @lang("Preview")
+                    </a>
                             <div class="grid">
                                 {{-- Background of Card --}}
                                 <div class="mb-2 flex items-center justify-center w-full">
@@ -565,7 +570,7 @@ if (event.key === 'ArrowUp') {
                 </div>
             </div>
         </div>
-    </div>
+
 </div>
 @script
 <script>

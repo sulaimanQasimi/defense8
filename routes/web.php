@@ -1,5 +1,6 @@
 <?php
 
+use Alkoumi\LaravelHijriDate\Hijri;
 use App\Http\Controllers\YoutubeController;
 use App\Livewire\Setting\LanguageAutomization;
 use Illuminate\Support\Facades\Route;
@@ -18,14 +19,6 @@ Route::middleware(['auth'])
         Route::get(uri: 'youtube/preview/{video:id}', action: 'preview')->name('youtube.preview');
     });
 Route::get('test',function () {
-// dd(BastTypeEnum::cases());
-$d=Department::find(1);
-dd(
+dd(Hijri::Date('Y/m/d'));
 
-// Accessing ancestors
-$d->ancestors,
-
-// Accessing descendants
-$d->descendants
-);
 });

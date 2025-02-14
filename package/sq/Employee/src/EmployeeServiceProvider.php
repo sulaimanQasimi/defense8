@@ -10,6 +10,7 @@ use Laravel\Nova\Nova;
 use Livewire\Livewire;
 use Sq\Employee\Nova as NovaResource;
 use Sq\Employee\Nova\ScanedEmployee;
+use Sq\Employee\Nova\Lenses\MainCardExpireToday;
 
 class EmployeeServiceProvider extends ServiceProvider
 {
@@ -31,6 +32,7 @@ class EmployeeServiceProvider extends ServiceProvider
             NovaResource\GunCard::class,
             NovaResource\MainCard::class,
         ]);
+      
 
         $this->loadMigrationsFrom(__DIR__ . "/../database/migrations");
         $this->loadViewsFrom(__DIR__ . "/../resources/views/", 'sqemployee');
@@ -95,6 +97,7 @@ class EmployeeServiceProvider extends ServiceProvider
                     ->canSee(fn() => auth()->user()->hasPermissionTo(PermissionTranslation::viewAny("Card Info"))),
 
                 // Frame of Printable Card Menu Item
+                MenuItem::resource(\Sq\Employee\Nova\MainCard::class),
                 MenuItem::resource(\Sq\Card\Nova\PrintCardFrame::class),
                 MenuItem::resource(\Sq\Card\Nova\CustomPaperCard::class),
                 MenuItem::resource(\Sq\Card\Nova\PrintCard::class),

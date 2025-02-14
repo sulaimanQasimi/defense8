@@ -16,6 +16,7 @@ use Sq\Employee\Nova\Filters\ConfirmedEmployee;
 use Sq\Location\Nova as Location;
 use App\Nova\Resource;
 use App\Support\Defense\EditAditionalCardInfoEnum;
+use Bolechen\NovaActivitylog\Resources\Activitylog;
 use DigitalCreative\MegaFilter\MegaFilter;
 use DigitalCreative\MegaFilter\MegaFilterTrait;
 use Illuminate\Database\Eloquent\Builder;
@@ -77,7 +78,8 @@ class CardInfo extends Resource
         return [
             Panel::make(__(), [
                 // URL::make(trans("CURRENT MONTH ATTENDANCE EMPLOYEE"),fn()=>route('employee.attendance.current.month.single',['cardInfo'=>$this->id]))->onlyOnDetail(),
-                Fields\Image::make(__("Photo"), "photo")->nullable()->rules("image"),
+                Fields\Image::make(__("Photo"), "photo")
+                    ->rules("required", "image"),
                 Fields\Boolean::make(__("Confirmed"), 'confirmed')->exceptOnForms(),
                 Fields\Select::make(__('Category'), 'category')
                     ->options([
@@ -289,7 +291,7 @@ class CardInfo extends Resource
             ]),
 
 
-
+            Fields\MorphMany::make(trans("Activity Log"),'card_info_activity',Activitylog::class),
             Fields\HasMany::make(__("Oil Report"), 'oil_disterbutions', \Sq\Oil\Nova\OilDisterbution::class),
             Fields\HasMany::make(name: __("Attendance"), attribute: 'attendance', resource: Attendance::class),
             Fields\HasMany::make(name: __("Print Card"), attribute: 'print_cards', resource: PrintCard::class),

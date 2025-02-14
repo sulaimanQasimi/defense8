@@ -21,6 +21,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Models\Activity;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Sq\Query\Policy\UserDepartment;
 use Sq\Query\Support\BloodEnum;
@@ -37,7 +38,7 @@ class CardInfo extends Model
     use AttendanceRelationship;
     protected $casts = [
         'birthday' => 'date',
-        'extra_info'=>'array',
+        'extra_info' => 'array',
         // 'blood_group'=>BloodEnum::class
     ];
     // protected $appends = [
@@ -48,7 +49,6 @@ class CardInfo extends Model
     protected static function boot()
     {
         parent::boot();
-
         // Power Check while Creating
         static::creating(
             function ($cardinfo) {
@@ -116,4 +116,8 @@ class CardInfo extends Model
             ]);
     }
 
+    public function card_info_activity()
+    {
+        return $this->morphMany(Activity::class, 'subject');
+    }
 }

@@ -39,7 +39,7 @@ class MainCardPolicy
      */
     public function update(User $user, MainCard $mainCard): bool
     {
-        return $user->hasPermissionTo(PermissionTranslation::update("Main Card")) && in_array($mainCard->card_info->orginization->id, UserDepartment::getUserDepartment());
+        return $user->hasPermissionTo(PermissionTranslation::update("Main Card")) && in_array($mainCard->card_info->orginization->id, UserDepartment::getUserDepartment())&& (!$mainCard->printed);
     }
 
     /**

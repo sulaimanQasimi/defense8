@@ -55,5 +55,4 @@ trait CardInfoAttributes
     {
         return "{$this->name} {$this->last_name}";
     }
-
 }

@@ -3,6 +3,7 @@
 namespace Sq\Employee\Nova;
 
 use Afj95\LaravelNovaHijriDatepickerField\HijriDatePicker;
+use Alkoumi\LaravelHijriDate\Hijri;
 use App\Nova\Actions\EmployeePrintCardAction;
 use App\Nova\Resource;
 use Illuminate\Database\Eloquent\Builder;
@@ -13,6 +14,7 @@ use Laravel\Nova\Fields\Trix;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use MZiraki\PersianDateField\PersianDate;
 use Sq\Query\Policy\UserDepartment;
+use Carbon\Carbon;
 
 class MainCard extends Resource
 {
@@ -20,8 +22,7 @@ class MainCard extends Resource
 
     public static $title = 'card_info.registare_no';
 
-    public static $search = [
-    ];
+    public static $search = [];
 
     public static function label()
     {
@@ -44,10 +45,10 @@ class MainCard extends Resource
     public function fields(NovaRequest $request)
     {
         return [
-            BelongsTo::make(__('Employee'), 'card_info', CardInfo::class),
-//                ->relatableQueryUsing(function (NovaRequest $request, Builder $query) {
-  //                  $query->whereIn('department_id', UserDepartment::getUserDepartment());
-     //           }),
+            BelongsTo::make(__('Employee'), 'card_info', CardInfo::class)
+                ->relatableQueryUsing(function (NovaRequest $request, Builder $query) {
+                    $query->whereIn('department_id', UserDepartment::getUserDepartment());
+                }),
             HijriDatePicker::make(__("Disterbute Date"), "card_perform")
                 ->hideWhenUpdating(
                     fn() => $this->printed
@@ -55,8 +56,7 @@ class MainCard extends Resource
                 ->format('iYYYY/iMM/iDD')
                 ->placeholder('YYYY/MM/DD')
                 ->selected_date('1444/12/12')
-                ->placement('bottom')
-            ,
+                ->placement('bottom'),
             HijriDatePicker::make(__("Expire Date"), "card_expired_date")
                 ->hideWhenUpdating(
                     fn() => $this->printed
@@ -65,6 +65,16 @@ class MainCard extends Resource
                 ->placeholder('YYYY/MM/DD')
                 ->selected_date('1444/12/12')
                 ->placement('bottom'),
+            Boolean::make(__('Is Expired'), function () {
+                // Create a Carbon instance from the current Hijri date
+                $date1 = Carbon::make(Hijri::Date('Y-m-d'));
+
+                // Create a Carbon instance from the card's expiration date
+                $date2 = Carbon::make($this->card_expired_date);
+
+                // Compare the two dates to determine if the card is expired
+                return $date1->lte($date2);
+            })->exceptOnForms(),
             Trix::make(trans('Remark'), 'remark'),
             Boolean::make(__("Print"), 'printed')->hideWhenCreating(),
             Boolean::make(__("Muthanna"), 'muthanna'),
@@ -82,7 +92,9 @@ class MainCard extends Resource
 
     public function lenses(NovaRequest $request)
     {
-        return [];
+        return [
+            new \Sq\Employee\Nova\Lenses\MainCardExpireToday(),
+        ];
     }
     public function actions(NovaRequest $request)
     {
@@ -91,15 +103,15 @@ class MainCard extends Resource
                 ->canRun(
                     fn($request, $mainCard)
                     => auth()->user()->hasPermissionTo("print-card")
-                    && in_array($mainCard->card_info->orginization->id, UserDepartment::getUserDepartment())
+                        && in_array($mainCard->card_info->orginization->id, UserDepartment::getUserDepartment())
                 ),
 
             (new \Sq\Card\Nova\Actions\EmployeePrintPaperCardAction)->onlyOnDetail()
-            ->canRun(
-                fn($request, $mainCard)
-                => auth()->user()->hasPermissionTo("print-card")
-                && in_array($mainCard->card_info->orginization->id, UserDepartment::getUserDepartment())
-            ),
+                ->canRun(
+                    fn($request, $mainCard)
+                    => auth()->user()->hasPermissionTo("print-card")
+                        && in_array($mainCard->card_info->orginization->id, UserDepartment::getUserDepartment())
+                ),
 
         ];
     }

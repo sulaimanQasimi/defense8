@@ -18,7 +18,7 @@ class MainCardExpireToday extends Lens
 {
     public function name()
     {
-        return __('Expiring Today');
+        return __('کارتهای انقضا شده');
     }
 
     public static function query(NovaRequest $request, $query)

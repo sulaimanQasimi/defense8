@@ -12,19 +12,12 @@
     <script type="text/javascript" src="{{ asset('cards/JsBarcode/dist/JsBarcode.all.min.js') }}"></script>
     <style>
         @media print {
-            body * {
-                visibility: hidden;
+            body {
                 margin: 0;
                 padding: 0;
             }
 
-            #printable,
-            #printable * {
-                visibility: visible;
-            }
-
-            #printable {
-                position: absolute;
+            .printable {
                 left: 0;
                 top: 0;
             }

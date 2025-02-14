@@ -80,13 +80,15 @@ class CardInfo extends Resource
                 Fields\Image::make(__("Photo"), "photo")->nullable()->rules("image"),
                 Fields\Boolean::make(__("Confirmed"), 'confirmed')->exceptOnForms(),
                 Fields\Select::make(__('Category'), 'category')
-                ->options([
-                    'ملکی' => __('ملکی'),
-                    'نظامی' => __('نظامی'),
-                ]),
+                    ->options([
+                        'منسوبین نظامی' => __('منسوبین نظامی'),
+                        'کارمندان ملکی' => __('کارمندان ملکی'),
+                        'کارکنان خدمتی و مؤقت' => __('کارکنان خدمتی و مؤقت'),
+                    ]),
                 Fields\Text::make(__("Register No"), "registare_no")
                     ->copyable()
                     ->required()
+                    ->sortable()
                     // ->rules('required', 'string')
                     ->creationRules('required', 'string', 'unique:card_infos,registare_no')
                     ->updateRules('required', 'string', 'unique:card_infos,registare_no,{{resourceId}}')
@@ -265,25 +267,25 @@ class CardInfo extends Resource
             ),
             Panel::make(trans("Special Card Field"), [
                 Fields\Text::make(trans("Gun Type"), 'special_gun')
-                ->showOnCreating(function (NovaRequest $request) {
-                    return auth()->user()->hasPermissionTo("special-id-card");
-                })->showOnUpdating(function (NovaRequest $request, $resource) {
-                    return auth()->user()->hasPermissionTo("special-id-card");
-                }),
+                    ->showOnCreating(function (NovaRequest $request) {
+                        return auth()->user()->hasPermissionTo("special-id-card");
+                    })->showOnUpdating(function (NovaRequest $request, $resource) {
+                        return auth()->user()->hasPermissionTo("special-id-card");
+                    }),
                 Fields\Text::make(trans("Black Mirror Vehical Card"), 'special_black_mirror')
-                ->showOnCreating(function (NovaRequest $request) {
-                    return auth()->user()->hasPermissionTo("special-id-card");
-                })
-                ->showOnUpdating(function (NovaRequest $request) {
-                    return auth()->user()->hasPermissionTo("special-id-card");
-                }),
+                    ->showOnCreating(function (NovaRequest $request) {
+                        return auth()->user()->hasPermissionTo("special-id-card");
+                    })
+                    ->showOnUpdating(function (NovaRequest $request) {
+                        return auth()->user()->hasPermissionTo("special-id-card");
+                    }),
                 Fields\Text::make(trans("Vehical Type"), 'special_vehical')
-                ->showOnCreating(function (NovaRequest $reques) {
-                    return auth()->user()->hasPermissionTo("special-id-card");
-                })
-                ->showOnUpdating(function (NovaRequest $request) {
-                    return auth()->user()->hasPermissionTo("special-id-card");
-                }),
+                    ->showOnCreating(function (NovaRequest $reques) {
+                        return auth()->user()->hasPermissionTo("special-id-card");
+                    })
+                    ->showOnUpdating(function (NovaRequest $request) {
+                        return auth()->user()->hasPermissionTo("special-id-card");
+                    }),
             ]),
 
 
@@ -358,6 +360,17 @@ class CardInfo extends Resource
                         ->whereIn('id', UserDepartment::getUserDepartment())
                         ->pluck('fa_name', 'id')->toArray()
                 ),
+                new SqNovaSelectFilter(
+                    label: __("Category"),
+                    column: 'category',
+                    options: [
+                        'منسوبین نظامی' => __('منسوبین نظامی'),
+                        'کارمندان ملکی' => __('کارمندان ملکی'),
+                        'کارکنان خدمتی و مؤقت' => __('کارکنان خدمتی و مؤقت'),
+
+                    ]
+                ),
+
                 //
                 new SqNovaSelectFilter(
                     label: trans("Oil Type"),
@@ -389,7 +402,7 @@ class CardInfo extends Resource
                 ->canSee(fn() => auth()->user()->hasPermissionTo(EditAditionalCardInfoEnum::Remark))
                 ->canRun(
                     fn($request, $infoCard) => EditAditionalCardInfoEnum::Remark
-                    && in_array($infoCard->orginization->id, UserDepartment::getUserDepartment())
+                        && in_array($infoCard->orginization->id, UserDepartment::getUserDepartment())
                 ),
 
             // Edit Options

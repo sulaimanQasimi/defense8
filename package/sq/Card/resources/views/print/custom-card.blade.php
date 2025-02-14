@@ -17,22 +17,10 @@
                 margin: 0;
                 padding: 0;
             }
-
-            #printable,
-            #printable * {
-                visibility: visible;
-            }
-
-            #printable {
-                position: absolute;
-                left: 0;
-                top: 0;
-            }
         }
 
         @page {
-            size:
-                {{ $card?->attr['page']['width'] }}
+            size:{{ $card?->attr['page']['width'] }}
                 mm
                 {{ $card?->attr['page']['height'] }}
                 mm;

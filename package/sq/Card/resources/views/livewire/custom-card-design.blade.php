@@ -296,11 +296,7 @@ else if (event.key === 'ArrowUp') {
                            right += 1;
                         }
                     }" style="top: -8px; right: -11px;">
-                    <button type="button">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="w-6 h-6 text-gray-500">
-                            <path
-                                d="M256 464a208 208 0 1 1 0-416 208 208 0 1 1 0 416zM256 0a256 256 0 1 0 0 512A256 256 0 1 0 256 0zM376.9 294.6c4.5-4.2 7.1-10.1 7.1-16.3c0-12.3-10-22.3-22.3-22.3L304 256l0-96c0-17.7-14.3-32-32-32l-32 0c-17.7 0-32 14.3-32 32l0 96-57.7 0C138 256 128 266 128 278.3c0 6.2 2.6 12.1 7.1 16.3l107.1 99.9c3.8 3.5 8.7 5.5 13.8 5.5s10.1-2 13.8-5.5l107.1-99.9z" />
-                        </svg>
+                    X
                     </button>
                 </div>
                 <div class="mb-5">
@@ -385,29 +381,29 @@ else if (event.key === 'ArrowUp') {
                             aria-labelledby="accordion-collapse-heading-2">
                             {{-- QR Code Dimensions --}}
                             <x-sqcard::form.dimention-slider label="QR code Dimensions" xModel="attr.qrcode.x"
-                                yModel="attr.qrcode.y" zModel="attr.qrcode.size" xMax="270" yMax="900" zMax="250" />
+                                yModel="attr.qrcode.y" zModel="attr.qrcode.size" xMax="10000" yMax="10000" zMax="10000" />
 
                             {{-- Bar Code Dimensions --}}
                             <x-sqcard::form.dimention-slider label="Bar code Dimensions" xModel="attr.barCode.x"
-                                yModel="attr.barCode.y" zModel="attr.barCode.z" xMax="500" yMax="900" zMax="90" />
+                                yModel="attr.barCode.y" zModel="attr.barCode.z" xMax="10000" yMax="10000" zMax="10000" />
 
                             {{-- Image Dimensions --}}
                             <x-sqcard::form.dimention-slider label="Image Dimensions" xModel="attr.profile.x"
-                                yModel="attr.profile.y" zModel="attr.profile.size" xMax="270" yMax="900" zMax="250" />
+                                yModel="attr.profile.y" zModel="attr.profile.size" xMax="10000" yMax="10000" zMax="10000" />
 
                             {{-- Minister Signature --}}
                             <x-sqcard::form.dimention-slider label="Minister Signature" xModel="attr.signature.x"
-                                yModel="attr.signature.y" zModel="attr.signature.size" xMax="270" yMax="900"
-                                zMax="250" />
+                                yModel="attr.signature.y" zModel="attr.signature.size" xMax="10000" yMax="10000"
+                                zMax="10000" />
 
                             {{-- Ministry Logo Dimensions --}}
                             <x-sqcard::form.dimention-slider label="Ministry Logo Dimensions" xModel="attr.ministry.x"
-                                yModel="attr.ministry.y" zModel="attr.ministry.size" xMax="270" yMax="900" zMax="250" />
+                                yModel="attr.ministry.y" zModel="attr.ministry.size" xMax="10000" yMax="10000" zMax="10000" />
 
                             {{-- Government Logo Dimensions --}}
                             <x-sqcard::form.dimention-slider label="Government Logo Dimensions"
                                 xModel="attr.government.x" yModel="attr.government.y" zModel="attr.government.size"
-                                xMax="270" yMax="500" zMax="250" />
+                                xMax="10000" yMax="10000" zMax="10000" />
                         </div>
                         {{-- #accordion-collapse-body-1 --}}
                         <h2 id="accordion-collapse-heading-3">
@@ -428,7 +424,7 @@ else if (event.key === 'ArrowUp') {
                             aria-labelledby="accordion-collapse-heading-3">
 
                             <x-sqcard::form.dimention-slider label="Panel Movement" xModel="top" yModel="left"
-                                zModel="width" xMax="270" yMax="900" zMax="1000" />
+                                zModel="width" xMax="270" yMax="10000" zMax="1000" />
 
 
 

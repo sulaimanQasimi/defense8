@@ -1,8 +1,2 @@
-# Update 32.0.5
-
-## Add Vehicals to Menu sidebar
-## Add Multi Domain Capability
-## Build only assets with
- ``
-npx tailwindcss -i ./resources/css/app.css -o ./public/build/assets/app.css
-``
+# Update 40.34.2
+This release introduces new features, enhancements, and bug fixes to the MOD Card System. Key updates include the addition of log activity tracking, a new lens for expired cards, support for extension cards, and the ability to disable print actions for already printed cards. Additionally, metrics for active and expired cards have been added to provide better insights into card usage and lifecycle.

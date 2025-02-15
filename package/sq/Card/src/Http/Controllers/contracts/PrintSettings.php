@@ -100,6 +100,17 @@ trait PrintSettings
         }
         $employeeVehicalCard->update(['printed' => 1]);
 
+        $date = Carbon::make($employeeVehicalCard->expire_date)->format('Y/m/d');
+        // Activity
+        activity()
+            ->performedOn($employeeVehicalCard)
+            ->causedBy(auth()->user())
+            ->withProperties([
+                "register_date" => $employeeVehicalCard->register_date,
+                "expire_date" => $employeeVehicalCard->expire_date,
+            ])
+            ->log("کارت با تاریخ انقضا {$date} برای واسطه پرنت شد");
+
         return $this->card_optimization(
             cardInfo: $employeeVehicalCard->card_info,
             printCardFrame: $printCardFrame,

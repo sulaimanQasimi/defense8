@@ -14,7 +14,7 @@
                     justify-content: center;
                 }
             </style>
-            @endpush
+        @endpush
     @endonce
 
     {{-- Be like water. --}}
@@ -109,14 +109,15 @@ JsBarcode('#barcode', 'G5-00000', {
             this.top = window.scrollY;
         });
     }
-}"  x-show="state.show" x-cloak>
+}" x-show="state.show" x-cloak>
 
-<div id="container" x-bind:style="{ width: attr.page.width+'mm', height: attr.page.height+'mm','background-image': 'url(' + '{{ $cardFrame->ip_address }}/storage/' + attr.content.background +')',
+<div id="container" x-bind:style="{
+    width: attr.page.width+'mm',
+    height: attr.page.height+'mm',
+    'background-image': 'url(' + '{{ $cardFrame->ip_address }}/storage/' + attr.content.background +')',
     'background-size': 'contain',
-
-'background-repeat': 'no-repeat',
-'transform':    'scale(' + scale + ')'
-
+    'background-repeat': 'no-repeat',
+    'transform':    'scale(' + scale + ')'
 }" class="bg-gray-200 relative">
 <div  class="text-center"  x-html="attr.government.title"> </div>
 
@@ -267,20 +268,16 @@ else if (event.key === 'ArrowUp') {
 :style="{ top: attr.barCode.y + 'px', left: attr.barCode.x + 'px' }">
 <svg id="barcode"></svg>
 </div>
-
-
-
     </div>
 
-    <div id="container" x-bind:style="{
-        width: attr.page.width+'mm', height: attr.page.height+'mm',
-        'max-width': attr.page.width+'mm', 'max-height': attr.page.height+'mm',
-        'transform':    'scale(' + scale + ')'
-
-    }" class="bg-gray-200 relative">
-    <div x-html="remark" dir="rtl"></div>
-
-    </div>
+        <div id="container" x-bind:style="{ width: attr.page.width+'mm', height: attr.page.height+'mm',
+    'background-image': 'url(' + '{{ $cardFrame->ip_address }}/storage/' + attr.backImage +')',
+    'background-size': 'contain',
+    'background-repeat': 'no-repeat',
+    'transform':    'scale(' + scale + ')'
+}" class="bg-gray-200 relative">
+            <div x-html="remark" dir="rtl"></div>
+        </div>
 
         <div x-bind:style="{ top: top + 'px', left: left + 'px' }" class="absolute z-40">
             <div x-bind:class="{'bg-blue-200 bg-opacity-50 rounded-lg shadow-lg p-6 overflow-hidden': true}"
@@ -358,7 +355,7 @@ else if (event.key === 'ArrowUp') {
                                 <textarea type="text" id="details" x-model="details" rows="4"
                                     class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 </textarea>
-                               </div>
+                            </div>
 
                         </div>
                         {{-- #accordion-collapse-Remark --}}
@@ -381,15 +378,18 @@ else if (event.key === 'ArrowUp') {
                             aria-labelledby="accordion-collapse-heading-2">
                             {{-- QR Code Dimensions --}}
                             <x-sqcard::form.dimention-slider label="QR code Dimensions" xModel="attr.qrcode.x"
-                                yModel="attr.qrcode.y" zModel="attr.qrcode.size" xMax="10000" yMax="10000" zMax="10000" />
+                                yModel="attr.qrcode.y" zModel="attr.qrcode.size" xMax="10000" yMax="10000"
+                                zMax="10000" />
 
                             {{-- Bar Code Dimensions --}}
                             <x-sqcard::form.dimention-slider label="Bar code Dimensions" xModel="attr.barCode.x"
-                                yModel="attr.barCode.y" zModel="attr.barCode.z" xMax="10000" yMax="10000" zMax="10000" />
+                                yModel="attr.barCode.y" zModel="attr.barCode.z" xMax="10000" yMax="10000"
+                                zMax="10000" />
 
                             {{-- Image Dimensions --}}
                             <x-sqcard::form.dimention-slider label="Image Dimensions" xModel="attr.profile.x"
-                                yModel="attr.profile.y" zModel="attr.profile.size" xMax="10000" yMax="10000" zMax="10000" />
+                                yModel="attr.profile.y" zModel="attr.profile.size" xMax="10000" yMax="10000"
+                                zMax="10000" />
 
                             {{-- Minister Signature --}}
                             <x-sqcard::form.dimention-slider label="Minister Signature" xModel="attr.signature.x"
@@ -398,7 +398,8 @@ else if (event.key === 'ArrowUp') {
 
                             {{-- Ministry Logo Dimensions --}}
                             <x-sqcard::form.dimention-slider label="Ministry Logo Dimensions" xModel="attr.ministry.x"
-                                yModel="attr.ministry.y" zModel="attr.ministry.size" xMax="10000" yMax="10000" zMax="10000" />
+                                yModel="attr.ministry.y" zModel="attr.ministry.size" xMax="10000" yMax="10000"
+                                zMax="10000" />
 
                             {{-- Government Logo Dimensions --}}
                             <x-sqcard::form.dimention-slider label="Government Logo Dimensions"
@@ -475,11 +476,13 @@ else if (event.key === 'ArrowUp') {
                                 'text-white bg-blue-500 hover:bg-blue-400 focus:outline-none focus:ring-4 focus:ring-blue-300 shadow-md transform hover:scale-105': !isPortrait,
                                 'text-black bg-blue-200 hover:bg-blue-300 focus:outline-none focus:ring-4 focus:ring-blue-300 shadow-md transform hover:scale-105': isPortrait
                             }">
-                            @lang("Rotate")
-                        </button>
-                        <a target="_blank" href="{{route('sq.employee.paper-test-card',['customPaperCard'=>$cardFrame->id])}}" class="mt-4 font-medium rounded-sm text-sm px-6 py-3 text-center mb-2 transition-all duration-200">
-                        @lang("Preview")
-                    </a>
+                                @lang("Rotate")
+                            </button>
+                            <a target="_blank"
+                                href="{{route('sq.employee.paper-test-card', ['customPaperCard' => $cardFrame->id])}}"
+                                class="mt-4 font-medium rounded-sm text-sm px-6 py-3 text-center mb-2 transition-all duration-200">
+                                @lang("Preview")
+                            </a>
                             <div class="grid">
                                 {{-- Background of Card --}}
                                 <div class="mb-2 flex items-center justify-center w-full">
@@ -565,7 +568,9 @@ else if (event.key === 'ArrowUp') {
                                                     @lang('Back of Card Background')
                                                 </p>
                                             </div>
-                                            <input id="card-back-logo-file-upload" type="file" class="hidden" />
+                                            <input id="card-back-logo-file-upload" type="file" class="hidden"
+                                                wire:model.live="attr.backImage" />
+
                                         </label>
                                     </div>
                                 </div>
@@ -594,32 +599,32 @@ else if (event.key === 'ArrowUp') {
                                 </div>
                             </div>
                         </div>
-{{-- Accordion Remark --}}
-<h2 id="accordion-collapse-heading-remark">
-    <button type="button"
-        class="flex items-center justify-between w-full p-1 font-medium rtl:text-right text-gray-500  "
-        data-accordion-target="#accordion-collapse-body-remark" aria-expanded="false"
-        aria-controls="accordion-collapse-body-remark">
-        <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                stroke-width="2" d="M9 5 5 1 1 5" />
-        </svg>
-        <label class="block mb-2 text-sm font-medium text-sky-500">@lang('Remark')</label>
-    </button>
-</h2>
+                        {{-- Accordion Remark --}}
+                        <h2 id="accordion-collapse-heading-remark">
+                            <button type="button"
+                                class="flex items-center justify-between w-full p-1 font-medium rtl:text-right text-gray-500  "
+                                data-accordion-target="#accordion-collapse-body-remark" aria-expanded="false"
+                                aria-controls="accordion-collapse-body-remark">
+                                <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                        stroke-width="2" d="M9 5 5 1 1 5" />
+                                </svg>
+                                <label class="block mb-2 text-sm font-medium text-sky-500">@lang('Remark')</label>
+                            </button>
+                        </h2>
 
-<div id="accordion-collapse-body-remark" class="hidden p-2"
-aria-labelledby="accordion-collapse-heading-remark">
-<div class="my-2 col-span-2">
-    <label for="font-size" class="block mb-2 text-sm font-medium text-gray-900 ">
-        @lang('Remark')</label>
-    <textarea type="text" id="remark" x-model="remark" rows="4"
-        class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
-</div>
+                        <div id="accordion-collapse-body-remark" class="hidden p-2"
+                            aria-labelledby="accordion-collapse-heading-remark">
+                            <div class="my-2 col-span-2">
+                                <label for="font-size" class="block mb-2 text-sm font-medium text-gray-900 ">
+                                    @lang('Remark')</label>
+                                <textarea type="text" id="remark" x-model="remark" rows="4"
+                                    class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                            </div>
 
 
-</div>
+                        </div>
 
 
                     </div>
@@ -627,46 +632,46 @@ aria-labelledby="accordion-collapse-heading-remark">
             </div>
         </div>
 
-</div>
-@script
-<script>
-    // Remark Field
+    </div>
+    @script
+    <script>
+        // Remark Field
 
-    CKEDITOR.replace('details').on('change', function (e) {
-        $wire.set('details', this.getData());
-    });
+        CKEDITOR.replace('details').on('change', function (e) {
+            $wire.set('details', this.getData());
+        });
 
-    CKEDITOR.replace('remark').on('change', function(e) {
-        $wire.set('remark', this.getData());
-    });
+        CKEDITOR.replace('remark').on('change', function (e) {
+            $wire.set('remark', this.getData());
+        });
 
-    CKEDITOR.replace('header').on('change', function (e) {
-        $wire.set('attr.government.title', this.getData());
-    });
+        CKEDITOR.replace('header').on('change', function (e) {
+            $wire.set('attr.government.title', this.getData());
+        });
 
-    // Function to initialize accordion
-    function initializeAccordion() {
-        const accordions = document.querySelectorAll('[data-accordion]');
-        accordions.forEach(accordion => {
-            const buttons = accordion.querySelectorAll('[data-accordion-target]');
-            buttons.forEach(button => {
-                button.addEventListener('click', () => {
-                    const target = document.querySelector(button.getAttribute('data-accordion-target'));
-                    const expanded = button.getAttribute('aria-expanded') === 'true';
-                    button.setAttribute('aria-expanded', !expanded);
-                    target.classList.toggle('hidden', expanded);
+        // Function to initialize accordion
+        function initializeAccordion() {
+            const accordions = document.querySelectorAll('[data-accordion]');
+            accordions.forEach(accordion => {
+                const buttons = accordion.querySelectorAll('[data-accordion-target]');
+                buttons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        const target = document.querySelector(button.getAttribute('data-accordion-target'));
+                        const expanded = button.getAttribute('aria-expanded') === 'true';
+                        button.setAttribute('aria-expanded', !expanded);
+                        target.classList.toggle('hidden', expanded);
+                    });
                 });
             });
+        }
+
+        // Initialize accordion on page load
+        document.addEventListener('DOMContentLoaded', initializeAccordion);
+
+        // Reinitialize accordion after Livewire updates the DOM
+        Livewire.hook('message.processed', (message, component) => {
+            initializeAccordion();
         });
-    }
-
-    // Initialize accordion on page load
-    document.addEventListener('DOMContentLoaded', initializeAccordion);
-
-    // Reinitialize accordion after Livewire updates the DOM
-    Livewire.hook('message.processed', (message, component) => {
-        initializeAccordion();
-    });
-</script>
-@endscript
+    </script>
+    @endscript
 </div>

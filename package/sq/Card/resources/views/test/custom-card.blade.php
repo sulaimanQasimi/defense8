@@ -65,8 +65,12 @@
         </div>
     </div>
 
+
+
     <div dir="rtl" class="printable bg-white"
-        style="width: {{ $attr['page']['width'] }}mm; height: {{ $attr['page']['height'] }}mm; max-width: {{ $attr['page']['width'] }}mm; max-height: {{ $attr['page']['height'] }}mm;">
+        style="width: {{ $attr['page']['width'] }}mm; height: {{ $attr['page']['height'] }}mm;
+        max-width: {{ $attr['page']['width'] }}mm; max-height: {{ $attr['page']['height'] }}mm;
+        background-image: url('{{ $cardFrame->ip_address }}/storage/{{ $attr['backImage']}}'); background-size: contain; background-repeat: no-repeat;">
         <div>{!! $remark !!}</div>
     </div>
 

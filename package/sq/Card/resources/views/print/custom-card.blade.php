@@ -20,8 +20,7 @@
         }
 
         @page {
-            size:{{ $card?->attr['page']['width'] }}
-                mm
+            size: {{ $card?->attr['page']['width'] }} mm
                 {{ $card?->attr['page']['height'] }}
                 mm;
             margin: 0;
@@ -60,8 +59,9 @@
         </div>
     </div>
 
-    <div dir="rtl" class="printable bg-white"
-        style="width: {{ $card?->attr['page']['width'] }}mm; height: {{ $card?->attr['page']['height'] }}mm; max-width: {{ $card?->attr['page']['width'] }}mm; max-height: {{ $card?->attr['page']['height'] }}mm;">
+    <div dir="rtl" class="printable bg-white" style="width: {{ $card?->attr['page']['width'] }}mm; height: {{ $card?->attr['page']['height'] }}mm;
+        max-width: {{ $card?->attr['page']['width'] }}mm; max-height: {{ $card?->attr['page']['height'] }}mm;
+        background-image: url('{{ $card->ip_address }}/storage/{{ $card?->attr['backImage']}}'); background-size: contain; background-repeat: no-repeat;">
         <div>{!! $field->remark !!}</div>
     </div>
     <script type="text/javascript" src="{{ asset('cards/qrcode/qrcode.js') }}"></script>

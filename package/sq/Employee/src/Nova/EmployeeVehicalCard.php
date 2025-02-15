@@ -5,6 +5,7 @@ namespace Sq\Employee\Nova;
 use Afj95\LaravelNovaHijriDatepickerField\HijriDatePicker;
 use App\Nova\Actions\VehicalRemarkAction;
 use App\Nova\Resource;
+use Bolechen\NovaActivitylog\Resources\Activitylog;
 use DigitalCreative\MegaFilter\MegaFilter;
 use DigitalCreative\MegaFilter\MegaFilterTrait;
 use Illuminate\Database\Eloquent\Builder;
@@ -15,6 +16,7 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Trix;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Fields\Image;
+use Laravel\Nova\Fields\MorphMany;
 use MZiraki\PersianDateField\PersianDate;
 use Sq\Query\Policy\UserDepartment;
 use Sq\Query\SqNovaDateFilter;
@@ -129,7 +131,9 @@ class EmployeeVehicalCard extends Resource
 
             Trix::make(__("Remark"), 'remark')
                 ->exceptOnForms()
-                ->hideFromIndex()
+                ->hideFromIndex(),
+            MorphMany::make(trans("Activity Log"), 'activities', Activitylog::class),
+
         ];
     }
 

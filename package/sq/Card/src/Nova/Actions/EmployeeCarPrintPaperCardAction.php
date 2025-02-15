@@ -22,7 +22,7 @@ class EmployeeCarPrintPaperCardAction extends Action
     public function handle(ActionFields $fields, Collection $models)
     {
         foreach ($models as $model) {
-            return ActionResponse::openInNewTab(route('sq.paper.print-card.employee_car',['employeeVehicalCard'=>$model->id, "printCardFrame"=>$fields->frame]));
+            return ActionResponse::openInNewTab(route('sq.paper.print-card.employee_car', ['employeeVehicalCard' => $model->id, "printCardFrame" => $fields->frame]));
         }
     }
 
@@ -31,11 +31,18 @@ class EmployeeCarPrintPaperCardAction extends Action
         return [
             Select::make(trans("Card Type"), 'frame')->options(
                 CustomPaperCard::where('type', PrintTypeEnum::EmployeeCar)
-                ->whereIn('department_id', UserDepartment::getUserDepartment())
-                ->pluck('name', 'id')
+                    ->whereIn('department_id', UserDepartment::getUserDepartment())
+                    ->pluck('name', 'id')
             )->displayUsingLabels()->rules('required', 'exists:custom_paper_cards,id'),
         ];
     }
-    public function name(){
-        return trans("Paper Card");
-    }}
+
+    public function name()
+    {
+        return trans("کارت کاغذی ");
+    }
+    public function uriKey()
+    {
+        return 'employee-car-print-paper-card';
+    }
+}

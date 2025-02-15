@@ -1,5 +1,10 @@
 <div class="grid grid-cols-2 gap-x-2 gap-y-3">
 
+    <a target="_blank" href="{{route('sq.employee.pvc-test-card', ['printCardFrame' => $cardFrame->id])}}"
+        class="mt-4 font-medium rounded-sm text-sm px-6 py-3 text-center mb-2 transition-all duration-200">
+        @lang("Preview")
+    </a>
+
     <div class="mb-5 col-span-2">
         <label class="block mb-2 text-sm font-medium text-gray-900 ">@lang('Card Header')</label>
         <textarea type="text" id="header" x-model="attr.government.title"></textarea>

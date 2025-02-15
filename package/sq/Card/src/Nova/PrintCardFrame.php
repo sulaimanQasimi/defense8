@@ -23,11 +23,11 @@ class PrintCardFrame extends Resource
     ];
     public static function label()
     {
-        return __('Print Card Frames');
+        return __('کارت های PVC');
     }
     public static function singularLabel()
     {
-        return __('Print Card Frame');
+        return __('کارت PVC');
     }
 
     // public static function indexQuery(NovaRequest $request, $query)
@@ -114,7 +114,16 @@ class PrintCardFrame extends Resource
                 ->withoutConfirmation()
                 ->onlyOnDetail()
                 ->canRun(fn($request, $card) => auth()->user()->hasPermissionTo("design-card") && in_array($card->department_id, UserDepartment::getUserDepartment())),
-        ];
+                Action::openInNewTab(
+                    __("پیش نمایش کارت"),
+                    fn($card) => route('sq.employee.pvc-test-card', ['printCardFrame' => $card->id])
+                )
+                    ->sole()
+                    ->withoutConfirmation()
+                    ->onlyOnDetail()
+                    ->canRun(fn($request, $card) => auth()->user()->hasPermissionTo("design-card") && in_array($card->department_id, UserDepartment::getUserDepartment())),
+
+            ];
     }
     public function replicate()
     {
@@ -123,5 +132,9 @@ class PrintCardFrame extends Resource
 
             $model->name = 'Duplicate of ' . $model->name;
         });
+    }
+    public static function uriKey(): string
+    {
+        return 'print-card-frame';
     }
 }

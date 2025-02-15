@@ -23,11 +23,11 @@ class CustomPaperCard extends Resource
     ];
     public static function label()
     {
-        return __('Print Card Papers');
+        return __('کارت های کاغذی');
     }
     public static function singularLabel()
     {
-        return __('Print Card Paper');
+        return __('کارت کاغذی');
     }
 
     public function fields(NovaRequest $request)
@@ -100,6 +100,19 @@ class CustomPaperCard extends Resource
                 ->withoutConfirmation()
                 ->onlyOnDetail()
                 ->canRun(fn($request, $card) => auth()->user()->hasPermissionTo("design-card") && in_array($card->department_id, UserDepartment::getUserDepartment())),
+            Action::openInNewTab(
+                __("پیش نمایش کارت"),
+                fn($card) => route('sq.employee.paper-test-card', ['customPaperCard' => $card->id])
+            )
+                ->sole()
+                ->withoutConfirmation()
+                ->onlyOnDetail()
+                ->canRun(fn($request, $card) => auth()->user()->hasPermissionTo("design-card") && in_array($card->department_id, UserDepartment::getUserDepartment())),
+
+
+
+
+
         ];
     }
     public function replicate()
@@ -110,4 +123,10 @@ class CustomPaperCard extends Resource
             $model->name = 'Duplicate of ' . $model->name;
         });
     }
+
+    public static function uriKey(): string
+    {
+        return 'custom-paper-card';
+    }
+
 }

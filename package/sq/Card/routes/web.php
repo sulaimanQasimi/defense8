@@ -28,6 +28,23 @@ Route::middleware(['auth'])
             ->name('employee.paper-test-card');
 
 
+        /**
+         * Route to preview a paper card.
+         *
+         * This route handles GET requests to the URL "pvc-card-preview/{printCardFrame:id}".
+         * It uses the 'pvc' method of the TestCardController to generate the preview.
+         * The route is named 'employee.pvc-test-card'.
+         *
+         * @param int $printCardFrame:id The ID of the print card frame to preview.
+         * @return \Illuminate\Http\Response
+         */
+        Route::get("pvc-card-preview/{printCardFrame:id}", [TestCardController::class, 'pvc'])
+            ->name('employee.pvc-test-card');
+
+
+
+
+            
         Route::get("paper-card/{customPaperCard:id}", CustomCardDesign::class)
             ->name('employee.paper-design-card');
 

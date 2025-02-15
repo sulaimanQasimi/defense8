@@ -5,6 +5,7 @@ namespace Sq\Employee\Nova;
 use Afj95\LaravelNovaHijriDatepickerField\HijriDatePicker;
 use App\Nova\Actions\VehicalRemarkAction;
 use App\Nova\Resource;
+use App\Support\Defense\PermissionTranslation;
 use Bolechen\NovaActivitylog\Resources\Activitylog;
 use DigitalCreative\MegaFilter\MegaFilter;
 use DigitalCreative\MegaFilter\MegaFilterTrait;
@@ -162,7 +163,7 @@ class EmployeeVehicalCard extends Resource
                 new SqNovaTextFilter(label: trans("Vehical Engine NO"), column: "vehical_engine_no"),
                 //
                 new SqNovaTextFilter(label: trans("Vehical Registration NO"), column: "vehical_registration_no"),
-                
+
             ])->columns(4)
 
         ];
@@ -192,6 +193,14 @@ class EmployeeVehicalCard extends Resource
             (new VehicalRemarkAction)
                 ->canSee(fn() => auth()->user()->hasPermissionTo("add remark for vehical")),
 
+
+            (new \Sq\Employee\Nova\Actions\VehicalCardExtension)
+                ->onlyOnDetail()
+                ->canRun(
+                    fn($request, $mainCard)
+                    => auth()->user()->hasPermissionTo(PermissionTranslation::update("Employee Vehical Card"))
+                        && in_array($mainCard->card_info->orginization->id, UserDepartment::getUserDepartment())
+                ),
         ];
     }
 }

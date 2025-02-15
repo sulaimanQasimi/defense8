@@ -69,8 +69,6 @@ class VehicalCardExtension extends Action
                 ->placeholder('YYYY/MM/DD')
                 ->selected_date('1444/12/12')
                 ->placement('bottom'),
-            Trix::make(trans('Remark'), 'remark'),
-            Boolean::make(__("Muthanna"), 'muthanna'),
 
         ];
     }

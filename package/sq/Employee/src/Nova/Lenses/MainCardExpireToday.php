@@ -23,7 +23,7 @@ class MainCardExpireToday extends Lens
 
     public static function query(NovaRequest $request, $query)
     {
-        return $query->whereDate(column: 'card_expired_date', operator: '>',value: Hijri::Date('Y-m-d'))
+        return $query->whereDate(column: 'card_expired_date', operator: '<',value: Hijri::Date('Y-m-d'))
         ->whereHas('card_info', function ($query) {
             return $query->whereIn('department_id', UserDepartment::getUserDepartment());
         });

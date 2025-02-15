@@ -27,7 +27,7 @@ class EmployeePrintCardAction extends Action
     public function handle(ActionFields $fields, Collection $models)
     {
         foreach ($models as $model) {
-            return ActionResponse::openInNewTab(route('sq.employee.print-card-for',['mainCard'=>$model->id, "printCardFrame"=>$fields->frame]));
+            return ActionResponse::openInNewTab(route('sq.employee.print-card-for', ['mainCard' => $model->id, "printCardFrame" => $fields->frame]));
         }
     }
 
@@ -42,13 +42,18 @@ class EmployeePrintCardAction extends Action
         return [
             Select::make(trans("Card Type"), 'frame')->options(
                 PrintCardFrame::query()
-                ->where('type', PrintTypeEnum::Employee)
-                ->whereIn('department_id', UserDepartment::getUserDepartment())
-                ->pluck('name', 'id')
+                    ->where('type', PrintTypeEnum::Employee)
+                    ->whereIn('department_id', UserDepartment::getUserDepartment())
+                    ->pluck('name', 'id')
             )->displayUsingLabels()->rules('required', 'exists:print_card_frames,id'),
         ];
     }
-    public function name(){
-        return trans("Print Card Frame");
+    public function name()
+    {
+        return trans("کارت PVC کارمند");
+    }
+    public function uriKey()
+    {
+        return 'employee-print-card';
     }
 }

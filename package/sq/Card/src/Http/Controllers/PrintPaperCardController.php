@@ -3,6 +3,7 @@
 namespace Sq\Card\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Sq\Card\Http\Controllers\Contracts\PrintSettings;
 use Sq\Card\Models\PrintCard;
 use Sq\Employee\Models\CardInfo;
 use Sq\Employee\Models\EmployeeVehicalCard;
@@ -17,80 +18,12 @@ use Sq\Query\Policy\UserDepartment;
 
 class PrintPaperCardController extends Controller
 {
+    use PrintSettings;
     public function __construct()
     {
         app()->setLocale(locale: 'fa');
     }
 
-    /**
-     * Summary of employee
-     * @param \Illuminate\Http\Request $request
-     * @param \Sq\Employee\Models\CardInfo $cardInfo
-     * @param int $printCardFrame
-     * @return \Illuminate\View\View
-     */
-    public function employee(Request $request, MainCard $mainCard, int $printCardFrame): View
-    {
-        if ($mainCard->printed) {
-            abort(404);
-        }
-        $mainCard->update(['printed' => 1]);
-
-
-        return $this->card_optimization(
-            cardInfo: $mainCard->card_info,
-            printCardFrame: $printCardFrame,
-            printTypeEnum: PrintTypeEnum::Employee,
-            mainCard: $mainCard,
-            gun: null,
-            employeeVehicalCard: null
-        );
-    }
-
-    /**
-     * Summary of gun
-     * @param \Illuminate\Http\Request $request
-     * @param \Sq\Employee\Models\GunCard $gunCard
-     * @param int $printCardFrame
-     * @return \Illuminate\View\View
-     */
-    public function gun(Request $request, GunCard $gunCard, int $printCardFrame): View
-    {
-
-        if ($gunCard->printed) {
-            abort(404);
-        }
-        $gunCard->update(['printed' => 1]);
-
-        return $this->card_optimization(
-            cardInfo: $gunCard->card_info,
-            printCardFrame: $printCardFrame,
-            gun: $gunCard,
-            printTypeEnum: PrintTypeEnum::Gun,
-        );
-    }
-
-    /**
-     * Summary of employee_car
-     * @param \Illuminate\Http\Request $request
-     * @param \Sq\Employee\Models\EmployeeVehicalCard $employeeVehicalCard
-     * @param int $printCardFrame
-     * @return \Illuminate\View\View
-     */
-    public function employee_car(Request $request, EmployeeVehicalCard $employeeVehicalCard, int $printCardFrame): View
-    {
-        if ($employeeVehicalCard->printed) {
-            abort(404);
-        }
-        $employeeVehicalCard->update(['printed' => 1]);
-
-        return $this->card_optimization(
-            cardInfo: $employeeVehicalCard->card_info,
-            printCardFrame: $printCardFrame,
-            printTypeEnum: PrintTypeEnum::EmployeeCar,
-            employeeVehicalCard: $employeeVehicalCard,
-        );
-    }
     /**
      * Summary of card_optimization
      * @param mixed $cardInfo

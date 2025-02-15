@@ -116,7 +116,7 @@ class CardInfo extends Model
             ]);
     }
 
-    public function card_info_activity()
+    public function activity()
     {
         return $this->morphMany(Activity::class, 'subject');
     }

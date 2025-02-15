@@ -291,7 +291,7 @@ class CardInfo extends Resource
             ]),
 
 
-            Fields\MorphMany::make(trans("Activity Log"),'card_info_activity',Activitylog::class),
+            Fields\MorphMany::make(trans("Activity Log"),'activity',Activitylog::class),
             Fields\HasMany::make(__("Oil Report"), 'oil_disterbutions', \Sq\Oil\Nova\OilDisterbution::class),
             Fields\HasMany::make(name: __("Attendance"), attribute: 'attendance', resource: Attendance::class),
             Fields\HasMany::make(name: __("Print Card"), attribute: 'print_cards', resource: PrintCard::class),

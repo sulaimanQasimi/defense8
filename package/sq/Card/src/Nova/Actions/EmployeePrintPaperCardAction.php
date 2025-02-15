@@ -53,6 +53,9 @@ class EmployeePrintPaperCardAction extends Action
     }
     public function name()
     {
-        return trans("Paper Card");
+        return trans("کارت کاغذی ");
+    }
+    public function uriKey(){
+        return 'employee-print-paper-card';
     }
 }

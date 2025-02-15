@@ -32,7 +32,7 @@ class EmployeeVehicalCardPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasPermissionTo(PermissionTranslation::create("Employee Vehical Card")) ;
+        return $user->hasPermissionTo(PermissionTranslation::create("Employee Vehical Card"));
     }
 
     /**

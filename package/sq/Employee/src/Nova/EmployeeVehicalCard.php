@@ -3,10 +3,12 @@
 namespace Sq\Employee\Nova;
 
 use Afj95\LaravelNovaHijriDatepickerField\HijriDatePicker;
+use Alkoumi\LaravelHijriDate\Hijri;
 use App\Nova\Actions\VehicalRemarkAction;
 use App\Nova\Resource;
 use App\Support\Defense\PermissionTranslation;
 use Bolechen\NovaActivitylog\Resources\Activitylog;
+use Carbon\Carbon;
 use DigitalCreative\MegaFilter\MegaFilter;
 use DigitalCreative\MegaFilter\MegaFilterTrait;
 use Illuminate\Database\Eloquent\Builder;
@@ -56,6 +58,19 @@ class EmployeeVehicalCard extends Resource
     {
         return [
             Image::make(__('Photo'), 'photo')->disk('vehical'),
+            Boolean::make(__("Print"), 'printed')->exceptOnForms(),
+
+            Boolean::make(__('منقضی شده'), function () {
+                // Create a Carbon instance from the current Hijri date
+                $date1 = Carbon::make(Hijri::Date('Y-m-d'));
+
+                // Create a Carbon instance from the card's expiration date
+                $date2 = Carbon::make($this->expire_date);
+
+                // Compare the two dates to determine if the card is expired
+                return $date1->gt($date2);
+            })
+                ->exceptOnForms(),
             Select::make(__('Category'), 'category')
                 ->options([
                     'الف' => __('الف'),
@@ -121,14 +136,15 @@ class EmployeeVehicalCard extends Resource
                 ->format('iYYYY/iMM/iDD')
                 ->placeholder('YYYY/MM/DD')
                 ->selected_date('1444/12/12')
-                ->placement('bottom'),
+                ->placement('bottom')
+                ->hideWhenUpdating(),
 
             HijriDatePicker::make(__("Expire Date"), "expire_date")
                 ->format('iYYYY/iMM/iDD')
                 ->placeholder('YYYY/MM/DD')
                 ->selected_date('1444/12/12')
-                ->placement('bottom'),
-            Boolean::make(__("Print"), 'printed')->hideWhenCreating(),
+                ->placement('bottom')
+                ->hideWhenUpdating(),
 
             Trix::make(__("Remark"), 'remark')
                 ->exceptOnForms()
@@ -181,13 +197,15 @@ class EmployeeVehicalCard extends Resource
                 ->canRun(
                     fn($request, $employeeVehicalCard) => auth()->user()->hasPermissionTo("print-card")
                         && in_array($employeeVehicalCard->card_info->orginization->id, UserDepartment::getUserDepartment())
-
+                        && !$employeeVehicalCard->printed
                 ),
             (new \Sq\Card\Nova\Actions\EmployeeCarPrintPaperCardAction)
                 ->onlyOnDetail()
                 ->canRun(
                     fn($request, $employeeVehicalCard) => auth()->user()->hasPermissionTo("print-card")
                         && in_array($employeeVehicalCard->card_info->orginization->id, UserDepartment::getUserDepartment())
+                        && !$employeeVehicalCard->printed
+
 
                 ),
             (new VehicalRemarkAction)

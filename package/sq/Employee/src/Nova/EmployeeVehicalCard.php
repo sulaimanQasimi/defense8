@@ -133,7 +133,6 @@ class EmployeeVehicalCard extends Resource
                 ->exceptOnForms()
                 ->hideFromIndex(),
             MorphMany::make(trans("Activity Log"), 'activities', Activitylog::class),
-
         ];
     }
 
@@ -163,10 +162,7 @@ class EmployeeVehicalCard extends Resource
                 new SqNovaTextFilter(label: trans("Vehical Engine NO"), column: "vehical_engine_no"),
                 //
                 new SqNovaTextFilter(label: trans("Vehical Registration NO"), column: "vehical_registration_no"),
-                //
-                new SqNovaDateFilter(label: trans("Disterbute Date"), column: "register_date"),
-                //
-                new SqNovaDateFilter(label: trans("Expire Date"), column: "expire_date"),
+                
             ])->columns(4)
 
         ];

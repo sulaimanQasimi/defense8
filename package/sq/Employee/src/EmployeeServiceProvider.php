@@ -32,7 +32,7 @@ class EmployeeServiceProvider extends ServiceProvider
             NovaResource\GunCard::class,
             NovaResource\MainCard::class,
         ]);
-      
+
 
         $this->loadMigrationsFrom(__DIR__ . "/../database/migrations");
         $this->loadViewsFrom(__DIR__ . "/../resources/views/", 'sqemployee');
@@ -63,17 +63,26 @@ class EmployeeServiceProvider extends ServiceProvider
                 // Gate Menu Item
                 MenuItem::resource(resourceClass: NovaResource\Gate::class),
 
+
                 // Employee Menu Item
                 MenuItem::resource(resourceClass: NovaResource\CardInfo::class),
-                MenuItem::resource(resourceClass: NovaResource\Attendance::class),
-                //
-                MenuItem::resource(resourceClass: NovaResource\ScanedEmployee::class),
+
+                MenuItem::resource(\Sq\Employee\Nova\MainCard::class),
+
 
                 // Employee Menu Item
                 MenuItem::resource(resourceClass: NovaResource\EmployeeVehicalCard::class),
 
                 // Employee Menu Item
                 MenuItem::resource(resourceClass: NovaResource\GunCard::class),
+
+                MenuItem::resource(\Sq\Card\Nova\PrintCardFrame::class),
+                MenuItem::resource(\Sq\Card\Nova\CustomPaperCard::class),
+                MenuItem::resource(\Sq\Card\Nova\PrintCard::class),
+
+                MenuItem::resource(resourceClass: NovaResource\Attendance::class),
+                //
+                MenuItem::resource(resourceClass: NovaResource\ScanedEmployee::class),
 
                 // Employee Check out Page
                 MenuItem::externalLink(__("Employee Check Card"), route("sqemployee.employee.check.card"))
@@ -97,10 +106,6 @@ class EmployeeServiceProvider extends ServiceProvider
                     ->canSee(fn() => auth()->user()->hasPermissionTo(PermissionTranslation::viewAny("Card Info"))),
 
                 // Frame of Printable Card Menu Item
-                MenuItem::resource(\Sq\Employee\Nova\MainCard::class),
-                MenuItem::resource(\Sq\Card\Nova\PrintCardFrame::class),
-                MenuItem::resource(\Sq\Card\Nova\CustomPaperCard::class),
-                MenuItem::resource(\Sq\Card\Nova\PrintCard::class),
 
 
             ])

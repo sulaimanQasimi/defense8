@@ -16,17 +16,13 @@ use Sq\Query\Policy\UserDepartment;
 
 class MainCardExpireToday extends Lens
 {
-    public function name()
-    {
-        return __('کارتهای انقضا شده');
-    }
 
     public static function query(NovaRequest $request, $query)
     {
-        return $query->whereDate(column: 'card_expired_date', operator: '<',value: Hijri::Date('Y-m-d'))
-        ->whereHas('card_info', function ($query) {
-            return $query->whereIn('department_id', UserDepartment::getUserDepartment());
-        });
+        return $query->whereDate(column: 'card_expired_date', operator: '<', value: Hijri::Date('Y-m-d'))
+            ->whereHas('card_info', function ($query) {
+                return $query->whereIn('department_id', UserDepartment::getUserDepartment());
+            });
     }
 
     public function fields(NovaRequest $request)
@@ -34,9 +30,9 @@ class MainCardExpireToday extends Lens
         return [
 
             BelongsTo::make(__('Employee'), 'card_info', CardInfo::class)
-               ->relatableQueryUsing(function (NovaRequest $request, Builder $query) {
-                   $query->whereIn('department_id', UserDepartment::getUserDepartment());
-               }),
+                ->relatableQueryUsing(function (NovaRequest $request, Builder $query) {
+                    $query->whereIn('department_id', UserDepartment::getUserDepartment());
+                }),
             HijriDatePicker::make(__("Disterbute Date"), "card_perform")
                 ->hideWhenUpdating(
                     fn() => $this->printed
@@ -44,8 +40,7 @@ class MainCardExpireToday extends Lens
                 ->format('iYYYY/iMM/iDD')
                 ->placeholder('YYYY/MM/DD')
                 ->selected_date('1444/12/12')
-                ->placement('bottom')
-            ,
+                ->placement('bottom'),
             HijriDatePicker::make(__("Expire Date"), "card_expired_date")
                 ->hideWhenUpdating(
                     fn() => $this->printed
@@ -63,5 +58,13 @@ class MainCardExpireToday extends Lens
             // PersianDate::make(__("Print Date"), 'printed_at')->exceptOnForms(),
 
         ];
+    }
+    public function name()
+    {
+        return __('کارتهای انقضا شده');
+    }
+    public  function uriKey()
+    {
+        return 'main-card-expire-today';
     }
 }

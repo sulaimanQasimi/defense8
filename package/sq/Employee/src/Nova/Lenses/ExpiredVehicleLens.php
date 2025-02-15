@@ -1,6 +1,10 @@
 <?php
 
-namespace Sq\Employee\Nova;
+namespace Sq\Employee\Nova\Lenses;
+
+use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Http\Requests\LensRequest;
+use Laravel\Nova\Lenses\Lens;
 
 use Afj95\LaravelNovaHijriDatepickerField\HijriDatePicker;
 use Alkoumi\LaravelHijriDate\Hijri;
@@ -21,41 +25,35 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Fields\Image;
 use Laravel\Nova\Fields\MorphMany;
 use MZiraki\PersianDateField\PersianDate;
-use Sq\Employee\Nova\Lenses\ExpiredVehicleLens;
+use Sq\Employee\Nova\CardInfo;
 use Sq\Query\Policy\UserDepartment;
 use Sq\Query\SqNovaDateFilter;
 use Sq\Query\SqNovaTextFilter;
 
-class EmployeeVehicalCard extends Resource
+class ExpiredVehicleLens extends Lens
 {
-    use MegaFilterTrait;
-    public static $model = \Sq\Employee\Models\EmployeeVehicalCard::class;
-
-    public static $title = 'vehical_palete';
-    public static $search = [
-        'vehical_type',
-        "vehical_colour",
-        "vehical_palete",
-
-    ];
-
-    public static function label()
+    /**
+     * Get the query for the lens.
+     *
+     * @param  \Laravel\Nova\Http\Requests\LensRequest  $request
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public static function query(LensRequest $request, $query)
     {
-        return __('Vehical Card');
+        return $query->whereDate(column: 'expire_date', operator: '<', value: Hijri::Date('Y-m-d'))
+            ->whereHas('card_info', function ($query) {
+                return $query->whereIn('department_id', UserDepartment::getUserDepartment());
+            });
     }
 
-    public static function singularLabel()
-    {
-        return __('Vehical Card');
-    }
-
-    public static function indexQuery(NovaRequest $request, $query)
-    {
-        return $query->whereHas('card_info', function ($query) {
-            return $query->whereIn('department_id', UserDepartment::getUserDepartment());
-        });
-    }
-    public function fields(NovaRequest $request)
+    /**
+     * Get the fields displayed by the lens.
+     *
+     * @param  \Laravel\Nova\Http\Requests\LensRequest  $request
+     * @return array
+     */
+    public function fields(\Laravel\Nova\Http\Requests\NovaRequest $request)
     {
         return [
             Image::make(__('Photo'), 'photo')->disk('vehical'),
@@ -151,77 +149,22 @@ class EmployeeVehicalCard extends Resource
                 ->exceptOnForms()
                 ->hideFromIndex(),
             MorphMany::make(trans("Activity Log"), 'activities', Activitylog::class),
-        ];
-    }
-
-
-    public function cards(NovaRequest $request)
-    {
-        return [];
-    }
-
-    public function filters(NovaRequest $request)
-    {
-        return [
-            MegaFilter::make([
-                //
-                new SqNovaTextFilter(label: trans("Vehical Type"), column: "vehical_type"),
-                //
-                new SqNovaTextFilter(label: trans("Vehical Colour"), column: "vehical_colour"),
-                //
-                new SqNovaTextFilter(label: trans("Vehical Palete"), column: "vehical_palete"),
-                //
-                new SqNovaTextFilter(label: trans("Vehical Chassis"), column: "vehical_chassis"),
-                //
-                new SqNovaTextFilter(label: trans("Vehical Model"), column: "vehical_model"),
-                //
-                new SqNovaTextFilter(label: trans("Vehical Owner"), column: "vehical_owner"),
-                //
-                new SqNovaTextFilter(label: trans("Vehical Engine NO"), column: "vehical_engine_no"),
-                //
-                new SqNovaTextFilter(label: trans("Vehical Registration NO"), column: "vehical_registration_no"),
-
-            ])->columns(4)
 
         ];
     }
-    public function lenses(NovaRequest $request)
-    {
-        return [
-            new ExpiredVehicleLens(),
-        ];
-    }
 
-    public function actions(NovaRequest $request)
-    {
-        return [
-            (new \Sq\Card\Nova\Actions\EmployeeCarPrintCardAction)
-                ->onlyOnDetail()
-                ->canRun(
-                    fn($request, $employeeVehicalCard) => auth()->user()->hasPermissionTo("print-card")
-                        && in_array($employeeVehicalCard->card_info->orginization->id, UserDepartment::getUserDepartment())
-                        && !$employeeVehicalCard->printed
-                ),
-            (new \Sq\Card\Nova\Actions\EmployeeCarPrintPaperCardAction)
-                ->onlyOnDetail()
-                ->canRun(
-                    fn($request, $employeeVehicalCard) => auth()->user()->hasPermissionTo("print-card")
-                        && in_array($employeeVehicalCard->card_info->orginization->id, UserDepartment::getUserDepartment())
-                        && !$employeeVehicalCard->printed
+    /**
+     * Get the name of the lens.
+     *
+     * @return string
+     */
 
-
-                ),
-            (new VehicalRemarkAction)
-                ->canSee(fn() => auth()->user()->hasPermissionTo("add remark for vehical")),
-
-
-            (new \Sq\Employee\Nova\Actions\VehicalCardExtension)
-                ->onlyOnDetail()
-                ->canRun(
-                    fn($request, $mainCard)
-                    => auth()->user()->hasPermissionTo(PermissionTranslation::update("Employee Vehical Card"))
-                        && in_array($mainCard->card_info->orginization->id, UserDepartment::getUserDepartment())
-                ),
-        ];
-    }
+     public function name()
+     {
+         return __('کارتهای انقضا شده');
+     }
+     public  function uriKey()
+     {
+         return 'expired-vehicle-lens';
+     }
 }

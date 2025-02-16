@@ -2,30 +2,40 @@
 
 namespace Sq\Card\Http\Controllers\Contracts;
 
-use App\Http\Controllers\Controller;
-use Sq\Card\Models\PrintCard;
-use Sq\Employee\Models\CardInfo;
 use Sq\Employee\Models\EmployeeVehicalCard;
-use Sq\Card\Models\PrintCardFrame;
 use App\Support\Defense\Print\PrintTypeEnum;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
-use Sq\Card\Support\PrintCardField;
 use Sq\Employee\Models\GunCard;
 use Sq\Employee\Models\MainCard;
 use Sq\Query\Policy\UserDepartment;
+use Illuminate\Support\Facades\Log;
 
-
+/**
+ * Trait PrintSettings
+ * Provides methods for handling the printing of various types of cards.
+ */
 trait PrintSettings
 {
-
-    abstract   private function card_optimization($cardInfo, $printCardFrame, $employeeVehicalCard = null, $gun = null, $printTypeEnum = null, $mainCard = null): View;
+    /**
+     * Abstract method for card optimization.
+     *
+     * @param mixed $cardInfo
+     * @param int $printCardFrame
+     * @param mixed|null $employeeVehicalCard
+     * @param mixed|null $gun
+     * @param mixed|null $printTypeEnum
+     * @param mixed|null $mainCard
+     * @return \Illuminate\View\View
+     */
+    abstract private function card_optimization($cardInfo, $printCardFrame, $employeeVehicalCard = null, $gun = null, $printTypeEnum = null, $mainCard = null): View;
 
     /**
-     * Summary of employee
+     * Handles the printing process for an employee's main card.
+     *
      * @param \Illuminate\Http\Request $request
-     * @param \Sq\Employee\Models\CardInfo $cardInfo
+     * @param \Sq\Employee\Models\MainCard $mainCard
      * @param int $printCardFrame
      * @return \Illuminate\View\View
      */
@@ -40,7 +50,7 @@ trait PrintSettings
         ]);
 
         $date = Carbon::make($mainCard->card_expired_date)->format('Y/m/d');
-        // Activity
+        // Log activity
         activity()
             ->performedOn($mainCard)
             ->causedBy(auth()->user())
@@ -51,7 +61,6 @@ trait PrintSettings
                 "muthanna" => $mainCard->muthanna,
             ])
             ->log("کارت با تاریخ انقضا {$date} برای کارمند پرنت شد");
-
 
         return $this->card_optimization(
             cardInfo: $mainCard->card_info,
@@ -64,7 +73,8 @@ trait PrintSettings
     }
 
     /**
-     * Summary of gun
+     * Handles the printing process for a gun card.
+     *
      * @param \Illuminate\Http\Request $request
      * @param \Sq\Employee\Models\GunCard $gunCard
      * @param int $printCardFrame
@@ -72,11 +82,20 @@ trait PrintSettings
      */
     public function gun(Request $request, GunCard $gunCard, int $printCardFrame): View
     {
-
         if ($gunCard->printed) {
             abort(404);
         }
         $gunCard->update(['printed' => 1]);
+        $date = Carbon::make($gunCard->expire_date)->format('Y/m/d');
+        // Log activity
+        activity()
+            ->performedOn($gunCard)
+            ->causedBy(auth()->user())
+            ->withProperties([
+                "register_date" => $gunCard->register_date,
+                "expire_date" => $gunCard->expire_date,
+            ])
+            ->log("کارت با تاریخ انقضا {$date} برای اسلحه پرنت شد");
 
         return $this->card_optimization(
             cardInfo: $gunCard->card_info,
@@ -87,7 +106,8 @@ trait PrintSettings
     }
 
     /**
-     * Summary of employee_car
+     * Handles the printing process for an employee vehicle card.
+     *
      * @param \Illuminate\Http\Request $request
      * @param \Sq\Employee\Models\EmployeeVehicalCard $employeeVehicalCard
      * @param int $printCardFrame
@@ -101,7 +121,7 @@ trait PrintSettings
         $employeeVehicalCard->update(['printed' => 1]);
 
         $date = Carbon::make($employeeVehicalCard->expire_date)->format('Y/m/d');
-        // Activity
+        // Log activity
         activity()
             ->performedOn($employeeVehicalCard)
             ->causedBy(auth()->user())
@@ -117,5 +137,61 @@ trait PrintSettings
             printTypeEnum: PrintTypeEnum::EmployeeCar,
             employeeVehicalCard: $employeeVehicalCard,
         );
+    }
+
+    private function logActivity($card, $mainCard, $gun, $employeeVehicalCard)
+    {
+        if ($mainCard) {
+            activity()
+                ->performedOn($mainCard)
+                ->causedBy(auth()->user())
+                ->log("قالب {$card->name} پرنت شد");
+        } else if ($gun) {
+            activity()
+                ->performedOn($gun)
+                ->causedBy(auth()->user())
+                ->log("قالب {$card->name} پرنت شد");
+        } else if ($employeeVehicalCard) {
+            activity()
+                ->performedOn($employeeVehicalCard)
+                ->causedBy(auth()->user())
+                ->log("قالب {$card->name} پرنت شد");
+        }
+    }
+
+    private function checkUserDepartment($cardInfo, $card, $printTypeEnum)
+    {
+        if (!in_array($cardInfo->department_id, UserDepartment::getUserDepartment())) {
+            abort(404);
+        }
+
+        if (!in_array($card->department_id, UserDepartment::getUserDepartment())) {
+            abort(404);
+        }
+
+        if ($card->type != $printTypeEnum) {
+            abort(404);
+        }
+        if (!$cardInfo->confirmed) {
+            abort(404);
+        }
+    }
+
+    private function getIssueDate($printTypeEnum, $mainCard, $employeeVehicalCard, $gun)
+    {
+        return match ($printTypeEnum) {
+            PrintTypeEnum::Employee => $mainCard?->card_perform,
+            PrintTypeEnum::EmployeeCar => $employeeVehicalCard?->register_date,
+            PrintTypeEnum::Gun => $gun?->register_date,
+        };
+    }
+
+    private function getExpireDate($printTypeEnum, $mainCard, $employeeVehicalCard, $gun)
+    {
+        return match ($printTypeEnum) {
+            PrintTypeEnum::Employee => $mainCard?->card_expired_date,
+            PrintTypeEnum::Gun => $gun?->expire_date,
+            PrintTypeEnum::EmployeeCar => $employeeVehicalCard?->expire_date,
+        };
     }
 }

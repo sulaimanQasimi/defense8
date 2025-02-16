@@ -15,6 +15,7 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Trix;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use MZiraki\PersianDateField\PersianDate;
+use Sq\Employee\Nova\Actions\GunCardExtension;
 use Sq\Query\Policy\UserDepartment;
 use Sq\Query\SqNovaDateFilter;
 use Sq\Query\SqNovaTextFilter;
@@ -56,28 +57,33 @@ class GunCard extends Resource
                     $query->whereIn('department_id', UserDepartment::getUserDepartment());
                 })
                 ->searchable(),
+
             Text::make(__("Gun Type"), "gun_type")
                 ->required()
                 ->rules("required", "string"),
+
             Text::make(__("Gun No"), "gun_no")
                 ->required()
                 ->creationRules("required", "string", "unique:gun_cards,gun_no")
                 ->updateRules("required", "string", "unique:gun_cards,gun_no,{{resourceId}}"),
+
             Text::make(__("Gun Range"), "range")
                 ->required()
                 ->rules("required", "string"),
 
             HijriDatePicker::make(__("Disterbute Date"), "register_date")
-
                 ->format('iYYYY/iMM/iDD')
                 ->placeholder('YYYY/MM/DD')
                 ->selected_date('1444/12/12')
-                ->placement('bottom'),
+                ->placement('bottom')
+                ->hideWhenUpdating(),
+
             HijriDatePicker::make(__("Expire Date"), "expire_date")
                 ->format('iYYYY/iMM/iDD')
                 ->placeholder('YYYY/MM/DD')
                 ->selected_date('1444/12/12')
-                ->placement('bottom'),
+                ->placement('bottom')
+                ->hideWhenUpdating(),
 
             Trix::make(trans('Remark'), 'remark'),
             Boolean::make(__("Print"), 'printed')->hideWhenCreating(),
@@ -87,7 +93,8 @@ class GunCard extends Resource
     }
     public function cards(NovaRequest $request)
     {
-        return [];
+        return [
+        ];
     }
 
     public function filters(NovaRequest $request)
@@ -139,6 +146,7 @@ class GunCard extends Resource
                     fn($request, $gun) => auth()->user()->hasPermissionTo("print-card")
                         && in_array($gun->card_info->orginization->id, UserDepartment::getUserDepartment())
                 ),
+                new GunCardExtension
 
         ];
     }

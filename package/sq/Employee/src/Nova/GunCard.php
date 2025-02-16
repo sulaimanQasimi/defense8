@@ -4,11 +4,13 @@ namespace Sq\Employee\Nova;
 
 use Afj95\LaravelNovaHijriDatepickerField\HijriDatePicker;
 use App\Nova\Resource;
+use Bolechen\NovaActivitylog\Resources\Activitylog;
 use DigitalCreative\MegaFilter\MegaFilter;
 use DigitalCreative\MegaFilter\MegaFilterTrait;
 use Illuminate\Database\Eloquent\Builder;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Fields\MorphMany;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Trix;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -79,14 +81,7 @@ class GunCard extends Resource
 
             Trix::make(trans('Remark'), 'remark'),
             Boolean::make(__("Print"), 'printed')->hideWhenCreating(),
-            // PersianDate::make(__("Disterbute Date"), "register_date")
-            //     ->required()
-            //     ->rules('required', 'date')
-            //     ->placeholder(__("Enter Field", ['name' => __("Disterbute Date")])),
-            // PersianDate::make(__("Expire Date"), "expire_date")
-            //     ->required()
-            //     ->rules('required', 'date')
-            //     ->placeholder(__("Enter Field", ['name' => __("Expire Date")])),
+            MorphMany::make(trans("Activity Log"), 'activities', Activitylog::class),
 
         ];
     }

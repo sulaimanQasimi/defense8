@@ -26,7 +26,7 @@ class MainCard extends Model
         'remark',
         'printed_at'
     ];
-    
+
     protected $casts = [
         "card_second_date" => 'date',
         "card_perform" => 'date',
@@ -39,10 +39,5 @@ class MainCard extends Model
     {
         return LogOptions::defaults()->logAll()
             ->setDescriptionForEvent(fn(string $eventName) => "This model has been {$eventName}");
-    }
-
-    public function activity()
-    {
-        return $this->morphMany(Activity::class, 'subject');
     }
 }

@@ -7,12 +7,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class GunCard extends Model
 {
     use HasFactory;
     use SoftDeletes;
     use HasCardInfo;
+    use LogsActivity;
 
     protected $fillable = [
         'register_date',
@@ -20,10 +23,16 @@ class GunCard extends Model
         'filled_form_date',
         'printed'
     ];
-   protected $casts = [
+    protected $casts = [
         'register_date' => 'date',
         'expire_date' => 'date',
-        'filled_form_date'=> 'date',
-        'printed'=> 'boolean',
+        'filled_form_date' => 'date',
+        'printed' => 'boolean',
     ];
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()->logAll()
+            ->setDescriptionForEvent(fn(string $eventName) => "This model has been {$eventName}");
+    }
 }

@@ -9,7 +9,6 @@ use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\Trix;
 use Laravel\Nova\Lenses\Lens;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Sq\Employee\Models\MainCard;
 use Sq\Employee\Nova\CardInfo;
 use Illuminate\Database\Eloquent\Builder;
 use Sq\Query\Policy\UserDepartment;

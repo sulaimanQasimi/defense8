@@ -93,8 +93,7 @@ class GunCard extends Resource
     }
     public function cards(NovaRequest $request)
     {
-        return [
-        ];
+        return [];
     }
 
     public function filters(NovaRequest $request)
@@ -140,13 +139,15 @@ class GunCard extends Resource
                 ->canRun(
                     fn($request, $gun) => auth()->user()->hasPermissionTo("print-card")
                         && in_array($gun->card_info->orginization->id, UserDepartment::getUserDepartment())
+                        && !$gun->printed
                 ),
             (new \Sq\Card\Nova\Actions\GunPrintPaperCardAction)->onlyOnDetail()
                 ->canRun(
                     fn($request, $gun) => auth()->user()->hasPermissionTo("print-card")
                         && in_array($gun->card_info->orginization->id, UserDepartment::getUserDepartment())
+                        && !$gun->printed
                 ),
-                new GunCardExtension
+            new GunCardExtension
 
         ];
     }

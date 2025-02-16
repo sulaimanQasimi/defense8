@@ -49,7 +49,12 @@ class GunPrintCardAction extends Action
             )->displayUsingLabels()->rules('required', 'exists:print_card_frames,id'),
         ];
     }
-    public function name(){
-        return trans("Print Card Frame");
+    public function name()
+    {
+        return trans("کارت PVC اسلحه");
+    }
+    public function uriKey()
+    {
+        return 'gun-print-card';
     }
 }

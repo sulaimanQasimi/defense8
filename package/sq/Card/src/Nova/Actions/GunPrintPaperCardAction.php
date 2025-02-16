@@ -50,7 +50,12 @@ class GunPrintPaperCardAction extends Action
             )->displayUsingLabels()->rules('required', 'exists:custom_paper_cards,id'),
         ];
     }
-    public function name(){
-        return trans("Paper Card");
+
+    public function name()
+    {
+        return trans("کارت کاغذی ");
+    }
+    public function uriKey(){
+        return 'gun-print-paper-card';
     }
 }

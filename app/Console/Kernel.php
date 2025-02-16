@@ -15,8 +15,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        // $schedule->command('telescope:prune --hours=48')->dailyAt("23:00");
-        // $schedule->command('backup:run --only-db')->dailyAt("21:30");
+        $schedule->command('telescope:prune --hours=48')->dailyAt("23:00");
+        $schedule->command('backup:run --only-db')->dailyAt("21:30");
         // $schedule->command('backup:run --only-db')->everyTenSeconds();
         //
         $schedule->call(function () {
@@ -27,7 +27,8 @@ class Kernel extends ConsoleKernel
                         ->type('info')
                 );
             }
-        })->dailyAt("09:00");
+        })
+        ->dailyAt("09:00");
 
         $schedule
             ->job(new \Sq\Employee\Jobs\ApsentAndExitedEmployeeAttendance())

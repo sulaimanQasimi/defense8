@@ -198,7 +198,8 @@
                     class="absolute top-0 left-0 w-full h-full flex flex-col items-center justify-center bg-black bg-opacity-50">
                     <h1 class="text-white text-2xl font-bold mb-4">این کارت باطل است</h1>
                     <h1 class="text-white text-2xl font-bold mb-4"> این شخص اجازه داخل شدن را ندارد </h1>
-                    <h4 class="text-white text-xl font-bold">لطفا با شعبه کشف بتماس شوید</h4>
+                    <h4 class="text-white text-xl font-bold text-center">لطفاً این کارت را از شخص مذکور بگيريد و به شماره 0202660424 تماس بگیرید.
+                    </h4>
                 </div>
             @endif
         </div>

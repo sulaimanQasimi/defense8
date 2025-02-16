@@ -8,13 +8,8 @@ use Laravel\Nova\Lenses\Lens;
 
 use Afj95\LaravelNovaHijriDatepickerField\HijriDatePicker;
 use Alkoumi\LaravelHijriDate\Hijri;
-use App\Nova\Actions\VehicalRemarkAction;
-use App\Nova\Resource;
-use App\Support\Defense\PermissionTranslation;
 use Bolechen\NovaActivitylog\Resources\Activitylog;
 use Carbon\Carbon;
-use DigitalCreative\MegaFilter\MegaFilter;
-use DigitalCreative\MegaFilter\MegaFilterTrait;
 use Illuminate\Database\Eloquent\Builder;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Boolean;
@@ -24,11 +19,8 @@ use Laravel\Nova\Fields\Trix;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Fields\Image;
 use Laravel\Nova\Fields\MorphMany;
-use MZiraki\PersianDateField\PersianDate;
 use Sq\Employee\Nova\CardInfo;
 use Sq\Query\Policy\UserDepartment;
-use Sq\Query\SqNovaDateFilter;
-use Sq\Query\SqNovaTextFilter;
 
 class ExpiredVehicleLens extends Lens
 {

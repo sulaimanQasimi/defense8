@@ -79,7 +79,8 @@ class CardInfo extends Resource
             Panel::make(__(), [
                 // URL::make(trans("CURRENT MONTH ATTENDANCE EMPLOYEE"),fn()=>route('employee.attendance.current.month.single',['cardInfo'=>$this->id]))->onlyOnDetail(),
                 Fields\Image::make(__("Photo"), "photo")
-                    ->rules("required", "image"),
+                ->nullable()
+                    ->rules("nullable", "image"),
                 Fields\Boolean::make(__("Confirmed"), 'confirmed')->exceptOnForms(),
                 Fields\Select::make(__('Category'), 'category')
                     ->options([

@@ -74,7 +74,7 @@ class MainCardExtension extends Action
                 ->placement('bottom')
                 ->default(fn() => $currentModel?->card_expired_date),
             Trix::make(trans('Remark'), 'remark')
-                ->default(fn() => $currentModel?->card_expired_date),
+                ->default(fn() => $currentModel?->remark),
             Boolean::make(__("Muthanna"), 'muthanna'),
 
         ];

@@ -50,6 +50,11 @@ class VehicalCardExtension extends Action
         }
     }
 
+    private function getCurrentModel(NovaRequest $request)
+    {
+        return $request->findModelQuery()->first();
+    }
+
     /**
      * Get the fields available on the action.
      *

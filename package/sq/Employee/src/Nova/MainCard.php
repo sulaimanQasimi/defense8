@@ -119,7 +119,7 @@ class MainCard extends Resource
     {
         return [
             (new \Sq\Card\Nova\Actions\EmployeePrintCardAction)
-                ->onlyOnDetail()
+                ->sole()
                 ->canRun(
                     fn($request, $mainCard)
                     => auth()->user()->hasPermissionTo("print-card")
@@ -129,7 +129,8 @@ class MainCard extends Resource
                         !$mainCard->printed
                 ),
 
-            (new \Sq\Card\Nova\Actions\EmployeePrintPaperCardAction)->onlyOnDetail()
+            (new \Sq\Card\Nova\Actions\EmployeePrintPaperCardAction)
+                ->sole()
                 ->canRun(
                     fn($request, $mainCard)
                     => auth()->user()->hasPermissionTo("print-card")
@@ -141,7 +142,7 @@ class MainCard extends Resource
 
 
             (new \Sq\Employee\Nova\Actions\MainCardExtension)
-                ->onlyOnDetail()
+                ->sole()
                 ->canRun(
                     fn($request, $mainCard)
                     => auth()->user()->hasPermissionTo(PermissionTranslation::update("Main Card"))

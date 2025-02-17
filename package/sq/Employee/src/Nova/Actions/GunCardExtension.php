@@ -55,17 +55,21 @@ class GunCardExtension extends Action
      */
     public function fields(NovaRequest $request)
     {
+
+        $currentModel = $this->getCurrentModel($request);
         return [
-            HijriDatePicker::make(__("Disterbute Date"), "expire_date")
+            HijriDatePicker::make(__("Disterbute Date"), "register_date")
                 ->format('iYYYY/iMM/iDD')
                 ->placeholder('YYYY/MM/DD')
                 ->selected_date(Hijri::Date('Y-m-d'))
-                ->placement('bottom'),
+                ->placement('bottom')
+                ->default(fn() => $currentModel?->register_date),
             HijriDatePicker::make(__("Expire Date"), "expire_date")
                 ->format('iYYYY/iMM/iDD')
                 ->placeholder('YYYY/MM/DD')
                 ->selected_date(Hijri::Date('Y-m-d'))
-                ->placement('bottom'),
+                ->placement('bottom')
+                ->default(fn() => $currentModel?->expired_date),
 
         ];
     }

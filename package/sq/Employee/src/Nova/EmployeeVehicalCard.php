@@ -195,14 +195,14 @@ class EmployeeVehicalCard extends Resource
     public function actions(NovaRequest $request)
     {
         return [
-            (new \Sq\Card\Nova\Actions\EmployeeCarPrintCardAction)
+            \Sq\Card\Nova\Actions\EmployeeCarPrintCardAction::make()
                 ->onlyOnDetail()
                 ->canRun(
                     fn($request, $employeeVehicalCard) => auth()->user()->hasPermissionTo("print-card")
                         && in_array($employeeVehicalCard->card_info->orginization->id, UserDepartment::getUserDepartment())
                         && !$employeeVehicalCard->printed
                 ),
-            (new \Sq\Card\Nova\Actions\EmployeeCarPrintPaperCardAction)
+            \Sq\Card\Nova\Actions\EmployeeCarPrintPaperCardAction::make()
                 ->onlyOnDetail()
                 ->canRun(
                     fn($request, $employeeVehicalCard) => auth()->user()->hasPermissionTo("print-card")
@@ -211,12 +211,12 @@ class EmployeeVehicalCard extends Resource
 
 
                 ),
-            (new VehicalRemarkAction)
+            VehicalRemarkAction::make()
                 ->canSee(fn() => auth()->user()->hasPermissionTo("add remark for vehical")),
 
 
-            (new \Sq\Employee\Nova\Actions\VehicalCardExtension)
-                ->onlyOnDetail()
+            \Sq\Employee\Nova\Actions\VehicalCardExtension::make()
+                ->sole()
                 ->canRun(
                     fn($request, $mainCard)
                     => auth()->user()->hasPermissionTo(PermissionTranslation::update("Employee Vehical Card"))

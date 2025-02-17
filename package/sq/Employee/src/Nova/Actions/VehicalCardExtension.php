@@ -29,8 +29,8 @@ class VehicalCardExtension extends Action
     {
         foreach ($models as $model) {
             $model->update([
-                "register_date" => $fields->card_perform,
-                "expire_date" => $fields->card_expired_date,
+                "register_date" => $fields->register_date,
+                "expire_date" => $fields->expire_date,
                 "remark" => $fields->remark,
                 "muthanna" => $fields->muthanna,
                 "printed" => false,
@@ -41,12 +41,12 @@ class VehicalCardExtension extends Action
                 ->performedOn($model)
                 ->causedBy(auth()->user())
                 ->withProperties([
-                    "card_perform" => $fields->card_perform,
-                    "card_expired_date" => $fields->card_expired_date,
+                    "register_date" => $fields->register_date,
+                    "expire_date" => $fields->expire_date,
                     "remark" => $fields->remark,
                     "muthanna" => $fields->muthanna,
                 ])
-                ->log("کارت واسطه تا تاریخ {$fields->card_expired_date} تمدید شد");
+                ->log("کارت واسطه تا تاریخ {$fields->expire_date} تمدید شد");
         }
     }
 
@@ -58,17 +58,23 @@ class VehicalCardExtension extends Action
      */
     public function fields(NovaRequest $request)
     {
+        $currentModel = $this->getCurrentModel($request);
+
         return [
-            HijriDatePicker::make(__("Disterbute Date"), "card_perform")
+            HijriDatePicker::make(__("Disterbute Date"), "register_date")
                 ->format('iYYYY/iMM/iDD')
                 ->placeholder('YYYY/MM/DD')
                 ->selected_date('1444/12/12')
-                ->placement('bottom'),
-            HijriDatePicker::make(__("Expire Date"), "card_expired_date")
+                ->placement('bottom')
+                ->default(fn() => $currentModel?->register_date),
+
+            HijriDatePicker::make(__("Expire Date"), "expire_date")
                 ->format('iYYYY/iMM/iDD')
                 ->placeholder('YYYY/MM/DD')
                 ->selected_date('1444/12/12')
-                ->placement('bottom'),
+                ->placement('bottom')
+
+                ->default(fn() => $currentModel?->expire_date),
 
         ];
     }

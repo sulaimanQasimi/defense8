@@ -58,22 +58,39 @@ class MainCardExtension extends Action
      */
     public function fields(NovaRequest $request)
     {
+        $currentModel = $this->getCurrentModel($request);
+
         return [
             HijriDatePicker::make(__("Disterbute Date"), "card_perform")
                 ->format('iYYYY/iMM/iDD')
                 ->placeholder('YYYY/MM/DD')
                 ->selected_date('1444/12/12')
-                ->placement('bottom'),
+                ->placement('bottom')
+                ->default(fn() => $currentModel?->card_perform),
             HijriDatePicker::make(__("Expire Date"), "card_expired_date")
                 ->format('iYYYY/iMM/iDD')
                 ->placeholder('YYYY/MM/DD')
                 ->selected_date('1444/12/12')
-                ->placement('bottom'),
-            Trix::make(trans('Remark'), 'remark'),
+                ->placement('bottom')
+                ->default(fn() => $currentModel?->card_expired_date),
+            Trix::make(trans('Remark'), 'remark')
+                ->default(fn() => $currentModel?->card_expired_date),
             Boolean::make(__("Muthanna"), 'muthanna'),
 
         ];
     }
+
+    private function getCurrentModel(NovaRequest $request)
+    {
+        return $request->findModelQuery()->first();
+    }
+
+    private function getCurrentMode()
+    {
+        // Implement the logic to get the current mode
+        return 'some_mode'; // Replace with actual logic
+    }
+
     public function name()
     {
         return trans("تمدید کارت کارمند");

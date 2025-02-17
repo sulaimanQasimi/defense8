@@ -4,6 +4,7 @@ namespace Sq\Employee\Nova;
 
 use Afj95\LaravelNovaHijriDatepickerField\HijriDatePicker;
 use App\Nova\Resource;
+use App\Support\Defense\PermissionTranslation;
 use Bolechen\NovaActivitylog\Resources\Activitylog;
 use DigitalCreative\MegaFilter\MegaFilter;
 use DigitalCreative\MegaFilter\MegaFilterTrait;
@@ -135,19 +136,27 @@ class GunCard extends Resource
     public function actions(NovaRequest $request)
     {
         return [
-            (new \Sq\Card\Nova\Actions\GunPrintCardAction)->onlyOnDetail()
+            \Sq\Card\Nova\Actions\GunPrintCardAction::make()
+                ->sole()
                 ->canRun(
                     fn($request, $gun) => auth()->user()->hasPermissionTo("print-card")
                         && in_array($gun->card_info->orginization->id, UserDepartment::getUserDepartment())
                         && !$gun->printed
                 ),
-            (new \Sq\Card\Nova\Actions\GunPrintPaperCardAction)->onlyOnDetail()
+            \Sq\Card\Nova\Actions\GunPrintPaperCardAction::make()
+                ->sole()
                 ->canRun(
                     fn($request, $gun) => auth()->user()->hasPermissionTo("print-card")
                         && in_array($gun->card_info->orginization->id, UserDepartment::getUserDepartment())
                         && !$gun->printed
                 ),
-            new GunCardExtension
+
+            GunCardExtension::make()
+                ->sole()
+                ->canRun(
+                    fn($request, $gun) => auth()->user()->hasPermissionTo(PermissionTranslation::update("Main Card"))
+                        && in_array($gun->card_info->orginization->id, UserDepartment::getUserDepartment())
+                )
 
         ];
     }

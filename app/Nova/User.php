@@ -16,6 +16,7 @@ use Laravel\Nova\Fields\Password;
 use Laravel\Nova\Fields\Tag;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use MZiraki\PersianDateField\PersianDateTime;
 use Sq\Employee\Nova\Department;
 use Sq\Employee\Nova\Gate;
 use Sq\Query\SqNovaSelectFilter;
@@ -57,6 +58,7 @@ class User extends Resource
             Text::make(__("Name"), 'name')
                 ->sortable()
                 ->rules('required', 'max:255'),
+                PersianDateTime::make(__('اخرین بازدید'),'last_seen_at')->exceptOnForms(),
             // Email
             Text::make(__("Email"), 'email')
                 ->copyable()

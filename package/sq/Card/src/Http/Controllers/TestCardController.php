@@ -57,7 +57,7 @@ class TestCardController extends Controller
         // dd($printCardFrame->attr);
 
         $field = new \stdClass();
-        $field->header = $printCardFrame->header;
+        $field->header = $printCardFrame->attr['government']['title'];
         $field->details = $printCardFrame->details;
         $field->remark = $printCardFrame->remark;
         return view('sqcard::test.pvc-card', [

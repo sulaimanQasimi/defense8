@@ -53,7 +53,6 @@ class CustomPaperCard extends Resource
                 ->sortable()
                 ->withoutTrashed()
                 ->nullable(),
-
             Hidden::make('details'),
             Hidden::make('remark'),
             Hidden::make('attr'),
@@ -129,5 +128,4 @@ class CustomPaperCard extends Resource
     {
         return 'custom-paper-card';
     }
-
 }

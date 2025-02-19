@@ -8,6 +8,7 @@ use App\Support\Defense\Print\PrintTypeEnum;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Laravel\Nova\Actions\Action;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\Hidden;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -67,6 +68,11 @@ class PrintCardFrame extends Resource
                 ->sortable()
                 ->withoutTrashed(),
 
+            Hidden::make('details'),
+            Hidden::make('remark'),
+            Hidden::make('attr'),
+            Hidden::make('ip_address'),
+
         ];
     }
 
@@ -114,16 +120,16 @@ class PrintCardFrame extends Resource
                 ->withoutConfirmation()
                 ->onlyOnDetail()
                 ->canRun(fn($request, $card) => auth()->user()->hasPermissionTo("design-card") && in_array($card->department_id, UserDepartment::getUserDepartment())),
-                Action::openInNewTab(
-                    __("پیش نمایش کارت"),
-                    fn($card) => route('sq.employee.pvc-test-card', ['printCardFrame' => $card->id])
-                )
-                    ->sole()
-                    ->withoutConfirmation()
-                    ->onlyOnDetail()
-                    ->canRun(fn($request, $card) => auth()->user()->hasPermissionTo("design-card") && in_array($card->department_id, UserDepartment::getUserDepartment())),
+            Action::openInNewTab(
+                __("پیش نمایش کارت"),
+                fn($card) => route('sq.employee.pvc-test-card', ['printCardFrame' => $card->id])
+            )
+                ->sole()
+                ->withoutConfirmation()
+                ->onlyOnDetail()
+                ->canRun(fn($request, $card) => auth()->user()->hasPermissionTo("design-card") && in_array($card->department_id, UserDepartment::getUserDepartment())),
 
-            ];
+        ];
     }
     public function replicate()
     {
@@ -131,6 +137,7 @@ class PrintCardFrame extends Resource
             $model = $resource->model();
 
             $model->name = 'Duplicate of ' . $model->name;
+            $model->attr = $model->getOriginal('attr'); // Ensure attr is correctly formatted
         });
     }
     public static function uriKey(): string

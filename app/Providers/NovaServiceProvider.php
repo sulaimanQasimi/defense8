@@ -47,6 +47,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
         // Side Bar Menu
         Nova::mainMenu(fn(Request $request) => [
+
+            MenuItem::link(__('چت'), '/chats'),
             MenuSection::dashboard(Main::class)->icon('fas fa-database fa-2x'),
             MenuSection::dashboard(GraphDashboard::class)
                 ->canSee(fn() => auth()->user()->isSuperAdmin())->icon('fas fa-chart-pie fa-2x')
@@ -78,8 +80,6 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
 
             MenuSection::make(__("System"), [
-                MenuItem::link(__('چت'), '/chats')
-                    ->canSee(fn() => auth()->user()->hasRole('super-admin')),
                 MenuItem::resource(Activitylog::class)->canSee(fn() => auth()->user()->hasRole('super-admin')),
                 MenuItem::make(__('Backups'))
                     ->path('/backups')

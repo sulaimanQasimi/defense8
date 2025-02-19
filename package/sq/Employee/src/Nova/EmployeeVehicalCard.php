@@ -77,9 +77,10 @@ class EmployeeVehicalCard extends Resource
                     'الف' => __('الف'),
                     'ب' => __('ب'),
                     'ج' => __('ج'),
-                    'د' => __('د'),
-                    'چ' => __('چ'),
-                ]),
+                    'موقت' => __('موقت'),
+                ])
+                ->sortable()
+                ->filterable(),
             BelongsTo::make(__('Employee'), 'card_info', CardInfo::class)
                 ->relatableQueryUsing(function (NovaRequest $request, Builder $query) {
                     $query->whereIn('department_id', UserDepartment::getUserDepartment());

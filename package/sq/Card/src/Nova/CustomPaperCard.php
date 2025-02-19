@@ -13,6 +13,7 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Sq\Employee\Nova\Department;
 use Sq\Query\Policy\UserDepartment;
+use Laravel\Nova\Fields\Hidden;
 
 class CustomPaperCard extends Resource
 {
@@ -51,8 +52,12 @@ class CustomPaperCard extends Resource
                 ->filterable()
                 ->sortable()
                 ->withoutTrashed()
-                ->nullable()
+                ->nullable(),
 
+            Hidden::make('details'),
+            Hidden::make('remark'),
+            Hidden::make('attr'),
+            Hidden::make('ip_address'),
         ];
     }
 
@@ -108,11 +113,6 @@ class CustomPaperCard extends Resource
                 ->withoutConfirmation()
                 ->onlyOnDetail()
                 ->canRun(fn($request, $card) => auth()->user()->hasPermissionTo("design-card") && in_array($card->department_id, UserDepartment::getUserDepartment())),
-
-
-
-
-
         ];
     }
     public function replicate()
@@ -121,6 +121,7 @@ class CustomPaperCard extends Resource
             $model = $resource->model();
 
             $model->name = 'Duplicate of ' . $model->name;
+            $model->attr = $model->getOriginal('attr'); // Ensure attr is correctly formatted
         });
     }
 

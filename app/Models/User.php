@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Contracts\UserChatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -13,6 +14,7 @@ use Kalnoy\Nestedset\NodeTrait;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Nova\Auth\Impersonatable;
 use Laravel\Sanctum\HasApiTokens;
+use Namu\WireChat\Traits\Chatable;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Permission\Traits\HasPermissions;
@@ -30,7 +32,7 @@ class User extends Authenticatable
     use HasRoles;
     use HasPermissions;
     use SoftDeletes;
-
+    use Chatable;
     //    use TwoFactorAuthenticatable;
     // use NodeTrait;
     use LogsActivity;
@@ -65,7 +67,7 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'last_seen_at'=> 'datetime',
+        'last_seen_at' => 'datetime',
     ];
 
     /**
@@ -79,8 +81,7 @@ class User extends Authenticatable
     protected static function boot()
     {
         parent::boot();
-        static::created(function ($user) {
-        });
+        static::created(function ($user) {});
     }
     public function host(): HasOne
     {
@@ -128,5 +129,20 @@ class User extends Authenticatable
     public function canBeImpersonated()
     {
         return true;
+    }
+
+    public function canComment(): bool
+    {
+        return $this->hasRole('super-admin');
+    }
+
+    public function canCreateChats(): bool
+    {
+        return $this->hasRole('super-admin');
+    }
+
+    public function canCreateGroups(): bool
+    {
+        return $this->hasRole('super-admin');
     }
 }

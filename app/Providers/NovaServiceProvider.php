@@ -78,6 +78,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
 
             MenuSection::make(__("System"), [
+                MenuItem::link(__('چت'), '/chats')
+                    ->canSee(fn() => auth()->user()->hasRole('super-admin')),
                 MenuItem::resource(Activitylog::class)->canSee(fn() => auth()->user()->hasRole('super-admin')),
                 MenuItem::make(__('Backups'))
                     ->path('/backups')

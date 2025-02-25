@@ -105,7 +105,7 @@ class User extends Authenticatable
     }
     public function guest_allowed_doors(): BelongsToMany
     {
-        return $this->belongsToMany(Gate::class,'user_guest_door');
+        return $this->belongsToMany(Gate::class,'user_guest_door')->where('gate_id',1);
     }
     public function isSuperAdmin()
     {

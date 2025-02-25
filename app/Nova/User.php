@@ -108,9 +108,9 @@ class User extends Resource
             BelongsToMany::make(trans("درواره دعوت مهمانان"), 'guest_allowed_doors', Gate::class)
                 ->searchable()
                 ->withSubtitles()
-                ->relatableQueryUsing(function (NovaRequest $request, Builder $query) {
-                    $query->where('level', 1);
-                }),
+                // ->relatableQueryUsing(function (NovaRequest $request, Builder $query) {
+                //     $query->where('level', 1);
+                // }),
 
         ];
     }

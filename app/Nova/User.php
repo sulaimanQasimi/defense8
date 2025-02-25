@@ -58,7 +58,7 @@ class User extends Resource
             Text::make(__("Name"), 'name')
                 ->sortable()
                 ->rules('required', 'max:255'),
-                PersianDateTime::make(__('اخرین بازدید'),'last_seen_at')->exceptOnForms(),
+            PersianDateTime::make(__('اخرین بازدید'), 'last_seen_at')->exceptOnForms(),
             // Email
             Text::make(__("Email"), 'email')
                 ->copyable()
@@ -105,6 +105,13 @@ class User extends Resource
                 ->displayAsList()
                 ->showCreateRelationButton()
                 ->modalSize('7xl'),
+            BelongsToMany::make(trans("درواره دعوت مهمانان"), 'guest_allowed_doors', Gate::class)
+                ->searchable()
+                ->withSubtitles()
+                ->relatableQueryUsing(function (NovaRequest $request, Builder $query) {
+                    $query->where('level', 1);
+                }),
+
         ];
     }
 

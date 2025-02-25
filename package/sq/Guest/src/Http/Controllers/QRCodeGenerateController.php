@@ -15,7 +15,13 @@ class QRCodeGenerateController extends Controller
     public function generate(Guest $guest)
     {
 
-        if (!in_array($guest->host->department_id, UserDepartment::getUserDepartment())) {
+        if (
+
+            !in_array($guest->host->department_id, UserDepartment::getUserDepartment())
+            || !in_array($guest->gate_id, UserDepartment::getUserGuestGate())
+            || !$guest->gate_id == auth()->user()->gate_id
+            || !$guest?->host?->user_id == auth()->user()->id
+        ) {
             abort(404);
         }
 
@@ -69,7 +75,7 @@ class QRCodeGenerateController extends Controller
             );
         }
 
-        
+
         return redirect()->route("sqemployee.employee.check.card");
     }
 }

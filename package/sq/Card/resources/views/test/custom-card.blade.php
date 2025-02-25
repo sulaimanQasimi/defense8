@@ -25,10 +25,8 @@
 
         @page {
             size:
-                {{ $attr['page']['width'] }}
-                mm
-                {{ $attr['page']['height'] }}
-                mm;
+                {{ $attr['page']['width'] }} mm
+                {{ $attr['page']['height'] }} mm;
             margin: 0;
         }
     </style>

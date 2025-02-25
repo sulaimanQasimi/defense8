@@ -43,7 +43,7 @@
         JsBarcode('#barcode', 'G5-00000', {
             format: 'CODE128',
             // background: '#000000/',
-            width: 1.2,
+            width: 0.6,
             height: 10,
             displayValue: false
         });" x-show="state.show"

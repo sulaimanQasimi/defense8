@@ -53,10 +53,13 @@ class CustomPaperCard extends Resource
                 ->sortable()
                 ->withoutTrashed()
                 ->nullable(),
-            Hidden::make('details'),
-            Hidden::make('remark'),
-            Hidden::make('attr'),
-            Hidden::make('ip_address'),
+                Hidden::make('details'),
+                Hidden::make('remark'),
+                \Laravel\Nova\Fields\Code::make('attr')
+                    ->json()
+                    ->hideWhenCreating(),
+                Hidden::make('ip_address'),
+
         ];
     }
 
@@ -120,7 +123,6 @@ class CustomPaperCard extends Resource
             $model = $resource->model();
 
             $model->name = 'Duplicate of ' . $model->name;
-            $model->attr = $model->getOriginal('attr'); // Ensure attr is correctly formatted
         });
     }
 

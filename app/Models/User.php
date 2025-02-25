@@ -103,6 +103,10 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Gate::class);
     }
+    public function guest_allowed_doors(): BelongsToMany
+    {
+        return $this->belongsToMany(Gate::class,'user_guest_door');
+    }
     public function isSuperAdmin()
     {
         return $this->hasRole('super-admin');

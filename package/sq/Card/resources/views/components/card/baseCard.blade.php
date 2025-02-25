@@ -56,8 +56,8 @@
             JsBarcode('#{{ $attributes->get('id') }}-barcode', "{{ $cardInfo->registare_no }}", {
                 format: "CODE128",
                 // background: "#000000/",
-                width: 1.2,
-                height: 10,
+                width: 0.6,
+                height: 13,
                 displayValue: false
             });
         @endif

@@ -1,10 +1,12 @@
 <?php
+
 namespace Sq\Guest\Nova;
 
 use App\Nova\Resource;
 use Carbon\Carbon;
 use DigitalCreative\MegaFilter\MegaFilter;
 use DigitalCreative\MegaFilter\MegaFilterTrait;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\Select;
@@ -14,6 +16,8 @@ use Laravel\Nova\Fields\Trix;
 use Laravel\Nova\Fields\URL;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use MZiraki\PersianDateField\PersianDateTime;
+use Sq\Employee\Models\Gate;
+use Sq\Employee\Nova\Gate as NovaGate;
 use Sq\Query\Policy\UserDepartment;
 use Sq\Query\SqNovaDateFilter;
 use Sq\Query\SqNovaSelectFilter;
@@ -116,16 +120,19 @@ class Guest extends Resource
                 ->format('jYYYY/jMM/jDD h:mm a')
                 ->hideWhenUpdating(fn() => $this->registered_at->isBefore(Carbon::today()))
                 ->required()->rules('required', 'date'),
-
+            BelongsTo::make(__("Enter Gate"), 'gate', NovaGate::class)
+            ->relatableQueryUsing(function (NovaRequest $request, Builder $query) {
+                $query->wherein('id', UserDepartment::getUserGuestGate());
+            }),
             // Which Gates should he enter
-            Select::make(__("Enter Gate"), 'enter_gate')
-                ->options(
-                    \App\Support\Defense\Gate::gate_options()
-                )->filterable()
-                ->displayUsingLabels()
-                ->required()
-                ->creationRules('required')
-                ->hideWhenUpdating(fn() => $this->registered_at->isBefore(Carbon::today())),
+            // Select::make(, 'enter_gate')
+            //     ->options(
+            //         \App\Support\Defense\Gate::gate_options()
+            //     )->filterable()
+            //     ->displayUsingLabels()
+            //     ->required()
+            //     ->creationRules('required')
+            //     ->hideWhenUpdating(fn() => $this->registered_at->isBefore(Carbon::today())),
 
             Tag::make(__("Condition"), 'Guestoptions', GuestOption::class)->showCreateRelationButton()->displayAsList(),
 

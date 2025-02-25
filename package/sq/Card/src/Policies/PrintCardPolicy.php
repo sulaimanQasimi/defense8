@@ -21,7 +21,7 @@ class PrintCardPolicy
      */
     public function view(User $user, PrintCard $printCard): bool
     {
-        return false;
+        return $user->hasRole('super-admin');
     }
 
     /**

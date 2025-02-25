@@ -12,6 +12,7 @@ use Laravel\Nova\Fields\Hidden;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Sq\Card\Nova\Actions\CopyStyleAction;
 use Sq\Employee\Nova\Department;
 use Sq\Query\Policy\UserDepartment;
 
@@ -70,7 +71,9 @@ class PrintCardFrame extends Resource
 
             Hidden::make('details'),
             Hidden::make('remark'),
-            Hidden::make('attr'),
+            \Laravel\Nova\Fields\Code::make('attr')
+                ->json()
+                ->hideWhenCreating(),
             Hidden::make('ip_address'),
 
         ];
@@ -128,7 +131,6 @@ class PrintCardFrame extends Resource
                 ->withoutConfirmation()
                 ->onlyOnDetail()
                 ->canRun(fn($request, $card) => auth()->user()->hasPermissionTo("design-card") && in_array($card->department_id, UserDepartment::getUserDepartment())),
-
         ];
     }
     public function replicate()
@@ -137,7 +139,7 @@ class PrintCardFrame extends Resource
             $model = $resource->model();
 
             $model->name = 'Duplicate of ' . $model->name;
-            $model->attr = $model->getOriginal('attr'); // Ensure attr is correctly formatted
+            // $model->attr = json_encode($model->attr); // Ensure attr is correctly formatted
         });
     }
     public static function uriKey(): string

@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Query\Builder;
+use Sq\Employee\Models\Gate;
 
 class Guest extends Model
 {
@@ -62,6 +63,10 @@ class Guest extends Model
     {
         return $this->belongsTo(Host::class);
     }
+    public function gate(): BelongsTo
+    {
+        return $this->belongsTo(Gate::class);
+    }
     public function Guestoptions(): BelongsToMany
     {
         return $this->belongsToMany(GuestOption::class, 'guest_option_related');
@@ -101,6 +106,7 @@ class Guest extends Model
                     ->whereNotNull('exit_at');
             });
     }
+
 
 
     protected function getStatusAttribute()

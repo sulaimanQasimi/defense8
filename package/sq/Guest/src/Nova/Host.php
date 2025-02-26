@@ -54,9 +54,6 @@ class Host extends Resource
         // Get All host of Dependant Department
         return $query->whereIn('department_id', UserDepartment::getUserDepartment());
     }
-
-
-
     public function fields(NovaRequest $request)
     {
         return [

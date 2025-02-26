@@ -9,14 +9,12 @@ use DigitalCreative\MegaFilter\MegaFilterTrait;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\HasMany;
-use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Tag;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Trix;
 use Laravel\Nova\Fields\URL;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use MZiraki\PersianDateField\PersianDateTime;
-use Sq\Employee\Models\Gate;
 use Sq\Employee\Nova\Gate as NovaGate;
 use Sq\Query\Policy\UserDepartment;
 use Sq\Query\SqNovaDateFilter;
@@ -25,7 +23,6 @@ use Sq\Query\SqNovaTextFilter;
 
 class Guest extends Resource
 {
-
     use MegaFilterTrait;
 
     public static $model = \Sq\Guest\Models\Guest::class;
@@ -46,13 +43,10 @@ class Guest extends Resource
 
     public static function indexQuery(NovaRequest $request, $query)
     {
-
-        // IF user is host only view his/her self
         if (auth()->user()->host) {
             return $query->where('host_id', auth()->user()->host->id)->orderBy('registered_at', 'desc');
         }
 
-        // if user have gate checker view all host of his dependant department only (today)
         if (auth()->user()->can('gateChecker', 'App\\Models\Gate')) {
             return $query
                 ->whereYear('registered_at', now()->year)
@@ -64,18 +58,16 @@ class Guest extends Resource
                 });
         }
 
-        // Only Get Dependant Departments
         return $query->whereHas('host', function ($query) {
             return $query->whereIn('department_id', UserDepartment::getUserDepartment());
         });
     }
+
     public function fields(NovaRequest $request)
     {
         return [
-
             URL::make(__("Print"), fn() => route('sqguest.guest.generate', $this)),
 
-            // Guest Name
             Text::make(__("Name"), 'name')
                 ->required()
                 ->sortable()
@@ -83,7 +75,6 @@ class Guest extends Resource
                 ->hideWhenUpdating(fn() => $this->registered_at->isBefore(Carbon::today()))
                 ->placeholder(__("Enter Field", ['name' => __("Name")])),
 
-            // Guest Last Name
             Text::make(__("Last Name"), 'last_name')
                 ->required()
                 ->sortable()
@@ -91,71 +82,43 @@ class Guest extends Resource
                 ->placeholder(__("Enter Field", ['name' => __("Last Name")]))
                 ->hideWhenUpdating(fn() => $this->registered_at->isBefore(Carbon::today())),
 
-            // Career
             Text::make(__("Career"), 'career')
                 ->required()
                 ->sortable()
                 ->rules('required', 'string')
                 ->placeholder(__("Enter Field", ['name' => __("Career")])),
 
-            // Host
             BelongsTo::make(__("Host"), 'host', Host::class)
                 ->filterable()
                 ->showCreateRelationButton()
                 ->exceptOnForms(),
-            //
             Text::make(__("Invited By"), fn() => $this->host->head_name),
 
-
-            //
             Text::make(__("Address"), 'address')
                 ->required()
                 ->sortable()
                 ->hideWhenUpdating(fn() => $this->registered_at->isBefore(Carbon::today()))
-
                 ->rules('required', 'string'),
 
-            // ‌Boolean::make(__('Status'),'status')->onlyIndex(),
             PersianDateTime::make(__("Guest Enter Date"), 'registered_at')
                 ->format('jYYYY/jMM/jDD h:mm a')
                 ->hideWhenUpdating(fn() => $this->registered_at->isBefore(Carbon::today()))
                 ->required()->rules('required', 'date'),
+
             BelongsTo::make(__("Enter Gate"), 'gate', NovaGate::class)
             ->relatableQueryUsing(function (NovaRequest $request, Builder $query) {
                 $query->wherein('id', UserDepartment::getUserGuestGate());
             }),
-            // Which Gates should he enter
-            // Select::make(, 'enter_gate')
-            //     ->options(
-            //         \App\Support\Defense\Gate::gate_options()
-            //     )->filterable()
-            //     ->displayUsingLabels()
-            //     ->required()
-            //     ->creationRules('required')
-            //     ->hideWhenUpdating(fn() => $this->registered_at->isBefore(Carbon::today())),
 
-            Tag::make(__("Condition"), 'Guestoptions', GuestOption::class)->showCreateRelationButton()->displayAsList(),
-
+            Tag::make(__("Condition"), 'Guestoptions', GuestOption::class)
+                ->showCreateRelationButton()
+                ->displayAsList(),
             Trix::make(trans("Remark"), 'remark')->nullable(),
 
             HasMany::make(__("Gate Passed"), 'guestGate', GuestGate::class),
-
         ];
     }
 
-    public function cards(NovaRequest $request)
-    {
-        return [
-            // new HostGuestValue(),
-        ];
-    }
-
-    /**
-     * Get the filters available for the resource.
-     *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @return array
-     */
     public function filters(NovaRequest $request)
     {
         return [
@@ -178,33 +141,10 @@ class Guest extends Resource
                         ->pluck('head_name', 'id')
                         ->toArray()
                 ),
-
             ])->columns(3),
-
         ];
     }
 
-    /**
-     * Get the lenses available for the resource.
-     *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @return array
-     */
-    public function lenses(NovaRequest $request)
-    {
-        return [];
-    }
-
-    /**
-     * Get the actions available for the resource.
-     *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @return array
-     */
-    public function actions(NovaRequest $request)
-    {
-        return [];
-    }
     public static function redirectAfterCreate(NovaRequest $request, $resource)
     {
         return '/resources/' . static::uriKey();

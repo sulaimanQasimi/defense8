@@ -15,12 +15,15 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Query\Builder;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 use Sq\Employee\Models\Gate;
 
 class Guest extends Model
 {
     use HasFactory;
     use SoftDeletes;
+    use LogsActivity;
     protected $casts = [
         'registered_at' => "datetime",
         'enter_at' => "date",
@@ -143,4 +146,11 @@ class Guest extends Model
         return verta($this->registered_at)->format("h:i a");
 
     }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()->logAll()
+            ->setDescriptionForEvent(fn(string $eventName) => "This model has been {$eventName}");
+    }
+
 }

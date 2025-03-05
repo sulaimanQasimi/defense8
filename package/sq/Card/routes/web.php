@@ -44,7 +44,7 @@ Route::middleware(['auth'])
 
 
 
-            
+
         Route::get("paper-card/{customPaperCard:id}", CustomCardDesign::class)
             ->name('employee.paper-design-card');
 
@@ -78,4 +78,12 @@ Route::middleware(['auth'])
                 Route::get('gun/{gunCard:id}/card/{printCardFrame}', 'gun')->name('gun');
                 Route::get('employeeCar/{employeeVehicalCard:id}/card/{printCardFrame}', 'employee_car')->name('employee_car');
             });
+
+            Route::middleware('permission:design-card')
+            ->get('paper-card-design/{customPaperCard:id}/fix', function (\Sq\Card\Models\CustomPaperCard $customPaperCard) {
+                $customPaperCard->attr = array_replace(DefaultCardAttribute::attribute(), $customPaperCard->attr);
+                $customPaperCard->save();
+                return redirect()->back();
+            })->name("custom.paper.card.fix");
+
     });

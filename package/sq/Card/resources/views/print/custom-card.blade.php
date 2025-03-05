@@ -19,7 +19,9 @@
         }
 
         @page {
-            size: {{ $card?->attr['page']['width'] }} mm
+            size:
+                {{ $card?->attr['page']['width'] }}
+                mm
                 {{ $card?->attr['page']['height'] }}
                 mm;
             margin: 0;
@@ -40,6 +42,14 @@
         <img src="{{ $card->ip_address }}/storage/{{ $card?->attr['ministry']['path'] }}" class="absolute cursor-move"
             tabindex="0"
             style="top: {{ $card?->attr['ministry']['y'] }}px; left: {{ $card?->attr['ministry']['x'] }}px; height: {{ $card?->attr['ministry']['size'] }}px;" />
+
+        {{-- Vehical Image --}}
+        <img src="{{ $card->ip_address }}/storage/{{ $card?->attr['vehicalImage']['path'] }}"
+            class="absolute cursor-move" tabindex="0" style="
+            top: {{ $card?->attr['vehicalImage']['y'] }}px;
+            left: {{ $card?->attr['vehicalImage']['x'] }}px;
+            height: {{ $card?->attr['vehicalImage']['size'] }}px;" />
+
         <div dir="rtl">{!! $field->details !!}</div>
         {{-- Profile Image --}}
         <img src="{{ $cardInfo->image_path }}" class="absolute cursor-move" tabindex="0"
@@ -58,7 +68,8 @@
         </div>
     </div>
 
-    <div dir="rtl" class="printable bg-white" style="width: {{ $card?->attr['page']['width'] }}mm; height: {{ $card?->attr['page']['height'] }}mm;
+    <div dir="rtl" class="printable bg-white"
+        style="width: {{ $card?->attr['page']['width'] }}mm; height: {{ $card?->attr['page']['height'] }}mm;
         max-width: {{ $card?->attr['page']['width'] }}mm; max-height: {{ $card?->attr['page']['height'] }}mm;
         background-image: url('{{ $card->ip_address }}/storage/{{ $card?->attr['backImage']}}'); background-size: contain; background-repeat: no-repeat;">
         <div>{!! $field->remark !!}</div>

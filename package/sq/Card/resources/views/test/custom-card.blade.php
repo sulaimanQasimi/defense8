@@ -25,8 +25,10 @@
 
         @page {
             size:
-                {{ $attr['page']['width'] }} mm
-                {{ $attr['page']['height'] }} mm;
+                {{ $attr['page']['width'] }}
+                mm
+                {{ $attr['page']['height'] }}
+                mm;
             margin: 0;
         }
     </style>
@@ -45,6 +47,13 @@
         <img src="{{ $cardFrame->ip_address }}/storage/{{ $attr['ministry']['path'] }}" class="absolute cursor-move"
             tabindex="0"
             style="top: {{ $attr['ministry']['y'] }}px; left: {{ $attr['ministry']['x'] }}px; height: {{ $attr['ministry']['size'] }}px;" />
+
+        {{-- Vehical Image --}}
+        <img src="{{ $card->ip_address }}/storage/{{ $card?->attr['vehicalImage']['path'] }}"
+            class="absolute cursor-move" tabindex="0" style="
+            top: {{ $card?->attr['vehicalImage']['y'] }}px;
+            left: {{ $card?->attr['vehicalImage']['x'] }}px;
+            height: {{ $card?->attr['vehicalImage']['size'] }}px;" />
         <div dir="rtl">{!! $details !!}</div>
         {{-- Profile Image --}}
         <img src="{{ asset('logo.png') }}" class="absolute cursor-move" tabindex="0"

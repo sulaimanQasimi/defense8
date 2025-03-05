@@ -508,6 +508,10 @@ else if (event.key === 'ArrowUp') {
                             }">
                                 @lang("Rotate")
                             </button>
+                            <a href="{{route('sq.custom.paper.card.fix', ['customPaperCard' => $cardFrame->id])}}"
+                            class="mt-4 font-medium rounded-sm text-sm px-6 py-3 text-center mb-2 transition-all duration-200">
+                                @lang("عیب یابی")
+                            </a>
                             <a target="_blank"
                                 href="{{route('sq.employee.paper-test-card', ['customPaperCard' => $cardFrame->id])}}"
                                 class="mt-4 font-medium rounded-sm text-sm px-6 py-3 text-center mb-2 transition-all duration-200">

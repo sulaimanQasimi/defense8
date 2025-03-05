@@ -14,25 +14,39 @@ class QRCodeGenerateController extends Controller
 
     public function generate(Guest $guest)
     {
+        // dd($guest?->host?->user_id == auth()->user()->id);
+        if (in_array($guest->host->department_id, UserDepartment::getUserDepartment())) {
 
-        if (
+            return view(
+                'sqguest::guest.generateQR',
+                ['url' => $guest->barcode, 'guest' => $guest, 'gate' => $guest->gate_translation]
+            );
+        }
+        if (in_array($guest->gate_id, UserDepartment::getUserGuestGate())) {
 
-            !in_array($guest->host->department_id, UserDepartment::getUserDepartment())
-            || !in_array($guest->gate_id, UserDepartment::getUserGuestGate())
-            || $guest->gate_id != auth()->user()->gate_id
-            || $guest?->host?->user_id != auth()->user()->id
-        ) {
-            abort(404);
+            return view(
+                'sqguest::guest.generateQR',
+                ['url' => $guest->barcode, 'guest' => $guest, 'gate' => $guest->gate_translation]
+            );
+        }
+        if ($guest->gate_id != auth()->user()->gate_id) {
+
+            return view(
+                'sqguest::guest.generateQR',
+                ['url' => $guest->barcode, 'guest' => $guest, 'gate' => $guest->gate_translation]
+            );
+        }
+        if ($guest?->host?->user_id != auth()->user()->id) {
+            return view(
+                'sqguest::guest.generateQR',
+                ['url' => $guest->barcode, 'guest' => $guest, 'gate' => $guest->gate_translation]
+            );
         }
 
         $guest->host->user->notify(
             NovaNotification::make()->message(trans("QR code for guest Generated", ['name' => $guest->name]))->type("info")
         );
-
-        return view(
-            'sqguest::guest.generateQR',
-            ['url' => $guest->barcode, 'guest' => $guest, 'gate' => $guest->gate_translation]
-        );
+        return abort(403);
     }
 
     public function state(Request $request, Guest $guest)

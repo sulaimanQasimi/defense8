@@ -11,7 +11,7 @@ use Hekmatinasser\Verta\Verta;
 
 class PrintCardMetric extends Value
 {
-    public $icon= 'fa-solid fa-id-card';
+    public $icon= 'fa-2xl fa-solid fa-id-card';
 
 
     public function name()

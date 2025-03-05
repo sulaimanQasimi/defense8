@@ -8,6 +8,7 @@ use App\Support\Defense\Print\PrintTypeEnum;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Laravel\Nova\Actions\Action;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\Code;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -53,9 +54,9 @@ class CustomPaperCard extends Resource
                 ->sortable()
                 ->withoutTrashed()
                 ->nullable(),
-                Hidden::make('details'),
-                Hidden::make('remark'),
-                \Laravel\Nova\Fields\Code::make('attr')
+                Code::make('details'),
+                Code::make('remark'),
+                Code::make('attr')
                     ->json()
                     ->hideWhenCreating(),
                 Hidden::make('ip_address'),

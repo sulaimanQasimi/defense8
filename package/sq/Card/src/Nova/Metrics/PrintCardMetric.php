@@ -7,6 +7,7 @@ use Laravel\Nova\Metrics\Value;
 use Sq\Card\Models\PrintCard;
 use Sq\Query\Policy\UserDepartment;
 use Laravel\Nova\WithIcon;
+use Hekmatinasser\Verta\Verta;
 
 class PrintCardMetric extends Value
 {
@@ -22,27 +23,31 @@ class PrintCardMetric extends Value
     {
         $query = PrintCard::query();
 
-        // if (!auth()->user()->hasRole('super-admin')) {
-        //     $query->whereHas('card_info', function ($query) {
-        //         return $query->whereIn('department_id', UserDepartment::getUserDepartment());
-        //     });
-        // }
+        $range = $request->range;
 
-        // if ($request->has('department_id')) {
-        //     $query->whereHas('card_info', function ($query) use ($request) {
-        //         return $query->where('department_id', $request->department_id);
-        //     });
-        // }
+        if ($range === 'TODAY') {
+            $today = Verta::now()->startDay()->datetime();
+            $query->whereDate('created_at', '>=', $today);
+        } elseif ($range === 'ALL') {
+            // No date filtering for ALL
+        } else {
+            $days = intval($range);
+            if ($days > 0) {
+                $start = Verta::now()->subDays($days)->startDay()->datetime();
+                $query->whereDate('created_at', '>=', $start);
+            }
+        }
 
         return $this->count($request, $query);
     }
 
     public function ranges()
     {
+        $v = new Verta();
         return [
-            30 => __('30 Days'),
-            60 => __('60 Days'),
-            365 => __('امسال'),
+            30 => __(':count روز گذشته', ['count' => 30]),
+            60 => __(':count روز گذشته', ['count' => 60]),
+            365 => $v->format('%B %Y'),
             'TODAY' => __('امروز'),
             "ALL"=> __('همه'),
         ];

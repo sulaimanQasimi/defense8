@@ -29,7 +29,7 @@ class VillagePolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasPermissionTo(PermissionTranslation::create($this->resource));
+        return $user->hasPermissionTo('Create Village');
     }
 
     /**

@@ -68,56 +68,9 @@ class PrintCard extends Resource
     }
     public function cards(NovaRequest $request)
     {
-        $currentYear = verta()->year;
-        $startDate = verta()->startYear()->datetime();
-        $endDate = verta()->endYear()->datetime();
-
-        $printData = static::$model::query()
-            ->whereBetween('created_at', [$startDate, $endDate])
-            ->get()
-            ->groupBy(function ($item) {
-                $v = verta($item->created_at);
-                return $v->format('n'); // Get month number (1-12)
-            })
-            ->map(function ($group) {
-                return $group->count();
-            })
-            ->sortKeys(); // Sort by month number
-
         return [
             new Metrics\PrintCardMetric(),
             new Metrics\PrintCardFrameMetric(),
-            (new LineChart)
-                ->title(trans('جدول کارت های پرنت شده') . $currentYear)
-                ->series([
-                    [
-                        'label' => trans('کارت های پرنت شده'),
-                        'backgroundColor' => '#4099DE',
-                        'borderColor' => '#4099DE',
-                        'fill' => false,
-                        'data' => $printData->values()->toArray()
-                    ]
-                ])
-                ->options([
-                    'responsive' => true,
-                    'maintainAspectRatio' => false,
-                    'xaxis' => ['categories' => $printData->keys()->toArray()],
-                    'scales' => [
-                        'y' => [
-                            'beginAtZero' => true,
-                            'title' => [
-                                'display' => true,
-                                'text' => trans('تعداد کارت')
-                            ]
-                        ],
-                        'x' => [
-                            'title' => [
-                                'display' => true,
-                                'text' => trans('ماه')
-                            ]
-                        ]
-                    ]
-                ])
         ];
     }
     public function filters(NovaRequest $request)

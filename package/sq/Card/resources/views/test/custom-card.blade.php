@@ -48,12 +48,14 @@
             tabindex="0"
             style="top: {{ $attr['ministry']['y'] }}px; left: {{ $attr['ministry']['x'] }}px; height: {{ $attr['ministry']['size'] }}px;" />
 
-        {{-- Vehical Image --}}
-        <img src="{{ $card->ip_address }}/storage/{{ $card?->attr['vehicalImage']['path'] }}"
-            class="absolute cursor-move" tabindex="0" style="
-            top: {{ $card?->attr['vehicalImage']['y'] }}px;
-            left: {{ $card?->attr['vehicalImage']['x'] }}px;
-            height: {{ $card?->attr['vehicalImage']['size'] }}px;" />
+        @if ($cardFrame->type == \App\Support\Defense\Print\PrintTypeEnum::EmployeeCar)
+            {{-- Vehical Image --}}
+            <img src="/car.png"
+                class="absolute cursor-move" tabindex="0" style="
+                top: {{ $attr['vehicalImage']['y'] }}px;
+                left: {{ $attr['vehicalImage']['x'] }}px;
+                height: {{ $attr['vehicalImage']['size'] }}px;" />
+        @endif
         <div dir="rtl">{!! $details !!}</div>
         {{-- Profile Image --}}
         <img src="{{ asset('logo.png') }}" class="absolute cursor-move" tabindex="0"

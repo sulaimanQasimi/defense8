@@ -142,10 +142,21 @@ trait CardAttribute
                 $this->cardFrame->update(['attr->header->backgroundColor' => $this->attr['header']['backgroundColor']]);
                 break;
 
-            case "vehicalImage.path":
-                $this->cardFrame->update(['attr->vehicalImage->path' => $this->attr['vehicalImage']['path']]);
-                break;
+            // case "vehicalImage.path":
+            //     $this->cardFrame->update(['attr->vehicalImage->path' => $this->attr['vehicalImage']['path']]);
+            //     break;
 
+            case "vehicalImage.x":
+                $this->cardFrame->update(['attr->vehicalImage->x' => $this->attr['vehicalImage']['x']]);
+                break;
+            case "vehicalImage.y":
+                $this->cardFrame->update(['attr->vehicalImage->y' => $this->attr['vehicalImage']['y']]);
+                break;
+            case "vehicalImage.z":
+                $this->cardFrame->update(['attr->vehicalImage->z' => $this->attr['vehicalImage']['z']]);
+                $this->redirect($this->ModelRoute(), true);
+
+                break;
             case "content.fontColor":
                 $this->cardFrame->update(['attr->content->fontColor' => $this->attr['content']['fontColor']]);
                 break;

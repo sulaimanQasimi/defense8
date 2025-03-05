@@ -46,6 +46,6 @@ class PrintPaperCardController extends Controller
 
         Log::info("Custom paper card printed successfully", ['card_record' => $card_record]);
 
-        return view('sqcard::print.custom-card', compact('cardInfo', 'card', 'field'));
+        return view('sqcard::print.custom-card', compact('cardInfo', 'card', 'field','employeeVehicalCard'));
     }
 }

@@ -105,7 +105,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
         ]);
 
-        Nova::footer(fn($request) => "Powered By MOD");
+        Nova::footer(fn($request) => "دیزاین و توسعه توسط تیم مولوی احمد عادل");
     }
 
 

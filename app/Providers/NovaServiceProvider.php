@@ -22,6 +22,7 @@ use Laravel\Nova\Nova;
 use Laravel\Nova\NovaApplicationServiceProvider;
 use App\Nova\Permission;
 use App\Nova\Role;
+use Illuminate\Support\Facades\Blade;
 use Spatie\BackupTool\BackupTool;
 
 class NovaServiceProvider extends NovaApplicationServiceProvider
@@ -105,7 +106,14 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
         ]);
 
-        Nova::footer(fn($request) => "دیزاین و توسعه توسط تیم مولوی احمد عادل");
+
+    Nova::footer(function (Request $request) {
+        return Blade::render('
+           دیزاین و توسعه توسط تیم مولوی احمد عادل
+
+        ');
+    });
+
     }
 
 

@@ -1,4 +1,4 @@
-<div class="px-32 py-4 ">
+<div class="px-32 py-4 " dir="rtl">
 
     @if ($guest->currentGate?->entered_at && $guest->currentGate?->exit_at)
         <span class="text-4xl font-medium text-center my-2  block text-red-700">@lang('Barcode is expired')</span>
@@ -104,10 +104,6 @@
                 </div>
 
             </th>
-
-
-
-            </th>
             <th scope="col" class="lg:px-6 sm:px-1 py-2 text-3xl"></th>
             <td scope="col" class="lg:px-6 sm:px-1 py-2 text-3xl"></td>
         </tr>
@@ -144,12 +140,10 @@
                         class="text-4xl font-medium">@lang('Guest Entered To Ministry', ['name' => $guest->EnterGate->gate->pa_name])</span>
                 @endif
 
-
-
                 {{-- If The Guest is not Exited from Any Gate And Not Gate --}}
 
 
-                @if (auth()->user()->gate->level != 1 && $guest->EnterGate && !$guest->ExitGate)
+                @if (auth()->user()->gate->level == 1 && $guest->EnterGate && !$guest->ExitGate)
 
                     @if (!$guest->currentGate?->entered_at)
                         <a href="{{ route('sqguest.guest.check', ['guest' => $guest->id, 'state' => 'enter']) }}"
@@ -161,7 +155,7 @@
                     @if ($guest->currentGate?->entered_at)
                         <span class="text-4xl font-medium">@lang('Guest Entered')</span>
                     @endif
-                    {{-- If Guest not Exited  --}}
+                    {{-- If Guest not Exited --}}
                     @if ($guest->currentGate?->entered_at && !$guest->currentGate?->exit_at)
                         <a href="{{ route('sqguest.guest.check', ['guest' => $guest->id, 'state' => 'exit']) }}"
                             class="px-7 rounded-lg hover:scale-95 py-2 text-white bg-gradient-to-t from-red-600 to-red-500"
@@ -174,20 +168,11 @@
 
                 @endif
 
-
-
                 {{-- If The Guest is not Exited from Any Gate And Not Gate --}}
-                @if (auth()->user()->gate->level == 1 && $guest->EnterGate && !$guest->ExitGate)
-                    @if (!$guest->currentGate?->exit_at)
-                        <a href="{{ route('sqguest.guest.check', ['guest' => $guest->id, 'state' => 'exit']) }}"
-                            class="px-7 rounded-lg hover:scale-95 py-2 text-white bg-gradient-to-t from-red-600 to-red-500"
-                            style="">@lang('Exited')</a>
-                    @endif
-                @endif
-
                 @if (auth()->user()->gate->level === 1 && $guest->ExitGate)
-                    <span
-                        class="text-4xl font-medium">@lang('Guest Exit To Ministry', ['name' => $guest->ExitGate->gate->pa_name])</span>
+                    <span class="text-4xl font-medium">
+                        @lang('Guest Exit To Ministry', ['name' => $guest->ExitGate?->gate->pa_name])
+                    </span>
                 @endif
             </div>
         @endif

@@ -55,6 +55,14 @@
                             <td>{{ $guest->address }}</td>
                         </tr>
                         <tr>
+                            <td>@lang('نوع واسطه'):</td>
+                            <td>{{ $guest->vehical_type }}</td>
+                        </tr>
+                        <tr>
+                            <td>@lang('رنگ واسطه'):</td>
+                            <td>{{ $guest->vehical_color }}</td>
+                        </tr>
+                        <tr>
                             <td>@lang('Code'):</td>
                             <td><i><b>{{ $url }}</b></i></td>
                         </tr>

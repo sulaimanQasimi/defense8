@@ -71,17 +71,20 @@
             </div>
         </div>
     </div>
+    @unless ($guest)
     <script>
-        const field = document.getElementById('scanner');
+            const field = document.getElementById('scanner');
 
-        function keepFocus() {
-            field.focus();
-        }
+            function keepFocus() {
+                field.focus();
+            }
 
-        field.addEventListener('blur', keepFocus)
+            field.addEventListener('blur', keepFocus)
 
-        field.focus()
-    </script>
+            field.focus()
+        </script>
+
+    @endunless
 </body>
 
 </html>

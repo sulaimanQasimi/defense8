@@ -89,7 +89,6 @@ class GunCard extends Resource
             Trix::make(trans('Remark'), 'remark'),
             Boolean::make(__("Print"), 'printed')->hideWhenCreating(),
             MorphMany::make(trans("Activity Log"), 'activities', Activitylog::class),
-
         ];
     }
     public function cards(NovaRequest $request)

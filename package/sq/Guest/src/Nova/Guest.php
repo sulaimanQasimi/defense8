@@ -3,19 +3,21 @@
 namespace Sq\Guest\Nova;
 
 use App\Nova\Resource;
+use Bolechen\NovaActivitylog\Resources\Activitylog;
 use Carbon\Carbon;
 use DigitalCreative\MegaFilter\MegaFilter;
 use DigitalCreative\MegaFilter\MegaFilterTrait;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\HasMany;
+use Laravel\Nova\Fields\MorphMany;
 use Laravel\Nova\Fields\Tag;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Trix;
 use Laravel\Nova\Fields\URL;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use MZiraki\PersianDateField\PersianDateTime;
-use Sq\Employee\Nova\Gate as NovaGate;
+use Sq\Employee\Nova\Gate;
 use Sq\Query\Policy\UserDepartment;
 use Sq\Query\SqNovaDateFilter;
 use Sq\Query\SqNovaSelectFilter;
@@ -94,20 +96,30 @@ class Guest extends Resource
                 ->exceptOnForms(),
             Text::make(__("Invited By"), fn() => $this->host->head_name),
 
-            Text::make(__("Address"), 'address')
+            Text::make(__('Address'), 'address')
                 ->required()
                 ->sortable()
                 ->hideWhenUpdating(fn() => $this->registered_at->isBefore(Carbon::today()))
                 ->rules('required', 'string'),
 
-            PersianDateTime::make(__("Guest Enter Date"), 'registered_at')
+            Text::make(__('نوع واسطه'), 'vehical_type')
+                ->nullable()
+                ->sortable()
+                ->placeholder(__('Enter Field', ['name' => __('Vehicle Type')])),
+
+            Text::make(__('رنگ واسطه'), 'vehical_color')
+                ->nullable()
+                ->sortable()
+                ->placeholder(__('Enter Field', ['name' => __('Vehicle Color')])),
+
+            PersianDateTime::make(__('Guest Enter Date'), 'registered_at')
                 ->format('jYYYY/jMM/jDD h:mm a')
                 ->hideWhenUpdating(fn() => $this->registered_at->isBefore(Carbon::today()))
                 ->required()->rules('required', 'date'),
 
-            BelongsTo::make(__("Enter Gate"), 'gate', NovaGate::class)
+            BelongsTo::make(__("Enter Gate"), 'gate', Gate::class)
             ->relatableQueryUsing(function (NovaRequest $request, Builder $query) {
-                $query->wherein('id', UserDepartment::getUserGuestGate());
+                $query->whereIn('id', UserDepartment::getUserGuestGate());
             }),
 
             Tag::make(__("Condition"), 'Guestoptions', GuestOption::class)
@@ -116,6 +128,7 @@ class Guest extends Resource
             Trix::make(trans("Remark"), 'remark')->nullable(),
 
             HasMany::make(__("Gate Passed"), 'guestGate', GuestGate::class),
+            MorphMany::make(trans("Activity Log"), 'activities', Activitylog::class),
         ];
     }
 

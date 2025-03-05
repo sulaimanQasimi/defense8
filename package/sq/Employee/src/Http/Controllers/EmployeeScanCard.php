@@ -17,10 +17,13 @@ class EmployeeScanCard extends Controller
         // get the code from request
         $code = $request->input("code");
 
-
         // if the guest code scaned
         if (\Illuminate\Support\Str::startsWith(haystack: $code, needles: 'Guest-')) {
-            $guest = Guest::query()->where('barcode', $code)->first();
+            $guest = Guest::query()->where('barcode', $code)
+            ->first();
+            if($guest->host?->department_id){
+
+            }
         }
         $attendance= new Attendance($code);
 

@@ -19,8 +19,8 @@ class QRCodeGenerateController extends Controller
 
             !in_array($guest->host->department_id, UserDepartment::getUserDepartment())
             || !in_array($guest->gate_id, UserDepartment::getUserGuestGate())
-            || !$guest->gate_id == auth()->user()->gate_id
-            || !$guest?->host?->user_id == auth()->user()->id
+            || $guest->gate_id != auth()->user()->gate_id
+            || $guest?->host?->user_id != auth()->user()->id
         ) {
             abort(404);
         }

@@ -16,8 +16,6 @@ class CustomPaperCard extends Model
     protected $casts = [
         'attr' => 'array',
     ];
-
-
     protected $guarded = [];
     protected static function boot()
     {

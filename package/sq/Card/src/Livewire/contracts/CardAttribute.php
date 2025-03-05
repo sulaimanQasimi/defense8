@@ -9,7 +9,7 @@ trait CardAttribute
     public function updatedAttr($value, $key)
     {
         switch ($key) {
-                // Page Str::endsWith($haystack, 'needles')
+            // Page Str::endsWith($haystack, 'needles')
             case "page.height":
                 $this->cardFrame->update(['attr->page->height' => $this->attr['page']['height']]);
                 break;
@@ -51,7 +51,7 @@ trait CardAttribute
                 $this->cardFrame->update(['attr->government->y' => $this->attr['government']['y']]);
                 break;
 
-                // Ministry Attribute
+            // Ministry Attribute
             case "ministry.path":
                 $this->cardFrame->update(['attr->ministry->path' => Str::after($this->attr['ministry']['path']->store(path: 'public/ministry'), 'public/')]);
                 $this->redirect($this->ModelRoute(), true);
@@ -76,7 +76,7 @@ trait CardAttribute
                 $this->cardFrame->update(['attr->ministry->y' => $this->attr['ministry']['y']]);
                 break;
 
-                // Profile
+            // Profile
             case "profile.path":
                 $this->cardFrame->update(['attr->profile->path' => Str::after($this->attr['profile']['path']->store(path: 'public/profile'), 'public/')]);
                 break;
@@ -94,7 +94,7 @@ trait CardAttribute
                 break;
 
 
-                // Profile
+            // Profile
             case "signature.path":
                 $this->cardFrame->update(['attr->signature->path' => Str::after($this->attr['signature']['path']->store(path: 'public/signature'), 'public/')]);
                 $this->redirect($this->ModelRoute(), true);
@@ -113,7 +113,7 @@ trait CardAttribute
                 $this->cardFrame->update(['attr->signature->y' => $this->attr['signature']['y']]);
                 break;
 
-                // QrCode
+            // QrCode
             case "qrcode.size":
                 $this->cardFrame->update(['attr->qrcode->size' => $this->attr['qrcode']['size']]);
                 $this->redirect($this->ModelRoute(), true);
@@ -125,7 +125,7 @@ trait CardAttribute
                 $this->cardFrame->update(['attr->qrcode->y' => $this->attr['qrcode']['y']]);
                 break;
 
-                // Barcode
+            // Barcode
             case "barCode.x":
                 $this->cardFrame->update(['attr->barCode->x' => $this->attr['barCode']['x']]);
                 break;
@@ -141,6 +141,11 @@ trait CardAttribute
             case "header.backgroundColor":
                 $this->cardFrame->update(['attr->header->backgroundColor' => $this->attr['header']['backgroundColor']]);
                 break;
+
+            case "vehical.image":
+                $this->cardFrame->update(['attr->vehical->image' => $this->attr['vehical']['image']]);
+                break;
+                
             case "content.fontColor":
                 $this->cardFrame->update(['attr->content->fontColor' => $this->attr['content']['fontColor']]);
                 break;

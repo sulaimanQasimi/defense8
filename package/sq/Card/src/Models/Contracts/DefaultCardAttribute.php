@@ -1,5 +1,7 @@
 <?php
+
 namespace Sq\Card\Models\Contracts;
+
 class DefaultCardAttribute
 {
 
@@ -62,10 +64,13 @@ class DefaultCardAttribute
                 "colorLight" => "#ffffff",
                 "correctLevel" => "QRCode.CorrectLevel.H",
             ],
-            'page'=>[
-                'height'=>210,
-                'width'=>297,
-                'dim'=>'vertical'
+            'page' => [
+                'height' => 210,
+                'width' => 297,
+                'dim' => 'vertical'
+            ],
+            'vehical' => [
+                'image'=>null
             ]
         ];
     }

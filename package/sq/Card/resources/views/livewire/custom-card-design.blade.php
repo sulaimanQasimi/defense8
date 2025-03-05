@@ -223,6 +223,29 @@ if (event.key === 'ArrowUp') {
 }"
 :style="{ top: attr.signature.y + 'px', left: attr.signature.x + 'px', height: attr.signature.size + 'px' }" />
 
+@if ($cardFrame->type == \App\Support\Defense\Print\PrintTypeEnum::EmployeeCar)
+{{-- Vehical Image --}}
+<img :src="'/storage/' + attr.vehicalImage.path" class="absolute cursor-move" tabindex="0" style="z-index: 100"
+@keydown="(event) => {
+event.preventDefault();
+if (event.key === 'ArrowUp' && event.shiftKey) {
+    attr.vehicalImage.size += 1;
+} else if (event.key === 'ArrowDown' && event.shiftKey) {
+    attr.vehicalImage.size -= 1;
+}else
+if (event.key === 'ArrowUp') {
+    attr.vehicalImage.y -= 1;
+} else if (event.key === 'ArrowDown') {
+    attr.vehicalImage.y += 1;
+} else if (event.key === 'ArrowLeft') {
+    attr.vehicalImage.x -= 1;
+} else if (event.key === 'ArrowRight') {
+    attr.vehicalImage.x += 1;
+}
+}"
+:style="{ top: attr.vehicalImage.y + 'px', left: attr.vehicalImage.x + 'px', height: attr.vehicalImage.size + 'px' }" />
+@endif
+
 {{-- QR Code --}}
 <div id="qrcode" style="position: absolute;" x-ref="qrcode" class="cursor-move" tabindex="0"
 @keydown="(event) => {
@@ -405,6 +428,13 @@ else if (event.key === 'ArrowUp') {
                             <x-sqcard::form.dimention-slider label="Government Logo Dimensions"
                                 xModel="attr.government.x" yModel="attr.government.y" zModel="attr.government.size"
                                 xMax="10000" yMax="10000" zMax="10000" />
+                                {{-- Vehical Image --}}
+
+                                @if ($cardFrame->type == \App\Support\Defense\Print\PrintTypeEnum::EmployeeCar)
+                                <x-sqcard::form.dimention-slider label="عکس موتر"
+                                    xModel="attr.vehicalImage.x" yModel="attr.vehicalImage.y" zModel="attr.vehicalImage.size"
+                                    xMax="10000" yMax="10000" zMax="10000" />
+                                    @endif
                         </div>
                         {{-- #accordion-collapse-body-1 --}}
                         <h2 id="accordion-collapse-heading-3">
@@ -601,6 +631,7 @@ else if (event.key === 'ArrowUp') {
 
 
 
+                                @if ($cardFrame->type == \App\Support\Defense\Print\PrintTypeEnum::EmployeeCar)
                                 <div>
                                     <div class="mb-2 flex items-center justify-center w-full">
                                         <label for="vehical-image-file-upload"
@@ -617,11 +648,12 @@ else if (event.key === 'ArrowUp') {
                                                     @lang('عکس موتر')
                                                 </p>
                                             </div>
-                                            <input id="vehical-image-file-upload" wire:model.live="attr.vehical.image"
+                                            <input id="vehical-image-file-upload" wire:model.live="attr.vehicalImage.path"
                                                 type="file" class="hidden" />
                                         </label>
                                     </div>
                                 </div>
+                                @endif
 
 
 

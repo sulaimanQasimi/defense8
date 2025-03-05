@@ -142,10 +142,10 @@ trait CardAttribute
                 $this->cardFrame->update(['attr->header->backgroundColor' => $this->attr['header']['backgroundColor']]);
                 break;
 
-            case "vehical.image":
-                $this->cardFrame->update(['attr->vehical->image' => $this->attr['vehical']['image']]);
+            case "vehicalImage.path":
+                $this->cardFrame->update(['attr->vehicalImage->path' => $this->attr['vehicalImage']['path']]);
                 break;
-                
+
             case "content.fontColor":
                 $this->cardFrame->update(['attr->content->fontColor' => $this->attr['content']['fontColor']]);
                 break;

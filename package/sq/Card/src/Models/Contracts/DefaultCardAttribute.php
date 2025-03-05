@@ -69,8 +69,11 @@ class DefaultCardAttribute
                 'width' => 297,
                 'dim' => 'vertical'
             ],
-            'vehical' => [
-                'image'=>null
+            'vehicalImage'=>[
+                'path' => null,
+                'size' => null,
+                'x' => null,
+                'y' => null,
             ]
         ];
     }

@@ -68,6 +68,7 @@ class PrintCard extends Resource
     {
         return [
             new Metrics\PrintCardMetric(),
+            new Metrics\PrintCardFrameMetric(),
         ];
     }
     public function filters(NovaRequest $request)

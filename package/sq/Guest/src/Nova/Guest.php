@@ -11,12 +11,14 @@ use Illuminate\Contracts\Database\Eloquent\Builder;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\MorphMany;
+use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Tag;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Trix;
 use Laravel\Nova\Fields\URL;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use MZiraki\PersianDateField\PersianDateTime;
+use Sq\Employee\Models\Gate as ModelsGate;
 use Sq\Employee\Nova\Gate;
 use Sq\Query\Policy\UserDepartment;
 use Sq\Query\SqNovaDateFilter;
@@ -117,10 +119,9 @@ class Guest extends Resource
                 ->hideWhenUpdating(fn() => $this->registered_at->isBefore(Carbon::today()))
                 ->required()->rules('required', 'date'),
 
-            BelongsTo::make(__("Enter Gate"), 'gate', Gate::class)
-            ->relatableQueryUsing(function (NovaRequest $request, Builder $query) {
-                $query->whereIn('id', UserDepartment::getUserGuestGate());
-            }),
+            Select::make(__("Enter Gate"), 'gate_id')->options(ModelsGate::query()->whereIn('id', UserDepartment::getUserGuestGate())->pluck('fa_name', 'id'))
+            ->required()
+            ->rules('required'),
 
             Tag::make(__("Condition"), 'Guestoptions', GuestOption::class)
                 ->showCreateRelationButton()

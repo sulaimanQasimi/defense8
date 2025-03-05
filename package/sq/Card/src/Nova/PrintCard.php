@@ -13,6 +13,7 @@ use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use MZiraki\PersianDateField\PersianDate;
+use MZiraki\PersianDateField\PersianDateTime;
 use Sq\Employee\Nova\CardInfo;
 use Sq\Query\Policy\UserDepartment;
 
@@ -64,6 +65,8 @@ class PrintCard extends Resource
                 ->placeholder('YYYY/MM/DD')
                 ->selected_date('1444/12/12')
                 ->placement('bottom'),
+
+            PersianDateTime::make(trans("زمان پرنت"), 'created_at'),
         ];
     }
     public function cards(NovaRequest $request)

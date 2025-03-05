@@ -32,7 +32,8 @@ class HostPolicy
     public function view(User $user, Host $host): bool
     {
         return
-        $user->hasPermissionTo(PermissionTranslation::view("Host")) && $this->owner($user,$host) && in_array($host->deparment_id, UserDepartment::getUserDepartment());
+        $user->hasPermissionTo(PermissionTranslation::view("Host"))
+        && in_array($host->deparment_id, UserDepartment::getUserDepartment());
     }
 
     /**
@@ -48,8 +49,7 @@ class HostPolicy
      */
     public function update(User $user, Host $host): bool
     {
-        return $user->hasPermissionTo(PermissionTranslation::update("Host"))
-        && $this->owner($user,$host) && in_array($host->deparment_id, UserDepartment::getUserDepartment());
+        return $user->hasPermissionTo(PermissionTranslation::update("Host"))&& in_array($host->deparment_id, UserDepartment::getUserDepartment());
     }
 
     /**
@@ -57,8 +57,7 @@ class HostPolicy
      */
     public function delete(User $user, Host $host): bool
     {
-        return $user->hasPermissionTo(PermissionTranslation::delete("Host"))
-        && $this->owner($user,$host) && in_array($host->deparment_id, UserDepartment::getUserDepartment());
+        return $user->hasPermissionTo(PermissionTranslation::delete("Host")) && in_array($host->deparment_id, UserDepartment::getUserDepartment());
     }
 
     /**
@@ -66,7 +65,7 @@ class HostPolicy
      */
     public function restore(User $user, Host $host): bool
     {
-        return $user->hasPermissionTo(PermissionTranslation::restore("Host")) && $this->owner($user,$host) && in_array($host->deparment_id, UserDepartment::getUserDepartment());
+        return $user->hasPermissionTo(PermissionTranslation::restore("Host")) && in_array($host->deparment_id, UserDepartment::getUserDepartment());
     }
 
     /**

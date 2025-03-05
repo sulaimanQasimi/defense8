@@ -20,6 +20,13 @@ use Sq\Query\SqNovaTextFilter;
 class Host extends Resource
 {
     use MegaFilterTrait;
+
+    /**
+     * The logical group associated with the resource.
+     *
+     * @var string
+     */
+    public static $redirectToIndex = true;
     public static $model = \Sq\Guest\Models\Host::class;
 
     public static $title = 'department.fa_name';

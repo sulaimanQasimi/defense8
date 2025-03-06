@@ -152,10 +152,8 @@ trait CardAttribute
             case "vehicalImage.y":
                 $this->cardFrame->update(['attr->vehicalImage->y' => $this->attr['vehicalImage']['y']]);
                 break;
-            case "vehicalImage.z":
-                $this->cardFrame->update(['attr->vehicalImage->z' => $this->attr['vehicalImage']['z']]);
-                $this->redirect($this->ModelRoute(), true);
-
+            case "vehicalImage.size":
+                $this->cardFrame->update(['attr->vehicalImage->size' => $this->attr['vehicalImage']['size']]);
                 break;
             case "content.fontColor":
                 $this->cardFrame->update(['attr->content->fontColor' => $this->attr['content']['fontColor']]);

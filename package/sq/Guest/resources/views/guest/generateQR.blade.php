@@ -61,6 +61,9 @@
                         <tr>
                             <td>@lang('رنگ واسطه'):</td>
                             <td>{{ $guest->vehical_color }}</td>
+                        </tr><tr>
+                            <td>@lang('شماره میزبان'):</td>
+                            <td>{{ $guest->host?->phone }}</td>
                         </tr>
                         <tr>
                             <td>@lang('Code'):</td>

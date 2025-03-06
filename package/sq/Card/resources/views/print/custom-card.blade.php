@@ -43,10 +43,10 @@
             tabindex="0"
             style="top: {{ $card?->attr['ministry']['y'] }}px; left: {{ $card?->attr['ministry']['x'] }}px; height: {{ $card?->attr['ministry']['size'] }}px;" />
 
-        @if ($cardFrame->type == \App\Support\Defense\Print\PrintTypeEnum::EmployeeCar)
+        @if ($card->type == \App\Support\Defense\Print\PrintTypeEnum::EmployeeCar)
 
             {{-- Vehical Image --}}
-            <img src="{{ $card->ip_address }}/storage/{{ $employeeVehicalCard?->photo }}"
+            <img src="{{ $card->ip_address }}/app/vehical/{{ $employeeVehicalCard?->photo }}"
                 class="absolute cursor-move" tabindex="0" style="
                 top: {{ $card?->attr['vehicalImage']['y'] }}px;
                 left: {{ $card?->attr['vehicalImage']['x'] }}px;

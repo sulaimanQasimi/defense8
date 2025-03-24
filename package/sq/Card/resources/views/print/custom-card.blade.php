@@ -50,7 +50,8 @@
                 class="absolute cursor-move" tabindex="0" style="
                 top: {{ $card?->attr['vehicalImage']['y'] }}px;
                 left: {{ $card?->attr['vehicalImage']['x'] }}px;
-                height: {{ $card?->attr['vehicalImage']['size'] }}px;" />
+                height: {{ $card?->attr['vehicalImage']['size'] }}px;
+                max-height: {{ $card?->attr['vehicalImage']['size'] }}px;" />
         @endif
         <div dir="rtl">{!! $field->details !!}</div>
         {{-- Profile Image --}}

@@ -40,11 +40,11 @@ trait GunCardField
     {
         return Str::of($context)
             ->replace($this->gun_translated_field("gun_type"), $gun?->gun_type)
-            ->replace($this->gun_translated_field("gun_no"), "<span dir='ltr'>" . $gun?->gun_no . "</span>")
+            ->replace($this->gun_translated_field("gun_no"), PrintCardField::ltr($gun?->gun_no))
             ->replace($this->gun_translated_field("range"), $gun?->range)
-            ->replace($this->gun_translated_field("gun_recieved_date"),"<span dir='ltr'>" . ($gun?->filled_form_date) ? verta($gun?->filled_form_date)->format("Y/m/d") : "". "</span>")
+            ->replace($this->gun_translated_field("gun_recieved_date"), PrintCardField::ltr(($gun?->filled_form_date) ? verta($gun?->filled_form_date)->format("Y/m/d") : ""))
 
-            ->replace($this->gun_translated_field("gun_register_date"), "<span dir='ltr'>" .($gun?->register_date) ? Carbon::make($gun?->register_date)->format("Y/m/d") : "". "</span>")
-            ->replace($this->gun_translated_field("gun_expire_date"), "<span dir='ltr'>" .($gun?->expire_date) ? Carbon::make($gun?->expire_date)->format("Y/m/d") : "". "</span>");
+            ->replace($this->gun_translated_field("gun_register_date"), PrintCardField::ltr(($gun?->register_date) ? Carbon::make($gun?->register_date)->format("Y/m/d") : ""))
+            ->replace($this->gun_translated_field("gun_expire_date"), PrintCardField::ltr(($gun?->expire_date) ? Carbon::make($gun?->expire_date)->format("Y/m/d") : ""));
     }
 }

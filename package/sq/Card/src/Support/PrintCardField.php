@@ -47,4 +47,8 @@ final class PrintCardField
             return $this->replace(context: $this->frame->attr['government']['title'] ?? "");
         }
     }
+    public static function ltr($text)
+    {
+        return "<span dir='ltr'>".$text."</span>";
+    }
 }

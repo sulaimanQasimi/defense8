@@ -243,7 +243,7 @@ if (event.key === 'ArrowUp') {
     attr.vehicalImage.x += 1;
 }
 }"
-:style="{ top: attr.vehicalImage.y + 'px', left: attr.vehicalImage.x + 'px', height: attr.vehicalImage.size + 'px' }" />
+:style="{ top: attr.vehicalImage.y + 'px', left: attr.vehicalImage.x + 'px', height: attr.vehicalImage.size + 'px', 'max-height': attr.vehicalImage.size + 'px' }" />
 @endif
 
 {{-- QR Code --}}

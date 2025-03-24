@@ -36,8 +36,8 @@ trait MainCardField
 
             ->replace($this->main_translated_field('muthanna'), ($this->mainCard?->muthanna) ? __("Muthanna") : '')
             // Hijri::Date('l ، j F ، Y', $date);
-            ->replace($this->main_translated_field('card_perform'), "<span dir='ltr'>".($this->mainCard?->card_perform) ? Carbon::make($this->mainCard?->card_perform)->format("Y/m/d") : "N/A". "</span>")
+            ->replace($this->main_translated_field('card_perform'), PrintCardField::ltr(($this->mainCard?->card_perform) ? Carbon::make($this->mainCard?->card_perform)->format("Y/m/d") : "N/A" ))
 
-            ->replace($this->main_translated_field('card_expired_date'), "<span dir='ltr'>".($this->mainCard?->card_expired_date) ? Carbon::make($this->mainCard?->card_expired_date)->format("Y/m/d") : "N/A". "</span>");
+            ->replace($this->main_translated_field('card_expired_date'), PrintCardField::ltr(($this->mainCard?->card_expired_date) ? Carbon::make($this->mainCard?->card_expired_date)->format("Y/m/d") : "N/A" ));
     }
 }

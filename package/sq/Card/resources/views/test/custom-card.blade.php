@@ -54,7 +54,8 @@
                 class="absolute cursor-move" tabindex="0" style="
                 top: {{ $attr['vehicalImage']['y'] }}px;
                 left: {{ $attr['vehicalImage']['x'] }}px;
-                height: {{ $attr['vehicalImage']['size'] }}px;" />
+                height: {{ $attr['vehicalImage']['size'] }}px;"
+                max-height: {{ $attr['vehicalImage']['size'] }}px;" />
         @endif
         <div dir="rtl">{!! $details !!}</div>
         {{-- Profile Image --}}

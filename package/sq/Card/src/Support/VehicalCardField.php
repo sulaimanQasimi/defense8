@@ -43,19 +43,19 @@ trait VehicalCardField
             // Vehical Infos
             ->replace($this->vehical_translated_field('vehical_type'), $vehical?->vehical_type)
             ->replace($this->vehical_translated_field('vehical_colour'), $vehical?->vehical_colour)
-            ->replace($this->vehical_translated_field('vehical_palete'), $vehical?->vehical_palete)
+            ->replace($this->vehical_translated_field('vehical_palete'), "<span dir='ltr'>".$vehical?->vehical_palete."</span>")
             ->replace($this->vehical_translated_field('vehical_chassis'), $vehical?->vehical_chassis)
             ->replace($this->vehical_translated_field('vehical_model'), $vehical?->vehical_model)
             ->replace($this->vehical_translated_field('vehical_owner'), $vehical?->vehical_owner)
-            ->replace($this->vehical_translated_field('vehical_engine_no'), $vehical?->vehical_engine_no)
-            ->replace($this->vehical_translated_field('vehical_registration_no'), $vehical?->vehical_registration_no)
+            ->replace($this->vehical_translated_field('vehical_engine_no'), "<span dir='ltr'>".$vehical?->vehical_engine_no."</span>")
+            ->replace($this->vehical_translated_field('vehical_registration_no'), "<span dir='ltr'>".$vehical?->vehical_registration_no."</span>")
             // Driver Infos
             ->replace($this->vehical_translated_field('driver_name'), $vehical?->driver?->name)
             ->replace($this->vehical_translated_field('driver_last_name'), $vehical?->driver?->last_name)
-            ->replace($this->vehical_translated_field('driver_registare_no'), $vehical?->driver?->registare_no)
+            ->replace($this->vehical_translated_field('driver_registare_no'), "<span dir='ltr'>".$vehical?->driver?->registare_no."</span>")
             // Hijri Date Fields
-            ->replace($this->vehical_translated_field('vehical_register_date'), ($vehical?->register_date)? Carbon::make($vehical->register_date)->format("Y/m/d"):'')
-            ->replace($this->vehical_translated_field('vehical_expire_date'), ($vehical?->expire_date)? Carbon::make($vehical->expire_date)->format("Y/m/d"):'')
+            ->replace($this->vehical_translated_field('vehical_register_date'), "<span dir='ltr'>".($vehical?->register_date)? Carbon::make($vehical->register_date)->format("Y/m/d"):"". "</span>")
+            ->replace($this->vehical_translated_field('vehical_expire_date'), "<span dir='ltr'>".($vehical?->expire_date)? Carbon::make($vehical->expire_date)->format("Y/m/d"):"". "</span>")
         ;
     }
 }

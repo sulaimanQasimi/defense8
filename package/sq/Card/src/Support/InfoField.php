@@ -1,4 +1,5 @@
 <?php
+
 namespace Sq\Card\Support;
 
 use Illuminate\Support\Str;
@@ -25,9 +26,9 @@ trait InfoField
             "main_province" => trans("Province"),
             "main_district" => trans("District"),
             "phone" => trans("Phone"),
-            'special_gun'=>"نوع سلاح برای کارت ویژه",
-            'special_black_mirror'=>"شیشه سیاه برای کارت ویژه",
-            'special_vehical'=>"نوع واسطه برای کارت ویژه",
+            'special_gun' => "نوع سلاح برای کارت ویژه",
+            'special_black_mirror' => "شیشه سیاه برای کارت ویژه",
+            'special_vehical' => "نوع واسطه برای کارت ویژه",
         ];
     }
     private static function info_translated_field($field)
@@ -46,18 +47,18 @@ trait InfoField
     {
         return Str::of($context)
 
-        ->replace($this->info_translated_field('name'), $this->employee->name)
+            ->replace($this->info_translated_field('name'), $this->employee->name)
 
             ->replace($this->info_translated_field('father_name'), $this->employee->father_name)
             ->replace($this->info_translated_field('last_name'), $this->employee->last_name)
             ->replace($this->info_translated_field('grand_father_name'), $this->employee->grand_father_name)
             ->replace($this->info_translated_field('department'), $this->employee->orginization?->fa_name)
             ->replace($this->info_translated_field('job_structure'), $this->employee->job_structure)
-            ->replace($this->info_translated_field('national_id'), $this->employee->national_id)
+            ->replace($this->info_translated_field('national_id'), "<span dir='ltr'>" . $this->employee->national_id . "</span>")
             ->replace($this->info_translated_field('degree'), $this->employee->degree)
-            ->replace($this->info_translated_field('birthday'), ($this->employee?->birthday) ? verta($this->employee->birthday)->format("Y/m/d") : '')
+            ->replace($this->info_translated_field('birthday'), "<span dir='ltr'>" . ($this->employee?->birthday) ? verta($this->employee->birthday)->format("Y/m/d") : '' . "</span>")
             ->replace($this->info_translated_field('grade'), $this->employee->grade)
-            ->replace($this->info_translated_field('registare_no'), $this->employee->registare_no)
+            ->replace($this->info_translated_field('registare_no'), "<span dir='ltr'>" . $this->employee->registare_no . "</span>")
             ->replace($this->info_translated_field('gate'), $this->employee->gate?->fa_name)
 
 
@@ -71,7 +72,7 @@ trait InfoField
 
             // Unverfied Fields
 
-            ->replace($this->info_translated_field('blood_group'), match ($this->employee?->blood_group) {
+            ->replace($this->info_translated_field('blood_group'), "<span dir='ltr'>" . match ($this->employee?->blood_group) {
                 'OM' => 'O-',
                 'OP' => 'O+',
                 'AM' => 'A-',
@@ -81,13 +82,12 @@ trait InfoField
                 'ABM' => 'AB-',
                 'ABP' => 'AB+',
                 default => ''
+            } . "</span>")
 
-            })
-   
-			->replace($this->info_translated_field("main_province"), $this->employee?->main_province?->name)
+            ->replace($this->info_translated_field("main_province"), $this->employee?->main_province?->name)
             ->replace($this->info_translated_field("main_district"), $this->employee?->main_district?->name)
-         
-            ->replace($this->info_translated_field("phone"), $this->employee->phone)
+
+            ->replace($this->info_translated_field("phone"), "<span dir='ltr'>" . $this->employee->phone . "</span>")
 
         ;
     }

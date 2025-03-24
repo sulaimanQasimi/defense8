@@ -100,14 +100,28 @@ class QRCodeGenerateController extends Controller
     {
         if (in_array($patient->host->department_id, UserDepartment::getUserDepartment())) {
             return view(
-                'sqguest::guest.patient-qr',
+                'sqguest::guest.patient-thermal',
                 ['url' => $patient->barcode, 'patient' => $patient]
             );
         }
 
-        if ($patient?->host?->user_id == auth()->user()->id) {
+        if (in_array($patient->gate_id, UserDepartment::getUserGuestGate())) {
             return view(
-                'sqguest::guest.patient-qr',
+                'sqguest::guest.patient-thermal',
+                ['url' => $patient->barcode, 'patient' => $patient]
+            );
+        }
+
+        if ($patient->gate_id != auth()->user()->gate_id) {
+            return view(
+                'sqguest::guest.patient-thermal',
+                ['url' => $patient->barcode, 'patient' => $patient]
+            );
+        }
+
+        if ($patient?->host?->user_id != auth()->user()->id) {
+            return view(
+                'sqguest::guest.patient-thermal',
                 ['url' => $patient->barcode, 'patient' => $patient]
             );
         }

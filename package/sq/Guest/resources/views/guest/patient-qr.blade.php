@@ -21,7 +21,7 @@
 <body dir="rtl">
     <div class="p-1">
         <div class="h-[160px] w-[260px] border-gray-300 border-2 border-dashed relative text-sm">
-            <div class="text-center pb-3 border-gray-300 border-b-2" style="font-family: 'persian-font';">@lang("Patient QR Code")</div>
+            <div class="text-center pb-3 border-gray-300 border-b-2" style="font-family: 'persian-font';">توکن مریض</div>
 
             <div class="grid grid-col-2">
                 <div class="col-span-1">
@@ -44,21 +44,6 @@
                         <tr>
                             <td>@lang('Department'):</td>
                             <td>{{ $patient->host->department?->fa_name }}</td>
-                        </tr>
-
-                        <tr>
-                            <td>@lang('Doctor'):</td>
-                            <td>{{ $patient->doctor_name }}</td>
-                        </tr>
-
-                        <tr>
-                            <td>@lang('Blood Type'):</td>
-                            <td>{{ $patient->blood_type }}</td>
-                        </tr>
-
-                        <tr>
-                            <td>@lang('Status'):</td>
-                            <td>{{ $patient->status }}</td>
                         </tr>
 
                         <tr>

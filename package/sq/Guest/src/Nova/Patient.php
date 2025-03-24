@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use DigitalCreative\MegaFilter\MegaFilter;
 use DigitalCreative\MegaFilter\MegaFilterTrait;
 use Illuminate\Contracts\Database\Eloquent\Builder;
+use Laravel\Nova\Actions\Action;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
@@ -132,23 +133,6 @@ class Patient extends Resource
                 ->rules('nullable', 'string')
                 ->placeholder(__("Enter Field", ['name' => __("Address")])),
 
-            // Text::make(__("Vehicle Type"), 'vehical_type')
-            //     ->nullable()
-            //     ->sortable()
-            //     ->placeholder(__("Enter Field", ['name' => __("Vehicle Type")])),
-
-            // Text::make(__("Vehicle Color"), 'vehical_color')
-            //     ->nullable()
-            //     ->sortable()
-            //     ->placeholder(__("Enter Field", ['name' => __("Vehicle Color")])),
-
-            // Select::make(__("Gender"), 'gender')
-            //     ->options([
-            //         'male' => __('Male'),
-            //         'female' => __('Female'),
-            //     ])
-            //     ->nullable()
-            //     ->sortable(),
 
             Select::make(__("حالت"), 'status')
                 ->options([
@@ -158,20 +142,6 @@ class Patient extends Resource
                 ->nullable()
                 ->sortable()
                 ->exceptOnForms(),
-
-            // Select::make(__("Blood Type"), 'blood_type')
-            //     ->options([
-            //         'A+' => 'A+',
-            //         'A-' => 'A-',
-            //         'B+' => 'B+',
-            //         'B-' => 'B-',
-            //         'AB+' => 'AB+',
-            //         'AB-' => 'AB-',
-            //         'O+' => 'O+',
-            //         'O-' => 'O-',
-            //     ])
-            //     ->nullable()
-            //     ->sortable(),
 
             Text::make(__("مریضی"), 'diseases')
                 ->nullable()
@@ -278,7 +248,10 @@ class Patient extends Resource
     public function actions(NovaRequest $request)
     {
         return [
-            new \Sq\Guest\Nova\Actions\GeneratePatientQRAction,
+            Action::openInNewTab("ایجاد توکن", fn($patient) => route('sqguest.patient.generate', ['patient' => $patient->id]))
+                ->sole()
+                ->withoutConfirmation()
+            // ->canRun(fn() => in_array($this->host->department_id, UserDepartment::getUserDepartment()) || $this?->host?->user_id == auth()->user()->id)
         ];
     }
 

@@ -23,6 +23,6 @@ Route::middleware(['role:super-admin'])
 });
 
 Route::middleware(['web', 'auth'])->group(function () {
-    Route::get('guest/{guest}/generate', [QRCodeGenerateController::class, 'generate'])->name('sqguest.guest.generate');
-    Route::get('patient/{patient}/generate', [QRCodeGenerateController::class, 'generatePatient'])->name('sqguest.patient.generate');
+    Route::get('guest/{guest:id}/generate', [QRCodeGenerateController::class, 'generate'])->name('guest.generate');
+    Route::get('patient/{patient:id}/generate', [QRCodeGenerateController::class, 'generatePatient'])->name('patient.generate');
 });

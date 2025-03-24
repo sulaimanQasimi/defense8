@@ -10,7 +10,8 @@ Route::prefix("guest")
     ->group(function () {
         //
         Route::middleware(["guestGatePassed"])->get('passguest/{guest:id}/to', 'state')->name('guest.check');
-        //
+
+        Route::post('/patients/{patient}/deactivate', [QRCodeGenerateController::class, 'deactivate'])->name('guest.patients.deactivate');
         //
         Route::middleware(['can:generate,guest'])->get('/generate/{guest:id}', 'generate')->name('guest.generate');
     });
@@ -25,4 +26,5 @@ Route::middleware(['role:super-admin'])
 Route::middleware(['web', 'auth'])->group(function () {
     Route::get('guest/{guest:id}/generate', [QRCodeGenerateController::class, 'generate'])->name('guest.generate');
     Route::get('patient/{patient:id}/generate', [QRCodeGenerateController::class, 'generatePatient'])->name('patient.generate');
+
 });

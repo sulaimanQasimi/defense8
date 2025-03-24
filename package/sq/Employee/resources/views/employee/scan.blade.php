@@ -46,6 +46,11 @@
                     href="{{ route('sqguest.guest.generate', $guest) }}">
                     @lang('Print')
                 </a>
+            @elseif($patient)
+                <a class="mx-3 px-7  pt-2 bg-gradient-to-t from-green-600 to-green-700 text-white rounded-lg"
+                    href="{{ route('sqguest.patient.generate', $patient) }}">
+                    @lang('Print')
+                </a>
             @else
                 <a href="/"
                     class="px-7 rounded-lg hover:scale-95 py-2 text-white bg-gradient-to-t from-indigo-600 to-indigo-500"
@@ -68,11 +73,12 @@
             <div class="py-2 md:py-2 px-2 md:px-8 xl:px-10">
                 @includeWhen($employee, 'sqemployee::employee.employee')
                 @includeWhen($guest, 'sqemployee::employee.guest')
+                @includeWhen($patient, 'sqemployee::employee.patient')
             </div>
         </div>
     </div>
     @unless ($guest)
-    <script>
+        <script>
             const field = document.getElementById('scanner');
 
             function keepFocus() {

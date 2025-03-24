@@ -101,7 +101,9 @@ class Patient extends Resource
     public function fields(NovaRequest $request)
     {
         return [
-            ID::make()->sortable(),
+
+            URL::make(__("Print"), fn() => route('sqguest.patient.generate', $this)),
+
 
             Text::make(__("توکن"), 'barcode')
                 ->sortable()

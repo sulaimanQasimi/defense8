@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use DigitalCreative\MegaFilter\MegaFilter;
 use DigitalCreative\MegaFilter\MegaFilterTrait;
 use Illuminate\Contracts\Database\Eloquent\Builder;
+use Laravel\Nova\Actions\Action;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\MorphMany;
@@ -158,6 +159,17 @@ class Guest extends Resource
             ])->columns(3),
         ];
     }
+
+    public function actions(NovaRequest $request)
+    {
+        return [
+            Action::openInNewTab("ایجاد توکن", fn($guest) => route('sqguest.guest.generate', ['guest' => $guest->id]))
+                ->sole()
+                ->withoutConfirmation()
+            // ->canRun(fn() => in_array($this->host->department_id, UserDepartment::getUserDepartment()) || $this?->host?->user_id == auth()->user()->id)
+        ];
+    }
+
 
     public static function redirectAfterCreate(NovaRequest $request, $resource)
     {

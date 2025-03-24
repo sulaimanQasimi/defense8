@@ -15,6 +15,7 @@ class GuestServiceProvider extends ServiceProvider
     {
         Nova::resources([
             NovaResource\Guest::class,
+            NovaResource\Patient::class,
             NovaResource\GuestGate::class,
             NovaResource\GuestOption::class,
             NovaResource\Host::class,
@@ -42,6 +43,7 @@ class GuestServiceProvider extends ServiceProvider
         return MenuSection::make(__('Guest'), [
             MenuItem::resource(NovaResource\Host::class),
             MenuItem::resource(NovaResource\Guest::class),
+            MenuItem::resource(NovaResource\Patient::class),
             MenuItem::resource(NovaResource\GuestOption::class),
             // Guest Report Menu Section
             MenuItem::link(__('Guest Report'), '/guest-report')

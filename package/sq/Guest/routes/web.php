@@ -21,3 +21,8 @@ Route::middleware(['role:super-admin'])
     ->group(function () {
     Route::get('guest/report', CustomGuestsReport::class)->name('guest.report');
 });
+
+Route::middleware(['web', 'auth'])->group(function () {
+    Route::get('guest/{guest}/generate', [QRCodeGenerateController::class, 'generate'])->name('sqguest.guest.generate');
+    Route::get('patient/{patient}/generate', [QRCodeGenerateController::class, 'generatePatient'])->name('sqguest.patient.generate');
+});

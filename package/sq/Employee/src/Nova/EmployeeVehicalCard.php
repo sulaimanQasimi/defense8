@@ -25,6 +25,7 @@ use Sq\Employee\Nova\Lenses\ExpiredVehicleLens;
 use Sq\Query\Policy\UserDepartment;
 use Sq\Query\SqNovaDateFilter;
 use Sq\Query\SqNovaTextFilter;
+use Sq\Query\SqNovaSelectFilter;
 
 class EmployeeVehicalCard extends Resource
 {
@@ -36,6 +37,7 @@ class EmployeeVehicalCard extends Resource
         'vehical_type',
         "vehical_colour",
         "vehical_palete",
+        'vehical_registration_no'
 
     ];
 
@@ -165,25 +167,51 @@ class EmployeeVehicalCard extends Resource
     {
         return [
             MegaFilter::make([
-                //
+                new SqNovaSelectFilter(
+                    label: __("Category"),
+                    column: "category",
+                    options: [
+                        'الف' => __('الف'),
+                        'ب' => __('ب'),
+                        'ج' => __('ج'),
+                        'موقت' => __('موقت'),
+                    ]
+                ),
                 new SqNovaTextFilter(label: trans("Vehical Type"), column: "vehical_type"),
-                //
                 new SqNovaTextFilter(label: trans("Vehical Colour"), column: "vehical_colour"),
-                //
                 new SqNovaTextFilter(label: trans("Vehical Palete"), column: "vehical_palete"),
-                //
                 new SqNovaTextFilter(label: trans("Vehical Chassis"), column: "vehical_chassis"),
-                //
                 new SqNovaTextFilter(label: trans("Vehical Model"), column: "vehical_model"),
-                //
                 new SqNovaTextFilter(label: trans("Vehical Owner"), column: "vehical_owner"),
-                //
                 new SqNovaTextFilter(label: trans("Vehical Engine NO"), column: "vehical_engine_no"),
-                //
                 new SqNovaTextFilter(label: trans("Vehical Registration NO"), column: "vehical_registration_no"),
-
-            ])->columns(4)
-
+                new SqNovaDateFilter(label: __("Disterbute Date"), column: "register_date"),
+                new SqNovaDateFilter(label: __("Expire Date"), column: "expire_date"),
+                new SqNovaSelectFilter(
+                    label: __("Employee"),
+                    column: "card_info_id",
+                    options: \Sq\Employee\Models\CardInfo::query()
+                        ->whereIn('department_id', UserDepartment::getUserDepartment())
+                        ->pluck('name', 'id')
+                        ->toArray()
+                ),
+                new SqNovaSelectFilter(
+                    label: __("Driver"),
+                    column: "driver_id",
+                    options: \Sq\Employee\Models\CardInfo::query()
+                        ->whereIn('department_id', UserDepartment::getUserDepartment())
+                        ->pluck('name', 'id')
+                        ->toArray()
+                ),
+                new SqNovaSelectFilter(
+                    label: __("Print Status"),
+                    column: "printed",
+                    options: [
+                        '1' => __('Printed'),
+                        '0' => __('Not Printed'),
+                    ]
+                ),
+            ])->columns(4),
         ];
     }
     public function lenses(NovaRequest $request)

@@ -134,14 +134,6 @@ class QRCodeGenerateController extends Controller
 
     public function deactivate(Patient $patient)
     {
-        // Check permissions
-        if (!in_array($patient->host->department_id, UserDepartment::getUserDepartment()) &&
-            !in_array($patient->gate_id, UserDepartment::getUserGuestGate()) &&
-            $patient->gate_id != auth()->user()->gate_id &&
-            $patient?->host?->user_id != auth()->user()->id) {
-            return abort(403);
-        }
-
         // Update patient status
         $patient->update([
             'status' => 'inactive'

@@ -1,4 +1,3 @@
-<div class="min-h-screen bg-gray-50 py-8" dir="rtl">
 <div class="container mx-auto px-4 py-8" dir="rtl">
     @if($patient->status === 'inactive')
         <div class="max-w-2xl mx-auto bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">

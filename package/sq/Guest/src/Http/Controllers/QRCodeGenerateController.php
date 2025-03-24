@@ -9,6 +9,8 @@ use Sq\Guest\Models\Guest;
 use Sq\Guest\Models\GuestGate;
 use Sq\Query\Policy\UserDepartment;
 use Sq\Guest\Models\Patient;
+use App\Support\Defense\PermissionTranslation;
+use Sq\Notification\NovaNotification as SqNotificationNovaNotification;
 
 class QRCodeGenerateController extends Controller
 {
@@ -30,14 +32,14 @@ class QRCodeGenerateController extends Controller
                 ['url' => $guest->barcode, 'guest' => $guest, 'gate' => $guest->gate_translation]
             );
         }
-        if ($guest->gate_id != auth()->user()->gate_id) {
+        if ($guest->gate_id == auth()->user()->gate_id) {
 
             return view(
                 'sqguest::guest.generateQR',
                 ['url' => $guest->barcode, 'guest' => $guest, 'gate' => $guest->gate_translation]
             );
         }
-        if ($guest?->host?->user_id != auth()->user()->id) {
+        if ($guest?->host?->user_id == auth()->user()->id) {
             return view(
                 'sqguest::guest.generateQR',
                 ['url' => $guest->barcode, 'guest' => $guest, 'gate' => $guest->gate_translation]
@@ -98,29 +100,15 @@ class QRCodeGenerateController extends Controller
     {
         if (in_array($patient->host->department_id, UserDepartment::getUserDepartment())) {
             return view(
-                'sqguest::guest.generateQR',
-                ['url' => $patient->barcode, 'guest' => $patient, 'gate' => $patient->gate_translation]
+                'sqguest::guest.patient-qr',
+                ['url' => $patient->barcode, 'patient' => $patient]
             );
         }
 
-        if (in_array($patient->gate_id, UserDepartment::getUserGuestGate())) {
+        if ($patient?->host?->user_id == auth()->user()->id) {
             return view(
-                'sqguest::guest.generateQR',
-                ['url' => $patient->barcode, 'guest' => $patient, 'gate' => $patient->gate_translation]
-            );
-        }
-
-        if ($patient->gate_id != auth()->user()->gate_id) {
-            return view(
-                'sqguest::guest.generateQR',
-                ['url' => $patient->barcode, 'guest' => $patient, 'gate' => $patient->gate_translation]
-            );
-        }
-
-        if ($patient?->host?->user_id != auth()->user()->id) {
-            return view(
-                'sqguest::guest.generateQR',
-                ['url' => $patient->barcode, 'guest' => $patient, 'gate' => $patient->gate_translation]
+                'sqguest::guest.patient-qr',
+                ['url' => $patient->barcode, 'patient' => $patient]
             );
         }
 

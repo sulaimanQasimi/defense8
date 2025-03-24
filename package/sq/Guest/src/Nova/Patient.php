@@ -277,7 +277,9 @@ class Patient extends Resource
      */
     public function actions(NovaRequest $request)
     {
-        return [];
+        return [
+            new \Sq\Guest\Nova\Actions\GeneratePatientQRAction,
+        ];
     }
 
     public static function redirectAfterCreate(NovaRequest $request, $resource)

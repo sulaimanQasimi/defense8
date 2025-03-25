@@ -20,6 +20,9 @@ export default {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
+            minWidth: {
+                '24': '6rem',
+            },
         },
     },
 

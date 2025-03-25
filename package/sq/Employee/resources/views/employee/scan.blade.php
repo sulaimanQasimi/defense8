@@ -5,6 +5,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ config('app.name') }}</title>
+
+    <!-- CSS Assets -->
     <link rel="stylesheet" href="{{ asset('build/assets/app.css') }}" />
 
     <style>
@@ -91,6 +93,9 @@
         </script>
 
     @endunless
+
+    <!-- JavaScript Assets -->
+    <script src="{{ asset('build/assets/app.js') }}" defer></script>
 </body>
 
 </html>

@@ -146,7 +146,7 @@ class QRCodeGenerateController extends Controller
                 ->type("warning")
         );
 
-        return redirect()->route('guest.patients.index')
+        return redirect()->back()
             ->with('success', trans('Patient has been deactivated successfully'));
     }
 }

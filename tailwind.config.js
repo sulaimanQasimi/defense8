@@ -15,16 +15,16 @@ export default {
         './resources/js/**/*.vue',
     ],
 
-    theme: {
-        extend: {
-            fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
-            },
-            minWidth: {
-                '24': '6rem',
-            },
-        },
-    },
+    // theme: {
+    //     extend: {
+    //         fontFamily: {
+    //             sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+    //         },
+    //         minWidth: {
+    //             '24': '6rem',
+    //         },
+    //     },
+    // },
 
-    plugins: [forms, typography, require('flowbite/plugin')],
+    // plugins: [forms, typography, ],
 };

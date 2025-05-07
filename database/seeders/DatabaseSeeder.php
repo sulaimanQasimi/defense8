@@ -37,6 +37,7 @@ class DatabaseSeeder extends Seeder
         $this->call(Update13::class);
         $this->call(Update14::class);
         $this->call(Update15::class);
+        $this->call(GunCardConfirmationPermissionSeeder::class);
         Artisan::call('key:generate');
     }
 }

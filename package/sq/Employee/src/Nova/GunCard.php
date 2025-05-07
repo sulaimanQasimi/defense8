@@ -17,9 +17,12 @@ use Laravel\Nova\Fields\Trix;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use MZiraki\PersianDateField\PersianDate;
 use Sq\Employee\Nova\Actions\GunCardExtension;
+use Sq\Employee\Nova\Filters\ConfirmedFilter;
 use Sq\Query\Policy\UserDepartment;
 use Sq\Query\SqNovaDateFilter;
 use Sq\Query\SqNovaTextFilter;
+use App\Nova\User;
+use Sq\Employee\Nova\Actions\ConfirmGunCardAction;
 
 class GunCard extends Resource
 {
@@ -88,6 +91,23 @@ class GunCard extends Resource
 
             Trix::make(trans('Remark'), 'remark'),
             Boolean::make(__("Print"), 'printed')->hideWhenCreating(),
+            Boolean::make(__("Confirmed"), 'confirmed')
+                ->help(__('Indicates whether this gun card has been confirmed'))
+                ->canSee(function ($request) {
+                    return $request->user()->hasPermissionTo('view-gun-card-confirmation');
+                })
+                ->readonly(function ($request) {
+                    return !$request->user()->hasPermissionTo('confirm-gun-card');
+                }),
+
+            BelongsTo::make(__('Confirmed By'), 'confirmedByUser', User::class)
+                ->nullable()
+                ->searchable()
+                ->withoutTrashed()
+                ->canSee(function ($request) {
+                    return $request->user()->hasPermissionTo('view-gun-card-confirmation');
+                }),
+
             MorphMany::make(trans("Activity Log"), 'activities', Activitylog::class),
         ];
     }
@@ -110,6 +130,8 @@ class GunCard extends Resource
                 new SqNovaDateFilter(label: trans("Disterbute Date"), column: "register_date"),
                 //
                 new SqNovaDateFilter(label: trans("Expire Date"), column: "expire_date"),
+                //
+                new ConfirmedFilter,
             ])->columns(4)
 
         ];
@@ -141,6 +163,8 @@ class GunCard extends Resource
                     fn($request, $gun) => auth()->user()->hasPermissionTo("print-card")
                         && in_array($gun->card_info->orginization->id, UserDepartment::getUserDepartment())
                         && !$gun->printed
+                        && $gun->confirmed
+
                 ),
             \Sq\Card\Nova\Actions\GunPrintPaperCardAction::make()
                 ->sole()
@@ -148,6 +172,8 @@ class GunCard extends Resource
                     fn($request, $gun) => auth()->user()->hasPermissionTo("print-card")
                         && in_array($gun->card_info->orginization->id, UserDepartment::getUserDepartment())
                         && !$gun->printed
+                        && $gun->confirmed
+
                 ),
 
             GunCardExtension::make()
@@ -155,7 +181,15 @@ class GunCard extends Resource
                 ->canRun(
                     fn($request, $gun) => auth()->user()->hasPermissionTo(PermissionTranslation::update("Main Card"))
                         && in_array($gun->card_info->orginization->id, UserDepartment::getUserDepartment())
-                )
+                        && $gun->confirmed
+                ),
+
+            \Sq\Employee\Nova\Actions\ConfirmGunCardAction::make()
+                ->canRun(
+                    fn($request, $gun) => auth()->user()->hasPermissionTo("confirm-gun-card")
+                        && in_array($gun->card_info->orginization->id, UserDepartment::getUserDepartment())
+                        && !$gun->confirmed
+                ),
 
         ];
     }

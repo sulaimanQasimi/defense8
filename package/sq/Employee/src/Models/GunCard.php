@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
+use App\Models\User;
 
 class GunCard extends Model
 {
@@ -21,18 +22,26 @@ class GunCard extends Model
         'register_date',
         'expire_date',
         'filled_form_date',
-        'printed'
+        'printed',
+        'confirmed',
+        'confirmed_by'
     ];
     protected $casts = [
         'register_date' => 'date',
         'expire_date' => 'date',
         'filled_form_date' => 'date',
         'printed' => 'boolean',
+        'confirmed' => 'boolean',
     ];
 
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()->logAll()
             ->setDescriptionForEvent(fn(string $eventName) => "This model has been {$eventName}");
+    }
+
+    public function confirmedByUser(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'confirmed_by');
     }
 }

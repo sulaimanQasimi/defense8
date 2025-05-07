@@ -82,7 +82,7 @@ trait PrintSettings
      */
     public function gun(Request $request, GunCard $gunCard, int $printCardFrame): View
     {
-        if ($gunCard->printed) {
+        if ($gunCard->printed || !$gunCard->confirmed) {
             abort(404);
         }
         $gunCard->update(['printed' => 1]);

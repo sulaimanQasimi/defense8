@@ -6,6 +6,8 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Route;
 use Sq\Fingerprint\Services\FingerprintService;
 use Sq\Fingerprint\Console\Commands\InstallCommand;
+use Sq\Fingerprint\Console\Commands\MigrateTemplatesToFiles;
+use Sq\Fingerprint\Storage\FingerprintFileStorage;
 
 class FingerprintServiceProvider extends ServiceProvider
 {
@@ -23,6 +25,11 @@ class FingerprintServiceProvider extends ServiceProvider
         $this->app->singleton(FingerprintService::class, function ($app) {
             return new FingerprintService();
         });
+
+        // Register the fingerprint storage service
+        $this->app->singleton('fingerprint.storage', function ($app) {
+            return new FingerprintFileStorage();
+        });
     }
 
     /**
@@ -34,6 +41,7 @@ class FingerprintServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->commands([
                 InstallCommand::class,
+                MigrateTemplatesToFiles::class,
             ]);
         }
 

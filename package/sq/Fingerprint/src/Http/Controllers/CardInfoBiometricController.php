@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Log;
 use Sq\Employee\Models\CardInfo;
 use Sq\Fingerprint\Match\MatchService;
 use Sq\Fingerprint\Models\BiometricData;
+use Sq\Fingerprint\Facades\FingerprintStorage;
 
 class CardInfoBiometricController extends Controller
 {
@@ -85,24 +86,38 @@ class CardInfoBiometricController extends Controller
             $scannedTemplate = $request->input('scannedTemplate');
             $matchThreshold = $request->input('matchThreshold');
 
-            // Get the biometric data for the CardInfo
-            $biometricData = BiometricData::where('record_id', $cardInfoId)->first();
+            // Check for file-based template first using the facade
+            $useFileBasedTemplate = FingerprintStorage::hasTemplate($cardInfoId);
 
-            if (!$biometricData) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'No stored fingerprint template found for this card'
-                ], 404);
-            }
+            // Get stored template - first try file, then database
+            $storedTemplateData = null;
 
-            // Get stored template
-            $storedTemplate = $biometricData->ISOTemplateBase64 ?? $biometricData->TemplateBase64;
+            if ($useFileBasedTemplate) {
+                // Load template from file
+                $storedTemplateData = FingerprintStorage::loadTemplate($cardInfoId);
+            } else {
+                // Get the biometric data for the CardInfo from database
+                $biometricData = BiometricData::where('record_id', $cardInfoId)->first();
 
-            if (empty($storedTemplate)) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Invalid stored fingerprint template'
-                ], 404);
+                if (!$biometricData) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'No stored fingerprint template found for this card'
+                    ], 404);
+                }
+
+                // Get stored template
+                $storedTemplate = $biometricData->ISOTemplateBase64 ?? $biometricData->TemplateBase64;
+
+                if (empty($storedTemplate)) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Invalid stored fingerprint template'
+                    ], 404);
+                }
+
+                // Decode the base64 template
+                $storedTemplateData = base64_decode($storedTemplate);
             }
 
             // Create temporary files for the templates
@@ -115,7 +130,7 @@ class CardInfoBiometricController extends Controller
             $storedTemplateFile = $tempDir . '/stored_' . uniqid() . '.dat';
             $scannedTemplateFile = $tempDir . '/scanned_' . uniqid() . '.dat';
 
-            file_put_contents($storedTemplateFile, base64_decode($storedTemplate));
+            file_put_contents($storedTemplateFile, $storedTemplateData);
             file_put_contents($scannedTemplateFile, base64_decode($scannedTemplate));
 
             // Set up temporary directory for comparison
@@ -148,7 +163,8 @@ class CardInfoBiometricController extends Controller
                 'matched' => $isMatch,
                 'score' => $isMatch ? $matchThreshold : 0, // We don't have an actual score, just match/no match
                 'threshold' => $matchThreshold,
-                'message' => $isMatch ? 'Fingerprint matched successfully.' : 'Fingerprint did not match.'
+                'message' => $isMatch ? 'Fingerprint matched successfully.' : 'Fingerprint did not match.',
+                'source' => $useFileBasedTemplate ? 'file' : 'database'
             ]);
         } catch (Exception $e) {
             Log::error("Error in fingerprint verification: " . $e->getMessage());
@@ -195,34 +211,68 @@ class CardInfoBiometricController extends Controller
                 $fingerprintTemplate = $request->input('BMPBase64');
             }
 
-            // Get all biometric data records
-            $biometricRecords = BiometricData::all();
-
             // Directory for temporary storage of templates for matching
             $samplesDir = storage_path('app/fingerprint_samples');
             if (!file_exists($samplesDir)) {
                 mkdir($samplesDir, 0755, true);
             }
 
-            // Clean the directory
+            // Clean the samples directory
             array_map('unlink', glob($samplesDir . '/*'));
 
-            // Create temporary files for each record
-            $recordIdMap = [];
-            foreach ($biometricRecords as $record) {
-                $templateData = $record->ISOTemplateBase64 ?? $record->TemplateBase64;
-                if (!empty($templateData)) {
-                    $filename = 'record_' . $record->record_id . '_' . uniqid() . '.dat';
-                    $filepath = $samplesDir . '/' . $filename;
-                    file_put_contents($filepath, base64_decode($templateData));
-                    $recordIdMap[$filename] = $record->record_id;
+            // Create temporary file for the scanned template
+            $scannedTemplateFile = tempnam(sys_get_temp_dir(), 'fp_') . '.dat';
+            file_put_contents($scannedTemplateFile, base64_decode($fingerprintTemplate));
+
+            // Check if we should use file-based matching or DB-based matching
+            $useFileBasedMatching = true;
+
+            if ($useFileBasedMatching) {
+                // Get list of CardInfo IDs with template files
+                $cardInfoIds = FingerprintStorage::listTemplates();
+
+                if (empty($cardInfoIds)) {
+                    // If no files found, fall back to DB-based matching
+                    $useFileBasedMatching = false;
+                } else {
+                    // Create a map of filenames to record IDs
+                    $recordIdMap = [];
+
+                    // Copy each template file to the samples directory
+                    foreach ($cardInfoIds as $cardInfoId) {
+                        $templateData = FingerprintStorage::loadTemplate($cardInfoId);
+                        if ($templateData) {
+                            $filename = 'cardinfo_' . $cardInfoId . '.dat';
+                            $filepath = $samplesDir . '/' . $filename;
+                            file_put_contents($filepath, $templateData);
+                            $recordIdMap[$filename] = $cardInfoId;
+                        }
+                    }
+                }
+            }
+
+            if (!$useFileBasedMatching) {
+                // Get all biometric data records from database
+                $biometricRecords = BiometricData::all();
+
+                // Create temporary files for each record
+                $recordIdMap = [];
+                foreach ($biometricRecords as $record) {
+                    $templateData = $record->ISOTemplateBase64 ?? $record->TemplateBase64;
+                    if (!empty($templateData)) {
+                        $filename = 'record_' . $record->record_id . '_' . uniqid() . '.dat';
+                        $filepath = $samplesDir . '/' . $filename;
+                        file_put_contents($filepath, base64_decode($templateData));
+                        $recordIdMap[$filename] = $record->record_id;
+                    }
                 }
             }
 
             // Perform matching
-            $matchedFilename = $this->matchService->match($samplesDir, $fingerprintTemplate);
+            $matchedFilename = $this->matchService->match($samplesDir, $scannedTemplateFile);
 
             // Clean up temporary files
+            @unlink($scannedTemplateFile);
             array_map('unlink', glob($samplesDir . '/*'));
 
             if (!$matchedFilename || !isset($recordIdMap[$matchedFilename])) {
@@ -249,6 +299,7 @@ class CardInfoBiometricController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Fingerprint matched successfully',
+                'source' => $useFileBasedMatching ? 'file' : 'database',
                 'data' => $cardInfo->load(['department', 'employeeOptions', 'gate'])
             ]);
         } catch (Exception $e) {
@@ -257,6 +308,69 @@ class CardInfoBiometricController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'An error occurred during fingerprint matching',
+                'error' => config('app.debug') ? $e->getMessage() : null,
+            ], 500);
+        }
+    }
+
+    /**
+     * Save biometric data for a CardInfo record
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param int $cardInfoId
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function saveBiometricData(Request $request, $cardInfoId)
+    {
+        try {
+            // Validate the request
+            $request->validate([
+                'ISOTemplateBase64' => 'nullable|string',
+                'TemplateBase64' => 'nullable|string',
+                'BMPBase64' => 'nullable|string',
+            ]);
+
+            // Check if the CardInfo record exists
+            $cardInfo = CardInfo::find($cardInfoId);
+            if (!$cardInfo) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'CardInfo record not found',
+                ], 404);
+            }
+
+            // Get template data from request
+            $isoTemplate = $request->input('ISOTemplateBase64');
+            $template = $request->input('TemplateBase64');
+            $bmpImage = $request->input('BMPBase64');
+
+            // Save the biometric data to the database
+            $biometricData = BiometricData::updateOrCreate(
+                ['record_id' => $cardInfoId],
+                [
+                    'ISOTemplateBase64' => $isoTemplate,
+                    'TemplateBase64' => $template,
+                    'BMPBase64' => $bmpImage,
+                ]
+            );
+
+            // Save the template as a file using the storage facade
+            $templateData = $isoTemplate ?? $template;
+            if (!empty($templateData)) {
+                FingerprintStorage::saveTemplate($cardInfoId, $templateData);
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Biometric data saved successfully',
+                'data' => $biometricData
+            ]);
+        } catch (Exception $e) {
+            Log::error("Error saving biometric data: " . $e->getMessage());
+
+            return response()->json([
+                'success' => false,
+                'message' => 'An error occurred while saving biometric data',
                 'error' => config('app.debug') ? $e->getMessage() : null,
             ], 500);
         }

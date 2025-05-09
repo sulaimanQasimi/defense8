@@ -50,11 +50,13 @@ class FingerMatchController extends Controller
             'ISOTemplateBase64' => 'nullable|string',
             'TemplateBase64' => 'nullable|string',
             'BMPBase64' => 'nullable|string',
-            'debug' => 'boolean|nullable'
+            'debug' => 'boolean|nullable',
+            'security_level' => 'integer|min:1|max:4|nullable'
         ]);
 
         // Debug mode flag
         $debug = $request->input('debug', false);
+        $securityLevel = $request->input('security_level', 2); // Default to normal security
 
         // Create response array with debug information
         $response = [
@@ -72,6 +74,7 @@ class FingerMatchController extends Controller
                     'hasISOTemplate' => !empty($request->input('ISOTemplateBase64')),
                     'hasTemplate' => !empty($request->input('TemplateBase64')),
                     'hasBMP' => !empty($request->input('BMPBase64')),
+                    'securityLevel' => $securityLevel
                 ],
                 'meta' => $request->input('_meta', []),
                 'steps' => []
@@ -128,7 +131,28 @@ class FingerMatchController extends Controller
                 return response()->json($response);
             }
 
-            // Create samples directory from BioData records
+            // Create a temporary file for the submitted fingerprint template
+            $fingerprintBase64 = null;
+            if (!empty($request->input('ISOTemplateBase64'))) {
+                $fingerprintBase64 = $request->input('ISOTemplateBase64');
+            } elseif (!empty($request->input('TemplateBase64'))) {
+                $fingerprintBase64 = $request->input('TemplateBase64');
+            } elseif (!empty($request->input('BMPBase64'))) {
+                $fingerprintBase64 = $request->input('BMPBase64');
+            }
+
+            $fingerprintFile = tempnam(sys_get_temp_dir(), 'fp_search_');
+            file_put_contents($fingerprintFile, base64_decode($fingerprintBase64));
+
+            if ($debug) {
+                $response['debug']['steps'][] = [
+                    'stage' => 'preparation',
+                    'status' => 'info',
+                    'message' => 'Saved fingerprint template to: ' . $fingerprintFile
+                ];
+            }
+
+            // Use the FingerprintService to create samples directory
             $samplesDir = $this->fingerprintService->createSamplesFromBioData($bioDataRecords);
 
             if (!$samplesDir) {
@@ -143,72 +167,44 @@ class FingerMatchController extends Controller
                 ];
             }
 
-            // Try with ISO template if available
-            if (!$matchFound && !empty($request->input('ISOTemplateBase64'))) {
-                $isoTemplateBase64 = $request->input('ISOTemplateBase64');
+            // Use the FingerprintService to match the fingerprint
+            $matchedFilename = $this->fingerprintService->match($fingerprintFile, $samplesDir, $securityLevel);
 
-                if ($debug) {
-                    $response['debug']['steps'][] = [
-                        'stage' => 'matching',
-                        'method' => 'SecuGen',
-                        'status' => 'info',
-                        'message' => 'Starting SecuGen ISO template matching',
-                        'templateLength' => strlen($isoTemplateBase64)
-                    ];
-                }
+            if ($debug) {
+                $response['debug']['steps'][] = [
+                    'stage' => 'matching',
+                    'status' => 'info',
+                    'message' => 'Match result: ' . ($matchedFilename ? $matchedFilename : 'No match')
+                ];
+            }
 
-                // Create a temporary file with the ISO template
-                $tempFile = tempnam(sys_get_temp_dir(), 'fingerprint_iso_');
-                file_put_contents($tempFile, base64_decode($isoTemplateBase64));
+            // Extract the employee ID from the matched filename
+            if ($matchedFilename) {
+                // Extract employee ID from the filename (format: employee_ID.dat)
+                preg_match('/employee_(\d+)\.dat/', $matchedFilename, $matches);
 
-                // Attempt to match the fingerprint
-                $matchResult = $this->fingerprintService->match($tempFile, $samplesDir);
+                if (isset($matches[1])) {
+                    $employeeId = $matches[1];
 
-                if ($matchResult) {
-                    // Extract the employee ID from the filename
-                    preg_match('/employee_(\d+)\.dat/', $matchResult, $matches);
+                    // Find the employee
+                    $matchedEmployee = CardInfo::find($employeeId);
+                    if ($matchedEmployee) {
+                        $matchFound = true;
+                        $matchMethod = 'fingerprint_service';
 
-                    if (isset($matches[1])) {
-                        $employeeId = $matches[1];
-
-                        // Find the employee in the database
-                        $employee = CardInfo::find($employeeId);
-
-                        if ($employee) {
-                            $matchFound = true;
-                            $matchedEmployee = $employee;
-                            $matchMethod = 'SecuGen';
-
-                            if ($debug) {
-                                $response['debug']['steps'][] = [
-                                    'stage' => 'matching',
-                                    'method' => 'SecuGen',
-                                    'status' => 'success',
-                                    'message' => 'Match found: ' . $employeeId
-                                ];
-                            }
+                        if ($debug) {
+                            $response['debug']['steps'][] = [
+                                'stage' => 'matching',
+                                'status' => 'success',
+                                'message' => "Match found for employee ID: " . $employeeId
+                            ];
                         }
                     }
-                } else if ($debug) {
-                    $response['debug']['steps'][] = [
-                        'stage' => 'matching',
-                        'method' => 'SecuGen',
-                        'status' => 'info',
-                        'message' => 'No match found using SecuGen matching'
-                    ];
                 }
-
-                // Clean up
-                @unlink($tempFile);
             }
 
-            // Try with proprietary template if available and no match found yet
-            if (!$matchFound && !empty($request->input('TemplateBase64'))) {
-                // Add proprietary template matching implementation here if needed
-                // This would use another approach for matching
-            }
-
-            // Clean up the samples directory
+            // Clean up temporary files
+            @unlink($fingerprintFile);
             $this->fingerprintService->cleanup($samplesDir);
 
             // Prepare response based on match result
@@ -272,181 +268,6 @@ class FingerMatchController extends Controller
             }
 
             return response()->json($response);
-        }
-    }
-
-    /**
-     * Clean up temporary files and directory.
-     *
-     * @param string $directory The directory to clean up
-     * @return void
-     */
-    private function cleanupTemporaryFiles($directory)
-    {
-        if (is_dir($directory)) {
-            $files = glob($directory . '/*');
-            foreach ($files as $file) {
-                if (is_file($file)) {
-                    @unlink($file);
-                }
-            }
-            @rmdir($directory);
-        }
-    }
-
-    /**
-     * Match fingerprints using the provided match.py script from the SecuGen library
-     *
-     * @param string $fingerprintToMatch Path to the fingerprint file to match
-     * @param array $bioDataRecords Collection of BioData records
-     * @param boolean $debug Whether to enable debug mode
-     * @return array [matchFound, matchedEmployee, matchMethod]
-     */
-    private function matchUsingSecuGenLib($fingerprintToMatch, $bioDataRecords, $debug = false)
-    {
-        // Create a temporary directory for samples
-        $samplesDir = storage_path('app/fingerprints/temp/' . uniqid());
-        if (!file_exists($samplesDir)) {
-            mkdir($samplesDir, 0755, true);
-        }
-
-        // Save each employee fingerprint to the samples directory
-        foreach ($bioDataRecords as $bioData) {
-            $filename = "employee_{$bioData->personal_info_id}.dat";
-            $templatePath = $samplesDir . '/' . $filename;
-
-            // Skip invalid templates
-            if (empty($bioData->ISOTemplateBase64)) {
-                \Illuminate\Support\Facades\Log::warning("Empty ISO template for employee ID: " . $bioData->personal_info_id);
-                continue;
-            }
-
-            $decodedTemplate = base64_decode($bioData->ISOTemplateBase64);
-
-            // Validate the decoded template
-            if (strlen($decodedTemplate) < 30) {
-                \Illuminate\Support\Facades\Log::warning("Invalid template for employee ID: " . $bioData->personal_info_id . " (length: " . strlen($decodedTemplate) . ")");
-                continue;
-            }
-
-            file_put_contents($templatePath, $decodedTemplate);
-
-            if ($debug) {
-                \Illuminate\Support\Facades\Log::debug("Saved template for employee ID: " . $bioData->personal_info_id . " to " . $filename . ", size: " . strlen($decodedTemplate) . " bytes");
-            }
-        }
-
-        try {
-            // Get the match.py script from our local package
-            $matchScript = __DIR__ . '/../../fingerprint-matching-master/match.py';
-
-            if (!file_exists($matchScript)) {
-                throw new \Exception("SecuGen matching script not found at: " . $matchScript);
-            }
-
-            // Check if Python is available
-            $pythonCommand = $this->getPythonCommand();
-            if (!$pythonCommand) {
-                throw new \Exception("Python interpreter not found");
-            }
-
-            // Create command using the SecuGen matching script
-            $command = $pythonCommand . " " . escapeshellarg($matchScript) .
-                      " --samples=" . escapeshellarg($samplesDir) .
-                      " --fingerprint=" . escapeshellarg($fingerprintToMatch) .
-                      " 2>&1";
-
-            if ($debug) {
-                \Illuminate\Support\Facades\Log::debug("Running SecuGen matching command: " . $command);
-            }
-
-            // Execute the command
-            $output = [];
-            $returnCode = 0;
-            exec($command, $output, $returnCode);
-
-            if ($debug) {
-                \Illuminate\Support\Facades\Log::debug("Command output: " . implode("\n", $output) . ", Return code: " . $returnCode);
-            }
-
-            // Check if there's a match (should be the filename in the output)
-            if (!empty($output)) {
-                $matchResult = trim($output[0]);
-
-                // Extract the employee ID from the filename
-                preg_match('/employee_(\d+)\.dat/', $matchResult, $matches);
-
-                if (isset($matches[1])) {
-                    $employeeId = $matches[1];
-
-                    // Find the employee in our collection
-                    foreach ($bioDataRecords as $bioData) {
-                        if ($bioData->personal_info_id == $employeeId) {
-                            $this->cleanupTemporaryFiles($samplesDir);
-                            return [true, $bioData->cardInfo, 'secugen_lib'];
-                        }
-                    }
-                }
-            }
-
-            // No match found with SecuGen library, fall back to direct matching
-            if ($debug) {
-                \Illuminate\Support\Facades\Log::debug("No match found with SecuGen library, trying direct matching");
-            }
-
-            // Use our fallback direct matching script
-            $directMatchScript = app_path('Services/Fingerprint/direct_match.py');
-
-            if (file_exists($directMatchScript)) {
-                // Create a command to run the direct matching script
-                $command = $pythonCommand . " " . escapeshellarg($directMatchScript) .
-                          " --samples=" . escapeshellarg($samplesDir) .
-                          " --fingerprint=" . escapeshellarg($fingerprintToMatch) .
-                          " --threshold=20" .  // Lower threshold to increase matches
-                          " 2>&1";
-
-                if ($debug) {
-                    \Illuminate\Support\Facades\Log::debug("Running direct matching command: " . $command);
-                }
-
-                // Execute the command
-                $output = [];
-                $returnCode = 0;
-                exec($command, $output, $returnCode);
-
-                if ($debug) {
-                    \Illuminate\Support\Facades\Log::debug("Direct matching output: " . implode("\n", $output) . ", Return code: " . $returnCode);
-                }
-
-                // Check if there's a match from direct matching
-                if (!empty($output)) {
-                    $matchResult = trim($output[0]);
-
-                    // Extract the employee ID from the filename
-                    preg_match('/employee_(\d+)\.dat/', $matchResult, $matches);
-
-                    if (isset($matches[1])) {
-                        $employeeId = $matches[1];
-
-                        // Find the employee in our collection
-                        foreach ($bioDataRecords as $bioData) {
-                            if ($bioData->personal_info_id == $employeeId) {
-                                $this->cleanupTemporaryFiles($samplesDir);
-                                return [true, $bioData->cardInfo, 'direct_match'];
-                            }
-                        }
-                    }
-                }
-            }
-
-            // No match found with any method
-            $this->cleanupTemporaryFiles($samplesDir);
-            return [false, null, null];
-
-        } catch (\Exception $e) {
-            \Illuminate\Support\Facades\Log::error("Error using matching library: " . $e->getMessage());
-            $this->cleanupTemporaryFiles($samplesDir);
-            return [false, null, null];
         }
     }
 

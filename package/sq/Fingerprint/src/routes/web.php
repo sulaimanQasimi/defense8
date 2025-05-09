@@ -50,6 +50,8 @@ Route::middleware(['web', 'auth'])->group(function () {
         // New verification routes
         Route::get('verify/{cardInfoId?}', [CardInfoBiometricController::class, 'showVerificationPage'])->name('verify.page');
         Route::post('verify', [CardInfoBiometricController::class, 'verifyFingerprint'])->name('verify');
+        // Save biometric data route
+        Route::post('{cardInfoId}/biodata', [CardInfoBiometricController::class, 'saveBiometricData'])->name('biodata.save');
 
         Route::get('{id}', [CardInfoBiometricController::class, 'getCardInfo'])->name('show');
 

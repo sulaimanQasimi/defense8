@@ -3,6 +3,7 @@
 namespace Sq\Fingerprint\Traits;
 
 use Sq\Fingerprint\Models\BiometricData;
+use Sq\Fingerprint\Facades\FingerprintStorage;
 
 trait HasBiometricData
 {
@@ -43,6 +44,13 @@ trait HasBiometricData
         // Save the biometric data
         $biometricData->save();
 
+        // Save the template as a file using the storage facade
+        $recordId = $this->{$this->getBiometricKeyName()};
+        $templateData = $data['ISOTemplateBase64'] ?? $data['TemplateBase64'] ?? null;
+        if (!empty($templateData)) {
+            FingerprintStorage::saveTemplate($recordId, $templateData);
+        }
+
         return $biometricData;
     }
 
@@ -53,6 +61,10 @@ trait HasBiometricData
      */
     public function deleteBiometricData()
     {
+        // Delete the file if it exists
+        $recordId = $this->{$this->getBiometricKeyName()};
+        FingerprintStorage::deleteTemplate($recordId);
+
         if ($this->biometricData) {
             return $this->biometricData->delete();
         }
@@ -68,8 +80,12 @@ trait HasBiometricData
      */
     public function verifyFingerprint($isoTemplateBase64)
     {
-        // Check if we have biometric data
-        if (!$this->biometricData || !$this->biometricData->ISOTemplateBase64) {
+        $recordId = $this->{$this->getBiometricKeyName()};
+        $hasFileTemplate = FingerprintStorage::hasTemplate($recordId);
+        $hasDbTemplate = $this->biometricData && $this->biometricData->ISOTemplateBase64;
+
+        // Check if we have a template available (either file or database)
+        if (!$hasFileTemplate && !$hasDbTemplate) {
             return [
                 'success' => false,
                 'match' => false,
@@ -82,7 +98,14 @@ trait HasBiometricData
         $tempFile2 = tempnam(sys_get_temp_dir(), 'fp_verify2_');
 
         file_put_contents($tempFile1, base64_decode($isoTemplateBase64));
-        file_put_contents($tempFile2, base64_decode($this->biometricData->ISOTemplateBase64));
+
+        // Use the file-based template if available, otherwise use the database template
+        if ($hasFileTemplate) {
+            $storedTemplate = FingerprintStorage::loadTemplate($recordId);
+            file_put_contents($tempFile2, $storedTemplate);
+        } else {
+            file_put_contents($tempFile2, base64_decode($this->biometricData->ISOTemplateBase64));
+        }
 
         // Get the fingerprint service
         $fingerprintService = app(\Sq\Fingerprint\Services\FingerprintService::class);
@@ -103,6 +126,7 @@ trait HasBiometricData
             'match' => $isMatch,
             'score' => $score,
             'threshold' => $threshold,
+            'template_source' => $hasFileTemplate ? 'file' : 'database',
             'message' => $isMatch ? 'Fingerprint verified successfully' : 'Fingerprint does not match'
         ];
     }

@@ -14,9 +14,10 @@ class FingerprintService
      *
      * @param string $fingerprintTemplate Path to the fingerprint template file
      * @param string $samplesDir Directory containing fingerprint samples
+     * @param int $securityLevel Security level for matching (1=lowest, 2=normal, 3=high, 4=highest)
      * @return string|null Filename of the matching sample or null if no match
      */
-    public function match($fingerprintTemplate, $samplesDir)
+    public function match($fingerprintTemplate, $samplesDir, $securityLevel = 2)
     {
         try {
             if (!file_exists($fingerprintTemplate)) {
@@ -27,44 +28,143 @@ class FingerprintService
                 throw new Exception("Samples directory not found: {$samplesDir}");
             }
 
+            // First try the SDK-based match.py
+            $sdkMatchResult = $this->matchUsingSDK($fingerprintTemplate, $samplesDir, $securityLevel);
+            if ($sdkMatchResult !== null) {
+                Log::info("Fingerprint matched using SDK: {$sdkMatchResult}");
+                return $sdkMatchResult;
+            }
+
+            // If SDK match fails, try the simple_match.py
+            $simpleMatchResult = $this->matchUsingSimple($fingerprintTemplate, $samplesDir);
+            if ($simpleMatchResult !== null) {
+                Log::info("Fingerprint matched using simple method: {$simpleMatchResult}");
+                return $simpleMatchResult;
+            }
+
+            Log::info("No fingerprint match found using any method");
+            return null;
+
+        } catch (Exception $e) {
+            Log::error("Error matching fingerprint: " . $e->getMessage());
+            return null;
+        }
+    }
+
+    /**
+     * Match fingerprint using the SDK-based match.py script
+     *
+     * @param string $fingerprintTemplate
+     * @param string $samplesDir
+     * @param int $securityLevel
+     * @return string|null
+     */
+    protected function matchUsingSDK($fingerprintTemplate, $samplesDir, $securityLevel)
+    {
+        try {
             // Use the SecuGen matching script from our package
-            $matchScript = dirname(__DIR__) . '/fingerprint-matching-master/match.py';
+            $matchScript = dirname(__DIR__) . '/../../Fingerprint/src/FingerprintMatch/match.py';
 
             if (!file_exists($matchScript)) {
-                throw new Exception("Matching script not found: {$matchScript}");
+                Log::warning("SDK matching script not found: {$matchScript}");
+                return null;
             }
 
             // Get the appropriate Python command
             $pythonCommand = $this->getPythonCommand();
             if (!$pythonCommand) {
-                throw new Exception("Python interpreter not found");
+                Log::warning("Python interpreter not found for SDK matching");
+                return null;
             }
 
             // Create and execute the matching command
             $command = $pythonCommand . " " . escapeshellarg($matchScript) . " " .
                      "--samples=" . escapeshellarg($samplesDir) . " " .
                      "--fingerprint=" . escapeshellarg($fingerprintTemplate) . " " .
+                     "--security=" . escapeshellarg($securityLevel) . " " .
                      "2>&1";
 
-            Log::debug("Running fingerprint match command: {$command}");
+            Log::debug("Running SDK fingerprint match command: {$command}");
 
             exec($command, $output, $returnCode);
 
             $outputStr = implode(PHP_EOL, $output);
-            Log::debug("Match command output: {$outputStr}, Return code: {$returnCode}");
+            Log::debug("SDK match command output: {$outputStr}, Return code: {$returnCode}");
 
             // If there was a match, it will be in the output
             if ($returnCode === 0 && !empty($output)) {
                 $matchFile = trim($output[0]);
-                Log::info("Fingerprint match found: {$matchFile}");
                 return $matchFile;
             }
 
-            Log::info("No fingerprint match found");
-            return null;
+            // If there's an error, log it but don't return error to allow fallback
+            if ($returnCode !== 1) {
+                Log::warning("SDK match script returned unexpected code: {$returnCode}");
+            }
 
+            return null;
         } catch (Exception $e) {
-            Log::error("Error matching fingerprint: " . $e->getMessage());
+            Log::warning("Error using SDK match script: " . $e->getMessage());
+            return null;
+        }
+    }
+
+    /**
+     * Match fingerprint using the simple_match.py script
+     *
+     * @param string $fingerprintTemplate
+     * @param string $samplesDir
+     * @return string|null
+     */
+    protected function matchUsingSimple($fingerprintTemplate, $samplesDir)
+    {
+        try {
+            // Use the simple matching script
+            $matchScript = dirname(__DIR__) . '/../../Fingerprint/src/FingerprintMatch/simple_match.py';
+
+            if (!file_exists($matchScript)) {
+                Log::warning("Simple matching script not found: {$matchScript}");
+                return null;
+            }
+
+            // Get the appropriate Python command
+            $pythonCommand = $this->getPythonCommand();
+            if (!$pythonCommand) {
+                Log::warning("Python interpreter not found for simple matching");
+                return null;
+            }
+
+            // Create and execute the matching command
+            $command = $pythonCommand . " " . escapeshellarg($matchScript) . " " .
+                     "--samples=" . escapeshellarg($samplesDir) . " " .
+                     "--fingerprint=" . escapeshellarg($fingerprintTemplate) . " " .
+                     "--method=auto " .
+                     "2>&1";
+
+            Log::debug("Running simple fingerprint match command: {$command}");
+
+            exec($command, $output, $returnCode);
+
+            $outputStr = implode(PHP_EOL, $output);
+            Log::debug("Simple match command output: {$outputStr}, Return code: {$returnCode}");
+
+            // Parse the output for the match result
+            // The simple_match.py script outputs "Match found: filename" on success
+            if ($returnCode === 0 && !empty($output)) {
+                foreach ($output as $line) {
+                    if (preg_match('/Match found: (.+)/', $line, $matches)) {
+                        return trim($matches[1]);
+                    }
+                }
+
+                // If no match pattern found, but return code is 0,
+                // use the last line of output as a fallback
+                return trim(end($output));
+            }
+
+            return null;
+        } catch (Exception $e) {
+            Log::warning("Error using simple match script: " . $e->getMessage());
             return null;
         }
     }
@@ -166,9 +266,14 @@ class FingerprintService
             foreach ($files as $file) {
                 if (is_file($file)) {
                     @unlink($file);
+                } elseif (is_dir($file)) {
+                    // Recursively clean up subdirectories
+                    $this->cleanup($file);
                 }
             }
-            @rmdir($directory);
+            if (!@rmdir($directory)) {
+                Log::warning("Could not completely remove directory: {$directory}");
+            }
         }
     }
 }

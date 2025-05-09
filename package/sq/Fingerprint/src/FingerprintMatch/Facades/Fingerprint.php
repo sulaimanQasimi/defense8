@@ -1,5 +1,5 @@
 <?php
-	namespace Bkremenovic\Fingerprint\Facades;
+	namespace Sq\Fingerprint\FingerprintMatch\Facades;
 
 	use Illuminate\Support\Facades\Facade;
 

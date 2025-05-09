@@ -1,5 +1,5 @@
 <?php
-namespace Bkremenovic\Licenceplate\Exceptions;
+namespace Sq\Fingerprint\FingerprintMatch\Exceptions;
 
 use RuntimeException;
 

@@ -41,12 +41,17 @@ Route::middleware(['web', 'auth'])->group(function () {
         Route::delete('{record_id}', [BioDataController::class, 'destroy'])->name('destroy');
         Route::post('{record_id}/verify', [BioDataController::class, 'verify'])->name('verify');
     });
-    
+
     // CardInfo Biometric routes
     Route::prefix('cardinfo')->name('fingerprint.cardinfo.')->group(function () {
         Route::get('/', [CardInfoBiometricController::class, 'index'])->name('index');
         Route::post('match', [CardInfoBiometricController::class, 'matchFingerprint'])->name('match');
         Route::get('all', [CardInfoBiometricController::class, 'getAllWithBiometricData'])->name('all');
+        // New verification routes
+        Route::get('verify/{cardInfoId?}', [CardInfoBiometricController::class, 'showVerificationPage'])->name('verify.page');
+        Route::post('verify', [CardInfoBiometricController::class, 'verifyFingerprint'])->name('verify');
+
         Route::get('{id}', [CardInfoBiometricController::class, 'getCardInfo'])->name('show');
+
     });
 });

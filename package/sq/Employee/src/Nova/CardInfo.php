@@ -422,11 +422,12 @@ class CardInfo extends Resource
             // Biometric Data
             Action::openInNewTab(
                 __("Biometric Data"),
-                fn($employee)=> route('fingerprint.biodata.page', ['record_id' => $employee->id])
+                fn($employee)=> route('fingerprint.biodata.page',  $employee->id)
             )
-                // ->canRun(fn($request, $infoCard) => 
+                // ->canRun(fn($request, $infoCard) =>
                 // auth()->user()->can('update', $infoCard)
                 //     && in_array($infoCard->orginization->id, UserDepartment::getUserDepartment()))
+                ->sole()
                 ->withoutConfirmation()
                 ->onlyOnDetail(),
 

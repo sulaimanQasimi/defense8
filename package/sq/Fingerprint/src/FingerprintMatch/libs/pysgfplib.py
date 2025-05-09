@@ -1,20 +1,29 @@
-#! /usr/bin/env python
-'''
- * pysgfplib.py
- * SecuGen Fingerprint Library Wrapper.
- *
- * Created on December 18, 2014
- * Copyright(c): SecuGen Corporation, All rights reserved
-'''
+#!/usr/bin/python
+"""
+DEVELOPMENT RUNNING ENVIRONNMENT: Python v3.4.1
 
+******************************************************************************
+*  Version: 1.0.1                                                            *
+*  Date   : 02/10/2016                                                       *
+******************************************************************************
+*  Note:
+*  1. SGFDxDeviceName.
+*  2. SGFDxErrorCode.
+*  3. SGFDxSecurityLevel.
+*  4. SGFDxTemplateFormat.
+"""
+
+from libs.sgfdxerrorcode import *
+from libs.sgfdxdevicename import *
+from libs.sgfdxsecuritylevel import *
 from ctypes import *
-from sgfdxerrorcode import *
-from sgfdxdevicename import *
-from sgfdxsecuritylevel import *
+import platform
+import os
+from os import path
 
 class PYSGFPLib:
 
-  slib   = '/usr/local/lib/libpysgfplib.so'
+  slib   = 'libs/libpysgfplib.so'
   hlib   = CDLL(slib)
 
   def __init__(self):
@@ -52,9 +61,9 @@ class PYSGFPLib:
 
   def GetImage(self, buffer):
     return self.hlib.PY_SGFPM_GetImage(buffer)
-    
+
     return result
-  
+
   #virtual DWORD WINAPI  GetImageEx(BYTE* buffer, DWORD timeout, HWND dispWnd, DWORD quality)= 0;
   #virtual DWORD WINAPI  GetImageEx2(BYTE* buffer, DWORD timeout, HDC dispDC, LPRECT dispRect, DWORD quality)= 0;
 
@@ -97,7 +106,7 @@ class PYSGFPLib:
   #virtual DWORD  WINAPI  MatchIsoTemplate(BYTE*  isoTemplate1, DWORD sampleNum1, BYTE*  isoTemplate2, DWORD sampleNum2, DWORD secuLevel, BOOL*  matched) = 0;
   #virtual DWORD  WINAPI  GetIsoMatchingScore(BYTE*  isoTemplate1, DWORD sampleNum1, BYTE* isoTemplate2, DWORD sampleNum2, DWORD* score) = 0;
 
-  #// Algorithim: 
+  #// Algorithim:
   #virtual DWORD  WINAPI  MatchTemplateEx(BYTE*  minTemplate1, WORD tempateType1,  DWORD sampleNum1, BYTE* minTemplate2, WORD tempateType2,  DWORD sampleNum2, DWORD  secuLevel, BOOL*  matched) = 0;
   #virtual DWORD  WINAPI  GetMatchingScoreEx(BYTE* minTemplate1, WORD tempateType1, DWORD sampleNum1, BYTE* minTemplate2, WORD tempateType2, DWORD sampleNum2, DWORD* score) = 0;
 
@@ -106,9 +115,9 @@ class PYSGFPLib:
   #// Algorithm, 2006.10.9, jkang
   #virtual  DWORD  WINAPI  GetMinexVersion(DWORD *extractor, DWORD* matcher) = 0;
 
-  #// Algorithm, 2006.10.9, Can set Image width, height, xRes, yRes separately 
+  #// Algorithm, 2006.10.9, Can set Image width, height, xRes, yRes separately
   #virtual  DWORD  WINAPI  CreateTemplateEx(SGFPImageInfo* fpImageInfo, BYTE *rawImage, BYTE* minTemplate)= 0;
-  #// Algorithm, 2006.10.9, have Image width, height, xRes, yRes separately 
+  #// Algorithm, 2006.10.9, have Image width, height, xRes, yRes separately
   #virtual DWORD  WINAPI   GetAnsiTemplateInfoEx(BYTE* ansiTemplate, SGANSITemplateInfoEx* templateInfo) = 0;
 
   #// 06/08/2009, Enable/disable the check of finger liveness

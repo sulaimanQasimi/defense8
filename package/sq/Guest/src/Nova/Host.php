@@ -53,6 +53,10 @@ class Host extends Resource
     public static function indexQuery(NovaRequest $request, $query)
     {
 
+        if (auth()->user()->hasRole('super-admin')) {
+            return $query;
+        }
+
         // If user is host than show thier own guests
         if (auth()->user()->host) {
             return $query->where('id', auth()->user()->host->id);

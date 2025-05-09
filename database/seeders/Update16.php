@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Sq\Employee\Database\Seeders\AddSpecialCardEntryPermission;
+use Spatie\Permission\Models\Permission;
 
 class Update16 extends Seeder
 {
@@ -13,6 +13,14 @@ class Update16 extends Seeder
      */
     public function run(): void
     {
-        $this->call(AddSpecialCardEntryPermission::class);
+        // Create special-id-card permission directly
+        Permission::firstOrCreate(
+            ['name' => 'special-id-card'],
+            [
+                'fa_name' => 'ثبت کارت ویژه برای کارمندان',
+                'group' => 'مشخصات کارمند',
+                'guard_name' => 'web'
+            ]
+        );
     }
 }

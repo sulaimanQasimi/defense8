@@ -48,6 +48,11 @@ class Guest extends Resource
 
     public static function indexQuery(NovaRequest $request, $query)
     {
+
+        if (auth()->user()->hasRole('super-admin')) {
+            return $query;
+        }
+
         if (auth()->user()->host) {
             return $query->where('host_id', auth()->user()->host->id)->orderBy('registered_at', 'desc');
         }

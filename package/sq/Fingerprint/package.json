@@ -1,0 +1,23 @@
+{
+    "private": true,
+    "scripts": {
+        "dev": "npm run development",
+        "development": "mix",
+        "watch": "mix watch",
+        "watch-poll": "mix watch -- --watch-options-poll=1000",
+        "hot": "mix watch --hot",
+        "prod": "npm run production",
+        "production": "mix --production",
+        "build": "npm run production",
+        "prepare-package": "npm ci && npm run build && rm -rf node_modules"
+    },
+    "devDependencies": {
+        "@vue/compiler-sfc": "^3.2.45",
+        "laravel-mix": "^6.0.49",
+        "postcss": "^8.4.21",
+        "resolve-url-loader": "^5.0.0",
+        "sass": "^1.58.3",
+        "sass-loader": "^13.2.0",
+        "vue-loader": "^17.0.1"
+    }
+}

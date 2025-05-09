@@ -1,5 +1,5 @@
 <div class="min-h-screen bg-pink-100 bg-gradient-to-r from-pink-100 via-purple-100 to-indigo-100 py-12" dir="rtl">
-    @if($patient->status === 'inactive')
+    @if($patient->status === 'inactive' || ($patient->ended_at && $patient->ended_at < now()))
         <div class="max-w-3xl mx-auto bg-red-50 border-l-4 border-red-500 text-red-700 px-6 py-4 rounded-lg shadow-sm animate-pulse" role="alert">
             <div class="flex items-center">
                 <div class="flex-shrink-0">
@@ -10,7 +10,13 @@
                 <div class="ml-3">
                     <p class="text-sm font-medium">
                         <strong class="font-bold">خطا!</strong>
-                        <span class="mr-2">این توکن باطل شده شما اجازه ورود ندارید</span>
+                        <span class="mr-2">
+                            @if($patient->ended_at && $patient->ended_at < now())
+                                این توکن منقضی شده است
+                            @else
+                                این توکن باطل شده شما اجازه ورود ندارید
+                            @endif
+                        </span>
                     </p>
                 </div>
             </div>
@@ -98,8 +104,19 @@
                                 <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
                             </svg>
                             <span class="font-bold text-pink-700 min-w-24">@lang('Status'):</span>
-                            <span class="px-4 py-1.5 text-sm font-bold rounded-full {{ $patient->status === 'active' ? 'bg-green-100 text-green-800 ring-2 ring-green-300' : 'bg-red-100 text-red-800 ring-2 ring-red-300' }}">
-                                {{ $patient->status }}
+                            <span class="px-4 py-1.5 text-sm font-bold rounded-full
+                            @if($patient->ended_at && $patient->ended_at < now())
+                                bg-red-100 text-red-800 ring-2 ring-red-300
+                            @elseif($patient->status === 'active')
+                                bg-green-100 text-green-800 ring-2 ring-green-300
+                            @else
+                                bg-red-100 text-red-800 ring-2 ring-red-300
+                            @endif">
+                                @if($patient->ended_at && $patient->ended_at < now())
+                                    Expired
+                                @else
+                                    {{ $patient->status }}
+                                @endif
                             </span>
                         </div>
                         <div class="flex items-center space-x-3 space-x-reverse bg-white p-3 rounded-lg shadow-sm">
@@ -109,21 +126,82 @@
                             <span class="font-bold text-pink-700 min-w-24">@lang('تاریخ مراجعه'):</span>
                             <span class="text-gray-700 font-medium">{{ \Verta::instance($patient->registered_at)->format('Y/m/d H:i') }}</span>
                         </div>
+                        <div class="flex items-center space-x-3 space-x-reverse bg-white p-3 rounded-lg shadow-sm">
+                            <svg class="h-5 w-5 text-pink-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd" />
+                            </svg>
+                            <span class="font-bold text-pink-700 min-w-24">@lang('تاریخ پایان'):</span>
+                            <span class="text-gray-700 font-medium">
+                                @if($patient->ended_at)
+                                    @if($patient->ended_at < now())
+                                        <span class="px-3 py-1 text-sm font-bold rounded-full bg-red-100 text-red-800 ring-2 ring-red-300">
+                                            Token منقضی شده است
+                                        </span>
+                                    @else
+                                        {{ \Verta::instance($patient->ended_at)->format('Y/m/d H:i') }}
+                                    @endif
+                                @else
+                                    -
+                                @endif
+                            </span>
+                        </div>
                     </div>
                 </div>
 
                 <div class="mt-12 text-center">
-                    <form action="{{ route('sqguest.guest.patients.deactivate', $patient) }}" method="POST" class="inline">
-                        @csrf
-                        @method('POST')
-                        <button type="submit" class="group relative inline-flex items-center bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 text-white font-bold px-10 py-4 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-purple-500 focus:ring-opacity-50 overflow-hidden">
-                            <span class="absolute right-0 w-12 h-full bg-white opacity-10 transform -skew-x-12 transition-transform duration-700 group-hover:translate-x-20"></span>
-                            <svg class="h-6 w-6 mr-2 text-pink-200" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clip-rule="evenodd" />
-                            </svg>
-                            @lang('داخل شد')
-                        </button>
-                    </form>
+                    @if(!($patient->ended_at && $patient->ended_at < now()))
+                    <div class="flex justify-center space-x-4">
+                        @if(auth()->user()->gate)
+                            @if(!$patient->gate_id || $patient->gate_id == auth()->user()->gate_id)
+                            <form action="{{ route('sqguest.guest.patients.deactivate', $patient) }}" method="POST" class="inline">
+                                @csrf
+                                @method('POST')
+                                <button type="submit" class="group relative inline-flex items-center bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 text-white font-bold px-10 py-4 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-purple-500 focus:ring-opacity-50 overflow-hidden">
+                                    <span class="absolute right-0 w-12 h-full bg-white opacity-10 transform -skew-x-12 transition-transform duration-700 group-hover:translate-x-20"></span>
+                                    <svg class="h-6 w-6 mr-2 text-pink-200" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clip-rule="evenodd" />
+                                    </svg>
+                                    @lang('داخل شد')
+                                </button>
+                            </form>
+                            @endif
+
+                            @if($patient->status === 'inactive' && $patient->gate_id == auth()->user()->gate_id && !($patient->ended_at && $patient->ended_at < now()))
+                            <form action="{{ route('sqguest.guest.patients.exit', $patient) }}" method="POST" class="inline">
+                                @csrf
+                                @method('POST')
+                                <button type="submit" class="group relative inline-flex items-center bg-gradient-to-r from-orange-500 via-amber-500 to-yellow-500 text-white font-bold px-10 py-4 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-amber-500 focus:ring-opacity-50 overflow-hidden">
+                                    <span class="absolute right-0 w-12 h-full bg-white opacity-10 transform -skew-x-12 transition-transform duration-700 group-hover:translate-x-20"></span>
+                                    <svg class="h-6 w-6 mr-2 text-yellow-200" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M17 10a1 1 0 01-1 1H5.414l2.293 2.293a1 1 0 11-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L5.414 9H16a1 1 0 011 1z" clip-rule="evenodd" />
+                                    </svg>
+                                    @lang('خارج شد')
+                                </button>
+                            </form>
+                            @endif
+
+                            @if($patient->gate_id && $patient->gate_id != auth()->user()->gate_id)
+                            <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 rounded shadow-md">
+                                <div class="flex items-center">
+                                    <svg class="h-6 w-6 text-yellow-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                    </svg>
+                                    <p>@lang('این مریض به دروازه دیگری اختصاص داده شده است.')</p>
+                                </div>
+                            </div>
+                            @endif
+                        @else
+                            <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded shadow-md">
+                                <div class="flex items-center">
+                                    <svg class="h-6 w-6 text-red-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                    </svg>
+                                    <p>@lang('شما باید به یک دروازه اختصاص داده شوید برای استفاده از این عملکرد.')</p>
+                                </div>
+                            </div>
+                        @endif
+                    </div>
+                    @endif
                 </div>
             </div>
         </div>

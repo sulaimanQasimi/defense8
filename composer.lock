@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d90916278764a0f97c27c73d70f04db7",
+    "content-hash": "1b1d59ed12691da9430ebc8cade062e3",
     "packages": [
         {
             "name": "acme/app-setting",
@@ -9524,6 +9524,63 @@
             }
         },
         {
+            "name": "sq/fingerprint",
+            "version": "dev-version-15",
+            "dist": {
+                "type": "path",
+                "url": "package/sq/Fingerprint",
+                "reference": "8fc01b831c157e8687ff32960828cd70529cd4af"
+            },
+            "require": {
+                "illuminate/database": "^8.0|^9.0|^10.0",
+                "illuminate/http": "^8.0|^9.0|^10.0",
+                "illuminate/support": "^8.0|^9.0|^10.0",
+                "php": "^7.4|^8.0"
+            },
+            "suggest": {
+                "laravel/nova": "Required for Nova field integration (^4.0)"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Sq\\Fingerprint\\FingerprintServiceProvider",
+                        "Sq\\Fingerprint\\NovaServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Sq\\Fingerprint\\": "src/"
+                }
+            },
+            "scripts": {
+                "build-nova-assets": [
+                    "npm install",
+                    "npm run prod"
+                ],
+                "post-install-cmd": [
+                    "@build-nova-assets"
+                ],
+                "post-update-cmd": [
+                    "@build-nova-assets"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "SQ Team",
+                    "email": "info@sq.org"
+                }
+            ],
+            "description": "Fingerprint identification and matching package",
+            "transport-options": {
+                "relative": true
+            }
+        },
+        {
             "name": "sq/guest",
             "version": "dev-version-15",
             "dist": {
@@ -12413,6 +12470,7 @@
         "acme/stripe-inspector": 20,
         "sq/card": 20,
         "sq/employee": 20,
+        "sq/fingerprint": 20,
         "sq/guest": 20,
         "sq/location": 20,
         "sq/oil": 20,

@@ -54,6 +54,7 @@
         "spatie/nova-backup-tool": "^5.0",
         "sq/card": "@dev",
         "sq/employee": "@dev",
+        "sq/fingerprint": "@dev",
         "sq/guest": "@dev",
         "sq/location": "@dev",
         "sq/oil": "@dev",
@@ -62,76 +63,80 @@
         "whitecube/nova-flexible-content": "^1.1",
         "zakariatlilani/nova-nested-tree": "^0.0.3"
     },
-    "repositories": [
-        {
+    "repositories": {
+        "fingerprint": {
+            "type": "path",
+            "url": "package/sq/Fingerprint"
+        },
+        "0": {
             "type": "path",
             "url": "nova"
         },
-        {
+        "1": {
             "type": "path",
             "url": "./nova-components/PriceTracker"
         },
-        {
+        "2": {
             "type": "path",
             "url": "./nova-components/GuestReport"
         },
-        {
+        "3": {
             "type": "path",
             "url": "./nova-components/OilReport"
         },
-        {
+        "4": {
             "type": "path",
             "url": "./package/sq/query"
         },
-        {
+        "5": {
             "type": "path",
             "url": "./package/sq/card"
         },
-        {
+        "6": {
             "type": "path",
             "url": "./package/sq/oil"
         },
-        {
+        "7": {
             "type": "path",
             "url": "./package/sq/location"
         },
-        {
+        "8": {
             "type": "path",
             "url": "./package/sq/employee"
         },
-        {
+        "9": {
             "type": "path",
             "url": "./package/sq/guest"
         },
-        {
+        "10": {
             "type": "path",
             "url": "./nova-components/StripeInspector"
         },
-        {
+        "11": {
             "type": "path",
             "url": "./nova-components/StripeInspector"
         },
-        {
+        "12": {
             "type": "path",
             "url": "./nova-components/EmployeeAttendance"
         },
-        {
+        "13": {
             "type": "path",
             "url": "./nova-components/EmployeeAttendanceStatistic"
         },
-        {
+        "14": {
             "type": "path",
             "url": "./nova-components/AppSetting"
         },
-        {
+        "15": {
             "type": "path",
             "url": "./nova-components/Forum"
         },
-        {
+        "16": {
             "type": "path",
             "url": "./nova-components/SelectDepartment"
         }
-    ],
+    },
     "autoload": {
         "psr-4": {
             "App\\": "app/",
@@ -141,7 +146,10 @@
             "Vehical\\": "modules/vehical/",
             "Support\\": "modules/Support/",
             "Database\\Seeders\\": "database/seeders/"
-        }
+        },
+        "files": [
+            "app/helpers.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {

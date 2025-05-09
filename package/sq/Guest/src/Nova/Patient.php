@@ -72,6 +72,10 @@ class Patient extends Resource
 
     public static function indexQuery(NovaRequest $request, $query)
     {
+        if (auth()->user()->hasRole('super-admin')) {
+            return $query;
+        }
+
         if (auth()->user()->host) {
             return $query->where('host_id', auth()->user()->host->id)->orderBy('registered_at', 'desc');
         }
@@ -171,9 +175,22 @@ class Patient extends Resource
                 ->rules('required', 'date')
                 ->sortable(),
 
+            PersianDateTime::make(__('تاریخ پایان'), 'ended_at')
+                ->format('jYYYY/jMM/jDD h:mm a')
+                ->nullable()
+                ->rules('nullable', 'date')
+                ->sortable(),
+
+            Select::make(__("Enter Gate"), 'gate_id')
+                ->options(ModelsGate::query()->whereIn('id', UserDepartment::getUserGuestGate())->pluck('fa_name', 'id'))
+                ->nullable()
+                ->rules('nullable'),
+
             Trix::make(trans("Remark"), 'remark')
                 ->nullable()
                 ->hideFromIndex(),
+
+            HasMany::make(__('Gate Passes'), 'patientGatePasses', PatientGatePass::class),
 
             MorphMany::make(trans("Activity Log"), 'activities', Activitylog::class),
         ];
@@ -218,6 +235,7 @@ class Patient extends Resource
                 new SqNovaTextFilter(label: __("نام داکتر"), column: 'doctor_name'),
                 new SqNovaTextFilter(label: __("بخش مربوطه"), column: 'department'),
                 new SqNovaDateFilter(label: __("تاریخ مراجعه"), column: 'registered_at'),
+                new SqNovaDateFilter(label: __("تاریخ پایان"), column: 'ended_at'),
                 new SqNovaSelectFilter(
                     label: __("Host"),
                     column: 'host_id',

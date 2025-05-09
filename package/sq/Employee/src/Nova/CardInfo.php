@@ -79,8 +79,12 @@ class CardInfo extends Resource
             Panel::make(__(), [
                 // URL::make(trans("CURRENT MONTH ATTENDANCE EMPLOYEE"),fn()=>route('employee.attendance.current.month.single',['cardInfo'=>$this->id]))->onlyOnDetail(),
                 Fields\Image::make(__("Photo"), "photo")
-                ->nullable()
+                    ->nullable()
                     ->rules("nullable", "image"),
+                \Sq\Fingerprint\Nova\Fields\Fingerprint::make('Fingerprint', 'fingerprint_data')
+                    ->height(300)
+                    ->width(300)
+                    ->quality(80),
                 Fields\Boolean::make(__("Confirmed"), 'confirmed')->exceptOnForms(),
                 Fields\Select::make(__('Category'), 'category')
                     ->options([
@@ -242,6 +246,7 @@ class CardInfo extends Resource
             Fields\HasMany::make(__("Main Card"), 'main_card', MainCard::class),
             Fields\HasMany::make(__("Gun Card"), 'gun_card', GunCard::class),
             Fields\HasMany::make(__("Employee Vehical Card"), 'employee_vehical_card', EmployeeVehicalCard::class),
+            // Fields\HasOne::make(__("Biometric Data"), 'bioData', \Sq\Employee\Nova\BioData::class),
             Panel::make(
                 trans("Oil Disterbution"),
                 [
@@ -292,7 +297,7 @@ class CardInfo extends Resource
             ]),
 
 
-            Fields\MorphMany::make(trans("Activity Log"),'activity',Activitylog::class),
+            Fields\MorphMany::make(trans("Activity Log"), 'activity', Activitylog::class),
             Fields\HasMany::make(__("Oil Report"), 'oil_disterbutions', \Sq\Oil\Nova\OilDisterbution::class),
             Fields\HasMany::make(name: __("Attendance"), attribute: 'attendance', resource: Attendance::class),
             Fields\HasMany::make(name: __("Print Card"), attribute: 'print_cards', resource: PrintCard::class),
@@ -404,15 +409,26 @@ class CardInfo extends Resource
             (new EditCardInfoRemark())
                 ->canSee(fn() => auth()->user()->hasPermissionTo(EditAditionalCardInfoEnum::Remark))
                 ->canRun(
-                    fn($request, $infoCard) => EditAditionalCardInfoEnum::Remark
+                    fn($request, $infoCard) => auth()->user()->hasPermissionTo(EditAditionalCardInfoEnum::Remark)
                         && in_array($infoCard->orginization->id, UserDepartment::getUserDepartment())
                 ),
 
             // Edit Options
             (new EditCardInfoOption())
                 ->canSee(fn() => auth()->user()->hasPermissionTo(EditAditionalCardInfoEnum::Option))
-                ->canRun(fn($request, $infoCard) => EditAditionalCardInfoEnum::Remark
+                ->canRun(fn($request, $infoCard) => auth()->user()->hasPermissionTo(EditAditionalCardInfoEnum::Option)
                     && in_array($infoCard->orginization->id, UserDepartment::getUserDepartment())),
+
+            // Biometric Data
+            Action::openInNewTab(
+                __("Biometric Data"),
+                fn($employee)=> route('fingerprint.biodata.page', ['record_id' => $employee->id])
+            )
+                // ->canRun(fn($request, $infoCard) => 
+                // auth()->user()->can('update', $infoCard)
+                //     && in_array($infoCard->orginization->id, UserDepartment::getUserDepartment()))
+                ->withoutConfirmation()
+                ->onlyOnDetail(),
 
             // Download Attendance
             Action::openInNewTab(
@@ -422,9 +438,7 @@ class CardInfo extends Resource
                 ->sole()
                 ->canRun(fn($request, $infoCard) => in_array($infoCard->orginization->id, UserDepartment::getUserDepartment()))
                 ->withoutConfirmation()
-
                 ->onlyOnDetail(),
-
 
             (new ConfirmEmployee)
                 ->canRun(fn($request, $infoCard) => auth()->user()->hasPermissionTo("confirm-employee")

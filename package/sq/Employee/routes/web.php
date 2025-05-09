@@ -76,3 +76,25 @@ Route::middleware(['permission:' . PermissionTranslation::viewAny("Card Info")])
 
 
     });
+
+// BioData routes
+Route::prefix('employee/biodata')
+    ->middleware(['permission:' . PermissionTranslation::update("Card Info")])
+    ->controller(\Sq\Employee\Http\Controllers\BioDataController::class)
+    ->name('employee.biodata.')
+    ->group(function (): void {
+        Route::get('{employee_id}', 'show')->name('show');
+        Route::post('{employee_id}', 'store')->name('store');
+        Route::delete('{employee_id}', 'destroy')->name('destroy');
+        Route::post('{employee_id}/verify', 'verify')->name('verify');
+    });
+
+// Fingerprint match routes - identify employees using fingerprints
+Route::prefix('employee/finger')
+    ->middleware(['permission:' . PermissionTranslation::viewAny("Card Info")])
+    ->controller(\Sq\Employee\Http\Controllers\FingerMatchController::class)
+    ->name('employee.finger.')
+    ->group(function (): void {
+        Route::get('match', 'index')->name('index');
+        Route::post('match', 'match')->name('match');
+    });

@@ -19,6 +19,7 @@ class GuestServiceProvider extends ServiceProvider
             NovaResource\GuestGate::class,
             NovaResource\GuestOption::class,
             NovaResource\Host::class,
+            NovaResource\PatientGatePass::class,
         ]);
 
         $this->loadMigrationsFrom(__DIR__ . "/../database/migrations");
@@ -44,6 +45,7 @@ class GuestServiceProvider extends ServiceProvider
             MenuItem::resource(NovaResource\Host::class),
             MenuItem::resource(NovaResource\Guest::class),
             MenuItem::resource(NovaResource\Patient::class),
+            MenuItem::resource(NovaResource\PatientGatePass::class),
             MenuItem::resource(NovaResource\GuestOption::class),
             // Guest Report Menu Section
             MenuItem::link(__('Guest Report'), '/guest-report')

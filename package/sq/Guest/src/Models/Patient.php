@@ -26,6 +26,7 @@ class Patient extends Model
     use LogsActivity;
     protected $casts = [
         'registered_at' => "datetime",
+        'ended_at' => "datetime",
     ];
     protected $guarded = [];
 
@@ -39,7 +40,7 @@ class Patient extends Model
 
                     $guest->save();
 
-                    $fetch = Guest::query()->where("year", now()->year)->orderBy("day", 'desc')->first();
+                    $fetch = Patient::query()->where("year", now()->year)->orderBy("day", 'desc')->first();
 
                     $guest->year = now()->year;
 
@@ -66,6 +67,14 @@ class Patient extends Model
     public function gate(): BelongsTo
     {
         return $this->belongsTo(Gate::class);
+    }
+    public function patientGatePasses(): HasMany
+    {
+        return $this->hasMany(PatientGatePass::class);
+    }
+    public function currentGatePass(): HasOne
+    {
+        return $this->hasOne(PatientGatePass::class)->where('gate_id', auth()->user()->gate->id);
     }
     public function Guestoptions(): BelongsToMany
     {

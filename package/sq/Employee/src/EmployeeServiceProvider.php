@@ -45,7 +45,9 @@ class EmployeeServiceProvider extends ServiceProvider
     }
     public function register()
     {
-        //
+        $this->app->singleton(\Sq\Employee\Services\FingerprintService::class, function ($app) {
+            return new \Sq\Employee\Services\FingerprintService();
+        });
     }
     public function routes()
     {
@@ -87,6 +89,10 @@ class EmployeeServiceProvider extends ServiceProvider
                 // Employee Check out Page
                 MenuItem::externalLink(__("Employee Check Card"), route("sqemployee.employee.check.card"))
                     ->canSee(fn() => \Illuminate\Support\Facades\Gate::allows('gateChecker', \Sq\Employee\Models\Gate::class)),
+
+                // Fingerprint Identification
+                MenuItem::externalLink(__("Fingerprint Identification"), route("sqemployee.employee.finger.index"))
+                    ->canSee(fn() => auth()->user()->hasPermissionTo(PermissionTranslation::viewAny("Card Info"))),
 
                 // Self Employee Attendance
                 MenuItem::externalLink(

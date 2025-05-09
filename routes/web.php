@@ -23,3 +23,8 @@ Route::middleware(['auth'])
 Route::get('test', function () {
     dd(UserDepartment::getUserGuestGate());
 });
+
+// Add route for the Secugen test page
+Route::get('secugen-test', function () {
+    return view('test');
+});

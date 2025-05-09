@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Sq\Employee\Models\Contracts\AttendanceRelationship;
 use Sq\Employee\Models\Contracts\EmployeeIDCard;
 use Sq\Employee\Models\Contracts\LocationAttribute;
+use Sq\Fingerprint\Traits\HasBiometricData;
 use Sq\Guest\Models\GuestOption;
 use Sq\Card\Models\PrintCardFrame;
 use Sq\Employee\Models\Contracts\CardInfoAttributes;
@@ -36,6 +37,7 @@ class CardInfo extends Model
     use EmployeeOilDisterbutionAttributes;
     use EmployeeIDCard;
     use AttendanceRelationship;
+    use HasBiometricData;
     protected $casts = [
         'birthday' => 'date',
         'extra_info' => 'array',

@@ -1,0 +1,11 @@
+This is a placeholder for a sample fingerprint image.
+
+To complete the package, please add a fingerprint sample image here with the filename 'sample-fingerprint.png'.
+The recommended image size is 300x400 pixels with a transparent background.
+
+You can obtain a sample fingerprint image from:
+1. Your fingerprint scanner SDK
+2. A royalty-free stock image website
+3. Generate one using an image creation tool
+
+This image will be displayed in the fingerprint identification interface when a fingerprint is captured.

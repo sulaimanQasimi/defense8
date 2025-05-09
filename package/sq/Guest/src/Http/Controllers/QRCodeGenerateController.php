@@ -11,6 +11,7 @@ use Sq\Query\Policy\UserDepartment;
 use Sq\Guest\Models\Patient;
 use App\Support\Defense\PermissionTranslation;
 use Sq\Notification\NovaNotification as SqNotificationNovaNotification;
+use Sq\Guest\Models\PatientGatePass;
 
 class QRCodeGenerateController extends Controller
 {
@@ -134,9 +135,31 @@ class QRCodeGenerateController extends Controller
 
     public function deactivate(Patient $patient)
     {
+        // Get Current Gate
+        if (!auth()->user()->gate) {
+            return redirect()->back()
+                ->with('error', trans('You need to be assigned to a gate to deactivate a patient'));
+        }
+
+        $gate = auth()->user()->gate;
+
+        // Check if patient already has a gate_id and it's different from the current user's gate
+        if ($patient->gate_id && $patient->gate_id != $gate->id) {
+            return redirect()->back()
+                ->with('error', trans('This patient is assigned to a different gate'));
+        }
+
         // Update patient status
         $patient->update([
-            'status' => 'inactive'
+            'status' => 'inactive',
+            'gate_id' => $gate->id
+        ]);
+
+        // Create a new PatientGatePass record
+        PatientGatePass::create([
+            'patient_id' => $patient->id,
+            'gate_id' => $gate->id,
+            'entered_at' => now(),
         ]);
 
         // Notify the host
@@ -148,5 +171,50 @@ class QRCodeGenerateController extends Controller
 
         return redirect()->back()
             ->with('success', trans('Patient has been deactivated successfully'));
+    }
+
+    public function exitPatient(Patient $patient)
+    {
+        // Get Current Gate
+        if (!auth()->user()->gate) {
+            return redirect()->back()
+                ->with('error', trans('You need to be assigned to a gate to mark patient exit'));
+        }
+
+        $gate = auth()->user()->gate;
+
+        // Check if the patient's gate_id matches the current user's gate_id
+        if ($patient->gate_id != $gate->id) {
+            return redirect()->back()
+                ->with('error', trans('You can only mark exit for patients assigned to your gate'));
+        }
+
+        // Find the latest gate pass record without an exit time
+        $gatePass = PatientGatePass::where('patient_id', $patient->id)
+            ->where('gate_id', $gate->id)
+            ->whereNotNull('entered_at')
+            ->whereNull('exit_at')
+            ->latest()
+            ->first();
+
+        if ($gatePass) {
+            // Update exit time
+            $gatePass->update([
+                'exit_at' => now(),
+            ]);
+
+            // Notify the host
+            $patient->host->user->notify(
+                NovaNotification::make()
+                    ->message(trans("Patient has exited the gate", ['name' => $patient->name, 'gate' => $gate->fa_name]))
+                    ->type("info")
+            );
+
+            return redirect()->back()
+                ->with('success', trans('Patient exit has been recorded successfully'));
+        }
+
+        return redirect()->back()
+            ->with('error', trans('No active gate pass found for this patient at this gate'));
     }
 }

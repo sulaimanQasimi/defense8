@@ -12,6 +12,7 @@ Route::prefix("guest")
         Route::middleware(["guestGatePassed"])->get('passguest/{guest:id}/to', 'state')->name('guest.check');
 
         Route::post('/patients/{patient}/deactivate', [QRCodeGenerateController::class, 'deactivate'])->name('guest.patients.deactivate');
+        Route::post('/patients/{patient}/exit', [QRCodeGenerateController::class, 'exitPatient'])->name('guest.patients.exit');
         //
         Route::middleware(['can:generate,guest'])->get('/generate/{guest:id}', 'generate')->name('guest.generate');
     });

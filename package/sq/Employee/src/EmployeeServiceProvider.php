@@ -93,6 +93,10 @@ class EmployeeServiceProvider extends ServiceProvider
                 // Fingerprint Identification
                 MenuItem::externalLink(__("Fingerprint Identification"), route("sqemployee.employee.finger.index"))
                     ->canSee(fn() => auth()->user()->hasPermissionTo(PermissionTranslation::viewAny("Card Info"))),
+                    
+                // Biometric CardInfo Matching
+                MenuItem::externalLink(__("Biometric Card Identification"), route("fingerprint.cardinfo.index"))
+                    ->canSee(fn() => auth()->user()->hasPermissionTo(PermissionTranslation::viewAny("Card Info"))),
 
                 // Self Employee Attendance
                 MenuItem::externalLink(

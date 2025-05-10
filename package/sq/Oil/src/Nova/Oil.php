@@ -45,6 +45,8 @@ class Oil extends Resource
     {
         return [
             Text::make(trans("Code"), 'code')->exceptOnForms(),
+            BelongsTo::make(__('Pump Station'), 'pumpStation', PumpStation::class)
+                ->nullable(),
             Select::make(trans("Oil Type"), 'oil_type')
                 ->options([
                     OilType::Diesel => trans("Diesel"),

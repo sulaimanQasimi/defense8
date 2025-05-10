@@ -39,8 +39,10 @@ class OilDisterbution extends Resource
     public function fields(NovaRequest $request)
     {
         return [
-
             BelongsTo::make(__('Employee'), 'card_info', CardInfo::class)->sortable(),
+
+            BelongsTo::make(__('Pump Station'), 'pumpStation', PumpStation::class)
+                ->nullable(),
 
             Select::make(trans("Oil Type"), 'oil_type')
                 ->options([
@@ -65,19 +67,19 @@ class OilDisterbution extends Resource
     public function filters(NovaRequest $request)
     {
         return [
-
             MegaFilter::make([
-
                 new SqNovaSelectFilter(label: trans("Oil Type"), column: 'oil_type', options: [
                     OilType::Diesel => trans("Diesel"),
                     OilType::Petrole => trans("Petrole"),
                 ]),
-
+                new SqNovaSelectFilter(
+                    label: __("Pump Station"),
+                    column: 'pump_station_id',
+                    options: \Sq\Oil\Models\PumpStation::pluck('name', 'id')->toArray()
+                ),
                 new SqNovaNumberFilter(label: trans("Oil Amount"), column: "oil_amount"),
-
                 new SqNovaDateFilter(label: trans("Date"), column: 'filled_date'),
-
-                ])->columns(3)
+            ])->columns(3)
         ];
     }
 

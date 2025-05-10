@@ -13,6 +13,19 @@ class Oil extends Model
         'filled_date' => 'date'
     ];
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'code',
+        'oil_type',
+        'oil_amount',
+        'oil_quality',
+        'filled_date',
+        'pump_station_id'
+    ];
 
     protected static function boot()
     {
@@ -25,8 +38,20 @@ class Oil extends Model
             }
         );
     }
+
+    /**
+     * Get the oil quality relationship.
+     */
     public function oil_quality(): BelongsTo
     {
         return $this->belongsTo(OilQuality::class);
+    }
+
+    /**
+     * Get the pump station that this oil belongs to.
+     */
+    public function pumpStation(): BelongsTo
+    {
+        return $this->belongsTo(PumpStation::class);
     }
 }

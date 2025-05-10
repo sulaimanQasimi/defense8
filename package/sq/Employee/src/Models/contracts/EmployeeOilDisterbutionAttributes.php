@@ -3,10 +3,16 @@ namespace Sq\Employee\Models\Contracts;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Support\Defense;
+use Carbon\Carbon;
+use Hekmatinasser\Verta\Facades\Verta;
+use Illuminate\Database\Eloquent\Builder;
 
 trait EmployeeOilDisterbutionAttributes
 {
-
+    public function scopeFilterByPumpStation(Builder $query, $pumpStationId)
+    {
+        return $query->where('pump_station_id', $pumpStationId);
+    }
 
     // Oil Disterbution
     protected function currentMonthOilConsumtion(): Attribute

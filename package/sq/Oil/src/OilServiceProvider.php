@@ -18,6 +18,7 @@ class OilServiceProvider extends ServiceProvider
             \Sq\Oil\Nova\OilDisterbution::class,
             \Sq\Oil\Nova\QuotaOil::class,
             \Sq\Oil\Nova\OilQuality::class,
+            \Sq\Oil\Nova\PumpStation::class,
         ]);
 
         $this->loadViewsFrom(__DIR__ . "/../resources/views/", 'sqoil');
@@ -55,6 +56,7 @@ class OilServiceProvider extends ServiceProvider
                 MenuItem::resource(\Sq\Oil\Nova\OilQuality::class),
                 MenuItem::resource(\Sq\Oil\Nova\OilDisterbution::class),
                 MenuItem::resource(\Sq\Oil\Nova\QuotaOil::class),
+                MenuItem::resource(\Sq\Oil\Nova\PumpStation::class),
                 MenuItem::externalLink(trans("Oil Disterbution Page"), route('sq.oil.oil'))
                     ->canSee(fn() => auth()->user()->hasPermissionTo('access_to_disterbuted_oil_page'))
                     ->openInNewTab(),

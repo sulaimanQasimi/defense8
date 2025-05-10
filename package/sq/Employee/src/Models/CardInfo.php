@@ -100,6 +100,10 @@ class CardInfo extends Model
     {
         return $this->belongsTo(related: Department::class, foreignKey: 'department_id');
     }
+    public function pumpStation(): BelongsTo
+    {
+        return $this->belongsTo(related: \Sq\Oil\Models\PumpStation::class);
+    }
     public function PrintCardFrame(): MorphToMany
     {
         return $this->morphToMany(related: PrintCardFrame::class, name: 'print_card_frame', table: 'printables');

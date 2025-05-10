@@ -46,7 +46,15 @@ class QuotaOil extends OilNovaResource
 
     public static function indexQuery(NovaRequest $request, $query)
     {
-        return $query->whereIn('department_id', auth()->user()->departments()->pluck('departments.id')->toArray());
+        $query = $query->whereIn('department_id', auth()->user()->departments()->pluck('departments.id')->toArray());
+
+        // If user is assigned to a pump station as manager, only show cards assigned to that pump station
+        // $userPumpStations = \Sq\Oil\Models\PumpStation::where('user_id', auth()->id())->pluck('id')->toArray();
+        // if (!empty($userPumpStations)) {
+        //     $query->whereIn('pump_station_id', $userPumpStations);
+        // }
+
+        return $query;
     }
 
     public static function scoutQuery(NovaRequest $request, $query)
@@ -111,6 +119,10 @@ class QuotaOil extends OilNovaResource
                         ->rules('required', Rule::in([OilType::Diesel, OilType::Petrole]))
                         ->filterable()
                         ->displayUsingLabels(),
+
+                    Fields\BelongsTo::make(__('Pump Station'), 'pumpStation', PumpStation::class)
+                        ->nullable()
+                        ->searchable(),
 
                     Fields\Select::make(trans("Type"), 'employee_type')
                         ->options([
@@ -177,6 +189,12 @@ class QuotaOil extends OilNovaResource
                     label: __("Department/Chancellor"),
                     column: 'department_id',
                     options: \Sq\Employee\Models\Department::pluck('fa_name', 'id')->toArray()
+                ),
+                //
+                new SqNovaSelectFilter(
+                    label: __("Pump Station"),
+                    column: 'pump_station_id',
+                    options: \Sq\Oil\Models\PumpStation::pluck('name', 'id')->toArray()
                 ),
                 //
                 new SqNovaSelectFilter(

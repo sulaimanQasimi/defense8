@@ -517,22 +517,22 @@
 
                             <div id="error-message" class="alert alert-danger" style="display: none;">
                                 خطا در شناسایی اثر انگشت.
-                            </div>
+                                        </div>
 
                             <div id="scan-btn-area">
                                 <button id="scan-button" class="btn btn-primary mt-3">
                                     <span id="scan-icon" class="icon icon-fingerprint mr-1"></span>
                                     اسکن اثر انگشت
-                                </button>
+                                        </button>
 
                                 <button id="reset-button" class="btn btn-secondary mt-3 mr-2" style="display: none;">
                                     شروع مجدد
                                 </button>
-                            </div>
+                                        </div>
 
                             <div id="device-check" class="text-muted mt-4" style="font-size: 0.9rem;">
                                 <div id="device-status">در حال بررسی دستگاه اسکنر...</div>
-                            </div>
+                                        </div>
 
                             <div class="form-check mt-3">
                                 <input class="form-check-input" type="checkbox" id="debug-mode" value="1">
@@ -540,12 +540,12 @@
                                     حالت اشکال‌زدایی
                                 </label>
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
-            <div class="col-md-6">
+                            <div class="col-md-6">
                 <div id="employee-card" class="card employee-card h-100">
                     <div class="card-header bg-success text-white">
                         اطلاعات کارمند
@@ -555,41 +555,41 @@
                             <img id="employee-photo" src="{{ asset('images/avatar-placeholder.png') }}" alt="تصویر کارمند" class="employee-photo mb-3">
                             <h4 id="employee-name" class="mb-0"></h4>
                             <p id="employee-position" class="text-muted"></p>
-                        </div>
+                                        </div>
 
                         <div class="employee-details p-3">
-                            <table class="table table-borderless">
-                                <tr>
+                                                <table class="table table-borderless">
+                                                    <tr>
                                     <th style="width: 120px;">کد کارمندی:</th>
                                     <td id="employee-id"></td>
-                                </tr>
-                                <tr>
+                                                    </tr>
+                                                    <tr>
                                     <th>ایمیل:</th>
                                     <td id="employee-email"></td>
-                                </tr>
-                                <tr>
+                                                    </tr>
+                                                    <tr>
                                     <th>تلفن:</th>
                                     <td id="employee-phone"></td>
-                                </tr>
-                                <tr>
+                                                    </tr>
+                                                    <tr>
                                     <th>بخش:</th>
                                     <td id="employee-department"></td>
-                                </tr>
-                            </table>
-                        </div>
+                                                    </tr>
+                                                </table>
+                                            </div>
 
                         <div class="text-center mt-4">
                             <a href="#" id="employee-details-link" class="btn btn-primary">مشاهده جزئیات کامل</a>
                             <button id="attendance-button" class="btn btn-success mr-2">ثبت حضور</button>
-                        </div>
-                    </div>
-                </div>
+                                        </div>
+                                            </div>
+                                        </div>
 
                 <div id="no-match-card" class="card employee-card h-100" style="display: none;">
                     <div class="card-header bg-warning text-dark">
                         <span class="icon icon-warning mr-2"></span>
                         عدم تطابق اثر انگشت
-                    </div>
+                                            </div>
                     <div class="card-body text-center">
                         <img src="{{ asset('images/no-match.png') }}" alt="عدم تطابق" style="width: 150px; margin: 2rem 0;">
                         <h4>کارمندی با این اثر انگشت یافت نشد</h4>
@@ -601,14 +601,14 @@
                             <button id="try-again-button" class="btn btn-primary">
                                 تلاش مجدد
                             </button>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
 
                 <div id="debug-card" class="card mt-3" style="display: none;">
                     <div class="card-header bg-info text-white">
                         اطلاعات اشکال‌زدایی
-                    </div>
+                                </div>
                     <div class="card-body">
                         <div id="debug-output" style="font-family: monospace; font-size: 12px; white-space: pre-wrap;"></div>
                     </div>
@@ -668,7 +668,7 @@
                     if (data) {
                         if (typeof data === 'object') {
                             logMessage += "\n" + JSON.stringify(data, null, 2);
-                        } else {
+            } else {
                             logMessage += "\n" + data;
                         }
                     }
@@ -736,9 +736,9 @@
             function processFingerprint(progressData) {
                 // Simulate API call to match fingerprint
                 fetch('{{ route("employee.finger-match.api") }}', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                     },
                     body: JSON.stringify({
@@ -748,17 +748,17 @@
                         debug: debugMode.checked,
                         security_level: 2
                     })
-                })
-                .then(response => {
+                    })
+                    .then(response => {
                     clearInterval(progressData.interval);
                     progressData.progressBar.querySelector('.progress-bar').style.width = '100%';
 
                     if (!response.ok) {
                         throw new Error('خطا در ارتباط با سرور');
                     }
-                    return response.json();
-                })
-                .then(data => {
+                        return response.json();
+                    })
+                    .then(data => {
                     log('پاسخ دریافتی از سرور:', data);
 
                     statusMessage.style.display = 'none';
@@ -770,7 +770,7 @@
                         employeeCard.style.display = 'flex';
 
                         // Populate employee information
-                        const employee = data.employee;
+                                const employee = data.employee;
                         employeeName.textContent = employee.name + ' ' + employee.last_name;
                         employeePosition.textContent = employee.position;
                         employeeId.textContent = employee.id;
@@ -797,8 +797,8 @@
 
                         log('تطابقی یافت نشد');
                     }
-                })
-                .catch(error => {
+                    })
+                    .catch(error => {
                     clearInterval(progressData.interval);
                     statusMessage.style.display = 'none';
                     errorMessage.style.display = 'block';

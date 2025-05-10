@@ -8,6 +8,9 @@ use Sq\Card\Livewire\CardDesign;
 use Sq\Card\Livewire\CustomCardDesign;
 use Sq\Card\Models\Contracts\DefaultCardAttribute;
 use Sq\Card\Models\PrintCardFrame;
+use Sq\Card\Http\Controllers\PrintCardReportController;
+use Sq\Card\Http\Controllers\PrintedCardReportController;
+
 // Group for Desining and Printing Cards
 Route::middleware(['auth'])
     ->group(function () {
@@ -85,5 +88,10 @@ Route::middleware(['auth'])
                 $customPaperCard->save();
                 return redirect()->back();
             })->name("custom.paper.card.fix");
+
+        // Printed Cards Report Route
+        Route::middleware('permission:printed-card-view')
+            ->get('reports/printed-cards', [PrintedCardReportController::class, 'index'])
+            ->name('card.reports.printed');
 
     });

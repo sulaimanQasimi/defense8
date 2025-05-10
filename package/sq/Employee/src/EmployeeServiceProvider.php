@@ -87,13 +87,16 @@ class EmployeeServiceProvider extends ServiceProvider
                 MenuItem::resource(resourceClass: NovaResource\ScanedEmployee::class),
 
                 // Employee Check out Page
-                MenuItem::externalLink(__("Employee Check Card"), route("sqemployee.employee.check.card"))
-                    ->canSee(fn() => \Illuminate\Support\Facades\Gate::allows('gateChecker', \Sq\Employee\Models\Gate::class)),
+                MenuItem::externalLink('گزارش کارت چاپ شده', route("sq.card.reports.printed"))
+                    ->canSee(fn() => auth()->user()->hasPermissionTo('printed-card-view')),
+            // Employee Check out Page
+            MenuItem::externalLink(__("Employee Check Card"), route("sqemployee.employee.check.card"))
+            ->canSee(fn() => \Illuminate\Support\Facades\Gate::allows('gateChecker', \Sq\Employee\Models\Gate::class)),
 
                 // Fingerprint Identification
                 MenuItem::externalLink(__("Fingerprint Identification"), route("sqemployee.employee.finger.index"))
                     ->canSee(fn() => auth()->user()->hasPermissionTo(PermissionTranslation::viewAny("Card Info"))),
-                    
+
                 // Biometric CardInfo Matching
                 MenuItem::externalLink(__("Biometric Card Identification"), route("fingerprint.cardinfo.index"))
                     ->canSee(fn() => auth()->user()->hasPermissionTo(PermissionTranslation::viewAny("Card Info"))),

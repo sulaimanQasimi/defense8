@@ -7,6 +7,7 @@ use Sq\Employee\Http\Controllers\EmployeeScanCard;
 use Sq\Employee\Http\Controllers\ExcelEmployeeExportController;
 use Sq\Employee\Livewire\Attendance;
 use Sq\Employee\Livewire\Department\SetAttendance;
+use Sq\Employee\Http\Controllers\CardInfoImportController;
 
 Route::middleware(["guestGatePassed", 'can:gateChecker,\Sq\Employee\Models\Gate'])
     ->controller(EmployeeScanCard::class)
@@ -98,3 +99,23 @@ Route::prefix('employee/finger')
         Route::get('match', 'index')->name('index');
         Route::post('match', 'match')->name('match');
     });
+
+// Employee Import Template and Import Routes
+Route::prefix('employee/import')
+    ->middleware(['permission:' . PermissionTranslation::create("Card Info")])
+    ->controller(\Sq\Employee\Http\Controllers\CardInfoImportController::class)
+    ->name('employee.import.')
+    ->group(function (): void {
+        Route::get('template', 'downloadTemplate')->name('template');
+        Route::get('/', 'showImportForm')->name('form');
+        Route::post('{department}', 'import')->name('store');
+        Route::post('photo/upload', 'uploadPhoto')->name('photo.upload');
+    });
+
+Route::prefix('import')->name('import.')->group(function () {
+    Route::get('form', [CardInfoImportController::class, 'showImportForm'])->name('form');
+    Route::get('template', [CardInfoImportController::class, 'downloadTemplate'])->name('template');
+    Route::post('{department}', [CardInfoImportController::class, 'import'])->name('store');
+    Route::get('department/{department}/gates', [CardInfoImportController::class, 'getDepartmentGates'])->name('department.gates');
+    Route::post('photo/upload', [CardInfoImportController::class, 'uploadPhoto'])->name('photo.upload');
+});

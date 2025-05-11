@@ -120,6 +120,10 @@ class EmployeeServiceProvider extends ServiceProvider
 
                 // Frame of Printable Card Menu Item
 
+                // // Employee Import
+                MenuItem::externalLink(__("Import Employee"), route("sqemployee.employee.import.form"))
+                    ->canSee(fn() => auth()->user()->hasPermissionTo(PermissionTranslation::create("Card Info"))),
+
 
             ])
                 ->collapsable()

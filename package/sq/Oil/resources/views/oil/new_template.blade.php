@@ -732,6 +732,48 @@
         .error-action .btn {
             padding: 0.75rem 2rem;
         }
+
+        /* Oil Type Filter Tabs */
+        .oil-filter-tab {
+            padding: 0.75rem 1.25rem;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.8);
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .oil-filter-tab:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .oil-filter-tab.active {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            box-shadow: var(--shadow);
+        }
+
+        .oil-filter-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(to right, var(--primary-color), transparent);
+        }
+
+        /* All Oil Stats Container */
+        .oil-stats-container {
+            display: none;
+            animation: fadeIn 0.4s ease-out forwards;
+        }
     </style>
 </head>
 
@@ -778,61 +820,188 @@
             </div>
         </div>
 
-        <!-- Oil Balance Section -->
-        <div style="margin-bottom: 2rem;">
-            <h3 style="color: white; font-size: 1.35rem; margin-bottom: 1rem; opacity: 0.9;">موجودی تیل فعلی</h3>
-            <div class="card-grid">
-                <div class="card">
-                    <div class="icon" style="background: linear-gradient(135deg, #3b82f6, #2563eb); color: white;">📊</div>
-                    <span class="card-label">مجموع باقیمانده</span>
-                    <p class="card-value">
+        <!-- Oil Balance Stats -->
+        <h3 style="color: white; font-size: 1.35rem; margin-bottom: 1rem; opacity: 0.9;">موجودی تیل</h3>
+
+        <!-- Oil Type Filter Tabs -->
+        <div style="margin-bottom: 1rem; display: flex; justify-content: center; gap: 1rem;">
+            <button id="all-oil-tab" class="oil-filter-tab active" onclick="showOilStats('all')">
+                مجموع
+            </button>
+            <button id="diesel-tab" class="oil-filter-tab" onclick="showOilStats('diesel')">
+                دیزل
+            </button>
+            <button id="petrol-tab" class="oil-filter-tab" onclick="showOilStats('petrol')">
+                پطرول
+            </button>
+        </div>
+
+        <!-- All Oil Stats -->
+        <div id="all-oil-stats" class="stat-grid oil-stats-container">
+            <div class="stat-card">
+                <div class="stat-icon" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8);">
+                    <span style="font-size: 1.25rem;">⬇️</span>
+                </div>
+                <div class="stat-info">
+                    <span class="stat-label">مجموع واردات</span>
+                    <p class="stat-value">
+                        <span class="data-highlight">{{ $pumpStats['total_income'] }} لیتر</span>
+                    </p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background: linear-gradient(135deg, #ef4444, #b91c1c);">
+                    <span style="font-size: 1.25rem;">⬆️</span>
+                </div>
+                <div class="stat-info">
+                    <span class="stat-label">مجموع توزیع شده</span>
+                    <p class="stat-value">
+                        <span class="data-highlight">{{ $pumpStats['total_distributed'] }} لیتر</span>
+                    </p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background: linear-gradient(135deg, #10b981, #047857);">
+                    <span style="font-size: 1.25rem;">⚖️</span>
+                </div>
+                <div class="stat-info">
+                    <span class="stat-label">باقی مانده</span>
+                    <p class="stat-value">
                         <span class="data-highlight">{{ $pumpStats['remaining_total'] }} لیتر</span>
                     </p>
-                    <span class="card-label">پر شده / توزیع شده</span>
-                    <p class="card-value" style="font-size: 0.9rem;">
-                        <span style="color: var(--success-color);">{{ $pumpStats['total_income'] }} لیتر</span> /
-                        <span style="color: var(--danger-color);">{{ $pumpStats['total_distributed'] }} لیتر</span>
-                    </p>
                 </div>
-                <div class="card card-diesel">
-                    <div class="icon icon-diesel">⛽</div>
-                    <span class="card-label">دیزل باقیمانده</span>
-                    <p class="card-value">
-                        <span class="data-highlight">{{ $pumpStats['remaining_diesel'] }} لیتر</span>
-                    </p>
-                    <span class="card-label">پر شده / توزیع شده</span>
-                    <p class="card-value" style="font-size: 0.9rem;">
-                        <span style="color: var(--success-color);">{{ $pumpStats['total_diesel_income'] }} لیتر</span> /
-                        <span style="color: var(--danger-color);">{{ $pumpStats['total_diesel_distributed'] }} لیتر</span>
-                    </p>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
+                    <span style="font-size: 1.25rem;">⛽</span>
                 </div>
-                <div class="card card-petrol">
-                    <div class="icon icon-petrol">⛽</div>
-                    <span class="card-label">پطرول باقیمانده</span>
-                    <p class="card-value">
-                        <span class="data-highlight">{{ $pumpStats['remaining_petrol'] }} لیتر</span>
-                    </p>
-                    <span class="card-label">پر شده / توزیع شده</span>
-                    <p class="card-value" style="font-size: 0.9rem;">
-                        <span style="color: var(--success-color);">{{ $pumpStats['total_petrol_income'] }} لیتر</span> /
-                        <span style="color: var(--danger-color);">{{ $pumpStats['total_petrol_distributed'] }} لیتر</span>
-                    </p>
-                </div>
-                <div class="card">
-                    <div class="icon" style="background: linear-gradient(135deg, #0891b2, #0e7490); color: white;">📅</div>
-                    <span class="card-label">این ماه</span>
-                    <p class="card-value">
-                        <span class="data-highlight">{{ $pumpStats['current_month_distributed'] }} لیتر</span> استفاده شده
-                    </p>
-                    <span class="card-label">ورودی این ماه</span>
-                    <p class="card-value">
-                        <span style="color: var(--success-color);">{{ $pumpStats['current_month_income'] }} لیتر</span>
+                <div class="stat-info">
+                    <span class="stat-label">مقدار مورد نیاز</span>
+                    <p class="stat-value">
+                        <span class="data-highlight">
+                            @php
+                                $capacity = $pumpStats['capacity'] ?: 0;
+                                $remaining = $pumpStats['remaining_total'];
+                                $needed = $capacity > 0 ? max(0, $capacity - $remaining) : 0;
+                                echo $needed . ' لیتر';
+                            @endphp
+                        </span>
                     </p>
                 </div>
             </div>
         </div>
 
-        <!-- Additional Stats -->
+        <!-- Diesel Oil Stats -->
+        <div id="diesel-oil-stats" class="stat-grid oil-stats-container" style="display: none;">
+            <div class="stat-card">
+                <div class="stat-icon" style="background: linear-gradient(135deg, #b91c1c, #7f1d1d);">
+                    <span style="font-size: 1.25rem;">⬇️</span>
+                </div>
+                <div class="stat-info">
+                    <span class="stat-label">واردات دیزل</span>
+                    <p class="stat-value">
+                        <span class="data-highlight">{{ $pumpStats['total_diesel_income'] }} لیتر</span>
+                    </p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background: linear-gradient(135deg, #b91c1c, #7f1d1d);">
+                    <span style="font-size: 1.25rem;">⬆️</span>
+                </div>
+                <div class="stat-info">
+                    <span class="stat-label">توزیع شده دیزل</span>
+                    <p class="stat-value">
+                        <span class="data-highlight">{{ $pumpStats['total_diesel_distributed'] }} لیتر</span>
+                    </p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background: linear-gradient(135deg, #b91c1c, #7f1d1d);">
+                    <span style="font-size: 1.25rem;">⚖️</span>
+                </div>
+                <div class="stat-info">
+                    <span class="stat-label">باقی مانده دیزل</span>
+                    <p class="stat-value">
+                        <span class="data-highlight">{{ $pumpStats['remaining_diesel'] }} لیتر</span>
+                    </p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background: linear-gradient(135deg, #b91c1c, #7f1d1d);">
+                    <span style="font-size: 1.25rem;">⛽</span>
+                </div>
+                <div class="stat-info">
+                    <span class="stat-label">مقدار مورد نیاز دیزل</span>
+                    <p class="stat-value">
+                        <span class="data-highlight">
+                            @php
+                                $capacity = ($pumpStats['capacity'] ?: 0) / 2; // Half capacity for diesel
+                                $remaining = $pumpStats['remaining_diesel'];
+                                $needed = $capacity > 0 ? max(0, $capacity - $remaining) : 0;
+                                echo $needed . ' لیتر';
+                            @endphp
+                        </span>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Petrol Oil Stats -->
+        <div id="petrol-oil-stats" class="stat-grid oil-stats-container" style="display: none;">
+            <div class="stat-card">
+                <div class="stat-icon" style="background: linear-gradient(135deg, #10b981, #047857);">
+                    <span style="font-size: 1.25rem;">⬇️</span>
+                </div>
+                <div class="stat-info">
+                    <span class="stat-label">واردات پطرول</span>
+                    <p class="stat-value">
+                        <span class="data-highlight">{{ $pumpStats['total_petrol_income'] }} لیتر</span>
+                    </p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background: linear-gradient(135deg, #10b981, #047857);">
+                    <span style="font-size: 1.25rem;">⬆️</span>
+                </div>
+                <div class="stat-info">
+                    <span class="stat-label">توزیع شده پطرول</span>
+                    <p class="stat-value">
+                        <span class="data-highlight">{{ $pumpStats['total_petrol_distributed'] }} لیتر</span>
+                    </p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background: linear-gradient(135deg, #10b981, #047857);">
+                    <span style="font-size: 1.25rem;">⚖️</span>
+                </div>
+                <div class="stat-info">
+                    <span class="stat-label">باقی مانده پطرول</span>
+                    <p class="stat-value">
+                        <span class="data-highlight">{{ $pumpStats['remaining_petrol'] }} لیتر</span>
+                    </p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background: linear-gradient(135deg, #10b981, #047857);">
+                    <span style="font-size: 1.25rem;">⛽</span>
+                </div>
+                <div class="stat-info">
+                    <span class="stat-label">مقدار مورد نیاز پطرول</span>
+                    <p class="stat-value">
+                        <span class="data-highlight">
+                            @php
+                                $capacity = ($pumpStats['capacity'] ?: 0) / 2; // Half capacity for petrol
+                                $remaining = $pumpStats['remaining_petrol'];
+                                $needed = $capacity > 0 ? max(0, $capacity - $remaining) : 0;
+                                echo $needed . ' لیتر';
+                            @endphp
+                        </span>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Activity Stats -->
         <h3 style="color: white; font-size: 1.35rem; margin-bottom: 1rem; opacity: 0.9;">فعالیت توزیع</h3>
         <div class="stat-grid">
             <div class="stat-card">
@@ -1064,8 +1233,39 @@
     <div id="success-alert" class="alert alert-success"></div>
 
     <script>
-        // Pure JavaScript for alert messages
+        // JavaScript for Oil Type Filter Tabs
+        function showOilStats(type) {
+            // Hide all oil stats containers
+            const oilStatsContainers = document.querySelectorAll('.oil-stats-container');
+            oilStatsContainers.forEach(container => {
+                container.style.display = 'none';
+            });
+
+            // Remove active class from all tabs
+            const tabs = document.querySelectorAll('.oil-filter-tab');
+            tabs.forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            // Show the selected oil stats container
+            const selectedStats = document.getElementById(`${type}-oil-stats`);
+            if (selectedStats) {
+                selectedStats.style.display = 'grid';
+            }
+
+            // Add active class to selected tab
+            const selectedTab = document.getElementById(`${type}-tab`);
+            if (selectedTab) {
+                selectedTab.classList.add('active');
+            }
+        }
+
+        // Document ready function
         document.addEventListener('DOMContentLoaded', function() {
+            // Show initial statistics (all)
+            showOilStats('all');
+
+            // Handle alert messages
             @if(session('error'))
                 const errorAlert = document.getElementById('error-alert');
                 errorAlert.textContent = "{{ session('error') }}";

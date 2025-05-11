@@ -26,13 +26,13 @@ class OilDistribution extends Dashboard
      *
      * @return string
      */
-
     public function uriKey()
     {
         return 'oil-distribution';
     }
+
     public function name()
     {
-        return trans("Dashboard");
+        return trans("توزیع تیل");
     }
 }

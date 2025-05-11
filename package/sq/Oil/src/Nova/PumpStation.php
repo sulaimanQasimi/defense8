@@ -16,6 +16,8 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 use Sq\Query\SqNovaNumberFilter;
 use Sq\Query\SqNovaSelectFilter;
 use Sq\Query\SqNovaTextFilter;
+use Sq\Oil\Nova\PumpStationMetric;
+use Vehical\OilType;
 
 class PumpStation extends Resource
 {
@@ -123,9 +125,79 @@ class PumpStation extends Resource
      * @return array
      */
     public function cards(NovaRequest $request)
-    {
-        return [];
-    }
+    {       return [
+                // Total Oil Metrics
+                (new PumpStationMetric('income', $request->resourceId))
+                    ->width('1/4')
+                    ->icon('fas fa-arrow-down')
+                    ->help('مجموع واردات تیل به این پمپ استیشن'),
+
+                (new PumpStationMetric('distributed', $request->resourceId))
+                    ->width('1/4')
+                    ->icon('fas fa-arrow-up')
+                    ->help('مجموع تیل توزیع شده از این پمپ استیشن'),
+
+                (new PumpStationMetric('remaining', $request->resourceId))
+                    ->width('1/4')
+                    ->icon('fas fa-balance-scale')
+                    ->help('مقدار تیل باقی مانده در این پمپ استیشن'),
+
+                (new PumpStationMetric('needed', $request->resourceId))
+                    ->width('1/4')
+                    ->icon('fas fa-gas-pump')
+                    ->help('مقدار تیل مورد نیاز بر اساس ظرفیت پمپ استیشن'),
+
+                // Diesel-specific Metrics
+                (new PumpStationMetric('income', $request->resourceId, OilType::Diesel))
+                    ->width('1/4')
+                    ->icon('fas fa-arrow-down')
+                    ->help('مجموع واردات دیزل به این پمپ استیشن')
+                    ->onlyOnDetail(),
+
+                (new PumpStationMetric('distributed', $request->resourceId, OilType::Diesel))
+                    ->width('1/4')
+                    ->icon('fas fa-arrow-up')
+                    ->help('مجموع دیزل توزیع شده از این پمپ استیشن')
+                    ->onlyOnDetail(),
+
+                (new PumpStationMetric('remaining', $request->resourceId, OilType::Diesel))
+                    ->width('1/4')
+                    ->icon('fas fa-balance-scale')
+                    ->help('مقدار دیزل باقی مانده در این پمپ استیشن')
+                    ->onlyOnDetail(),
+
+                (new PumpStationMetric('needed', $request->resourceId, OilType::Diesel))
+                    ->width('1/4')
+                    ->icon('fas fa-gas-pump')
+                    ->help('مقدار دیزل مورد نیاز بر اساس ظرفیت پمپ استیشن')
+                    ->onlyOnDetail(),
+
+                // Petrol-specific Metrics
+                (new PumpStationMetric('income', $request->resourceId, OilType::Petrole))
+                    ->width('1/4')
+                    ->icon('fas fa-arrow-down')
+                    ->help('مجموع واردات پطرول به این پمپ استیشن')
+                    ->onlyOnDetail(),
+
+                (new PumpStationMetric('distributed', $request->resourceId, OilType::Petrole))
+                    ->width('1/4')
+                    ->icon('fas fa-arrow-up')
+                    ->help('مجموع پطرول توزیع شده از این پمپ استیشن')
+                    ->onlyOnDetail(),
+
+                (new PumpStationMetric('remaining', $request->resourceId, OilType::Petrole))
+                    ->width('1/4')
+                    ->icon('fas fa-balance-scale')
+                    ->help('مقدار پطرول باقی مانده در این پمپ استیشن')
+                    ->onlyOnDetail(),
+
+                (new PumpStationMetric('needed', $request->resourceId, OilType::Petrole))
+                    ->width('1/4')
+                    ->icon('fas fa-gas-pump')
+                    ->help('مقدار پطرول مورد نیاز بر اساس ظرفیت پمپ استیشن')
+                    ->onlyOnDetail(),
+            ];
+        }
 
     /**
      * Get the filters available for the resource.

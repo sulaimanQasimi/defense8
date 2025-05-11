@@ -193,13 +193,7 @@
         </div>
         <div class="leftside bg-white rounded-lg shadow-md relative">
             <img style="height: 400px" class="rounded-lg block" src="{{ asset("storage/{$employee->photo}") }}" />
-            @can('update', \Sq\Employee\Models\CardInfo::class)
-            <div class="mt-2 text-center">
-                <a href="{{ route('employee.biodata.show', $employee->id) }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                    بایومتریک معلومات
-                </a>
-            </div>
-            @endcan
+          
             @if($state)
                 <div
                     class="absolute top-0 left-0 w-full h-full flex flex-col items-center justify-center bg-black bg-opacity-50">

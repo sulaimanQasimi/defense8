@@ -6,20 +6,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ config('app.name') }}</title>
 
-    <!-- CSS Assets -->
-    <link rel="stylesheet" href="{{ asset('build/assets/app.css') }}" />
-
     <style>
         @font-face {
             font-family: "persian-font";
-            /* This is the name you will use to reference the custom font */
             src: url("/mod_font.ttf") format("truetype");
-            /* Specify the path to your font file */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         body {
-            font-family: 'persian-font';
-            /* Change 'Arial' to the desired font family */
+            font-family: 'persian-font', Arial, sans-serif;
+            background: linear-gradient(to bottom, #ebf3ff, #dae8ff);
+            padding: 10px 20px;
         }
 
         ::-webkit-scrollbar {
@@ -32,53 +34,133 @@
         }
 
         ::-webkit-scrollbar-track {
-            background-color: hsl(0, 0%, 100%);
+            background-color: #ffffff;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(to right, #6c64ff, #0095ff);
+            padding: 16px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .print-btn, .home-btn {
+            display: inline-block;
+            margin: 0 12px;
+            padding: 8px 28px;
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+        }
+
+        .print-btn {
+            background: linear-gradient(to top, #22c55e, #16a34a);
+        }
+
+        .home-btn {
+            background: linear-gradient(to top, #5046e5, #6366f1);
+            transition: transform 0.2s;
+        }
+
+        .home-btn:hover {
+            transform: scale(0.95);
+        }
+
+        form {
+            display: flex;
+            align-items: center;
+        }
+
+        input[type="text"] {
+            border: 1px solid #d1d5db;
+            text-align: center;
+            padding: 8px;
+            border-radius: 6px 0 0 6px;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: transparent;
+            box-shadow: 0 0 0 2px #FF6F61;
+        }
+
+        .content-container {
+            padding: 8px 4px;
+        }
+
+        .content-wrapper {
+            width: auto;
+        }
+
+        @media (min-width: 640px) {
+            .content-wrapper {
+                padding: 0 24px;
+            }
+        }
+
+        .content-inner {
+            padding: 8px;
+        }
+
+        @media (min-width: 768px) {
+            .content-inner {
+                padding: 8px 32px;
+            }
+        }
+
+        @media (min-width: 1280px) {
+            .content-inner {
+                padding: 8px 40px;
+            }
         }
     </style>
 </head>
 
-<body class="bg-gradient-to-b from-blue-50 to-blue-100 px-5 pt-2">
+<body>
     <!-- Header -->
-    <header
-        class="flex justify-between items-center bg-gradient-to-r from-[#6c64ff] to-[#0095ff] p-4 rounded-lg shadow-lg">
+    <header>
         <div>
-
             @if ($guest)
-                <a class="mx-3 px-7  pt-2 bg-gradient-to-t from-green-600 to-green-700 text-white rounded-lg"
-                    href="{{ route('sqguest.guest.generate', $guest) }}">
+                <a class="print-btn" href="{{ route('sqguest.guest.generate', $guest) }}">
                     @lang('Print')
                 </a>
             @elseif($patient)
-                <a class="mx-3 px-7  pt-2 bg-gradient-to-t from-green-600 to-green-700 text-white rounded-lg"
-                    href="{{ route('sqguest.patient.generate', $patient) }}">
+                <a class="print-btn" href="{{ route('sqguest.patient.generate', $patient) }}">
                     @lang('Print')
                 </a>
             @else
-                <a href="/"
-                    class="px-7 rounded-lg hover:scale-95 py-2 text-white bg-gradient-to-t from-indigo-600 to-indigo-500"
-                    style="">
+                <a href="/" class="home-btn">
                     @lang('Home')
                 </a>
             @endif
         </div>
-        <h1 class="text-white text-2xl font-bold">د ملی دفاع وزارت</h1>
+        <h1>د ملی دفاع وزارت</h1>
 
-        <form action="" class="flex items-center">
-            <input name="code" autofocus type="text" id="scanner" dir="ltr" placeholder="د کارت نمبر"
-                class="border text-center border-gray-300 p-2 rounded-l-md focus:outline-none focus:ring-2 focus:ring-[#FF6F61] focus:border-transparent"
-                required />
+        <form action="">
+            <input name="code" autofocus type="text" id="scanner" dir="ltr" placeholder="د کارت نمبر" required />
         </form>
     </header>
 
-    <div class="px-2 py-1">
-        <div class="sm:px-6 w-auto">
-            <div class="py-2 md:py-2 px-2 md:px-8 xl:px-10">
+    <div class="content-container">
+        <div class="content-wrapper">
+            <div class="content-inner">
                 @includeWhen($employee, 'sqemployee::employee.employee')
                 @includeWhen($guest, 'sqemployee::employee.guest')
                 @includeWhen($patient, 'sqemployee::employee.patient')
             </div>
         </div>
     </div>
+
     @unless ($guest)
         <script>
             const field = document.getElementById('scanner');
@@ -91,11 +173,7 @@
 
             field.focus()
         </script>
-
     @endunless
-
-    <!-- JavaScript Assets -->
-    <script src="{{ asset('build/assets/app.js') }}" defer></script>
 </body>
 
 </html>

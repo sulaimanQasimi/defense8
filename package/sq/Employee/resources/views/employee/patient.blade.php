@@ -1,15 +1,392 @@
-<div class="min-h-screen bg-pink-100 bg-gradient-to-r from-pink-100 via-purple-100 to-indigo-100 py-12" dir="rtl">
+<style>
+    /* Core styles */
+    .patient-container {
+        min-height: 100vh;
+        background: linear-gradient(to right, #f9e4f0, #e8e4fc, #e0ebff);
+        padding: 3rem 0;
+        direction: rtl;
+        font-family: 'persian-font', Arial, sans-serif;
+    }
+
+    /* Alert styles */
+    .error-alert {
+        max-width: 48rem;
+        margin: 0 auto;
+        background-color: #fef2f2;
+        border-left: 4px solid #ef4444;
+        color: #b91c1c;
+        padding: 1rem 1.5rem;
+        border-radius: 0.5rem;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.8; }
+    }
+
+    .alert-content {
+        display: flex;
+        align-items: center;
+    }
+
+    .alert-icon {
+        flex-shrink: 0;
+    }
+
+    .alert-icon svg {
+        height: 1.5rem;
+        width: 1.5rem;
+        color: #ef4444;
+    }
+
+    .alert-message {
+        margin-left: 0.75rem;
+    }
+
+    .alert-text {
+        font-size: 0.875rem;
+        font-weight: 500;
+    }
+
+    .alert-text strong {
+        font-weight: 700;
+    }
+
+    /* Card styles */
+    .patient-card {
+        max-width: 64rem;
+        margin: 0 auto;
+        background-color: white;
+        border-radius: 1.5rem;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        overflow: hidden;
+        transition: all 0.3s;
+        border: 1px solid #e9d5ff;
+    }
+
+    .patient-card:hover {
+        box-shadow: 0 35px 60px -15px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Header styles */
+    .card-header {
+        background: linear-gradient(to right, #ec4899, #a855f7, #6366f1);
+        color: white;
+        padding: 2rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .header-circle-1 {
+        position: absolute;
+        top: -3rem;
+        right: -3rem;
+        width: 10rem;
+        height: 10rem;
+        background-color: white;
+        opacity: 0.1;
+        border-radius: 50%;
+    }
+
+    .header-circle-2 {
+        position: absolute;
+        bottom: -3rem;
+        left: -3rem;
+        width: 10rem;
+        height: 10rem;
+        background-color: white;
+        opacity: 0.1;
+        border-radius: 50%;
+    }
+
+    .header-content {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .header-icon {
+        height: 2.5rem;
+        width: 2.5rem;
+        margin-right: 1rem;
+        color: #f9a8d4;
+    }
+
+    .header-title {
+        font-size: 1.875rem;
+        font-weight: 700;
+        text-align: center;
+    }
+
+    /* Content styles */
+    .card-content {
+        padding: 2rem;
+        background: linear-gradient(to bottom, white, #f5f3ff);
+    }
+
+    .content-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    @media (min-width: 768px) {
+        .content-grid {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+
+    /* Info panels */
+    .info-panel {
+        padding: 1.5rem;
+        border-radius: 1rem;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        border: 1px solid;
+        transform: translateY(0);
+        transition: all 0.3s;
+    }
+
+    .info-panel:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.15);
+    }
+
+    .personal-info {
+        background: linear-gradient(to bottom right, #eff6ff, #e0e7ff);
+        border-color: #bfdbfe;
+    }
+
+    .medical-info {
+        background: linear-gradient(to bottom right, #fdf2f8, #f5f3ff);
+        border-color: #fbcfe8;
+    }
+
+    .panel-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1rem;
+    }
+
+    .panel-icon {
+        height: 1.5rem;
+        width: 1.5rem;
+        margin-right: 0.5rem;
+    }
+
+    .personal-icon {
+        color: #3b82f6;
+    }
+
+    .medical-icon {
+        color: #ec4899;
+    }
+
+    .panel-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid;
+    }
+
+    .personal-title {
+        color: #1e40af;
+        border-color: #93c5fd;
+    }
+
+    .medical-title {
+        color: #be185d;
+        border-color: #f9a8d4;
+    }
+
+    /* Info rows */
+    .info-row {
+        display: flex;
+        align-items: center;
+        background-color: white;
+        padding: 0.75rem;
+        border-radius: 0.5rem;
+        margin-bottom: 1rem;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    }
+
+    .row-icon {
+        height: 1.25rem;
+        width: 1.25rem;
+        margin-right: 0.75rem;
+    }
+
+    .personal-row-icon {
+        color: #3b82f6;
+    }
+
+    .medical-row-icon {
+        color: #ec4899;
+    }
+
+    .row-label {
+        font-weight: 700;
+        min-width: 6rem;
+        margin-right: 0.75rem;
+    }
+
+    .personal-label {
+        color: #1e40af;
+    }
+
+    .medical-label {
+        color: #be185d;
+    }
+
+    .row-value {
+        color: #374151;
+        font-weight: 500;
+    }
+
+    /* Status badges */
+    .status-badge {
+        padding: 0.375rem 1rem;
+        font-size: 0.875rem;
+        font-weight: 700;
+        border-radius: 9999px;
+    }
+
+    .status-expired {
+        background-color: #fee2e2;
+        color: #991b1b;
+        border: 2px solid #fecaca;
+    }
+
+    .status-active {
+        background-color: #dcfce7;
+        color: #166534;
+        border: 2px solid #bbf7d0;
+    }
+
+    .status-inactive {
+        background-color: #fee2e2;
+        color: #991b1b;
+        border: 2px solid #fecaca;
+    }
+
+    /* Action buttons */
+    .action-container {
+        margin-top: 2rem;
+        text-align: center;
+    }
+
+    .action-row {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+
+    .btn {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        font-weight: 700;
+        color: white;
+        padding: 0.75rem 1.5rem;
+        border-radius: 9999px;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s;
+        overflow: hidden;
+        border: none;
+        cursor: pointer;
+    }
+
+    .btn:hover {
+        transform: scale(1.05);
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn:focus {
+        outline: none;
+        box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.5);
+    }
+
+    .btn-enter {
+        background: linear-gradient(to right, #ec4899, #8b5cf6, #6366f1);
+    }
+
+    .btn-exit {
+        background: linear-gradient(to right, #f97316, #f59e0b, #eab308);
+    }
+
+    .btn-shine {
+        position: absolute;
+        right: 0;
+        width: 3rem;
+        height: 100%;
+        background-color: white;
+        opacity: 0.1;
+        transform: skewX(-12deg);
+        transition: transform 0.7s;
+    }
+
+    .btn:hover .btn-shine {
+        transform: translateX(12rem) skewX(-12deg);
+    }
+
+    .btn-icon {
+        height: 1.5rem;
+        width: 1.5rem;
+        margin-right: 0.5rem;
+    }
+
+    /* Notification boxes */
+    .notification {
+        padding: 1rem;
+        border-radius: 0.5rem;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        display: flex;
+        align-items: center;
+        margin-bottom: 1.5rem;
+    }
+
+    .notification-icon {
+        height: 1.5rem;
+        width: 1.5rem;
+        margin-right: 0.5rem;
+    }
+
+    .notification-warning {
+        background-color: #fef3c7;
+        border-left: 4px solid #f59e0b;
+        color: #92400e;
+    }
+
+    .notification-error {
+        background-color: #fee2e2;
+        border-left: 4px solid #ef4444;
+        color: #b91c1c;
+    }
+
+    .notification-warning .notification-icon {
+        color: #f59e0b;
+    }
+
+    .notification-error .notification-icon {
+        color: #ef4444;
+    }
+</style>
+
+<div class="patient-container">
     @if($patient->status === 'inactive' || ($patient->ended_at && $patient->ended_at < now()))
-        <div class="max-w-3xl mx-auto bg-red-50 border-l-4 border-red-500 text-red-700 px-6 py-4 rounded-lg shadow-sm animate-pulse" role="alert">
-            <div class="flex items-center">
-                <div class="flex-shrink-0">
-                    <svg class="h-6 w-6 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+        <div class="error-alert">
+            <div class="alert-content">
+                <div class="alert-icon">
+                    <svg fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
                     </svg>
                 </div>
-                <div class="ml-3">
-                    <p class="text-sm font-medium">
-                        <strong class="font-bold">خطا!</strong>
+                <div class="alert-message">
+                    <p class="alert-text">
+                        <strong>خطا!</strong>
                         <span class="mr-2">
                             @if($patient->ended_at && $patient->ended_at < now())
                                 این توکن منقضی شده است
@@ -22,185 +399,193 @@
             </div>
         </div>
     @else
-        <div class="max-w-4xl mx-auto bg-white rounded-3xl shadow-2xl overflow-hidden transition-all duration-300 hover:shadow-2xl border border-purple-100">
-            <!-- Header -->
-            <div class="bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 text-white px-8 py-8 relative overflow-hidden">
-                <div class="absolute -right-12 -top-12 w-40 h-40 bg-white opacity-10 rounded-full"></div>
-                <div class="absolute -left-12 -bottom-12 w-40 h-40 bg-white opacity-10 rounded-full"></div>
-                <div class="relative flex items-center justify-center">
-                    <svg class="h-10 w-10 mr-4 text-pink-200" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 005 10a1 1 0 10-2 0c0 3.313 2.686 6 6 6 3.313 0 6-2.687 6-6a1 1 0 10-2 0c0 .686-.108 1.35-.309 1.973A5 5 0 0010 11z" clip-rule="evenodd"/>
+        <div class="patient-card">
+            <div class="card-header">
+                <div class="header-circle-1"></div>
+                <div class="header-circle-2"></div>
+                <div class="header-content">
+                    <svg class="header-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                     </svg>
-                    <h1 class="text-3xl font-bold text-center">@lang('معلومات مریض')</h1>
+                    <h1 class="header-title">اطلاعات بیمار</h1>
                 </div>
             </div>
 
-            <!-- Content -->
-            <div class="p-8 bg-gradient-to-b from-white to-purple-50">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <!-- Patient Basic Info -->
-                    <div class="space-y-5 bg-gradient-to-br from-blue-50 to-indigo-100 p-6 rounded-2xl shadow-md border border-blue-200 transform transition-all duration-300 hover:scale-105">
-                        <div class="flex items-center mb-4">
-                            <svg class="h-6 w-6 text-blue-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
-                                <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd" />
+            <div class="card-content">
+                <div class="content-grid">
+                    <!-- Personal Information Panel -->
+                    <div class="info-panel personal-info">
+                        <div class="panel-header">
+                            <svg class="panel-icon personal-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                             </svg>
-                            <h2 class="text-xl font-semibold text-blue-700 border-b-2 border-blue-300 pb-2">@lang('معلومات شخصی')</h2>
+                            <h2 class="panel-title personal-title">اطلاعات شخصی</h2>
                         </div>
-                        <div class="flex items-center space-x-3 space-x-reverse bg-white p-3 rounded-lg shadow-sm">
-                            <svg class="h-5 w-5 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+
+                        <div class="info-row">
+                            <svg class="row-icon personal-row-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
-                            <span class="font-bold text-blue-700 min-w-24">@lang('Name'):</span>
-                            <span class="text-gray-700 font-medium">{{ $patient->name }}</span>
+                            <div class="row-label personal-label">نام:</div>
+                            <div class="row-value">{{ $patient->name }}</div>
                         </div>
-                        <div class="flex items-center space-x-3 space-x-reverse bg-white p-3 rounded-lg shadow-sm">
-                            <svg class="h-5 w-5 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
+
+                        <div class="info-row">
+                            <svg class="row-icon personal-row-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
                             </svg>
-                            <span class="font-bold text-blue-700 min-w-24">@lang('Last Name'):</span>
-                            <span class="text-gray-700 font-medium">{{ $patient->last_name }}</span>
+                            <div class="row-label personal-label">نام خانوادگی:</div>
+                            <div class="row-value">{{ $patient->lastname }}</div>
                         </div>
-                        <div class="flex items-center space-x-3 space-x-reverse bg-white p-3 rounded-lg shadow-sm">
-                            <svg class="h-5 w-5 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+
+                        <div class="info-row">
+                            <svg class="row-icon personal-row-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                             </svg>
-                            <span class="font-bold text-blue-700 min-w-24">@lang('Phone'):</span>
-                            <span class="text-gray-700 font-medium">{{ $patient->phone }}</span>
+                            <div class="row-label personal-label">شماره تماس:</div>
+                            <div class="row-value">{{ $patient->phone }}</div>
                         </div>
-                        <div class="flex items-center space-x-3 space-x-reverse bg-white p-3 rounded-lg shadow-sm">
-                            <svg class="h-5 w-5 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 01-1 1h-2a1 1 0 01-1-1v-2a1 1 0 00-1-1H7a1 1 0 00-1 1v2a1 1 0 01-1 1H3a1 1 0 01-1-1V4zm3 1h2v2H7V5zm2 4H7v2h2V9zm2-4h2v2h-2V5zm2 4h-2v2h2V9z" clip-rule="evenodd" />
+
+                        <div class="info-row">
+                            <svg class="row-icon personal-row-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                             </svg>
-                            <span class="font-bold text-blue-700 min-w-24">@lang('بخش'):</span>
-                            <span class="text-gray-700 font-medium">{{ $patient->department }}</span>
+                            <div class="row-label personal-label">کد ملی:</div>
+                            <div class="row-value">{{ $patient->national_code }}</div>
+                        </div>
+
+                        <div class="info-row">
+                            <svg class="row-icon personal-row-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                            <div class="row-label personal-label">تاریخ تولد:</div>
+                            <div class="row-value">{{ $patient->dob }}</div>
+                        </div>
+
+                        <div class="info-row">
+                            <svg class="row-icon personal-row-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <div class="row-label personal-label">وضعیت:</div>
+                            <div class="row-value">
+                                <span class="status-badge @if($patient->ended_at && $patient->ended_at < now()) status-expired @elseif($patient->status === 'active') status-active @else status-inactive @endif">
+                                    @if($patient->ended_at && $patient->ended_at < now())
+                                        منقضی شده
+                                    @elseif($patient->status === 'active')
+                                        فعال
+                                    @else
+                                        غیرفعال
+                                    @endif
+                                </span>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Medical Info -->
-                    <div class="space-y-5 bg-gradient-to-br from-pink-50 to-purple-100 p-6 rounded-2xl shadow-md border border-pink-200 transform transition-all duration-300 hover:scale-105">
-                        <div class="flex items-center mb-4">
-                            <svg class="h-6 w-6 text-pink-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd" />
+                    <!-- Medical Information Panel -->
+                    <div class="info-panel medical-info">
+                        <div class="panel-header">
+                            <svg class="panel-icon medical-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
                             </svg>
-                            <h2 class="text-xl font-semibold text-pink-700 border-b-2 border-pink-300 pb-2">@lang('معلومات طبی')</h2>
+                            <h2 class="panel-title medical-title">اطلاعات پزشکی</h2>
                         </div>
-                        <div class="flex items-center space-x-3 space-x-reverse bg-white p-3 rounded-lg shadow-sm">
-                            <svg class="h-5 w-5 text-pink-500" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z" />
+
+                        <div class="info-row">
+                            <svg class="row-icon medical-row-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                             </svg>
-                            <span class="font-bold text-pink-700 min-w-24">@lang('Department'):</span>
-                            <span class="text-gray-700 font-medium">{{ $patient->host->department?->fa_name }}</span>
+                            <div class="row-label medical-label">بخش:</div>
+                            <div class="row-value">{{ $patient->department->name ?? 'بدون بخش' }}</div>
                         </div>
-                        <div class="flex items-center space-x-3 space-x-reverse bg-white p-3 rounded-lg shadow-sm">
-                            <svg class="h-5 w-5 text-pink-500" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd" />
+
+                        <div class="info-row">
+                            <svg class="row-icon medical-row-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
-                            <span class="font-bold text-pink-700 min-w-24">@lang('داکتر'):</span>
-                            <span class="text-gray-700 font-medium">{{ $patient->doctor_name }}</span>
+                            <div class="row-label medical-label">دکتر:</div>
+                            <div class="row-value">{{ $patient->doctor->name ?? 'نامشخص' }}</div>
                         </div>
-                        <div class="flex items-center space-x-3 space-x-reverse bg-white p-3 rounded-lg shadow-sm">
-                            <svg class="h-5 w-5 text-pink-500" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+
+                        <div class="info-row">
+                            <svg class="row-icon medical-row-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14" />
                             </svg>
-                            <span class="font-bold text-pink-700 min-w-24">@lang('Status'):</span>
-                            <span class="px-4 py-1.5 text-sm font-bold rounded-full
-                            @if($patient->ended_at && $patient->ended_at < now())
-                                bg-red-100 text-red-800 ring-2 ring-red-300
-                            @elseif($patient->status === 'active')
-                                bg-green-100 text-green-800 ring-2 ring-green-300
-                            @else
-                                bg-red-100 text-red-800 ring-2 ring-red-300
-                            @endif">
-                                @if($patient->ended_at && $patient->ended_at < now())
-                                    Expired
-                                @else
-                                    {{ $patient->status }}
-                                @endif
-                            </span>
+                            <div class="row-label medical-label">شماره توکن:</div>
+                            <div class="row-value">{{ $patient->token }}</div>
                         </div>
-                        <div class="flex items-center space-x-3 space-x-reverse bg-white p-3 rounded-lg shadow-sm">
-                            <svg class="h-5 w-5 text-pink-500" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd" />
+
+                        <div class="info-row">
+                            <svg class="row-icon medical-row-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                             </svg>
-                            <span class="font-bold text-pink-700 min-w-24">@lang('تاریخ مراجعه'):</span>
-                            <span class="text-gray-700 font-medium">{{ \Verta::instance($patient->registered_at)->format('Y/m/d H:i') }}</span>
+                            <div class="row-label medical-label">تاریخ شروع:</div>
+                            <div class="row-value">{{ $patient->started_at }}</div>
                         </div>
-                        <div class="flex items-center space-x-3 space-x-reverse bg-white p-3 rounded-lg shadow-sm">
-                            <svg class="h-5 w-5 text-pink-500" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd" />
+
+                        <div class="info-row">
+                            <svg class="row-icon medical-row-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                             </svg>
-                            <span class="font-bold text-pink-700 min-w-24">@lang('تاریخ پایان'):</span>
-                            <span class="text-gray-700 font-medium">
-                                @if($patient->ended_at)
-                                    @if($patient->ended_at < now())
-                                        <span class="px-3 py-1 text-sm font-bold rounded-full bg-red-100 text-red-800 ring-2 ring-red-300">
-                                            Token منقضی شده است
-                                        </span>
-                                    @else
-                                        {{ \Verta::instance($patient->ended_at)->format('Y/m/d H:i') }}
-                                    @endif
-                                @else
-                                    -
-                                @endif
-                            </span>
+                            <div class="row-label medical-label">تاریخ پایان:</div>
+                            <div class="row-value">{{ $patient->ended_at ?? 'نامحدود' }}</div>
+                        </div>
+
+                        <div class="info-row">
+                            <svg class="row-icon medical-row-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                            </svg>
+                            <div class="row-label medical-label">آخرین بازدید:</div>
+                            <div class="row-value">{{ $patient->lastVisit ? $patient->lastVisit->created_at : 'بدون بازدید' }}</div>
                         </div>
                     </div>
                 </div>
 
-                <div class="mt-12 text-center">
-                    @if(!($patient->ended_at && $patient->ended_at < now()))
-                    <div class="flex justify-center space-x-4">
-                        @if(auth()->user()->gate)
-                            @if(!$patient->gate_id || $patient->gate_id == auth()->user()->gate_id)
-                            <form action="{{ route('sqguest.guest.patients.deactivate', $patient) }}" method="POST" class="inline">
+                <!-- Action Buttons Section -->
+                <div class="action-container">
+                    @if($patient->status === 'active' && (!$patient->ended_at || $patient->ended_at > now()))
+                        <div class="action-row">
+                            <form action="{{ route('employee.patient.enterExit', $patient->id) }}" method="POST">
                                 @csrf
-                                @method('POST')
-                                <button type="submit" class="group relative inline-flex items-center bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 text-white font-bold px-10 py-4 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-purple-500 focus:ring-opacity-50 overflow-hidden">
-                                    <span class="absolute right-0 w-12 h-full bg-white opacity-10 transform -skew-x-12 transition-transform duration-700 group-hover:translate-x-20"></span>
-                                    <svg class="h-6 w-6 mr-2 text-pink-200" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clip-rule="evenodd" />
+                                <input type="hidden" name="type" value="enter">
+                                <button type="submit" class="btn btn-enter">
+                                    <div class="btn-shine"></div>
+                                    <svg class="btn-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
                                     </svg>
-                                    @lang('داخل شد')
+                                    ورود
                                 </button>
                             </form>
-                            @endif
-
-                            @if($patient->status === 'inactive' && $patient->gate_id == auth()->user()->gate_id && !($patient->ended_at && $patient->ended_at < now()))
-                            <form action="{{ route('sqguest.guest.patients.exit', $patient) }}" method="POST" class="inline">
+                            <form action="{{ route('employee.patient.enterExit', $patient->id) }}" method="POST">
                                 @csrf
-                                @method('POST')
-                                <button type="submit" class="group relative inline-flex items-center bg-gradient-to-r from-orange-500 via-amber-500 to-yellow-500 text-white font-bold px-10 py-4 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-amber-500 focus:ring-opacity-50 overflow-hidden">
-                                    <span class="absolute right-0 w-12 h-full bg-white opacity-10 transform -skew-x-12 transition-transform duration-700 group-hover:translate-x-20"></span>
-                                    <svg class="h-6 w-6 mr-2 text-yellow-200" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M17 10a1 1 0 01-1 1H5.414l2.293 2.293a1 1 0 11-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L5.414 9H16a1 1 0 011 1z" clip-rule="evenodd" />
+                                <input type="hidden" name="type" value="exit">
+                                <button type="submit" class="btn btn-exit">
+                                    <div class="btn-shine"></div>
+                                    <svg class="btn-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                                     </svg>
-                                    @lang('خارج شد')
+                                    خروج
                                 </button>
                             </form>
-                            @endif
+                        </div>
 
-                            @if($patient->gate_id && $patient->gate_id != auth()->user()->gate_id)
-                            <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 rounded shadow-md">
-                                <div class="flex items-center">
-                                    <svg class="h-6 w-6 text-yellow-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                                    </svg>
-                                    <p>@lang('این مریض به دروازه دیگری اختصاص داده شده است.')</p>
-                                </div>
-                            </div>
-                            @endif
-                        @else
-                            <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded shadow-md">
-                                <div class="flex items-center">
-                                    <svg class="h-6 w-6 text-red-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                                    </svg>
-                                    <p>@lang('شما باید به یک دروازه اختصاص داده شوید برای استفاده از این عملکرد.')</p>
-                                </div>
+                        <!-- Notifications Section -->
+                        @if(count($notices))
+                            <div style="margin-top: 2rem;">
+                                @foreach($notices as $notice)
+                                    <div class="notification @if($notice->type == 'warning') notification-warning @else notification-error @endif">
+                                        <svg class="notification-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            @if($notice->type == 'warning')
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                            @else
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            @endif
+                                        </svg>
+                                        <div>{{ $notice->title }}: {{ $notice->description }}</div>
+                                    </div>
+                                @endforeach
                             </div>
                         @endif
-                    </div>
                     @endif
                 </div>
             </div>

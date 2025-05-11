@@ -12,21 +12,25 @@
 
 <style>
     .employee-container {
-        margin-top: 1rem;
+        margin-top: 1.5rem;
         direction: rtl;
+        font-family: 'persian-font', Arial, sans-serif;
     }
 
     .employee-card {
-        margin-top: 1.25rem;
+        margin-top: 1.5rem;
         border: 4px solid white;
-        border-radius: 0.5rem;
-        padding: 1.25rem;
-        box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.3);
+        border-radius: 1rem;
+        padding: 1.5rem;
+        background: linear-gradient(145deg, #f0f4ff, #ffffff);
+        box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.2),
+                    0 8px 10px -6px rgba(59, 130, 246, 0.1);
+        transition: transform 0.3s ease;
     }
 
     .grid-layout {
         display: grid;
-        gap: 0.5rem;
+        gap: 1rem;
     }
 
     @media (min-width: 768px) {
@@ -42,78 +46,128 @@
     }
 
     .rightside {
-        background-color: #f3f4f6;
-        padding: 1rem;
-        border-radius: 0.5rem;
-        border: 1px solid white;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        background: linear-gradient(to bottom right, #f9fafb, #f3f4f6);
+        padding: 1.25rem;
+        border-radius: 0.75rem;
+        border: 1px solid rgba(255, 255, 255, 0.8);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        transition: transform 0.2s ease-in-out;
+    }
+
+    .rightside:hover {
+        transform: translateY(-3px);
     }
 
     .table-container {
         width: 100%;
         border-collapse: collapse;
-        border: 1px solid #d1d5db;
+        border: 2px solid #d1d5db;
+        border-radius: 0.5rem;
+        overflow: hidden;
     }
 
     .table-container th, .table-container td {
-        border: 1px solid #4b5563;
+        border: 1px solid #e5e7eb;
     }
 
     .table-header {
-        padding: 0.75rem 1rem;
+        padding: 1rem;
         text-align: center;
         font-size: 2.25rem;
+        background: linear-gradient(to right, #4f46e5, #6366f1);
+        color: white;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
     }
 
     .table-cell-heading {
-        padding: 0.25rem 1rem;
+        padding: 0.5rem 1rem;
         font-size: 1.25rem;
+        background-color: #eef2ff;
+        color: #4338ca;
     }
 
     .table-cell-data {
-        padding: 0.25rem 1.5rem;
+        padding: 0.5rem 1.5rem;
+        background-color: white;
     }
 
     .table-cell-text {
         font-weight: 500;
-        line-height: 1;
-        color: #374151;
+        line-height: 1.3;
+        color: #1f2937;
         margin-right: 0.5rem;
         font-size: 1.25rem;
     }
 
     .expired-text {
-        color: #b91c1c;
+        color: #dc2626;
+        font-weight: bold;
     }
 
     .conditions-container {
         text-align: right;
-        background: linear-gradient(to right, #fef3c7, #fbbf24);
-        padding: 1rem;
-        border-radius: 0.5rem;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        background: linear-gradient(135deg, #fef3c7, #fbbf24);
+        padding: 1.25rem;
+        border-radius: 0.75rem;
+        box-shadow: 0 4px 12px rgba(251, 191, 36, 0.15);
+        position: relative;
+        overflow: hidden;
+        transition: transform 0.2s ease-in-out;
+    }
+
+    .conditions-container:hover {
+        transform: translateY(-3px);
+    }
+
+    .conditions-container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle at top right, rgba(255,255,255,0.3), transparent 70%);
+        pointer-events: none;
     }
 
     .conditions-title {
-        color: #ef4444;
+        color: #b91c1c;
         font-weight: bold;
+        font-size: 1.25rem;
+        margin-bottom: 0.75rem;
+        border-bottom: 2px solid rgba(220, 38, 38, 0.3);
+        padding-bottom: 0.5rem;
     }
 
     .condition-item {
-        color: #2563eb;
+        color: #1e40af;
         font-size: 1.25rem;
+        padding: 0.35rem 0;
+        border-bottom: 1px solid rgba(59, 130, 246, 0.1);
+    }
+
+    .condition-item:last-child {
+        border-bottom: none;
     }
 
     .leftside {
         background-color: white;
-        border-radius: 0.5rem;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        border-radius: 0.75rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
         position: relative;
+        overflow: hidden;
+        transition: transform 0.2s ease-in-out;
+    }
+
+    .leftside:hover {
+        transform: translateY(-3px);
     }
 
     .profile-image {
         height: 400px;
-        border-radius: 0.5rem;
+        width: 100%;
+        object-fit: cover;
+        border-radius: 0.75rem;
         display: block;
     }
 
@@ -127,7 +181,8 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        background-color: rgba(0, 0, 0, 0.5);
+        background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(220, 38, 38, 0.7));
+        backdrop-filter: blur(2px);
     }
 
     .invalid-title {
@@ -136,6 +191,7 @@
         font-weight: bold;
         margin-bottom: 1rem;
         text-align: center;
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
     }
 
     .invalid-subtitle {
@@ -143,6 +199,9 @@
         font-size: 1.25rem;
         font-weight: bold;
         text-align: center;
+        max-width: 80%;
+        line-height: 1.5;
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
     }
 
     .no-cursor {
@@ -153,12 +212,14 @@
     .alert-box {
         display: flex;
         align-items: center;
-        padding: 1rem;
+        padding: 1.25rem;
         margin-bottom: 1rem;
         font-size: 0.875rem;
         color: #991b1b;
-        border-radius: 0.5rem;
+        border-radius: 0.75rem;
         background-color: #fee2e2;
+        box-shadow: 0 4px 6px rgba(252, 165, 165, 0.2);
+        border-left: 4px solid #ef4444;
     }
 
     .alert-title {
@@ -172,16 +233,20 @@
     .alert-content {
         font-size: 1.25rem;
         font-weight: 500;
+        line-height: 1.5;
     }
 
     .info-footer {
-        border-radius: 0.375rem;
+        border-radius: 0.5rem;
         text-align: center;
         font-size: 1.125rem;
-        margin-top: 1rem;
-        background-color: #f9fafb;
+        margin-top: 1.5rem;
+        background: linear-gradient(to right, #f1f5f9, #e2e8f0);
         width: 100%;
         grid-column: span 3;
+        padding: 1rem;
+        border: 1px solid #e5e7eb;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
     }
 </style>
 
@@ -220,7 +285,7 @@
                         <th scope="col" class="table-cell-heading">
                             د پلارنوم:
                         </th>
-                        <td class="table-cell-heading">
+                        <td class="table-cell-data">
                             <p class="table-cell-text">
                                 {{ $employee->father_name }}
                             </p>
@@ -230,7 +295,7 @@
                         <th scope="col" class="table-cell-heading">
                             دنده:
                         </th>
-                        <td class="table-cell-heading">
+                        <td class="table-cell-data">
                             <p class="table-cell-text">
                                 {{ $employee->job_structure }}
                             </p>
@@ -240,7 +305,7 @@
                         <th scope="col" class="table-cell-heading">
                             @lang('Category')
                         </th>
-                        <td class="table-cell-heading">
+                        <td class="table-cell-data">
                             <p class="table-cell-text">
                                 {{ $employee->category }}
                             </p>
@@ -250,7 +315,7 @@
                         <th scope="col" class="table-cell-heading">
                             پیل نیته:
                         </th>
-                        <td class="table-cell-heading">
+                        <td class="table-cell-data">
                             <p class="table-cell-text">
                                 {{ ($employee->current_id_card?->card_perform) ? \Carbon\Carbon::make($employee->current_id_card?->card_perform)->format("Y/m/d") : 'ندارد' }}
                             </p>
@@ -260,7 +325,7 @@
                         <th scope="col" class="table-cell-heading">
                             ختمیدو نیته:
                         </th>
-                        <td class="table-cell-heading">
+                        <td class="table-cell-data">
                             <p class="table-cell-text {{ $state ? 'expired-text' : '' }}">
                                 {{ ($employee->current_id_card?->card_expired_date) ? \Carbon\Carbon::make($employee->current_id_card?->card_expired_date)->format("Y/m/d") : 'ندارد' }}
                             </p>
@@ -270,7 +335,7 @@
                         <th scope="col" class="table-cell-heading">
                             اروند اداره:
                         </th>
-                        <td class="table-cell-heading">
+                        <td class="table-cell-data">
                             <p class="table-cell-text">
                                 {{ $employee->orginization?->fa_name }}
                             </p>
@@ -280,7 +345,7 @@
                         <th scope="col" class="table-cell-heading">
                             اروند دروازه:
                         </th>
-                        <td class="table-cell-heading">
+                        <td class="table-cell-data">
                             <p class="table-cell-text">
                                 {{ $employee->gate?->fa_name }}
                             </p>
@@ -290,7 +355,7 @@
                         <th scope="col" class="table-cell-heading">
                             حاضری امروز:
                         </th>
-                        <td class="table-cell-heading">
+                        <td class="table-cell-data">
                             <p class="table-cell-text">
                                 {{ trans(
     match ($attendance?->state) {

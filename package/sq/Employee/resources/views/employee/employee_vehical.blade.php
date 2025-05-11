@@ -1,61 +1,110 @@
 <style>
     .vehical-container {
-        margin-top: 1.75rem;
+        margin-top: 2.5rem;
         overflow-x: auto;
         direction: rtl;
     }
 
     .vehical-table-wrapper {
         position: relative;
-        overflow-x: auto;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        border-radius: 0.5rem;
+        overflow: hidden;
+        box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.2),
+                    0 8px 10px -6px rgba(59, 130, 246, 0.1);
+        border-radius: 0.75rem;
+        background: linear-gradient(145deg, #f0f4ff, #ffffff);
+        padding: 1.5rem;
+        transition: transform 0.3s ease;
+    }
+
+    .vehical-table-wrapper:hover {
+        transform: translateY(-3px);
     }
 
     .vehical-table {
         width: 100%;
-        font-size: 0.875rem;
+        font-size: 1rem;
         text-align: right;
-        color: #6b7280;
+        color: #1f2937;
+        border-collapse: collapse;
+        border: 2px solid #d1d5db;
+        border-radius: 0.5rem;
+        overflow: hidden;
     }
 
     .vehical-thead {
-        font-size: 0.75rem;
         color: #374151;
-        text-transform: uppercase;
         background-color: #f9fafb;
     }
 
     .vehical-header-cell {
         padding: 0.75rem 1.5rem;
-        border: 1px solid #4b5563;
+        border: 1px solid #e5e7eb;
+        background-color: #eef2ff;
+        color: #4338ca;
+        font-size: 1.1rem;
     }
 
     .vehical-title {
         text-align: center;
         font-size: 2rem;
+        background: linear-gradient(to right, #4f46e5, #6366f1);
+        color: white;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        padding: 1rem 0;
     }
 
     .vehical-row {
         background-color: white;
         border-bottom: 1px solid #e5e7eb;
+        transition: background-color 0.2s ease;
+    }
+
+    .vehical-row:hover {
+        background-color: #f3f4f6;
     }
 
     .vehical-cell {
         padding: 1rem 1.5rem;
-        border: 1px solid #4b5563;
+        border: 1px solid #e5e7eb;
+        font-size: 1.1rem;
     }
 
     .driver-link {
-        color: #2563eb;
-        font-size: 1.125rem;
+        color: #4f46e5;
+        font-size: 1.1rem;
+        text-decoration: none;
+        font-weight: 500;
+        position: relative;
+        transition: color 0.2s ease;
+    }
+
+    .driver-link:hover {
+        color: #4338ca;
+        text-decoration: underline;
     }
 
     .empty-message {
-        padding: 1rem 1.5rem;
-        border: 1px solid #4b5563;
+        padding: 2rem 1.5rem;
+        border: 1px solid #e5e7eb;
         text-align: center;
-        text-wrap: pretty;
+        color: #6b7280;
+        font-style: italic;
+        font-size: 1.25rem;
+        background-color: #f9fafb;
+    }
+
+    /* Add a subtle icon to the table title */
+    .title-wrapper {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .title-wrapper::before {
+        content: "🚗";
+        margin-right: 0.75rem;
+        font-size: 1.75rem;
     }
 </style>
 
@@ -65,7 +114,9 @@
             <thead class="vehical-thead">
                 <tr>
                     <th scope="col" class="vehical-header-cell vehical-title" colspan="7">
-                        @lang('Employee Vehical Card')
+                        <div class="title-wrapper">
+                            @lang('Employee Vehical Card')
+                        </div>
                     </th>
                 </tr>
                 <tr>
@@ -115,7 +166,7 @@
                 @empty
                     <tr class="vehical-row">
                         <td class="empty-message" colspan="7">
-                            @lang('Not Found')
+                            @lang('No vehicle records found')
                         </td>
                     </tr>
                 @endforelse

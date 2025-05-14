@@ -8,16 +8,16 @@
     <style>
         /* CSS Reset and Base Styles */
         :root {
-            --primary-color: #3b82f6;
-            --primary-light: #93c5fd;
-            --primary-dark: #1e40af;
+            --primary-color: #4f46e5;
+            --primary-light: #818cf8;
+            --primary-dark: #3730a3;
             --secondary-color: #f97316;
             --success-color: #10b981;
             --danger-color: #ef4444;
             --text-color: #1e293b;
             --text-light: #64748b;
-            --bg-color: #0f172a;
-            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+            --bg-color: #1e1b4b;
+            --bg-gradient: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
             --card-bg: #ffffff;
             --border-color: #e2e8f0;
             --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
@@ -51,8 +51,8 @@
         h1 {
             font-size: 1.75rem;
             font-weight: 700;
-            color: var(--primary-dark);
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            color: white;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
         /* Layout */
@@ -69,7 +69,7 @@
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             border-radius: var(--border-radius-lg);
-            box-shadow: var(--shadow-lg);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -77,6 +77,7 @@
             margin: 0.75rem 0.5rem 2rem;
             position: relative;
             overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .header::before {
@@ -100,12 +101,13 @@
             border-radius: var(--border-radius);
             background-color: #f8fafc;
             transition: var(--transition);
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
         }
 
         .input:focus {
             outline: none;
             border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.3);
         }
 
         .input::placeholder {
@@ -121,18 +123,38 @@
             font-size: 0.95rem;
             font-weight: 600;
             color: white;
-            background: linear-gradient(to right, var(--primary-color), var(--primary-dark));
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
             border: none;
             border-radius: var(--border-radius-lg);
             cursor: pointer;
             transition: var(--transition);
             text-decoration: none;
-            box-shadow: 0 4px 6px rgba(59, 130, 246, 0.35);
+            box-shadow: 0 4px 6px rgba(79, 70, 229, 0.35);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0));
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+            z-index: -1;
         }
 
         .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 10px rgba(59, 130, 246, 0.4);
+            box-shadow: 0 6px 15px rgba(79, 70, 229, 0.4);
+        }
+
+        .btn:hover::before {
+            transform: translateX(100%);
         }
 
         .btn:active {
@@ -147,7 +169,7 @@
         .card-grid {
             display: grid;
             grid-template-columns: repeat(1, 1fr);
-            gap: 1rem;
+            gap: 1.25rem;
             padding: 0.5rem;
             margin-bottom: 2.5rem;
         }
@@ -166,13 +188,14 @@
 
         .card {
             position: relative;
-            background-color: var(--card-bg);
+            background-color: rgba(255, 255, 255, 0.97);
             border-radius: var(--border-radius-lg);
             padding: 1.75rem;
             box-shadow: var(--shadow-lg);
             transition: var(--transition);
             overflow: hidden;
             z-index: 1;
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .card::after {
@@ -187,7 +210,8 @@
         }
 
         .card-diesel {
-            border: 1px solid rgba(239, 68, 68, 0.2);
+            border-bottom: 3px solid rgba(239, 68, 68, 0.5);
+            box-shadow: 0 10px 30px -10px rgba(239, 68, 68, 0.3);
         }
 
         .card-diesel::after {
@@ -196,6 +220,7 @@
 
         .card-diesel:hover {
             transform: translateY(-5px);
+            box-shadow: 0 15px 30px -10px rgba(239, 68, 68, 0.4);
         }
 
         .card-diesel:hover::after {
@@ -203,7 +228,8 @@
         }
 
         .card-petrol {
-            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-bottom: 3px solid rgba(16, 185, 129, 0.5);
+            box-shadow: 0 10px 30px -10px rgba(16, 185, 129, 0.3);
         }
 
         .card-petrol::after {
@@ -212,6 +238,7 @@
 
         .card-petrol:hover {
             transform: translateY(-5px);
+            box-shadow: 0 15px 30px -10px rgba(16, 185, 129, 0.4);
         }
 
         .card-petrol:hover::after {
@@ -266,6 +293,9 @@
             display: flex;
             position: relative;
             margin-bottom: 1.5rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: var(--border-radius);
+            overflow: hidden;
         }
 
         .submit-btn {
@@ -302,7 +332,7 @@
 
         .submit-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.5);
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.5);
         }
 
         .submit-btn:hover::before {
@@ -311,7 +341,7 @@
 
         .submit-btn:active {
             transform: translateY(1px);
-            box-shadow: 0 2px 6px rgba(59, 130, 246, 0.4);
+            box-shadow: 0 2px 6px rgba(79, 70, 229, 0.4);
         }
 
         .submit-btn::after {
@@ -333,13 +363,13 @@
         /* Submit button pulse animation */
         @keyframes pulse {
             0% {
-                box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4);
+                box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.7);
             }
             70% {
-                box-shadow: 0 0 0 10px rgba(59, 130, 246, 0);
+                box-shadow: 0 0 0 10px rgba(79, 70, 229, 0);
             }
             100% {
-                box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
+                box-shadow: 0 0 0 0 rgba(79, 70, 229, 0);
             }
         }
 
@@ -348,13 +378,13 @@
             background-color: var(--card-bg);
             border-radius: var(--border-radius-lg);
             overflow: hidden;
-            box-shadow: var(--shadow-lg);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
             transition: var(--transition);
-            border: 1px solid var(--border-color);
+            border: 1px solid rgba(226, 232, 240, 0.7);
         }
 
         .table-container:hover {
-            box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.15);
         }
 
         .table {
@@ -371,7 +401,8 @@
         }
 
         .table th {
-            background-color: #f8fafc;
+            background: linear-gradient(to right, #f1f5f9, #f8fafc);
+            font-weight: 600;
         }
 
         .table-header {
@@ -407,22 +438,25 @@
 
         .employee-table th {
             text-align: center;
-            background-color: #f8fafc;
+            background: linear-gradient(to right, #f1f5f9, #f8fafc);
             color: var(--primary-dark);
+            font-weight: 600;
         }
 
         .employee-info-header {
-            font-size: 1.75rem;
+            font-size: 1.5rem;
             text-align: center;
             padding: 1rem;
-            background: linear-gradient(to right, #f1f5f9, #e2e8f0);
-            color: var(--primary-dark);
-            border-bottom: 2px solid var(--primary-color);
+            background: linear-gradient(to right, #4f46e5, #6366f1);
+            color: white;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
         }
 
         .employee-attribute {
             font-size: 1.1rem;
             font-weight: 600;
+            color: var(--primary-dark);
         }
 
         .employee-value {
@@ -441,13 +475,13 @@
             height: 150px;
             border-radius: var(--border-radius);
             box-shadow: var(--shadow);
-            border: 3px solid white;
+            border: 4px solid white;
             transition: var(--transition);
         }
 
         .employee-photo:hover {
             transform: scale(1.05);
-            box-shadow: var(--shadow-lg);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
         }
 
         /* Icon Styles */
@@ -460,18 +494,19 @@
             border-radius: 50%;
             font-size: 1.5rem;
             margin-bottom: 0.5rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         .icon-diesel {
             color: white;
             background: linear-gradient(135deg, var(--danger-color), #f43f5e);
-            box-shadow: 0 4px 6px rgba(239, 68, 68, 0.3);
+            box-shadow: 0 4px 8px rgba(239, 68, 68, 0.3);
         }
 
         .icon-petrol {
             color: white;
             background: linear-gradient(135deg, var(--success-color), #059669);
-            box-shadow: 0 4px 6px rgba(16, 185, 129, 0.3);
+            box-shadow: 0 4px 8px rgba(16, 185, 129, 0.3);
         }
 
         /* Additions for Pump Station */
@@ -502,10 +537,11 @@
             transform: translateX(-50%);
             z-index: 100;
             animation: slideDown 0.3s ease-out forwards;
-            box-shadow: var(--shadow);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
             max-width: 90%;
             width: 500px;
             text-align: center;
+            border-right: 5px solid;
         }
 
         @keyframes slideDown {
@@ -520,26 +556,27 @@
         }
 
         .alert-error {
-            background-color: #fee2e2;
+            background-color: #fef2f2;
             color: #b91c1c;
-            border-left: 4px solid #ef4444;
+            border-right-color: #ef4444;
         }
 
         .alert-success {
-            background-color: #dcfce7;
+            background-color: #f0fdf4;
             color: #15803d;
-            border-left: 4px solid #22c55e;
+            border-right-color: #22c55e;
         }
 
         /* Section Title */
         .section-title {
-            font-size: 1.5rem;
+            font-size: 1.75rem;
             font-weight: 600;
             color: white;
             margin-bottom: 1.5rem;
             padding-bottom: 0.75rem;
             position: relative;
             display: inline-block;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
         .section-title::after {
@@ -547,9 +584,9 @@
             position: absolute;
             bottom: 0;
             left: 0;
-            width: 50%;
+            width: 80px;
             height: 3px;
-            background: linear-gradient(to right, var(--primary-color), transparent);
+            background: linear-gradient(to right, var(--primary-light), transparent);
             border-radius: 3px;
         }
 
@@ -561,16 +598,23 @@
             padding: 0.25rem 0.75rem;
             background-color: #f1f5f9;
             border-radius: var(--border-radius-sm);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
         }
 
         .oil-remain {
             font-weight: 600;
             color: var(--success-color);
+            padding: 0.1rem 0.5rem;
+            border-radius: var(--border-radius-sm);
+            background-color: rgba(16, 185, 129, 0.1);
         }
 
         .oil-consumed {
             font-weight: 600;
             color: var(--danger-color);
+            padding: 0.1rem 0.5rem;
+            border-radius: var(--border-radius-sm);
+            background-color: rgba(239, 68, 68, 0.1);
         }
 
         .data-highlight {
@@ -578,6 +622,7 @@
             position: relative;
             z-index: 1;
             display: inline-block;
+            padding: 0.1rem 0.3rem;
         }
 
         .data-highlight::after {
@@ -586,8 +631,8 @@
             bottom: 0;
             left: 0;
             width: 100%;
-            height: 25%;
-            background-color: rgba(147, 197, 253, 0.3);
+            height: 30%;
+            background-color: rgba(129, 140, 248, 0.3);
             z-index: -1;
             border-radius: 2px;
         }
@@ -623,40 +668,45 @@
         }
 
         .empty-state-icon {
-            font-size: 3rem;
+            font-size: 3.5rem;
             margin-bottom: 1rem;
-            opacity: 0.5;
+            opacity: 0.6;
+            background: linear-gradient(to right, #6366f1, #4f46e5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .empty-state-text {
             font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.7);
         }
 
         /* Pump Station Statistics Styles */
         .stat-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 1rem;
+            gap: 1.25rem;
             margin: 1rem 0 2rem;
         }
 
         .stat-card {
-            padding: 1rem;
+            padding: 1.25rem;
             display: flex;
             align-items: center;
             transition: var(--transition);
             border-radius: var(--border-radius-lg);
-            background-color: var(--card-bg);
-            box-shadow: var(--shadow);
+            background-color: rgba(255, 255, 255, 0.97);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .stat-card:hover {
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-lg);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
         }
 
         .stat-icon {
-            background: linear-gradient(135deg, #64748b, #475569);
+            background: linear-gradient(135deg, #4f46e5, #6366f1);
             padding: 0.75rem;
             border-radius: 50%;
             color: white;
@@ -666,6 +716,7 @@
             justify-content: center;
             width: 3rem;
             height: 3rem;
+            box-shadow: 0 4px 6px rgba(79, 70, 229, 0.3);
         }
 
         .stat-info {
@@ -688,11 +739,17 @@
         .status-active {
             color: var(--success-color);
             font-weight: 600;
+            padding: 0.25rem 0.75rem;
+            background-color: rgba(16, 185, 129, 0.1);
+            border-radius: var(--border-radius-sm);
         }
 
         .status-inactive {
             color: var(--danger-color);
             font-weight: 600;
+            padding: 0.25rem 0.75rem;
+            background-color: rgba(239, 68, 68, 0.1);
+            border-radius: var(--border-radius-sm);
         }
 
         /* 404 Page Styles */
@@ -715,6 +772,7 @@
             font-weight: bold;
             margin-bottom: 1rem;
             color: white;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
         .error-message {
@@ -723,6 +781,7 @@
             max-width: 600px;
             margin-left: auto;
             margin-right: auto;
+            color: rgba(255, 255, 255, 0.8);
         }
 
         .error-action {
@@ -734,8 +793,15 @@
         }
 
         /* Oil Type Filter Tabs */
+        .oil-filter-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
         .oil-filter-tab {
-            padding: 0.75rem 1.25rem;
+            padding: 0.75rem 1.5rem;
             background-color: rgba(255, 255, 255, 0.1);
             border: none;
             border-radius: var(--border-radius);
@@ -746,6 +812,7 @@
             transition: var(--transition);
             position: relative;
             overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         .oil-filter-tab:hover {
@@ -756,7 +823,7 @@
         .oil-filter-tab.active {
             background-color: rgba(255, 255, 255, 0.2);
             color: white;
-            box-shadow: var(--shadow);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
 
         .oil-filter-tab.active::after {
@@ -766,7 +833,7 @@
             left: 0;
             width: 100%;
             height: 3px;
-            background: linear-gradient(to right, var(--primary-color), transparent);
+            background: linear-gradient(to right, var(--primary-color), var(--primary-light));
         }
 
         /* All Oil Stats Container */
@@ -794,10 +861,10 @@
         <h2 class="section-title">آمار پمپ استیشن</h2>
 
         <!-- Pump Info Card -->
-        <div class="card" style="margin-bottom: 1.5rem; background: linear-gradient(to right, rgba(255,255,255,0.9), rgba(255,255,255,0.97));">
+        <div class="card" style="margin-bottom: 1.5rem; background: linear-gradient(to right, rgba(255,255,255,0.97), rgba(249,250,251,0.97));">
             <div style="display: flex; justify-content: space-between; align-items: center;">
                 <div>
-                    <div class="icon" style="background: linear-gradient(135deg, #8b5cf6, #6366f1); color: white; width: 4rem; height: 4rem; font-size: 2rem;">🏢</div>
+                    <div class="icon" style="background: linear-gradient(135deg, #4f46e5, #6366f1); color: white; width: 4rem; height: 4rem; font-size: 2rem;">🏢</div>
                 </div>
                 <div style="flex: 1; padding: 0 1.5rem;">
                     <h3 style="font-size: 1.75rem; margin-bottom: 0.5rem; color: var(--primary-dark);">{{ $pumpStats['name'] }}</h3>
@@ -812,7 +879,7 @@
                 </div>
                 <div>
                     <div style="padding: 0.5rem 1rem; border-radius: var(--border-radius);
-                        {{ $pumpStats['is_active'] ? 'background-color: #dcfce7; color: #15803d;' : 'background-color: #fee2e2; color: #b91c1c;' }}
+                        {{ $pumpStats['is_active'] ? 'background-color: rgba(16, 185, 129, 0.1); color: #15803d;' : 'background-color: rgba(239, 68, 68, 0.1); color: #b91c1c;' }}
                         font-weight: 600; text-align: center;">
                         {{ $pumpStats['is_active'] ? 'فعال' : 'غیرفعال' }}
                     </div>
@@ -821,10 +888,10 @@
         </div>
 
         <!-- Oil Balance Stats -->
-        <h3 style="color: white; font-size: 1.35rem; margin-bottom: 1rem; opacity: 0.9;">موجودی تیل</h3>
+        <h3 style="color: white; font-size: 1.35rem; margin-bottom: 1rem; opacity: 0.9; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);">موجودی تیل</h3>
 
         <!-- Oil Type Filter Tabs -->
-        <div style="margin-bottom: 1rem; display: flex; justify-content: center; gap: 1rem;">
+        <div class="oil-filter-tabs">
             <button id="all-oil-tab" class="oil-filter-tab active" onclick="showOilStats('all')">
                 مجموع
             </button>
@@ -837,9 +904,9 @@
         </div>
 
         <!-- All Oil Stats -->
-        <div id="all-oil-stats" class="stat-grid oil-stats-container">
+        <div id="all-oil-stats" class="stat-grid oil-stats-container" style="display: grid;">
             <div class="stat-card">
-                <div class="stat-icon" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8);">
+                <div class="stat-icon" style="background: linear-gradient(135deg, #4f46e5, #6366f1);">
                     <span style="font-size: 1.25rem;">⬇️</span>
                 </div>
                 <div class="stat-info">
@@ -892,9 +959,9 @@
         </div>
 
         <!-- Diesel Oil Stats -->
-        <div id="diesel-oil-stats" class="stat-grid oil-stats-container" style="display: none;">
+        <div id="diesel-oil-stats" class="stat-grid oil-stats-container">
             <div class="stat-card">
-                <div class="stat-icon" style="background: linear-gradient(135deg, #b91c1c, #7f1d1d);">
+                <div class="stat-icon" style="background: linear-gradient(135deg, #ef4444, #b91c1c);">
                     <span style="font-size: 1.25rem;">⬇️</span>
                 </div>
                 <div class="stat-info">
@@ -905,7 +972,7 @@
                 </div>
             </div>
             <div class="stat-card">
-                <div class="stat-icon" style="background: linear-gradient(135deg, #b91c1c, #7f1d1d);">
+                <div class="stat-icon" style="background: linear-gradient(135deg, #ef4444, #b91c1c);">
                     <span style="font-size: 1.25rem;">⬆️</span>
                 </div>
                 <div class="stat-info">
@@ -916,7 +983,7 @@
                 </div>
             </div>
             <div class="stat-card">
-                <div class="stat-icon" style="background: linear-gradient(135deg, #b91c1c, #7f1d1d);">
+                <div class="stat-icon" style="background: linear-gradient(135deg, #ef4444, #b91c1c);">
                     <span style="font-size: 1.25rem;">⚖️</span>
                 </div>
                 <div class="stat-info">
@@ -927,7 +994,7 @@
                 </div>
             </div>
             <div class="stat-card">
-                <div class="stat-icon" style="background: linear-gradient(135deg, #b91c1c, #7f1d1d);">
+                <div class="stat-icon" style="background: linear-gradient(135deg, #ef4444, #b91c1c);">
                     <span style="font-size: 1.25rem;">⛽</span>
                 </div>
                 <div class="stat-info">
@@ -947,7 +1014,7 @@
         </div>
 
         <!-- Petrol Oil Stats -->
-        <div id="petrol-oil-stats" class="stat-grid oil-stats-container" style="display: none;">
+        <div id="petrol-oil-stats" class="stat-grid oil-stats-container">
             <div class="stat-card">
                 <div class="stat-icon" style="background: linear-gradient(135deg, #10b981, #047857);">
                     <span style="font-size: 1.25rem;">⬇️</span>
@@ -1002,7 +1069,7 @@
         </div>
 
         <!-- Activity Stats -->
-        <h3 style="color: white; font-size: 1.35rem; margin-bottom: 1rem; opacity: 0.9;">فعالیت توزیع</h3>
+        <h3 style="color: white; font-size: 1.35rem; margin-bottom: 1rem; opacity: 0.9; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);">فعالیت توزیع</h3>
         <div class="stat-grid">
             <div class="stat-card">
                 <div class="stat-icon">

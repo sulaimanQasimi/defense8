@@ -1,4 +1,5 @@
 <?php
+
 use App\Support\Defense\PermissionTranslation;
 use Illuminate\Support\Facades\Route;
 use Sq\Employee\Http\Controllers\CurrentMonthEmployeeAttendance;
@@ -74,8 +75,6 @@ Route::middleware(['permission:' . PermissionTranslation::viewAny("Card Info")])
             [ExcelEmployeeExportController::class, 'attendance']
         )
             ->name("employee.attendance.current.month.department.single.excel");
-
-
     });
 
 // BioData routes
@@ -92,7 +91,7 @@ Route::prefix('employee/biodata')
 
 // Fingerprint match routes - identify employees using fingerprints
 Route::prefix('employee/finger')
-    ->middleware(['permission:' . PermissionTranslation::viewAny("Card Info")])
+    ->middleware(['role:super-admin'])
     ->controller(\Sq\Employee\Http\Controllers\FingerMatchController::class)
     ->name('employee.finger.')
     ->group(function (): void {
@@ -102,7 +101,7 @@ Route::prefix('employee/finger')
 
 // Employee Import Template and Import Routes
 Route::prefix('employee/import')
-    ->middleware(['permission:' . PermissionTranslation::create("Card Info")])
+    ->middleware(['role:super-admin'])
     ->controller(\Sq\Employee\Http\Controllers\CardInfoImportController::class)
     ->name('employee.import.')
     ->group(function (): void {
@@ -112,10 +111,13 @@ Route::prefix('employee/import')
         Route::post('photo/upload', 'uploadPhoto')->name('photo.upload');
     });
 
-Route::prefix('import')->name('import.')->group(function () {
-    Route::get('form', [CardInfoImportController::class, 'showImportForm'])->name('form');
-    Route::get('template', [CardInfoImportController::class, 'downloadTemplate'])->name('template');
-    Route::post('{department}', [CardInfoImportController::class, 'import'])->name('store');
-    Route::get('department/{department}/gates', [CardInfoImportController::class, 'getDepartmentGates'])->name('department.gates');
-    Route::post('photo/upload', [CardInfoImportController::class, 'uploadPhoto'])->name('photo.upload');
-});
+Route::prefix('import')
+    ->name('import.')
+    ->middleware(['ro:super-admin'])
+    ->group(function () {
+        Route::get('form', [CardInfoImportController::class, 'showImportForm'])->name('form');
+        Route::get('template', [CardInfoImportController::class, 'downloadTemplate'])->name('template');
+        Route::post('{department}', [CardInfoImportController::class, 'import'])->name('store');
+        Route::get('department/{department}/gates', [CardInfoImportController::class, 'getDepartmentGates'])->name('department.gates');
+        Route::post('photo/upload', [CardInfoImportController::class, 'uploadPhoto'])->name('photo.upload');
+    });

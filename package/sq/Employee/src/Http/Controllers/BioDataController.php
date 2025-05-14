@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Sq\Employee\Models\BioData;
 use Sq\Employee\Models\CardInfo;
 use App\Services\Fingerprint\Fingerprint;
+use Sq\Query\Policy\UserDepartment;
 
 class BioDataController extends Controller
 {
@@ -20,6 +21,10 @@ class BioDataController extends Controller
     {
         $employee = CardInfo::findOrFail($employee_id);
         $bioData = $employee->bioData;
+
+        if (!in_array($employee->department_id, UserDepartment::getUserDepartment())) {
+            return abort(403, 'شما میتوانید اطلاعات بیومتریک خود را ثبت کنید');
+        }
 
         return view('sqemployee::employee.bio_data', [
             'employee' => $employee,
@@ -37,6 +42,10 @@ class BioDataController extends Controller
     public function store(Request $request, $employee_id)
     {
         $employee = CardInfo::findOrFail($employee_id);
+
+        if (!in_array($employee->department_id, UserDepartment::getUserDepartment())) {
+            return abort(403, 'شما میتوانید اطلاعات بیومتریک خود را ثبت کنید');
+        }
 
         // Create or update the biometric data
         $bioData = BioData::updateOrCreate(
@@ -68,7 +77,12 @@ class BioDataController extends Controller
      */
     public function destroy($employee_id)
     {
+        $employee = CardInfo::findOrFail($employee_id);
         $bioData = BioData::where('personal_info_id', $employee_id)->first();
+
+        if (!in_array($employee->department_id, UserDepartment::getUserDepartment())) {
+            return abort(403, 'شما میتوانید اطلاعات بیومتریک خود را ثبت کنید');
+        }
 
         if ($bioData) {
             $bioData->delete();
@@ -89,6 +103,10 @@ class BioDataController extends Controller
     {
         $employee = CardInfo::findOrFail($employee_id);
         $bioData = $employee->bioData;
+
+        if (!in_array($employee->department_id, UserDepartment::getUserDepartment())) {
+            return abort(403, 'شما میتوانید اطلاعات بیومتریک خود را ثبت کنید');
+        }
 
         if (!$bioData) {
             return response()->json(['match' => false, 'message' => 'No biometric data stored for this employee']);

@@ -11,16 +11,6 @@
     <!-- Custom CSS without external dependencies -->
     <style>
         /* Persian Font - Vazir (embed via base64 or reference locally) */
-        @font-face {
-            font-family: Vazir;
-            src: url('{{ asset('fonts/Vazir.eot') }}');
-            src: url('{{ asset('fonts/Vazir.eot?#iefix') }}') format('embedded-opentype'),
-                 url('{{ asset('fonts/Vazir.woff2') }}') format('woff2'),
-                 url('{{ asset('fonts/Vazir.woff') }}') format('woff'),
-                 url('{{ asset('fonts/Vazir.ttf') }}') format('truetype');
-            font-weight: normal;
-            font-style: normal;
-        }
 
         /* Reset and base styles */
         * {
@@ -735,78 +725,78 @@
             // Process fingerprint scan
             function processFingerprint(progressData) {
                 // Simulate API call to match fingerprint
-                fetch('{{ route("employee.finger-match.api") }}', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                    },
-                    body: JSON.stringify({
-                        // In a real implementation, you would send the actual fingerprint data
-                        // Here we're just simulating with a mock request
-                        ISOTemplateBase64: 'MOCK_TEMPLATE_DATA_FOR_TESTING',
-                        debug: debugMode.checked,
-                        security_level: 2
-                    })
-                    })
-                    .then(response => {
-                    clearInterval(progressData.interval);
-                    progressData.progressBar.querySelector('.progress-bar').style.width = '100%';
+                // fetch('"employee.finger-match.api"', {
+                //         method: 'POST',
+                //         headers: {
+                //             'Content-Type': 'application/json',
+                //         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                //     },
+                //     body: JSON.stringify({
+                //         // In a real implementation, you would send the actual fingerprint data
+                //         // Here we're just simulating with a mock request
+                //         ISOTemplateBase64: 'MOCK_TEMPLATE_DATA_FOR_TESTING',
+                //         debug: debugMode.checked,
+                //         security_level: 2
+                //     })
+                //     })
+                //     .then(response => {
+                //     clearInterval(progressData.interval);
+                //     progressData.progressBar.querySelector('.progress-bar').style.width = '100%';
 
-                    if (!response.ok) {
-                        throw new Error('خطا در ارتباط با سرور');
-                    }
-                        return response.json();
-                    })
-                    .then(data => {
-                    log('پاسخ دریافتی از سرور:', data);
+                //     if (!response.ok) {
+                //         throw new Error('خطا در ارتباط با سرور');
+                //     }
+                //         return response.json();
+                //     })
+                //     .then(data => {
+                //     log('پاسخ دریافتی از سرور:', data);
 
-                    statusMessage.style.display = 'none';
-                    resetButton.style.display = 'inline-block';
+                //     statusMessage.style.display = 'none';
+                //     resetButton.style.display = 'inline-block';
 
-                    if (data.success && data.match) {
-                        // Show success message and employee card
-                        resultMessage.style.display = 'block';
-                        employeeCard.style.display = 'flex';
+                //     if (data.success && data.match) {
+                //         // Show success message and employee card
+                //         resultMessage.style.display = 'block';
+                //         employeeCard.style.display = 'flex';
 
-                        // Populate employee information
-                                const employee = data.employee;
-                        employeeName.textContent = employee.name + ' ' + employee.last_name;
-                        employeePosition.textContent = employee.position;
-                        employeeId.textContent = employee.id;
-                        employeeEmail.textContent = employee.email || 'بدون ایمیل';
-                        employeePhone.textContent = employee.phone || 'بدون شماره تلفن';
-                        employeeDepartment.textContent = employee.department || 'بدون بخش';
+                //         // Populate employee information
+                //                 const employee = data.employee;
+                //         employeeName.textContent = employee.name + ' ' + employee.last_name;
+                //         employeePosition.textContent = employee.position;
+                //         employeeId.textContent = employee.id;
+                //         employeeEmail.textContent = employee.email || 'بدون ایمیل';
+                //         employeePhone.textContent = employee.phone || 'بدون شماره تلفن';
+                //         employeeDepartment.textContent = employee.department || 'بدون بخش';
 
-                        if (employee.photo) {
-                            employeePhoto.src = employee.photo;
-                        }
+                //         if (employee.photo) {
+                //             employeePhoto.src = employee.photo;
+                //         }
 
-                        employeeDetailsLink.href = '/employee/card-info/' + employee.id;
+                //         employeeDetailsLink.href = '/employee/card-info/' + employee.id;
 
-                        // Add animation
-                        employeeCard.classList.add('fade-in');
-                        setTimeout(() => employeeCard.classList.remove('fade-in'), 1000);
+                //         // Add animation
+                //         employeeCard.classList.add('fade-in');
+                //         setTimeout(() => employeeCard.classList.remove('fade-in'), 1000);
 
-                        log('کارمند شناسایی شد:', employee);
-                    } else {
-                        // Show no match card
-                        noMatchCard.style.display = 'flex';
-                        noMatchCard.classList.add('fade-in');
-                        setTimeout(() => noMatchCard.classList.remove('fade-in'), 1000);
+                //         log('کارمند شناسایی شد:', employee);
+                //     } else {
+                //         // Show no match card
+                //         noMatchCard.style.display = 'flex';
+                //         noMatchCard.classList.add('fade-in');
+                //         setTimeout(() => noMatchCard.classList.remove('fade-in'), 1000);
 
-                        log('تطابقی یافت نشد');
-                    }
-                    })
-                    .catch(error => {
-                    clearInterval(progressData.interval);
-                    statusMessage.style.display = 'none';
-                    errorMessage.style.display = 'block';
-                    errorMessage.textContent = 'خطا: ' + error.message;
-                    resetButton.style.display = 'inline-block';
+                //         log('تطابقی یافت نشد');
+                //     }
+                //     })
+                //     .catch(error => {
+                //     clearInterval(progressData.interval);
+                //     statusMessage.style.display = 'none';
+                //     errorMessage.style.display = 'block';
+                //     errorMessage.textContent = 'خطا: ' + error.message;
+                //     resetButton.style.display = 'inline-block';
 
-                    log('خطا در پردازش:', error.message);
-                });
+                //     log('خطا در پردازش:', error.message);
+                // });
             }
 
             // Handle scan button click

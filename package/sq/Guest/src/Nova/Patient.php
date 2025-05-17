@@ -10,6 +10,7 @@ use DigitalCreative\MegaFilter\MegaFilterTrait;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Laravel\Nova\Actions\Action;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\MorphMany;
@@ -189,6 +190,9 @@ class Patient extends Resource
             Trix::make(trans("Remark"), 'remark')
                 ->nullable()
                 ->hideFromIndex(),
+
+            Boolean::make("حالت", 'status')
+                ->sortable(),
 
             HasMany::make(__('Gate Passes'), 'patientGatePasses', PatientGatePass::class),
 

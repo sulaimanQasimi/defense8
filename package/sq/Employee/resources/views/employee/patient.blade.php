@@ -540,53 +540,6 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Action Buttons Section -->
-                <div class="action-container">
-                    @if($patient->status === 'active' && (!$patient->ended_at || $patient->ended_at > now()))
-                        <div class="action-row">
-                            <form action="{{ route('employee.patient.enterExit', $patient->id) }}" method="POST">
-                                @csrf
-                                <input type="hidden" name="type" value="enter">
-                                <button type="submit" class="btn btn-enter">
-                                    <div class="btn-shine"></div>
-                                    <svg class="btn-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
-                                    </svg>
-                                    ورود
-                                </button>
-                            </form>
-                            <form action="{{ route('employee.patient.enterExit', $patient->id) }}" method="POST">
-                                @csrf
-                                <input type="hidden" name="type" value="exit">
-                                <button type="submit" class="btn btn-exit">
-                                    <div class="btn-shine"></div>
-                                    <svg class="btn-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                                    </svg>
-                                    خروج
-                                </button>
-                            </form>
-                        </div>
-
-                        <!-- Notifications Section -->
-                        @if(count($notices))
-                            <div style="margin-top: 2rem;">
-                                @foreach($notices as $notice)
-                                    <div class="notification @if($notice->type == 'warning') notification-warning @else notification-error @endif">
-                                        <svg class="notification-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            @if($notice->type == 'warning')
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                                            @else
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                            @endif
-                                        </svg>
-                                        <div>{{ $notice->title }}: {{ $notice->description }}</div>
-                                    </div>
-                                @endforeach
-                            </div>
-                        @endif
-                    @endif
                 </div>
             </div>
         </div>

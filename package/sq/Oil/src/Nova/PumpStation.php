@@ -56,7 +56,7 @@ class PumpStation extends Resource
      */
     public static function label()
     {
-        return __('Pump Stations');
+        return __('پمپ استیشن');
     }
 
     /**
@@ -66,7 +66,7 @@ class PumpStation extends Resource
      */
     public static function singularLabel()
     {
-        return __('Pump Station');
+        return __('پمپ استیشن');
     }
 
     /**

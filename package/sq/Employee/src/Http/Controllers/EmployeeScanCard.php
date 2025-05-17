@@ -8,6 +8,7 @@ use \Sq\Employee\Http\Controllers\Contracts\Attendance;
 use Sq\Guest\Models\Guest;
 use Illuminate\Http\Request;
 use Sq\Guest\Models\Patient;
+use Sq\Guest\Models\PatientGatePass;
 
 class EmployeeScanCard extends Controller
 {
@@ -15,7 +16,7 @@ class EmployeeScanCard extends Controller
     {
         //
         $guest = null;
-        $patient= null;
+        $patient = null;
 
         // get the code from request
         $code = $request->input("code");
@@ -23,22 +24,30 @@ class EmployeeScanCard extends Controller
         // if the guest code scaned
         if (\Illuminate\Support\Str::startsWith(haystack: $code, needles: 'Guest-')) {
             $guest = Guest::query()->where('barcode', $code)
-            ->first();
-            if($guest->host?->department_id){
-
+                ->first();
+            if ($guest->host?->department_id) {
             }
         }
         // if the guest code scaned
         if (\Illuminate\Support\Str::startsWith(haystack: $code, needles: 'Patient-')) {
             $patient = Patient::query()->where('barcode', $code)
-            ->first();
+                ->first();
+            // Check if patient already has a gate_id and it's different from the current user's gate
+            if ($patient->gate_id == auth()->user()->gate_id) {
+                PatientGatePass::create([
+                    'patient_id' => $patient->id,
+                    'gate_id' => auth()->user()->gate_id,
+                    'entered_at' => now(),
+                ]);
+
+            }
         }
-        $attendance= new Attendance($code);
+        $attendance = new Attendance($code);
 
         return view("sqemployee::employee.scan", data: [
             'employee' => $attendance->employee,
             'guest' => $guest,
-            'patient'=> $patient,
+            'patient' => $patient,
             'attendance' => $attendance->proform_attendance()
         ]);
     }

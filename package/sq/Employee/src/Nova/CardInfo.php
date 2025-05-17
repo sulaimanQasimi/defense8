@@ -421,15 +421,26 @@ class CardInfo extends Resource
 
             // Biometric Data
             Action::openInNewTab(
-                __("Biometric Data"),
+                __("بامتریک کارمند"),
                 fn($employee)=> route('fingerprint.biodata.page',  $employee->id)
             )
-                // ->canRun(fn($request, $infoCard) =>
-                // auth()->user()->can('update', $infoCard)
-                //     && in_array($infoCard->orginization->id, UserDepartment::getUserDepartment()))
+                ->canRun(fn($request, $infoCard) =>
+                auth()->user()->can('update', $infoCard)
+                    && in_array($infoCard->orginization->id, UserDepartment::getUserDepartment()))
                 ->sole()
-                ->withoutConfirmation()
-                ->onlyOnDetail(),
+                ->withoutConfirmation(),
+
+            // Biometric Data
+            Action::openInNewTab(
+                __("چک بامتریک "),
+                fn($employee)=> route('fingerprint.cardinfo.verify.page',  $employee->id)
+            )
+                ->canRun(fn($request, $infoCard) =>
+                auth()->user()->can('update', $infoCard)
+                    && in_array($infoCard->orginization->id, UserDepartment::getUserDepartment()))
+                ->sole()
+                ->withoutConfirmation(),
+
 
             // Download Attendance
             Action::openInNewTab(

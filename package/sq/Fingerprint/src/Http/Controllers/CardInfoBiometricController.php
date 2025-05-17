@@ -10,6 +10,7 @@ use Sq\Employee\Models\CardInfo;
 use Sq\Fingerprint\Match\MatchService;
 use Sq\Fingerprint\Models\BiometricData;
 use Sq\Fingerprint\Facades\FingerprintStorage;
+use Sq\Query\Policy\UserDepartment;
 
 class CardInfoBiometricController extends Controller
 {
@@ -57,13 +58,16 @@ class CardInfoBiometricController extends Controller
         // If cardInfoId is provided, get the CardInfo record
         if ($cardInfoId) {
             $cardInfo = CardInfo::with('biometricData')->find($cardInfoId);
-        }
 
-        return view('sq-fingerprint::verify', [
-            'title' => 'Fingerprint Verification',
-            'cardInfoId' => $cardInfoId,
-            'cardInfo' => $cardInfo
-        ]);
+            if (auth()->user()->can('update', $cardInfo) && in_array($cardInfo->orginization->id, UserDepartment::getUserDepartment())) {
+                return view('sq-fingerprint::verify', [
+                    'title' => 'Fingerprint Verification',
+                    'cardInfoId' => $cardInfoId,
+                    'cardInfo' => $cardInfo
+                ]);
+            }
+        }
+        abort(403, 'Unauthorized action.');
     }
 
     /**

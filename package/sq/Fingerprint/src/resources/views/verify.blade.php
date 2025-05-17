@@ -208,7 +208,7 @@
             <div class="fingerprint-box">
                 <div class="form-section">
                     <label for="quality">حداقل امتیاز تطابق:</label>
-                    <input type="text" id="quality" value="100">
+                    <input type="text" id="quality" value="20">
                 </div>
 
                 <div class="form-section">

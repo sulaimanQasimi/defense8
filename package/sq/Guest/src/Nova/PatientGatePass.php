@@ -37,12 +37,12 @@ class PatientGatePass extends Resource
 
     public static function label()
     {
-        return __('Patient Gate Passes');
+        return __('مریضان داخل شده');
     }
 
     public static function singularLabel()
     {
-        return __('Patient Gate Pass');
+        return __('مریضان داخل شده');
     }
 
     /**

@@ -27,6 +27,7 @@ class Patient extends Model
     protected $casts = [
         'registered_at' => "datetime",
         'ended_at' => "datetime",
+        'status' => "boolean",
     ];
     protected $guarded = [];
 
